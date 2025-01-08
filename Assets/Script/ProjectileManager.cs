@@ -23,6 +23,7 @@ public class ProjectileManeger : MonoBehaviour
             currentTime -= 60d / bpm;
         }
     }
+
     private void SpawnProjectile()
     {
         GameObject projectile = Instantiate(projectilePrefab, currentStriker.transform.position, Quaternion.identity);

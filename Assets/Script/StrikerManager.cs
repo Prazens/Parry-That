@@ -6,7 +6,10 @@ public class StrikerManager : MonoBehaviour
 {
     [SerializeField] private GameObject strikerPrefab;
     public Transform[] spawnPositions;
-    [SerializeField] private Transform player; 
+    [SerializeField] private Transform player;
+
+    // 임시로 스트라이커 저장해놓을 공간
+    public List<GameObject> strikerList = new List<GameObject>();
 
     // Start is called before the first frame update
     public void SpawnStriker(int positionIndex, int hp = 10, int bpm = 120) // striker를 원하는 위치에 spawn, 현재 위쪽과 아래 쪽 두곳으로 spawnpoint 지정해놓음
@@ -21,11 +24,14 @@ public class StrikerManager : MonoBehaviour
         // 스트라이커 생성
         GameObject striker = Instantiate(strikerPrefab, spawnPositions[positionIndex].position, Quaternion.identity);
 
+        // 스트라이커 저장
+        strikerList.Add(striker);
+
         // 스트라이커 초기화
         StrikerController strikerController = striker.GetComponent<StrikerController>();
         if (strikerController != null)
         {
-            strikerController.Initialize(hp, bpm, player);
+            strikerController.Initialize(hp, bpm, player, (Direction)(positionIndex + 1));
         }
         else
         {

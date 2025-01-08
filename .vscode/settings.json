@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Parry_that_2d.sln"
+    "dotnet.defaultSolution": "Parry-That.sln"
 }

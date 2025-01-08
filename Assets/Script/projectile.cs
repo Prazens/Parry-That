@@ -12,10 +12,14 @@ public class projectile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = Vector3.MoveTowards(transform.position,target.position,speed * Time.deltaTime); // player를 향해서 이동
-        if (Vector3.Distance(transform.position, target.position) < 0.1f) // 일정거리 가까워지면 destroy로 임시 구현
+        transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime); // player를 향해서 이동
+        if (Vector3.Distance(transform.position, target.position) < 0.1d) // 일정거리 가까워지면 destroy로 임시 구현
         {
             Debug.Log("Missed Note!");
+
+            // 저장 해제
+            owner.projectileQueue.Dequeue();
+
             Destroy(gameObject);
         }
     }
