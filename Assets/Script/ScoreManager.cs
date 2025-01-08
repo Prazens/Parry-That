@@ -13,7 +13,7 @@ public class ScoreManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        Initialize();
     }
 
     // Update is called once per frame
@@ -46,6 +46,7 @@ public class ScoreManager : MonoBehaviour
             {
                 projectileLocation = strikerController.projectileQueue.Peek().transform.position;
                 distance = Math.Abs(projectileLocation.x + projectileLocation.y);
+                
                 
                 // 거리에 따라 판정
                 if (distance >= 1.5d)
