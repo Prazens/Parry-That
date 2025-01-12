@@ -4,12 +4,33 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-    [SerializeField] private StrikerManager strikerManager;
+    [SerializeField] private StageManager stageManager; // StageManager 연결
     // Start is called before the first frame update
     void Start()
     {
-        strikerManager.SpawnStriker(0,10,120); // 위쪽에 체력10, bpm120인 striker 소환
-        strikerManager.SpawnStriker(1,15,120); // 아래쪽에 체력 15, bpm120인 striker 소환환
+        if (stageManager != null)
+        {
+            stageManager.ResetStage(); // 스테이지 초기화
+        }
+        // if (stageManager != null)
+        // {
+        //    stageManager.StartStage(); // 스테이지 시작
+        // }
+        // else
+        // {
+        //    Debug.LogError("StageManager is not assigned!");
+        // }
+    }
+    public void StartStage()
+    {
+        if (stageManager != null)
+        {
+            stageManager.StartStage(); // 스테이지 시작
+        }
+        else
+        {
+            Debug.LogError("StageManager is not assigned!");
+        }
     }
 
     // Update is called once per frame
