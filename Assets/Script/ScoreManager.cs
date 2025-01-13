@@ -133,8 +133,13 @@ public class ScoreManager : MonoBehaviour
                 combo = 0;
                 Debug.Log("HIT (MISS)");
 
-                // 피격 시 행동동
+                // 피격당한 후 죽었을 때
                 if (--playerManager.hp == 0)
+                {
+
+                }
+                // 피격당한 후 죽지 않았을 때
+                else
                 {
 
                 }
