@@ -9,6 +9,8 @@ public class ScoreManager : MonoBehaviour
     public PlayerManager playerManager;
     public StrikerManager strikerManager;
     public int combo = 0;
+    public int score = 0;
+    public int[] judgeDetails;
 
     // Start is called before the first frame update
     void Start()
@@ -22,19 +24,26 @@ public class ScoreManager : MonoBehaviour
         
     }
 
+    // 초기화
     public void Initialize()
     {
         combo = 0;
+        score = 0;
         strikerList_ = strikerManager.strikerList;
+        judgeDetails = new int[] { 0, 0, 0, 0, 0, 0 };
     }
 
-    // 임시 판정
-    public void Judge(Direction direction)
+    // 판정
+    public void Judge(Direction direction, float touchTime)
     {
         StrikerController strikerController;
-        Vector3 projectileLocation;
-        double distance;
         Direction touchDirection = (direction == Direction.None) ? playerManager.currentDirection : direction;
+        
+        float projectileJudgeTime;
+        float timeDiff;
+
+        // Vector3 projectileLocation;
+        // double distance;
 
         // 스트라이커마다 탐지
         foreach (GameObject striker in strikerList_)
@@ -44,30 +53,110 @@ public class ScoreManager : MonoBehaviour
             // 터치 방향과 맞는 방향에서 공격하는 스트라이커라면
             if (strikerController.location == touchDirection)
             {
-                projectileLocation = strikerController.projectileQueue.Peek().transform.position;
-                distance = Math.Abs(projectileLocation.x + projectileLocation.y);
-                
-                
-                // 거리에 따라 판정
-                if (distance >= 1.5d)
+                // 시간에 따라 판정
+                projectileJudgeTime = strikerController.projectileQueue.Peek().GetComponent<projectile>().noteData.arriveTime;
+                timeDiff = touchTime - projectileJudgeTime;
+
+                // 기획서의 판정 표와 반대 순서임
+                if (timeDiff > 0.12d)
+                {
+                    JudgeManage(0);
+                }
+                else if (timeDiff > 0.9d)
+                {
+                    JudgeManage(1);
+                }
+                else if (timeDiff > 0.5d)
+                {
+                    JudgeManage(2);
+                }
+                else if (timeDiff >= -0.5d)
+                {
+                    JudgeManage(3);
+                }
+                else if (timeDiff >= -0.9d)
+                {
+                    JudgeManage(4);
+                }
+                else if (timeDiff >= -0.12d)
+                {
+                    JudgeManage(5);
+                }
+                else  // 공노트? 공POOR?
                 {
                     return;
                 }
-                else if (distance >= 0.9d)
-                {
-                    Debug.Log("Fast");
-                }
-                else if (distance >= 0.3d)
-                {
-                    Debug.Log("Perfect");
-                }
-                else
-                {
-                    Debug.Log("Late");
-                }
+
+                // 거리에 따라 판정 : 폐기
+                // projectileLocation = strikerController.projectileQueue.Peek().transform.position;
+                // distance = Math.Abs(projectileLocation.x + projectileLocation.y);
+                // 
+                // if (distance >= 1.5d)
+                // {
+                //     return;
+                // }
+                // else if (distance >= 0.9d)
+                // {
+                //     Debug.Log("Fast");
+                // }
+                // else if (distance >= 0.3d)
+                // {
+                //     Debug.Log("Perfect");
+                // }
+                // else
+                // {
+                //     Debug.Log("Late");
+                // }
 
                 Destroy(strikerController.projectileQueue.Dequeue());
             }
+        }
+    }
+
+    // 판정 결과를 이용해 결과에 맞는 행동 수행 : 스코어, SFX, ...
+    public void JudgeManage(int judgement)
+    {
+        // index로 한번에 처리하는 것들
+        judgeDetails[judgement] += 1;
+
+        // 따로 처리하는 것들
+        switch (judgement)
+        {
+            case 0:  // 늦은 MISS
+                score += 0;
+                combo = 0;
+                Debug.Log("HIT (MISS)");
+                break;
+            
+            case 1:  // 늦은 GUARD
+                score += 300;
+                combo = 0;
+                Debug.Log("GUARD (LATE)");
+                break;
+            
+            case 2:  // 늦은 BOUNCE
+                score += 9000;
+                combo += 1;
+                Debug.Log("BOUNCE! (LATE)");
+                break;
+            
+            case 3:  // 완벽한 PARFECT
+                score += 30000;
+                combo += 1;
+                Debug.Log("PARFECT!!");
+                break;
+            
+            case 4:  // 빠른 BOUNCE
+                score += 9000;
+                combo += 1;
+                Debug.Log("BOUNCE! (FAST)");
+                break;
+            
+            case 5:  // 빠른 GUARD
+                score += 300;
+                combo = 0;
+                Debug.Log("GUARD (FAST)");
+                break;
         }
     }
 }
