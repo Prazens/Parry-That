@@ -25,7 +25,7 @@ public class PlayerManager : MonoBehaviour
 
     }
 
-    // 쉴드 움직임
+    // 쉴드 움직임 (사용되지 않음)
     public void ShieldMove(Direction direction)
     {
         // 방향 변화가 있을 때
@@ -51,7 +51,7 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    // 쉴드가 튀는 듯한 움직임
+    // 쉴드가 튀는 듯한 움직임 (사용되지 않음)
     IEnumerator ShieldBounce(Direction direction)
     {
         isShieldMoving = true;

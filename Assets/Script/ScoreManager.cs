@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
@@ -44,7 +45,7 @@ public class ScoreManager : MonoBehaviour
         StrikerController strikerController;
         Direction touchDirection = (direction == Direction.None) ? playerManager.currentDirection : direction;
         
-        float projectileJudgeTime;
+        NoteData projectileNoteData;
         float timeDiff;
 
         // Vector3 projectileLocation;
@@ -58,12 +59,19 @@ public class ScoreManager : MonoBehaviour
             // 터치 방향과 맞는 방향에서 공격하는 스트라이커라면
             if (strikerController.location == touchDirection)
             {
+                projectileNoteData = strikerController.projectileQueue.Peek().GetComponent<projectile>().noteData;
+
                 // 시간에 따라 판정
-                projectileJudgeTime = strikerController.projectileQueue.Peek().GetComponent<projectile>().noteData.arriveTime;
-                timeDiff = touchTime - projectileJudgeTime;
+                timeDiff = touchTime - projectileNoteData.arriveTime;
+                
+                // 강공격인데 스와이프로 처리하지 못한 경우
+                if (projectileNoteData.type == 1 && direction != Direction.None)
+                {
+                    JudgeManage(direction, 0);
+                }
 
                 // 기획서의 판정 표와 반대 순서임
-                if (timeDiff > 0.12d)
+                else if (timeDiff > 0.12d)
                 {
                     JudgeManage(direction, 0);
                 }
