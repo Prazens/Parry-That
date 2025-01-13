@@ -10,7 +10,9 @@ public class ScoreManager : MonoBehaviour
     public StrikerManager strikerManager;
     public int combo = 0;
     public int score = 0;
-    public int[] judgeDetails;
+    public int[][] judgeDetails;  // 방향별 판정 정보, index 0은 전체 판정 합
+    // { 늦은 MISS, 늦은 GUARD, 늦은 BOUNCE, 완벽한 PARFECT, 빠른 BOUNCE, 빠른 GUARD } 순서
+    // 나중에 방향별 판정 정보가 아니라 스트라이커별 판정 정보로 바꾸어야 함
 
     // Start is called before the first frame update
     void Start()
@@ -30,7 +32,10 @@ public class ScoreManager : MonoBehaviour
         combo = 0;
         score = 0;
         strikerList_ = strikerManager.strikerList;
-        judgeDetails = new int[] { 0, 0, 0, 0, 0, 0 };
+        for (int i = 0; i < 5; i++)
+        {
+            judgeDetails[i] = new int[] { 0, 0, 0, 0, 0, 0 };
+        }
     }
 
     // 판정
@@ -60,27 +65,27 @@ public class ScoreManager : MonoBehaviour
                 // 기획서의 판정 표와 반대 순서임
                 if (timeDiff > 0.12d)
                 {
-                    JudgeManage(0);
+                    JudgeManage(direction, 0);
                 }
                 else if (timeDiff > 0.9d)
                 {
-                    JudgeManage(1);
+                    JudgeManage(direction, 1);
                 }
                 else if (timeDiff > 0.5d)
                 {
-                    JudgeManage(2);
+                    JudgeManage(direction, 2);
                 }
                 else if (timeDiff >= -0.5d)
                 {
-                    JudgeManage(3);
+                    JudgeManage(direction, 3);
                 }
                 else if (timeDiff >= -0.9d)
                 {
-                    JudgeManage(4);
+                    JudgeManage(direction, 4);
                 }
                 else if (timeDiff >= -0.12d)
                 {
-                    JudgeManage(5);
+                    JudgeManage(direction, 5);
                 }
                 else  // 공노트? 공POOR?
                 {
@@ -114,10 +119,11 @@ public class ScoreManager : MonoBehaviour
     }
 
     // 판정 결과를 이용해 결과에 맞는 행동 수행 : 스코어, SFX, ...
-    public void JudgeManage(int judgement)
+    public void JudgeManage(Direction direction, int judgement)
     {
         // index로 한번에 처리하는 것들
-        judgeDetails[judgement] += 1;
+        judgeDetails[0][judgement] += 1;
+        judgeDetails[(int)direction][judgement] += 1;
 
         // 따로 처리하는 것들
         switch (judgement)
@@ -126,6 +132,13 @@ public class ScoreManager : MonoBehaviour
                 score += 0;
                 combo = 0;
                 Debug.Log("HIT (MISS)");
+
+                // 피격 시 행동동
+                if (--playerManager.hp == 0)
+                {
+
+                }
+
                 break;
             
             case 1:  // 늦은 GUARD

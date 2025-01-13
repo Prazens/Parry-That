@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerManager : MonoBehaviour
 {
     public ScoreManager scoreManager;
-    [SerializeField] private int hp;
+    public int hp;
     public Direction currentDirection = Direction.Up;  // 쉴드 방향
     public GameObject shield;
     public bool isShieldMoving = false;

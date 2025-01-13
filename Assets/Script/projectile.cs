@@ -18,7 +18,7 @@ public class projectile : MonoBehaviour
 
         if (StageManager.Instance.currentTime - noteData.arriveTime > 0.12d)
         {
-            scoreManager.JudgeManage(0);
+            scoreManager.JudgeManage(owner.location, 0);
             Destroy(owner.projectileQueue.Dequeue());
         }
 
