@@ -12,4 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe9caa7ccb115e148a6062c846f170db, type: 3}
   m_Name: CharData2
   m_EditorClassIdentifier: 
-  notes: []
+  notes:
+  - time: 3
+    type: 0
+  - time: 3.5
+    type: 0
+  - time: 4
+    type: 1
+  - time: 7
+    type: 0
+  - time: 7.5
+    type: 0
+  - time: 8
+    type: 1
+  - time: 11
+    type: 0
+  - time: 11.5
+    type: 0
+  - time: 12
+    type: 0
