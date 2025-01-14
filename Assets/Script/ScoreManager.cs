@@ -9,6 +9,7 @@ public class ScoreManager : MonoBehaviour
     public List<GameObject> strikerList_;
     public PlayerManager playerManager;
     public StrikerManager strikerManager;
+    public ScoreUI scoreUI;
     public int combo = 0;
     public int score = 0;
     public int[][] judgeDetails;  // 방향별 판정 정보, index 0은 전체 판정 합
@@ -184,5 +185,12 @@ public class ScoreManager : MonoBehaviour
                 Debug.Log("GUARD (FAST)");
                 break;
         }
+
+        if (judgement != 0)
+        {
+            scoreUI.DisplayScore(score);
+        }
+
+        scoreUI.DisplayJudge(judgement, direction);
     }
 }
