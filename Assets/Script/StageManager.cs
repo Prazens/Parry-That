@@ -6,7 +6,7 @@ public class StageManager : MonoBehaviour
 {
     public static StageManager Instance; // 전역 접근용 싱글턴
     public float currentTime { get; private set; } // 현재 스테이지 시간
-    public float stageDuration = 187f; // 스테이지 전체 길이 (초)
+    public float stageDuration = 180f; // 스테이지 전체 길이 (초)
     [SerializeField] private StrikerManager strikerManager;
     [SerializeField] private GameObject playerPrefab; // Player 프리팹
     [SerializeField] private GameObject guidebox1Prefab; // Guidebox1 프리팹
