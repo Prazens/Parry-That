@@ -6,11 +6,16 @@ public class StrikerManager : MonoBehaviour
 {
     [SerializeField] private GameObject strikerPrefab;
     public Transform[] spawnPositions;
-    [SerializeField] private Transform player;
+    private PlayerManager playerManager; // Player 정보 저장
     [SerializeField] private ChartData[] charts; // 각 스트라이커의 채보 데이터
 
     // 임시로 스트라이커 저장해놓을 공간
     public List<GameObject> strikerList = new List<GameObject>();
+    public void SetPlayer(PlayerManager player)
+    {
+        playerManager = player;
+        Debug.Log("PlayerManager successfully linked to StrikerManager.");
+    }
 
     // Start is called before the first frame update
     public void SpawnStriker(int positionIndex, int chartIndex, int hp = 10, int bpm = 120) // striker를 원하는 위치에 spawn, 현재 위쪽과 아래 쪽 두곳으로 spawnpoint 지정해놓음
@@ -33,7 +38,7 @@ public class StrikerManager : MonoBehaviour
         StrikerController strikerController = striker.GetComponent<StrikerController>();
         if (strikerController != null)
         {
-            strikerController.Initialize(hp, bpm, player, (Direction)(positionIndex + 1),charts[chartIndex]);
+            strikerController.Initialize(hp, bpm, playerManager, (Direction)(positionIndex + 1),charts[chartIndex]);
         }
         else
         {

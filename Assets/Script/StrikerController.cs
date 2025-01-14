@@ -6,7 +6,8 @@ public class StrikerController : MonoBehaviour
 {
     // striker 자체에 들어가는 script
     [SerializeField] private List<GameObject> projectilePrefabs; // 투사체 프리팹
-    [SerializeField] private Transform player; // 플레이어 위치
+    private PlayerManager playerManager; // Player 정보 저장
+
     [SerializeField] private ChartData chartData; // 채보 데이터
     [SerializeField] private int hp; // 스트라이커 HP
     [SerializeField] private int bpm; // BPM
@@ -25,7 +26,7 @@ public class StrikerController : MonoBehaviour
         float currentTime = StageManager.Instance.currentTime;
 
         // 채보 시간에 맞춰 발사
-        if (currentTime >= chartData.notes[currentNoteIndex].time * (60d / bpm))
+        if (currentTime >= (chartData.notes[currentNoteIndex].time * (60d / bpm)) + 1d)
         {
             FireProjectile(chartData.notes[currentNoteIndex].type);
             currentNoteIndex++;
@@ -48,15 +49,15 @@ public class StrikerController : MonoBehaviour
         projectile projScript = projectile.GetComponent<projectile>();
         if (projScript != null)
         {
-            projScript.target = player; // 플레이어를 타겟으로 설정
+            projScript.target = playerManager.transform; // 플레이어를 타겟으로 설정
             projScript.owner = this;   // 소유자로 현재 스트라이커 설정
         }
     }
-    public void Initialize(int initialHp, int initialBpm, Transform targetPlayer, Direction direction, ChartData chart) //striker 정보 초기화(spawn될 때 얻어오는 정보보)
+    public void Initialize(int initialHp, int initialBpm, PlayerManager targetPlayer, Direction direction, ChartData chart) //striker 정보 초기화(spawn될 때 얻어오는 정보보)
     {
         hp = initialHp;
         bpm = initialBpm;
-        player = targetPlayer;
+        playerManager = targetPlayer;
         Debug.Log($"{gameObject.name} spawned with HP: {hp}, BPM: {bpm}");
         location = direction;
         chartData = chart; // 채보 데이터 설정

@@ -9,7 +9,7 @@ using Vector3 = UnityEngine.Vector3;
 public class TouchManager : MonoBehaviour
 {
     [SerializeField] private ScoreManager scoreManager;
-    [SerializeField] private PlayerManager playerManager;
+    [SerializeField] public PlayerManager playerManager;
 
     // Start is called before the first frame update
     void Start()

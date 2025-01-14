@@ -16,7 +16,23 @@ public class PlayerManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        GameController gameController = FindObjectOfType<GameController>();
+        if (gameController != null)
+        {
+            scoreManager = gameController.GetComponent<ScoreManager>();
+            if (scoreManager != null)
+            {
+                Debug.Log("PlayerManager successfully linked with ScoreManager.");
+            }
+            else
+            {
+                Debug.LogError("ScoreManager script is not attached to GameController!");
+            }
+        }
+        else
+        {
+            Debug.LogError("GameController not found!");
+        }
     }
 
     // Update is called once per frame
