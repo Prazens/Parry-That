@@ -27,6 +27,11 @@ public class StageManager : MonoBehaviour
         currentTime = 0f;
         strikerManager.SpawnStriker(0,0,10,120); // 위쪽에 체력10, bpm120인 striker 소환
         strikerManager.SpawnStriker(1,1,15,120); // 아래쪽에 체력 15, bpm120인 striker 소환환
+
+        //GameObject StageMenu = GameObject.Find("StageMenu");
+        //GameObject Title = GameObject.Find("Title");
+        //StageMenu.SetActive(false);
+        //Title.SetActive(false);
     }
 
     // Update is called once per frame

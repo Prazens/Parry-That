@@ -149,7 +149,7 @@ public class ScoreManager : MonoBehaviour
                 // 피격당한 후 죽지 않았을 때
                 else
                 {
-
+                    UIManager.Instance.ShowDamageOverlayEffect();
                 }
 
                 break;
