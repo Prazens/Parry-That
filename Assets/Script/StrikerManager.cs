@@ -33,7 +33,7 @@ public class StrikerManager : MonoBehaviour
         StrikerController strikerController = striker.GetComponent<StrikerController>();
         if (strikerController != null)
         {
-            strikerController.Initialize(hp, bpm, player, (Direction)(positionIndex + 1),charts[chartIndex]);
+            strikerController.Initialize(hp, bpm, player, (Direction)(positionIndex + 1),charts[chartIndex]);  // direction에 최적화 필요?
         }
         else
         {
