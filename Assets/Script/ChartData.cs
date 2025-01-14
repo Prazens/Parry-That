@@ -6,8 +6,6 @@ using UnityEngine;
 public class NoteData
 {
     public float time; // 발사 시간
-    public float arriveTime; // 도착 시간
-
     public int type;
 }
 
