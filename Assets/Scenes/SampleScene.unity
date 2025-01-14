@@ -868,9 +868,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1744429772}
-  - component: {fileID: 1744429771}
   - component: {fileID: 1744429774}
   - component: {fileID: 1744429773}
+  - component: {fileID: 1744429776}
   m_Layer: 0
   m_Name: GameController
   m_TagString: GameController
@@ -878,19 +878,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1744429771
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1744429770}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e874a380c9fe9bf47b80be6f4fbceaae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  stageManager: {fileID: 0}
 --- !u!4 &1744429772
 Transform:
   m_ObjectHideFlags: 0
@@ -939,6 +926,24 @@ MonoBehaviour:
   scoreManager: {fileID: 1744429773}
   playerManager: {fileID: 699812805}
   isTouchAvailable: 0
+--- !u!114 &1744429776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1744429770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35c5716c5f2e7d84887798ca32a473fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  strikerList_: []
+  playerManager: {fileID: 0}
+  strikerManager: {fileID: 0}
+  scoreUI: {fileID: 0}
+  combo: 0
+  score: 0
 --- !u!1 &1860902387
 GameObject:
   m_ObjectHideFlags: 0

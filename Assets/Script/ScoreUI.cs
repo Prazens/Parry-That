@@ -14,11 +14,16 @@ public class ScoreUI : MonoBehaviour
 
     private Vector3 initialPosition;
 
+    private void Start()
+    {
+        Initialize_UI();
+    }
+
     public void Initialize_UI()
     {
         scoreDisplay.GetComponent<TextMeshProUGUI>().text = "0";
         initialPosition = scoreDisplay.transform.position;
-
+        DisplayScore(0);
     }
 
     public void DisplayScore(int score)
@@ -60,16 +65,19 @@ public class ScoreUI : MonoBehaviour
 
         ColorUtility.TryParseHtmlString("#A07FF7", out color);
         judgeDisplay.GetComponent<TextMeshProUGUI>().color = color;
-        
+
         StartCoroutine(JudgeBounceUp(judgeDisplay));
     }
 
     IEnumerator TextBounceUp()
     {
-        scoreDisplay.transform.position += Vector3.down * 49;
-        for (int i = 1; i <= 24; i++)
+        for (int i = 3; i >= 1; i--)
         {
-            scoreDisplay.transform.position += Vector3.up * i * i / 100;
+            scoreDisplay.transform.position += Vector3.up * 19 / 3f;
+        }
+        for (int i = 9; i >= 1; i--)
+        {
+            scoreDisplay.transform.position += Vector3.down * i * i / 15;
             yield return null;
         }
         yield break;
@@ -77,13 +85,13 @@ public class ScoreUI : MonoBehaviour
 
     IEnumerator JudgeBounceUp(GameObject gameObject)
     {
-        gameObject.transform.position += Vector3.down * 49;
+        gameObject.transform.position += Vector3.down * 11.25f;
         for (int i = 1; i <= 24; i++)
         {
             gameObject.transform.position += Vector3.up * i * i / 100;
             yield return null;
         }
-
+        yield return new WaitForSeconds( 0.4f ); 
         Destroy(gameObject);
         yield break;
     }
