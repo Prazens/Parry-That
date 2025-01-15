@@ -7,8 +7,9 @@ using UnityEngine;
 public class PlayerManager : MonoBehaviour
 {
     public ScoreManager scoreManager;
-    public int hp;
-    public Direction currentDirection = Direction.Up;  // 플레이어 방향
+    [SerializeField] private int hp;
+    public Direction currentDirection = Direction.Up;  // 쉴드 방향
+    public StageManager stageManager; // StageManager 참조
 
     public Animator playerAnimator;
     public Animator bladeAnimator;
@@ -52,5 +53,12 @@ public class PlayerManager : MonoBehaviour
         bladeAnimator.SetInteger("attackType", type);
         bladeAnimator.SetTrigger("bladePlay");
         bladeAnimator.SetInteger("bladeDirection", (int)direction);
+    }
+    private void GameOver()
+    {
+        if (stageManager != null)
+        {
+            stageManager.GameOver(); // StageManager에 GameOver 호출
+        }
     }
 }

@@ -10,10 +10,6 @@ public class GameController : MonoBehaviour
     {
         if (stageManager != null)
         {
-            stageManager.ResetStage(); // 스테이지 초기화
-        }
-        if (stageManager != null)
-        {
            stageManager.StartStage(); // 스테이지 시작
         }
         else
