@@ -28,6 +28,8 @@ public class StageManager : MonoBehaviour
     [SerializeField] private AudioSource musicSource; // 음악 재생을 위한 AudioSource
     private bool musicPlayed = false; // 음악이 재생되었는지 확인
     public static bool isActive = false; // 스테이지 활성화 여부
+    private int clearStrikers = 0;
+    public bool is_gameover = false;
     private void Awake()
     {
         if (Instance == null)
@@ -59,10 +61,12 @@ public class StageManager : MonoBehaviour
         isActive = true; // 스테이지 활성화
         currentTime = 0f; // 시간 초기화
         musicPlayed = false;
+        clearStrikers = 0;
+        is_gameover = false;
         SpawnPlayer();
         SpawnGuideboxes();
-        strikerManager.SpawnStriker(0,0,10,107); 
-        strikerManager.SpawnStriker(1,1,15,107); 
+        strikerManager.SpawnStriker(0,0,108,107); 
+        strikerManager.SpawnStriker(1,1,110,107); 
 
         GameObject Menu = GameObject.Find("Menu");
         Menu.SetActive(false);
@@ -183,15 +187,14 @@ public class StageManager : MonoBehaviour
     {
         Debug.Log("Game Over!");
         isActive = false;
+        is_gameover = true;
 
         // 음악 정지
         if (musicSource != null && musicSource.isPlaying)
         {
             musicSource.Stop();
         }
-
-        // Striker와 Projectile 제거
-        strikerManager.ClearStrikers();
+        CalculateStars();
 
         // GameOver 창 활성화
         if (gameOverPanelInstance != null)
@@ -212,6 +215,7 @@ public class StageManager : MonoBehaviour
         {
             clearPanelInstance.SetActive(true); // Clear 창 활성화
         }
+        CalculateStars();
         UpdateClearPanelScores();
         UpdateStar_Clear();
     }
@@ -336,8 +340,8 @@ public class StageManager : MonoBehaviour
 
             // 별 활성화/비활성화
             if (star1 != null) star1.SetActive(true); // 1개 조건
-            if (star2 != null) star2.SetActive(true); // 2개 조건 아직 생성 안됨
-            if (star3 != null) star3.SetActive(false); // 3개 조건 아직 설정 안됨
+            if (star2 != null) star2.SetActive(clearStrikers >= 1); // 2개 조건 
+            if (star3 != null) star3.SetActive(clearStrikers >= 2); // 3개 조건 
         }
     }
     private void UpdateStar_Over()
@@ -351,8 +355,20 @@ public class StageManager : MonoBehaviour
 
             // 별 활성화/비활성화
             if (star1 != null) star1.SetActive(false); // 1개 조건
-            if (star2 != null) star2.SetActive(true); // 2개 조건 아직 생성 안됨
-            if (star3 != null) star3.SetActive(false); // 3개 조건 아직 설정 안됨
+            if (star2 != null) star2.SetActive(clearStrikers >= 1); // 2개 조건 
+            if (star3 != null) star3.SetActive(clearStrikers >= 2); // 3개 조건 
+        }
+    }
+    private void CalculateStars()
+    {
+        // StrikerManager에서 모든 Striker 확인
+        foreach (GameObject striker in strikerManager.strikerList)
+        {
+            StrikerController strikerController = striker.GetComponent<StrikerController>();
+            if (strikerController != null && strikerController.hp <= 0)
+            {
+                clearStrikers++;
+            }
         }
     }
 }

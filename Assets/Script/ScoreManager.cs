@@ -119,6 +119,18 @@ public class ScoreManager : MonoBehaviour
         judgeDetails[0][judgement] += 1;
         judgeDetails[(int)direction][judgement] += 1;
 
+        // 특정 Striker 찾기
+        StrikerController targetStriker = null;
+        foreach (GameObject striker in strikerList_)
+        {
+            StrikerController strikerController = striker.GetComponent<StrikerController>();
+            if (strikerController != null && strikerController.location == direction)
+            {
+                targetStriker = strikerController;
+                break;
+            }
+        }
+
         // 따로 처리하는 것들
         switch (judgement)
         {
@@ -151,18 +163,21 @@ public class ScoreManager : MonoBehaviour
                 score += 9000;
                 combo += 1;
                 Debug.Log("BOUNCE! (LATE)");
+                targetStriker?.TakeDamage(1);
                 break;
             
             case 3:  // 완벽한 PARFECT
                 score += 30000;
                 combo += 1;
                 Debug.Log("PARFECT!!");
+                targetStriker?.TakeDamage(1);
                 break;
             
             case 4:  // 빠른 BOUNCE
                 score += 9000;
                 combo += 1;
                 Debug.Log("BOUNCE! (FAST)");
+                targetStriker?.TakeDamage(1);
                 break;
             
             case 5:  // 빠른 GUARD

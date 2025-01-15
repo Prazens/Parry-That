@@ -7,9 +7,8 @@ public class StrikerController : MonoBehaviour
     // striker 자체에 들어가는 script
     [SerializeField] private List<GameObject> projectilePrefabs; // 투사체 프리팹
     private PlayerManager playerManager; // Player 정보 저장
-
     [SerializeField] private ChartData chartData; // 채보 데이터
-    [SerializeField] private int hp; // 스트라이커 HP
+    [SerializeField] public int hp; // 스트라이커 HP
     [SerializeField] public int bpm; // BPM
     public Direction location; // 위치 방향
     private int currentNoteIndex = 0; // 현재 채보 인덱스
@@ -76,5 +75,12 @@ public class StrikerController : MonoBehaviour
             }
         }
     }
-    
+    public void TakeDamage(int damage)
+    {
+        if (hp >= 0)
+        {
+            hp -= damage;
+            Debug.Log($"{gameObject.name} took {damage} damage! Current HP: {hp}");
+        }
+    }
 }
