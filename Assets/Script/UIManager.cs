@@ -93,4 +93,35 @@ public class UIManager : MonoBehaviour
 
     // PlayerManager에서 hp가 깎일 때 or ScoreManager에서 피격 판정 나왔을 때
     // UIManager.Instance.ShowDamageOverlayEffect(); 호출
+
+
+    [SerializeField] private GameObject particlePrefab;
+
+    private Vector2 position_up = new Vector2(0, 0.6f);
+    private Vector2 position_down = new Vector2(0, -0.6f);
+
+    public void ShowParticle(Direction direction)   // 패링 파티클 이펙트 효과
+    {
+        Vector2 spawnPos = new Vector2(0, 0);
+        switch (direction)
+        {
+            case Direction.Up:
+                spawnPos = position_up; break;
+
+            case Direction.Down:
+                spawnPos = position_down; break;
+
+            // case Direction.Left:
+
+            // case Direction.Right:
+
+        }
+        GameObject particleObj = Instantiate(particlePrefab, spawnPos, Quaternion.identity);
+
+        ParticleSystem ps = particleObj.GetComponent<ParticleSystem>();
+        if (ps != null)
+        {
+            ps.Play();
+        }
+    }
 }
