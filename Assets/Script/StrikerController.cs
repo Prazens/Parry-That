@@ -22,7 +22,7 @@ public class StrikerController : MonoBehaviour
         if (currentNoteIndex >= chartData.notes.Count) return;
 
         // 현재 시간 가져오기
-        float currentTime = StageManager.Instance.currentTime;
+        double currentTime = StageManager.Instance.currentTime;
 
         // 채보 시간에 맞춰 발사
         if (currentTime >= (chartData.notes[currentNoteIndex].time * (60d / bpm)) + 2f)

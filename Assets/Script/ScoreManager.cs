@@ -44,7 +44,7 @@ public class ScoreManager : MonoBehaviour
     }
 
     // 판정
-    public void Judge(Direction direction, float touchTimeSec, int type)
+    public void Judge(Direction direction, double touchTimeSec, int type)
     {
         StrikerController strikerController;
         Direction touchDirection = (direction == Direction.None) ? playerManager.currentDirection : direction;
@@ -70,7 +70,7 @@ public class ScoreManager : MonoBehaviour
                 projectileNoteData = strikerController.projectileQueue.Peek().GetComponent<projectile>().noteData;
 
                 // 시간에 따라 판정
-                timeDiff = touchTimeSec - projectileNoteData.arriveTime * (60d / strikerController.bpm) - 2d;
+                timeDiff = touchTimeSec - projectileNoteData.arriveTime - 2d;
                 
                 // 강공격인데 스와이프로 처리하지 못한 경우
                 if (projectileNoteData.type == 1 && type == 0)

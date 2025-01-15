@@ -10,6 +10,7 @@ public class StageManager : MonoBehaviour
     public float currentTime { get; private set; } // 현재 스테이지 시간
     public float stageDuration = 180f; // 스테이지 전체 길이 (초)
     [SerializeField] private StrikerManager strikerManager;
+    [SerializeField] private ScoreUI scoreUI;
     [SerializeField] private GameObject playerPrefab; // Player 프리팹
     [SerializeField] private GameObject guidebox1Prefab; // Guidebox1 프리팹
     [SerializeField] private GameObject guidebox2Prefab; // Guidebox2 프리팹
@@ -29,7 +30,7 @@ public class StageManager : MonoBehaviour
     private bool musicPlayed = false; // 음악이 재생되었는지 확인
     public static bool isActive = false; // 스테이지 활성화 여부
     private int clearStrikers = 0;
-    public bool is_gameover = false;
+    public bool is_over = false;
     private void Awake()
     {
         if (Instance == null)
@@ -55,24 +56,32 @@ public class StageManager : MonoBehaviour
             gameOverPanelInstance.SetActive(false); // 초기 비활성화
         }
     }
-    public void StartStage()
+    public void FirstStartStage()
     {
-        Debug.Log("Stage Started!");
-        isActive = true; // 스테이지 활성화
-        currentTime = 0f; // 시간 초기화
-        musicPlayed = false;
-        clearStrikers = 0;
-        is_gameover = false;
-        SpawnPlayer();
-        SpawnGuideboxes();
-        strikerManager.SpawnStriker(0,0,108,107); 
-        strikerManager.SpawnStriker(1,1,110,107); 
-
         GameObject Menu = GameObject.Find("Menu");
         Menu.SetActive(false);
         GameObject InGameScreen = Resources.FindObjectsOfTypeAll<GameObject>().FirstOrDefault(obj => obj.name == "InGameScreen");
         // Debug.Log(InGameScreen != null ? "InGameScreen found" : "InGameScreen not found");
         InGameScreen.SetActive(true);
+        musicSource.Play(); // 음악 재생
+        musicSource.Stop(); 
+        musicSource.time = 0f;
+        StartStage();
+    }
+    private void StartStage()
+    {
+        currentTime = 0f; // 시간 초기화
+        musicPlayed = false;
+        clearStrikers = 0;
+        is_over = false;
+        scoreUI.Initialize_UI();
+        scoreManager.Initialize();
+        SpawnPlayer();
+        SpawnGuideboxes();
+        strikerManager.SpawnStriker(0,0,108,107); 
+        strikerManager.SpawnStriker(1,1,110,107);
+        isActive = true; // 스테이지 활성화
+        Debug.Log("Stage Started!");
     }
     public void SpawnPlayer()
     {
@@ -176,7 +185,7 @@ public class StageManager : MonoBehaviour
         {
             EndStage();
         }
-        if (currentTime >= 2f && !musicPlayed)
+        if (currentTime >= 2d && !musicPlayed)
         {
             SpawnTransparentProjectile();
             musicPlayed = true;
@@ -187,7 +196,7 @@ public class StageManager : MonoBehaviour
     {
         Debug.Log("Game Over!");
         isActive = false;
-        is_gameover = true;
+        is_over = true;
 
         // 음악 정지
         if (musicSource != null && musicSource.isPlaying)
@@ -210,6 +219,7 @@ public class StageManager : MonoBehaviour
         // 스테이지 종료 로직 추가
         currentTime = stageDuration; // 시간 고정
         isActive = false;
+        is_over = true;
         // Clear 창 활성화 및 점수 업데이트
         if (clearPanelInstance != null)
         {

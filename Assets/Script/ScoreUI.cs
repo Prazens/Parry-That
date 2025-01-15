@@ -17,11 +17,6 @@ public class ScoreUI : MonoBehaviour
 
     private Vector3 initialPosition;
 
-    private void Start()
-    {
-        Initialize_UI();
-    }
-
     public void Initialize_UI()
     {
         scoreDisplay.GetComponent<TextMeshProUGUI>().text = "0";

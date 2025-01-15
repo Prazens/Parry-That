@@ -34,7 +34,7 @@ public class projectile : MonoBehaviour
         }
 
         // 임시 도착시간 설정
-        noteData.arriveTime = noteData.time + 1.15f;
+        noteData.arriveTime = noteData.time * (60f / bpm) + 0.6835f;
     }
 
     // Update is called once per frame
@@ -42,7 +42,7 @@ public class projectile : MonoBehaviour
     {
         transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime); // player를 향해서 이동
 
-        if (StageManager.Instance.currentTime > noteData.arriveTime * (60d / bpm)  + 2f + 0.12d)
+        if (StageManager.Instance.currentTime > noteData.time * (60d / bpm)  + 2f + 0.6835f + 0.12d)
         {
             // Debug.Log($"{StageManager.Instance.currentTime} - {noteData.arriveTime} = {StageManager.Instance.currentTime - noteData.arriveTime}");
             
@@ -51,14 +51,11 @@ public class projectile : MonoBehaviour
         }
 
         // 일정거리 가까워지면 destroy로 임시 구현
-        // if (Vector3.Distance(transform.position, target.position) < 0.1d)
+        // if (Vector3.Distance(transform.position, target.position) <= 0.6f)
         // {
-        //     Debug.Log("Missed Note!");
 
         //     // 저장 해제
-        //     owner.projectileQueue.Dequeue();
-
-        //     Destroy(gameObject);
+        //     Destroy(owner.projectileQueue.Dequeue());
         // }
     }
 }

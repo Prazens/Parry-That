@@ -93,7 +93,7 @@ public class TouchManager : MonoBehaviour
     private Vector3 lastPos;
     private bool isSwiping = false;
     private double sumLength = 0;
-    private float judgeTime;
+    private double judgeTime;
     private Direction? judgeDirection = null; // null이면 판정하지 않고, 실제 값을 가진 경우 판정
 
     // 임시 조작 확인기
