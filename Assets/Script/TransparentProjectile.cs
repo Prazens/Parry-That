@@ -16,7 +16,7 @@ public class TransparentProjectile : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
 
         // 플레이어와의 거리 계산(투사체 사라지는거 perfect로 이후 변경 필요!)
-        if (Vector3.Distance(transform.position, target.position) <= 0.3f)
+        if (Vector3.Distance(transform.position, target.position) <= 0.6f)
         {
             PlayMusic();
             Destroy(gameObject); // 투사체 삭제

@@ -26,7 +26,7 @@ public class StrikerController : MonoBehaviour
         float currentTime = StageManager.Instance.currentTime;
 
         // 채보 시간에 맞춰 발사
-        if (currentTime >= (chartData.notes[currentNoteIndex].time * (60d / bpm)) + 1d)
+        if (currentTime >= (chartData.notes[currentNoteIndex].time * (60d / bpm)) + 2f)
         {
             FireProjectile(chartData.notes[currentNoteIndex].type);
             currentNoteIndex++;
@@ -61,6 +61,17 @@ public class StrikerController : MonoBehaviour
         Debug.Log($"{gameObject.name} spawned with HP: {hp}, BPM: {bpm}");
         location = direction;
         chartData = chart; // 채보 데이터 설정
+    }
+    public void ClearProjectiles()
+    {
+        while (projectileQueue.Count > 0)
+        {
+            GameObject projectile = projectileQueue.Dequeue();
+            if (projectile != null)
+            {
+                Destroy(projectile); // Projectile 삭제
+            }
+        }
     }
     
 }
