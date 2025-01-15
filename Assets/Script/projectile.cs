@@ -11,6 +11,27 @@ public class projectile : MonoBehaviour
     public NoteData noteData; // 노트의 정보
     public ScoreManager scoreManager;
 
+    void Start()
+    {
+        GameController gameController = FindObjectOfType<GameController>();
+        if (gameController != null)
+        {
+            scoreManager = gameController.GetComponent<ScoreManager>();
+            if (scoreManager != null)
+            {
+                Debug.Log("projectile successfully linked with ScoreManager.");
+            }
+            else
+            {
+                Debug.LogError("ScoreManager script is not attached to GameController!");
+            }
+        }
+        else
+        {
+            Debug.LogError("GameController not found!");
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -18,6 +39,8 @@ public class projectile : MonoBehaviour
 
         if (StageManager.Instance.currentTime - noteData.arriveTime > 0.12d)
         {
+            Debug.Log($"{StageManager.Instance.currentTime} - {noteData.arriveTime} = {StageManager.Instance.currentTime - noteData.arriveTime}");
+            
             scoreManager.JudgeManage(owner.location, 0);
             Destroy(owner.projectileQueue.Dequeue());
         }

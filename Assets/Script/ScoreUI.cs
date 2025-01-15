@@ -2,12 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ScoreUI : MonoBehaviour
 {
     public GameObject scoreDisplay;
     public GameObject judgeDisplayPrefab;
+    public Sprite[] judgeImages = new Sprite[4];
     public ScoreManager scoreManager;
 
     private readonly string[] judgeStrings = { "HIT", "GUARD", "BOUNCE", "PARFECT", "BOUNCE", "GUARD" };
@@ -39,7 +42,6 @@ public class ScoreUI : MonoBehaviour
     {
         Vector3 generatePosition = Vector3.up;
         GameObject judgeDisplay;
-        Color color;
 
         switch (direction)
         {
@@ -52,20 +54,19 @@ public class ScoreUI : MonoBehaviour
                 break;
 
             case Direction.Left:
-                generatePosition = Vector3.left * 100;
+                generatePosition = Vector3.left * 120;
                 break;
 
             case Direction.Right:
-                generatePosition = Vector3.right * 100;
+                generatePosition = Vector3.right * 120;
                 break;
         }
 
         judgeDisplay = Instantiate(judgeDisplayPrefab);
-        judgeDisplay.GetComponent<TextMeshProUGUI>().text = judgeStrings[judge];
+        judgeDisplay.transform.SetParent(transform);
 
-        ColorUtility.TryParseHtmlString("#A07FF7", out color);
-        judgeDisplay.GetComponent<TextMeshProUGUI>().color = color;
-
+        judgeDisplay.transform.position = new Vector3(240, 400) + generatePosition;
+        judgeDisplay.GetComponent<Image>().sprite = judgeImages[math.abs(judge - 3)];
         StartCoroutine(JudgeBounceUp(judgeDisplay));
     }
 
@@ -85,10 +86,13 @@ public class ScoreUI : MonoBehaviour
 
     IEnumerator JudgeBounceUp(GameObject gameObject)
     {
-        gameObject.transform.position += Vector3.down * 11.25f;
-        for (int i = 1; i <= 24; i++)
+        for (int i = 3; i >= 1; i--)
         {
-            gameObject.transform.position += Vector3.up * i * i / 100;
+            gameObject.transform.position += Vector3.up * 19 / 3f;
+        }
+        for (int i = 9; i >= 1; i--)
+        {
+            gameObject.transform.position += Vector3.down * i * i / 15;
             yield return null;
         }
         yield return new WaitForSeconds( 0.4f ); 

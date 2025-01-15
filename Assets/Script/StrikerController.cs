@@ -15,7 +15,7 @@ public class StrikerController : MonoBehaviour
     private int currentNoteIndex = 0; // 현재 채보 인덱스
 
     // 임시로 발사체 저장해놓을 공간
-    public Queue<GameObject> projectileQueue = new Queue<GameObject>{};
+    [SerializeField] public Queue<GameObject> projectileQueue = new Queue<GameObject>{};
 
     private void Update() // 현재 striker 자체에서 투사체 일정 간격으로 발사
     {

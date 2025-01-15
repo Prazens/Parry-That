@@ -12,7 +12,7 @@ public class ScoreManager : MonoBehaviour
     public ScoreUI scoreUI;
     public int combo = 0;
     public int score = 0;
-    public int[][] judgeDetails;  // 방향별 판정 정보, index 0은 전체 판정 합
+    public int[][] judgeDetails = new int[4][];  // 방향별 판정 정보, index 0은 전체 판정 합
     // { 늦은 MISS, 늦은 GUARD, 늦은 BOUNCE, 완벽한 PARFECT, 빠른 BOUNCE, 빠른 GUARD } 순서
     // 나중에 방향별 판정 정보가 아니라 스트라이커별 판정 정보로 바꾸어야 함
 
@@ -36,7 +36,7 @@ public class ScoreManager : MonoBehaviour
         strikerList_ = strikerManager.strikerList;
         for (int i = 0; i < 5; i++)
         {
-            judgeDetails[i] = new int[] { 0, 0, 0, 0, 0, 0 };
+            judgeDetails[i] = new int[6] { 0, 0, 0, 0, 0, 0 };
         }
     }
 
@@ -58,7 +58,7 @@ public class ScoreManager : MonoBehaviour
             strikerController = striker.GetComponent<StrikerController>();
 
             // 터치 방향과 맞는 방향에서 공격하는 스트라이커라면
-            if (strikerController.location == touchDirection)
+            if (strikerController.location == touchDirection && strikerController.projectileQueue.Count != 0)
             {
                 projectileNoteData = strikerController.projectileQueue.Peek().GetComponent<projectile>().noteData;
 
@@ -100,27 +100,6 @@ public class ScoreManager : MonoBehaviour
                 {
                     return;
                 }
-
-                // 거리에 따라 판정 : 폐기
-                // projectileLocation = strikerController.projectileQueue.Peek().transform.position;
-                // distance = Math.Abs(projectileLocation.x + projectileLocation.y);
-                // 
-                // if (distance >= 1.5d)
-                // {
-                //     return;
-                // }
-                // else if (distance >= 0.9d)
-                // {
-                //     Debug.Log("Fast");
-                // }
-                // else if (distance >= 0.3d)
-                // {
-                //     Debug.Log("Perfect");
-                // }
-                // else
-                // {
-                //     Debug.Log("Late");
-                // }
 
                 Destroy(strikerController.projectileQueue.Dequeue());
             }

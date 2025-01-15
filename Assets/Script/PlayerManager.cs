@@ -7,7 +7,7 @@ public class PlayerManager : MonoBehaviour
 {
     public ScoreManager scoreManager;
     public int hp;
-    public Direction currentDirection = Direction.Up;  // 쉴드 방향
+    public Direction currentDirection = Direction.Up;  // 플레이어 방향
     public GameObject shield;
     public bool isShieldMoving = false;
 
@@ -41,40 +41,6 @@ public class PlayerManager : MonoBehaviour
 
     }
 
-    // 쉴드 움직임 (사용되지 않음)
-    public void ShieldMove(Direction direction)
-    {
-        // 방향 변화가 있을 때
-        if (direction != currentDirection && direction != Direction.None)
-        {
-            shield.transform.position = directionMove[(int)direction] / 2;
-            currentDirection = direction;
+    
 
-            if (direction == Direction.Left || direction == Direction.Right)
-            {
-                shield.transform.rotation = Quaternion.Euler(0, 0, 90);
-            }
-            else
-            {
-                shield.transform.rotation = Quaternion.Euler(0, 0, 0);
-            }
-        }
-
-        // 쉴드가 튀는 움직임을 보이지 않을 때
-        if (!isShieldMoving)
-        {
-            StartCoroutine(ShieldBounce(direction));
-        }
-    }
-
-    // 쉴드가 튀는 듯한 움직임 (사용되지 않음)
-    IEnumerator ShieldBounce(Direction direction)
-    {
-        isShieldMoving = true;
-        shield.transform.position += directionMove[(int)currentDirection] / 10;
-        yield return new WaitForSeconds(0.1f);
-        shield.transform.position -= directionMove[(int)currentDirection] / 10;
-        isShieldMoving = false;
-        yield break;
-    }
 }
