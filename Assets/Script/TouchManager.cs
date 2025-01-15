@@ -24,36 +24,39 @@ public class TouchManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isTouchAvailable)
+        if (StageManager.isActive)
         {
-            TouchChecker();
-        }
-        else
-        {
-            KeyChecker();
-            MouseChecker();  // 터치에 중복될 가능성 높음
-        }
-
-        // judgeDirection에 값이 null이 아니라 존재할 경우 : 판정 실시, null로 값 삭제
-        // 임시로 좌우 입력은 막아둠
-        if (judgeDirection.HasValue && (judgeDirection == Direction.Up || judgeDirection == Direction.Down || judgeDirection == Direction.None))
-        {
-            if (judgeDirection == Direction.None)
+            if (isTouchAvailable)
             {
-                type = 0;
-                judgeDirection = playerManager.currentDirection;
+                TouchChecker();
             }
             else
             {
-                type = 1;
+                KeyChecker();
+                MouseChecker();  // 터치에 중복될 가능성 높음
             }
 
-            playerManager.Operate((Direction)judgeDirection, type);
-            // playerManager.ShieldMove((Direction)judgeDirection);
+            // judgeDirection에 값이 null이 아니라 존재할 경우 : 판정 실시, null로 값 삭제
+            // 임시로 좌우 입력은 막아둠
+            if (judgeDirection.HasValue && (judgeDirection == Direction.Up || judgeDirection == Direction.Down || judgeDirection == Direction.None))
+            {
+                if (judgeDirection == Direction.None)
+                {
+                    type = 0;
+                    judgeDirection = playerManager.currentDirection;
+                }
+                else
+                {
+                    type = 1;
+                }
 
-            scoreManager.Judge((Direction)judgeDirection, judgeTime, type);
+                playerManager.Operate((Direction)judgeDirection, type);
+                // playerManager.ShieldMove((Direction)judgeDirection);
 
-            judgeDirection = null;
+                scoreManager.Judge((Direction)judgeDirection, judgeTime, type);
+
+                judgeDirection = null;
+            }
         }
     }
 

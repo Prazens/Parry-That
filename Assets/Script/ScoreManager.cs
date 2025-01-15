@@ -136,6 +136,7 @@ public class ScoreManager : MonoBehaviour
                 else
                 {
                     Debug.Log(playerManager.hp);
+                    UIManager.Instance.ShowDamageOverlayEffect();
                 }
 
                 break;

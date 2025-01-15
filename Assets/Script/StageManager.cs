@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using System.Linq;
 using UnityEngine;
 
 public class StageManager : MonoBehaviour
@@ -26,7 +27,7 @@ public class StageManager : MonoBehaviour
     [SerializeField] private GameObject transparentProjectilePrefab; // 투명 투사체 프리팹
     [SerializeField] private AudioSource musicSource; // 음악 재생을 위한 AudioSource
     private bool musicPlayed = false; // 음악이 재생되었는지 확인
-    private bool isActive = false; // 스테이지 활성화 여부
+    public static bool isActive = false; // 스테이지 활성화 여부
     private void Awake()
     {
         if (Instance == null)
@@ -62,6 +63,12 @@ public class StageManager : MonoBehaviour
         SpawnGuideboxes();
         strikerManager.SpawnStriker(0,0,10,107); 
         strikerManager.SpawnStriker(1,1,15,107); 
+
+        GameObject Menu = GameObject.Find("Menu");
+        Menu.SetActive(false);
+        GameObject InGameScreen = Resources.FindObjectsOfTypeAll<GameObject>().FirstOrDefault(obj => obj.name == "InGameScreen");
+        // Debug.Log(InGameScreen != null ? "InGameScreen found" : "InGameScreen not found");
+        InGameScreen.SetActive(true);
     }
     public void SpawnPlayer()
     {

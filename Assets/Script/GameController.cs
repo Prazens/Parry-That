@@ -8,14 +8,18 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (stageManager != null)
-        {
-           stageManager.StartStage(); // 스테이지 시작
-        }
-        else
-        {
-           Debug.LogError("StageManager is not assigned!");
-        }
+        //if (stageManager != null)
+        //{
+        //    stageManager.ResetStage(); // 스테이지 초기화
+        //}
+        //if (stageManager != null)
+        //{
+        //   stageManager.StartStage(); // 스테이지 시작
+        //}
+        //else
+        //{
+        //   Debug.LogError("StageManager is not assigned!");
+        //}
     }
     public void StartStage()
     {
