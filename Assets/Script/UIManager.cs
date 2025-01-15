@@ -34,7 +34,7 @@ public class UIManager : MonoBehaviour
 
         if (DamageOverlayImage == null)
         {
-            StartCoroutine(LoadDamageOverlay());
+            Debug.Log("DamageOverlay 못찾음");
         }
         else
         {
@@ -42,32 +42,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    private IEnumerator LoadDamageOverlay()
-    {
-        ResourceRequest request = Resources.LoadAsync<Sprite>("Sprites/DamageOverlay");
-        yield return request;
-
-        if (request.asset != null)
-        {
-            cachedDamageOverlaySprite = request.asset as Sprite;
-            GameObject overlayGO = new GameObject("DamageOverlayImage");
-            overlayGO.transform.SetParent(this.transform, false);
-
-            DamageOverlayImage = overlayGO.AddComponent<Image>();
-            DamageOverlayImage.sprite = cachedDamageOverlaySprite;
-            DamageOverlayImage.color = new Color(1f, 1f, 1f, 0f); // 초기 알파값 (투명)
-
-            RectTransform rectTransform = DamageOverlayImage.GetComponent<RectTransform>();
-            rectTransform.anchorMin = Vector2.zero;
-            rectTransform.anchorMax = Vector2.one;
-            rectTransform.offsetMin = Vector2.zero;
-            rectTransform.offsetMax = Vector2.zero;
-        }
-        else
-        {
-            Debug.Log("DamageOverlay 못찾음");
-        }
-    }
 
     public void ShowDamageOverlayEffect()
     {
