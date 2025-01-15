@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst.Intrinsics;
+using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
@@ -8,10 +9,11 @@ public class PlayerManager : MonoBehaviour
     public ScoreManager scoreManager;
     public int hp;
     public Direction currentDirection = Direction.Up;  // 플레이어 방향
-    public GameObject shield;
-    public bool isShieldMoving = false;
 
-    private Vector3[] directionMove = { Vector3.zero, Vector3.up, Vector3.down, Vector3.left, Vector3.right };
+    public Animator playerAnimator;
+    public Animator bladeAnimator;
+
+    public string[] triggers = new string[2] { "playerParryUp", "playerParryDown" };
 
     // Start is called before the first frame update
     void Start()
@@ -41,6 +43,14 @@ public class PlayerManager : MonoBehaviour
 
     }
 
-    
+    public void Operate(Direction direction, int type)
+    {
+        Debug.Log($"{(int)direction} {triggers[(int)direction - 1]} {type}");
 
+        playerAnimator.SetTrigger(triggers[(int)direction - 1]);
+
+        bladeAnimator.SetInteger("attackType", type);
+        bladeAnimator.SetTrigger("bladePlay");
+        bladeAnimator.SetInteger("bladeDirection", (int)direction);
+    }
 }

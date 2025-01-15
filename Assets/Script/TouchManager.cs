@@ -13,6 +13,8 @@ public class TouchManager : MonoBehaviour
     [SerializeField] public PlayerManager playerManager;
     [SerializeField] private bool isTouchAvailable = false;
 
+    int type;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,6 +33,28 @@ public class TouchManager : MonoBehaviour
             KeyChecker();
             MouseChecker();  // 터치에 중복될 가능성 높음
         }
+
+        // judgeDirection에 값이 null이 아니라 존재할 경우 : 판정 실시, null로 값 삭제
+        // 임시로 좌우 입력은 막아둠
+        if (judgeDirection.HasValue && (judgeDirection == Direction.Up || judgeDirection == Direction.Down || judgeDirection == Direction.None))
+        {
+            if (judgeDirection == Direction.None)
+            {
+                type = 0;
+                judgeDirection = playerManager.currentDirection;
+            }
+            else
+            {
+                type = 1;
+            }
+
+            playerManager.Operate((Direction)judgeDirection, type);
+            // playerManager.ShieldMove((Direction)judgeDirection);
+
+            scoreManager.Judge((Direction)judgeDirection, judgeTime, 0);
+
+            judgeDirection = null;
+        }
     }
 
     // 임시 조작 확인기
@@ -38,28 +62,23 @@ public class TouchManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
-            playerManager.ShieldMove(Direction.Left);
             // scoreManager.Judge(Direction.Left, StageManager.Instance.currentTime);
         }
         else if (Input.GetKeyDown(KeyCode.D))
         {
-            playerManager.ShieldMove(Direction.Right);
             // scoreManager.Judge(Direction.Right, StageManager.Instance.currentTime);
         }
         else if (Input.GetKeyDown(KeyCode.W))
         {
-            playerManager.ShieldMove(Direction.Up);
-            scoreManager.Judge(Direction.Up, StageManager.Instance.currentTime);
+            scoreManager.Judge(Direction.Up, StageManager.Instance.currentTime, 1);
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
-            playerManager.ShieldMove(Direction.Down);
-            scoreManager.Judge(Direction.Down, StageManager.Instance.currentTime);
+            scoreManager.Judge(Direction.Down, StageManager.Instance.currentTime, 1);
         }
         else if (Input.GetKeyDown(KeyCode.Space))  // 방향 스와이프 없이 탭만 할때의 움직임
         {
-            playerManager.ShieldMove(Direction.None);
-            scoreManager.Judge(Direction.None, StageManager.Instance.currentTime);
+            scoreManager.Judge(playerManager.currentDirection, StageManager.Instance.currentTime, 0);
         }
     }
 
@@ -153,15 +172,6 @@ public class TouchManager : MonoBehaviour
             // playerManager.ShieldMove(Direction.None);
             // scoreManager.Judge(Direction.None);
             isSwiping = false;
-        }
-
-        // judgeDirection에 값이 null이 아니라 존재할 경우 : 판정 실시, null로 값 삭제
-        if (judgeDirection.HasValue)
-        {
-            playerManager.ShieldMove((Direction)judgeDirection);
-            scoreManager.Judge((Direction)judgeDirection, judgeTime);
-
-            judgeDirection = null;
         }
     }
 
@@ -258,20 +268,6 @@ public class TouchManager : MonoBehaviour
             // playerManager.ShieldMove(Direction.None);
             // scoreManager.Judge(Direction.None);
             isSwiping = false;
-        }
-
-        // else
-        // {
-        //     isSwiping = false;
-        // }
-
-        // judgeDirection에 값이 null이 아니라 존재할 경우 : 판정 실시, null로 값 삭제
-        if (judgeDirection.HasValue)
-        {
-            playerManager.ShieldMove((Direction)judgeDirection);
-            scoreManager.Judge((Direction)judgeDirection, judgeTime);
-
-            judgeDirection = null;
         }
     }
 }

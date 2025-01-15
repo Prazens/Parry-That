@@ -41,7 +41,7 @@ public class projectile : MonoBehaviour
         {
             Debug.Log($"{StageManager.Instance.currentTime} - {noteData.arriveTime} = {StageManager.Instance.currentTime - noteData.arriveTime}");
             
-            scoreManager.JudgeManage(owner.location, 0);
+            scoreManager.JudgeManage(owner.location, 0, noteData.type);
             Destroy(owner.projectileQueue.Dequeue());
         }
 

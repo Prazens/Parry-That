@@ -34,20 +34,22 @@ public class ScoreManager : MonoBehaviour
         combo = 0;
         score = 0;
         strikerList_ = strikerManager.strikerList;
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 4; i++)
         {
             judgeDetails[i] = new int[6] { 0, 0, 0, 0, 0, 0 };
         }
     }
 
     // 판정
-    public void Judge(Direction direction, float touchTime)
+    public void Judge(Direction direction, float touchTime, int type)
     {
         StrikerController strikerController;
         Direction touchDirection = (direction == Direction.None) ? playerManager.currentDirection : direction;
         
         NoteData projectileNoteData;
         float timeDiff;
+
+        playerManager.currentDirection = touchDirection;
 
         // Vector3 projectileLocation;
         // double distance;
@@ -66,35 +68,35 @@ public class ScoreManager : MonoBehaviour
                 timeDiff = touchTime - projectileNoteData.arriveTime;
                 
                 // 강공격인데 스와이프로 처리하지 못한 경우
-                if (projectileNoteData.type == 1 && direction != Direction.None)
+                if (projectileNoteData.type == 1 && type == 0)
                 {
-                    JudgeManage(direction, 0);
+                    JudgeManage(direction, 0, 0);
                 }
 
                 // 기획서의 판정 표와 반대 순서임
                 else if (timeDiff > 0.12d)
                 {
-                    JudgeManage(direction, 0);
+                    JudgeManage(direction, 0, type);
                 }
                 else if (timeDiff > 0.9d)
                 {
-                    JudgeManage(direction, 1);
+                    JudgeManage(direction, 1, type);
                 }
                 else if (timeDiff > 0.5d)
                 {
-                    JudgeManage(direction, 2);
+                    JudgeManage(direction, 2, type);
                 }
                 else if (timeDiff >= -0.5d)
                 {
-                    JudgeManage(direction, 3);
+                    JudgeManage(direction, 3, type);
                 }
                 else if (timeDiff >= -0.9d)
                 {
-                    JudgeManage(direction, 4);
+                    JudgeManage(direction, 4, type);
                 }
                 else if (timeDiff >= -0.12d)
                 {
-                    JudgeManage(direction, 5);
+                    JudgeManage(direction, 5, type);
                 }
                 else  // 공노트? 공POOR?
                 {
@@ -107,7 +109,7 @@ public class ScoreManager : MonoBehaviour
     }
 
     // 판정 결과를 이용해 결과에 맞는 행동 수행 : 스코어, SFX, ...
-    public void JudgeManage(Direction direction, int judgement)
+    public void JudgeManage(Direction direction, int judgement, int type)
     {
         // index로 한번에 처리하는 것들
         judgeDetails[0][judgement] += 1;
