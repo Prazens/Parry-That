@@ -45,22 +45,4 @@ public class StrikerManager : MonoBehaviour
             Debug.LogError("Striker prefab is missing StrikerController!");
         }
     }
-    public void ClearStrikers()
-    {
-        foreach (GameObject striker in strikerList)
-        {
-            if (striker != null)
-            {
-                // Striker가 소유한 Projectile 제거
-                StrikerController strikerController = striker.GetComponent<StrikerController>();
-                if (strikerController != null)
-                {
-                    strikerController.ClearProjectiles();
-                }
-                Destroy(striker); // Striker GameObject 삭제
-            }
-        }
-
-        strikerList.Clear(); // 리스트 초기화
-    }
 }

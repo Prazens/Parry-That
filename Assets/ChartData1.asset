@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: ChartData1
   m_EditorClassIdentifier: 
   notes:
+  - time: 1
+    type: 0
   - time: 3
     type: 0
   - time: 5
@@ -158,85 +160,58 @@ MonoBehaviour:
   - time: 188
     type: 0
   - time: 225
-    type: 0
   - time: 225
     type: 0
   - time: 226
-    type: 0
   - time: 227
-    type: 0
   - time: 227
     type: 0
   - time: 228
-    type: 0
   - time: 229
-    type: 0
   - time: 229
     type: 0
   - time: 230
-    type: 0
   - time: 231
-    type: 0
   - time: 231
     type: 0
   - time: 232
-    type: 0
   - time: 233
-    type: 0
   - time: 233
     type: 0
   - time: 234
-    type: 0
   - time: 235
-    type: 0
   - time: 235
     type: 0
   - time: 236
-    type: 0
   - time: 237
-    type: 0
   - time: 237
     type: 0
   - time: 238
-    type: 0
   - time: 239
-    type: 0
   - time: 239
     type: 0
   - time: 240
-    type: 0
   - time: 241
-    type: 0
   - time: 241
     type: 0
   - time: 242
-    type: 0
   - time: 243
-    type: 0
   - time: 243
     type: 0
   - time: 244
-    type: 0
   - time: 245
-    type: 0
   - time: 245
     type: 0
   - time: 246
-    type: 0
   - time: 247
-    type: 0
   - time: 247
     type: 0
   - time: 248
-    type: 0
   - time: 249
-    type: 0
   - time: 249
     type: 0
   - time: 250
-    type: 0
   - time: 251
-    type: 0
   - time: 251
     type: 0
   - time: 288
