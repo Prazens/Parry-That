@@ -10,14 +10,14 @@ public class StrikerController : MonoBehaviour
 
     [SerializeField] private ChartData chartData; // 채보 데이터
     [SerializeField] private int hp; // 스트라이커 HP
-    [SerializeField] private int bpm; // BPM
+    [SerializeField] public int bpm; // BPM
     public Direction location; // 위치 방향
     private int currentNoteIndex = 0; // 현재 채보 인덱스
 
     // 임시로 발사체 저장해놓을 공간
-    public Queue<GameObject> projectileQueue = new Queue<GameObject>{};
+    [SerializeField] public Queue<GameObject> projectileQueue = new Queue<GameObject>{};
 
-    private void Update() // 현재 striker 자체에서 투사체 일정 간격으로 발사사
+    private void Update() // 현재 striker 자체에서 투사체 일정 간격으로 발사
     {
         // 투사체 발사 타이밍 계산
         if (currentNoteIndex >= chartData.notes.Count) return;
@@ -52,6 +52,9 @@ public class StrikerController : MonoBehaviour
             projScript.target = playerManager.transform; // 플레이어를 타겟으로 설정
             projScript.owner = this;   // 소유자로 현재 스트라이커 설정
         }
+
+        // 투사체에 노트 정보 저장
+        projScript.noteData = chartData.notes[currentNoteIndex];
     }
     public void Initialize(int initialHp, int initialBpm, PlayerManager targetPlayer, Direction direction, ChartData chart) //striker 정보 초기화(spawn될 때 얻어오는 정보보)
     {
