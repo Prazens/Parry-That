@@ -9,6 +9,7 @@ public class ScoreManager : MonoBehaviour
     public List<GameObject> strikerList_;
     public PlayerManager playerManager;
     public StrikerManager strikerManager;
+    public ParriedProjectileManager parriedProjectileManager;
     public ScoreUI scoreUI;
     public int combo = 0;
     public int score = 0;
@@ -51,6 +52,8 @@ public class ScoreManager : MonoBehaviour
         NoteData projectileNoteData;
         double timeDiff;
 
+        int tempJudge;
+
         playerManager.currentDirection = touchDirection;
 
         // Vector3 projectileLocation;
@@ -72,64 +75,59 @@ public class ScoreManager : MonoBehaviour
                 // 강공격인데 스와이프로 처리하지 못한 경우
                 if (projectileNoteData.type == 1 && type == 0)
                 {
-                    JudgeManage(direction, 0, 0);
+                    tempJudge = 0;
                 }
 
                 // 기획서의 판정 표와 반대 순서임
                 else if (timeDiff > 0.12d)
                 {
-                    JudgeManage(direction, 0, type);
+                    tempJudge = 0;
                 }
                 else if (timeDiff > 0.09d)
                 {
-                    JudgeManage(direction, 1, type);
+                    tempJudge = 1;
                 }
                 else if (timeDiff > 0.05d)
                 {
-                    JudgeManage(direction, 2, type);
+                    tempJudge = 2;
                 }
                 else if (timeDiff >= -0.05d)
                 {
-                    JudgeManage(direction, 3, type);
+                    tempJudge = 3;
                 }
                 else if (timeDiff >= -0.09d)
                 {
-                    JudgeManage(direction, 4, type);
+                    tempJudge = 4;
                 }
                 else if (timeDiff >= -0.12d)
                 {
-                    JudgeManage(direction, 5, type);
+                    tempJudge = 5;
                 }
                 else  // 공노트? 공POOR?
                 {
                     return;
                 }
 
-                // Debug.Log("판정 수행됨");
-                Debug.Log($"{touchTimeSec} - {projectileNoteData.arriveTime * (60d / strikerController.bpm) - 2d} = {touchTimeSec - projectileNoteData.arriveTime * (60d / strikerController.bpm) - 2d}");
+                JudgeManage(direction, tempJudge, type, strikerController);
+
+                Debug.Log("판정 수행됨");
+                // Debug.Log($"{touchTimeSec} - {projectileNoteData.arriveTime * (60d / strikerController.bpm) - 2d} = {touchTimeSec - projectileNoteData.arriveTime * (60d / strikerController.bpm) - 2d}");
                 Destroy(strikerController.projectileQueue.Dequeue());
             }
         }
     }
 
     // 판정 결과를 이용해 결과에 맞는 행동 수행 : 스코어, SFX, ...
-    public void JudgeManage(Direction direction, int judgement, int type)
+    public void JudgeManage(Direction direction, int judgement, int type, StrikerController strikerController)
     {
         // index로 한번에 처리하는 것들
         judgeDetails[0][judgement] += 1;
         judgeDetails[(int)direction][judgement] += 1;
 
         // 특정 Striker 찾기
-        StrikerController targetStriker = null;
-        foreach (GameObject striker in strikerList_)
-        {
-            StrikerController strikerController = striker.GetComponent<StrikerController>();
-            if (strikerController != null && strikerController.location == direction)
-            {
-                targetStriker = strikerController;
-                break;
-            }
-        }
+        StrikerController targetStriker = strikerController;
+
+        GameObject targetProjectile = targetStriker.projectileQueue.Peek();
 
         // 따로 처리하는 것들
         switch (judgement)
@@ -152,34 +150,34 @@ public class ScoreManager : MonoBehaviour
                 }
 
                 break;
-            
+
             case 1:  // 늦은 GUARD
                 score += 300;
                 combo = 0;
                 Debug.Log("GUARD (LATE)");
                 break;
-            
+
             case 2:  // 늦은 BOUNCE
                 score += 9000;
                 combo += 1;
                 Debug.Log("BOUNCE! (LATE)");
                 targetStriker?.TakeDamage(1);
                 break;
-            
+
             case 3:  // 완벽한 PARFECT
                 score += 30000;
                 combo += 1;
                 Debug.Log("PARFECT!!");
                 targetStriker?.TakeDamage(1);
                 break;
-            
+
             case 4:  // 빠른 BOUNCE
                 score += 9000;
                 combo += 1;
                 Debug.Log("BOUNCE! (FAST)");
                 targetStriker?.TakeDamage(1);
                 break;
-            
+
             case 5:  // 빠른 GUARD
                 score += 300;
                 combo = 0;
@@ -190,8 +188,15 @@ public class ScoreManager : MonoBehaviour
         if (judgement != 0)
         {
             scoreUI.DisplayScore(score);
+            
+            if (judgement != 1 && judgement != 5)
+            {
+                parriedProjectileManager.CreateParriedProjectile(targetProjectile.transform.position, direction);
+            }
         }
 
         scoreUI.DisplayJudge(judgement, direction);
+
+        // Destroy(targetProjectile);
     }
 }

@@ -1834,6 +1834,7 @@ MonoBehaviour:
   scoreManager: {fileID: 0}
   transparentProjectilePrefab: {fileID: 370656999088524864, guid: d287ee2774090a34a9ab4568fd0603ce, type: 3}
   musicSource: {fileID: 583584121}
+  is_gameover: 0
 --- !u!4 &1448475906
 Transform:
   m_ObjectHideFlags: 0
@@ -1936,6 +1937,7 @@ GameObject:
   - component: {fileID: 1744429774}
   - component: {fileID: 1744429773}
   - component: {fileID: 1744429771}
+  - component: {fileID: 1744429775}
   m_Layer: 0
   m_Name: GameController
   m_TagString: GameController
@@ -1986,6 +1988,7 @@ MonoBehaviour:
   strikerList_: []
   playerManager: {fileID: 0}
   strikerManager: {fileID: 1860902388}
+  parriedProjectileManager: {fileID: 1744429775}
   scoreUI: {fileID: 698621756}
   combo: 0
   score: 0
@@ -2005,6 +2008,22 @@ MonoBehaviour:
   scoreManager: {fileID: 1744429773}
   playerManager: {fileID: 0}
   isTouchAvailable: 0
+--- !u!114 &1744429775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1744429770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cea726b7ed9acde48a1dbd7b39827245, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parriedProjectilePrefab: {fileID: 1305294611871443350, guid: a3c2494ecd8ebda4b88c5601a74de13c, type: 3}
+  strikerLocations:
+  - {fileID: 1172636501}
+  - {fileID: 1448434801}
 --- !u!1 &1860902387
 GameObject:
   m_ObjectHideFlags: 0
