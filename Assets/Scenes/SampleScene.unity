@@ -157,7 +157,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -87, y: 37.499985}
+  m_AnchoredPosition: {x: -106, y: 283}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &274308856
@@ -673,7 +673,6 @@ RectTransform:
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &698621756
-
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -789,9 +788,9 @@ MonoBehaviour:
   playerPrefab: {fileID: 81057595683241048, guid: 733ec4c417fd1fd4ab586fc37f0ec928, type: 3}
   guidebox1Prefab: {fileID: 3149530777327924349, guid: 09d6a69991e86e749b821e66d021ce5f, type: 3}
   guidebox2Prefab: {fileID: 6017190040333457750, guid: a2fef0f9cd027cc449b1acd741e7b9d8, type: 3}
-  clearPanelPrefab: {fileID: 2877070203629870375, guid: fe93a9c4b01229640af6942344c83aac, type: 3}
-  gameOverPanelPrefab: {fileID: 1725435030895975194, guid: 3d6074ed7aa58f54fb4d1eefc5f47b91, type: 3}
-  canvasTransform: {fileID: 789624694}
+  clearPanelPrefab: {fileID: 0}
+  gameOverPanelPrefab: {fileID: 0}
+  canvasTransform: {fileID: 0}
   gameController: {fileID: 1744429771}
   transparentProjectilePrefab: {fileID: 370656999088524864, guid: d287ee2774090a34a9ab4568fd0603ce, type: 3}
   musicSource: {fileID: 583584121}
@@ -875,6 +874,7 @@ MonoBehaviour:
   scoreUI: {fileID: 698621756}
   combo: 0
   score: 0
+  bpm: 0
 --- !u!114 &1744429774
 MonoBehaviour:
   m_ObjectHideFlags: 0

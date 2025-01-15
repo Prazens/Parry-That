@@ -66,7 +66,7 @@ public class ScoreManager : MonoBehaviour
                 projectileNoteData = strikerController.projectileQueue.Peek().GetComponent<projectile>().noteData;
 
                 // 시간에 따라 판정
-                timeDiff = touchTimeSec - projectileNoteData.arriveTime * (60d / strikerController.bpm) - 1d;
+                timeDiff = touchTimeSec - projectileNoteData.arriveTime * (60d / strikerController.bpm) - 2d;
                 
                 // 강공격인데 스와이프로 처리하지 못한 경우
                 if (projectileNoteData.type == 1 && type == 0)
@@ -105,7 +105,7 @@ public class ScoreManager : MonoBehaviour
                 }
 
                 // Debug.Log("판정 수행됨");
-                Debug.Log($"{touchTimeSec} - {projectileNoteData.arriveTime * (60d / strikerController.bpm) - 1d} = {touchTimeSec - projectileNoteData.arriveTime * (60d / strikerController.bpm) - 1d}");
+                Debug.Log($"{touchTimeSec} - {projectileNoteData.arriveTime * (60d / strikerController.bpm) - 2d} = {touchTimeSec - projectileNoteData.arriveTime * (60d / strikerController.bpm) - 2d}");
                 Destroy(strikerController.projectileQueue.Dequeue());
             }
         }
