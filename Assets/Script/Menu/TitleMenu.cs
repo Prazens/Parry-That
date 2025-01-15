@@ -150,9 +150,14 @@ public class TitleMenu : MonoBehaviour
 
     private IEnumerator SwordUp()
     {
-        Vector2 startPos = Sword.GetComponent<RectTransform>().anchoredPosition;
-        Vector2 endPosUp = new Vector2(startPos.x, startPos.y + Screen.height);
-        Vector2 endPosDown = new Vector2(startPos.x, startPos.y + Screen.height);
+        RectTransform swordRect = Sword.GetComponent<RectTransform>();
+        RectTransform canvasRect = Sword.GetComponentInParent<Canvas>().GetComponent<RectTransform>();
+
+        Vector2 startPos = swordRect.anchoredPosition;
+        float relativeHeight = canvasRect.rect.height ;
+
+        Vector2 endPosUp = new Vector2(startPos.x, startPos.y + relativeHeight);
+        Vector2 endPosDown = new Vector2(startPos.x, startPos.y + canvasRect.rect.height);
 
         float durationUp = 2f;
         float durationDown = 1f;
@@ -167,7 +172,7 @@ public class TitleMenu : MonoBehaviour
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-        Sword.GetComponent<RectTransform>().anchoredPosition = endPosUp;
+        swordRect.anchoredPosition = endPosUp;
 
         elapsedTime = 0;
         while (elapsedTime < durationDown)
@@ -179,7 +184,7 @@ public class TitleMenu : MonoBehaviour
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-        Sword.GetComponent<RectTransform>().anchoredPosition = endPosDown;
+        swordRect.anchoredPosition = endPosDown;
         SwordUpEnd = true;
         Debug.Log("SwordUpEnd");
     }
