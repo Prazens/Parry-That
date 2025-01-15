@@ -253,6 +253,7 @@ MonoBehaviour:
   slideDuration: 3
   MouseControl: 1
   GameController: {fileID: 0}
+  fadeDuration: 1
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -379,8 +380,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 650}
-  m_SizeDelta: {x: 717, y: 135}
+  m_AnchoredPosition: {x: 0, y: 600}
+  m_SizeDelta: {x: 815.5, y: 533}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &541213488
 MonoBehaviour:
@@ -402,7 +403,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 72ae6a7e01dfe534293529c111ba8b19, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c732ff08f3b95a94b90a3033803775c9, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -775,8 +776,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: 0, y: 100}
+  m_SizeDelta: {x: 600, y: 600}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &849466699
 MonoBehaviour:
@@ -798,7 +799,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: -1616678847, guid: fb0eea5c517fda246adc51ce3acc85ee, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1337,7 +1338,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -700}
+  m_AnchoredPosition: {x: 0, y: -600}
   m_SizeDelta: {x: 123, y: 488}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1873509841

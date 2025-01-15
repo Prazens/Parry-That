@@ -18,6 +18,7 @@ public class TitleMenu : MonoBehaviour
     private Vector2 StageMenuStartPos;
 
     private Image Sword;
+    private Image Title;
 
     private bool GoStageMenu = false;
     private bool SwordUpEnd = false;
@@ -29,6 +30,7 @@ public class TitleMenu : MonoBehaviour
         menuPanel = GameObject.Find("Title").GetComponent<RectTransform>();
         nextPanel = GameObject.Find("StageMenu").GetComponent<RectTransform>();
         Sword = GameObject.Find("Img_Sword").GetComponent<Image>();
+        Title = GameObject.Find("Img_Title").GetComponent<Image>();
 
         GameController = GameObject.Find("GameController");
 
@@ -55,7 +57,7 @@ public class TitleMenu : MonoBehaviour
             if (MouseControl)   // 마우스 조작
             {
                 MouseMove();
-            }
+            } 
             else    // 터치 조작
             {
                 TouchMove();
@@ -82,6 +84,7 @@ public class TitleMenu : MonoBehaviour
                 if (!GoStageMenu)
                 {
                     OnSwipeUp();
+                    LogoFadeOut();
                     GoStageMenu = true;
                 }
             }
@@ -105,7 +108,6 @@ public class TitleMenu : MonoBehaviour
 
                 if (swipeDistance < -swipeThreshold)
                 {
-                    OnSwipeUp();
                     if (GoStageMenu & SwordUpEnd)
                     {
                         GameController.GetComponent<GameController>().StartStage();
@@ -113,6 +115,7 @@ public class TitleMenu : MonoBehaviour
                     if (!GoStageMenu)
                     {
                         OnSwipeUp();
+                        LogoFadeOut();
                         GoStageMenu = true;
                     }
                 }
@@ -179,6 +182,49 @@ public class TitleMenu : MonoBehaviour
         Sword.GetComponent<RectTransform>().anchoredPosition = endPosDown;
         SwordUpEnd = true;
         Debug.Log("SwordUpEnd");
+    }
+
+
+
+    [SerializeField] private float fadeDuration;
+
+    private bool isFading = false;
+
+    public void LogoFadeOut()
+    {
+        if (isFading) return;
+        StartCoroutine(FadeEffect());
+        Debug.Log("함수 호출 완료");
+    }
+
+    private IEnumerator FadeEffect()
+    {
+        if (Title == null) yield break;
+
+        isFading = true;
+
+        float elapsedTime = 0f;
+        Debug.Log("페이드아웃 시작");
+        while (elapsedTime < fadeDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            float alpha = Mathf.Lerp(1f, 0f, elapsedTime / fadeDuration);
+            SetAlpha(alpha);
+            yield return null;
+        }
+        SetAlpha(0f);
+
+        isFading = false;
+    }
+
+    private void SetAlpha(float alpha)
+    {
+        if (Title != null)
+        {
+            Color color = Title.color;
+            color.a = alpha;
+            Title.color = color;
+        }
     }
 
     // SwordUpEnd = true 되면 칼이 위아래로 약간씩 둥둥 떠다니고 있는 IDLE 상태로
