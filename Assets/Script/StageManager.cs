@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class StageManager : MonoBehaviour
@@ -15,10 +14,6 @@ public class StageManager : MonoBehaviour
     private GameObject playerInstance; // 생성된 Player 인스턴스
     private GameObject guidebox1Instance; // 생성된 Guidebox1 인스턴스
     private GameObject guidebox2Instance; // 생성된 Guidebox2 인스턴스
-    [SerializeField] private GameObject clearPanelPrefab; // Clear 창 Prefab
-    private GameObject clearPanelInstance;
-
-    [SerializeField] private Transform canvasTransform; // Canvas의 Transform
     [SerializeField] private GameController gameController; // GameController 참조
     [SerializeField] private GameObject transparentProjectilePrefab; // 투명 투사체 프리팹
     [SerializeField] private AudioSource musicSource; // 음악 재생을 위한 AudioSource
@@ -35,21 +30,11 @@ public class StageManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    private void Start()
-    {
-        if (clearPanelPrefab != null && canvasTransform != null)
-        {
-            // Clear 창 인스턴스 생성
-            clearPanelInstance = Instantiate(clearPanelPrefab, canvasTransform);
-            clearPanelInstance.SetActive(false);
-        }
-    }
     public void StartStage()
     {
         Debug.Log("Stage Started!");
         isActive = true; // 스테이지 활성화
         currentTime = 0f; // 시간 초기화
-        musicPlayed = false;
         SpawnPlayer();
         SpawnGuideboxes();
         strikerManager.SpawnStriker(0,0,10,107); // 위쪽에 체력10, bpm120인 striker 소환
@@ -156,11 +141,10 @@ public class StageManager : MonoBehaviour
         {
             EndStage();
         }
-        if (currentTime >= 2f && !musicPlayed)
+        if (currentTime >= 1f && !musicPlayed)
         {
             SpawnTransparentProjectile();
             musicPlayed = true;
-            Debug.Log("Spawn musicProjectile!");
         }
     }
     private void EndStage()
@@ -169,34 +153,10 @@ public class StageManager : MonoBehaviour
         // 스테이지 종료 로직 추가
         currentTime = stageDuration; // 시간 고정
         isActive = false;
-        // Clear 창 활성화 및 점수 업데이트
-        if (clearPanelInstance != null)
-        {
-            clearPanelInstance.SetActive(true); // Clear 창 활성화
-        }
-        UpdateClearPanelScores();
-        UpdateStarVisibility();
     }
-    public void RestartStage()
+    public void ResetStage()
     {
-        Debug.Log("Restarting Stage...");
-        
-        // 기존 Striker 삭제
-        strikerManager.ClearStrikers();
-        // 음악 정지
-        if (musicSource != null && musicSource.isPlaying)
-        {
-            musicSource.Stop();
-        }
-
-        // Clear 창 비활성화
-        if (clearPanelInstance != null)
-        {
-            clearPanelInstance.SetActive(false);
-        }
-
-        // 새로운 스테이지 시작
-        StartStage();
+        currentTime = 0f; // 스테이지 시간 초기화
     }
     private void SpawnTransparentProjectile()
     {
@@ -214,38 +174,6 @@ public class StageManager : MonoBehaviour
         {
             projectileScript.target = playerInstance.transform; // 플레이어를 타겟으로 설정
             projectileScript.musicSource = musicSource; // 음악 소스 전달
-        }
-    }
-    private void UpdateClearPanelScores()
-    {
-        if (clearPanelInstance != null)
-        {
-            // 텍스트 컴포넌트 가져오기
-            TextMeshProUGUI parfectText = clearPanelInstance.transform.Find("ParfectText").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI bounceText = clearPanelInstance.transform.Find("BounceText").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI guardText = clearPanelInstance.transform.Find("GuardText").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI hitText = clearPanelInstance.transform.Find("HitText").GetComponent<TextMeshProUGUI>();
-
-            // 점수 업데이트 (임시로 0으로 설정)
-            if (parfectText != null) parfectText.text = "0100";
-            if (bounceText != null) bounceText.text = "0010";
-            if (guardText != null) guardText.text = "0001";
-            if (hitText != null) hitText.text = "0000";
-        }
-    }
-    private void UpdateStarVisibility()
-    {
-        if (clearPanelInstance != null)
-        {
-            // 노란 별 오브젝트 찾기
-            GameObject star1 = clearPanelInstance.transform.Find("Star1").gameObject;
-            GameObject star2 = clearPanelInstance.transform.Find("Star2").gameObject;
-            GameObject star3 = clearPanelInstance.transform.Find("Star3").gameObject;
-
-            // 별 활성화/비활성화
-            if (star1 != null) star1.SetActive(true); // 1개 조건
-            if (star2 != null) star2.SetActive(true); // 2개 조건 아직 생성 안됨
-            if (star3 != null) star3.SetActive(false); // 3개 조건 아직 설정 안됨
         }
     }
 }
