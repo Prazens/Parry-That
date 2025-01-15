@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StageMenu : MonoBehaviour
 {
-    // Start is called before the first frame update
+    Image imgStage1;
     void Start()
     {
         RectTransform imgHistoryRect = GameObject.Find("Img_History").GetComponent<RectTransform>();
+        imgStage1 = GameObject.Find("Img_Stage1").GetComponent<Image>(); ;
 
         imgHistoryRect.anchorMin = new Vector2(0, 0.75f);
         imgHistoryRect.anchorMax = new Vector2(1, 1);
@@ -21,6 +23,9 @@ public class StageMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (TitleMenu.SwordUpEnd)
+        {
+            imgStage1.rectTransform.Rotate(0, 0, 2f * Time.deltaTime);
+        }
     }
 }

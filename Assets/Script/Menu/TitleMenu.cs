@@ -21,7 +21,7 @@ public class TitleMenu : MonoBehaviour
     private Image Title;
 
     private bool GoStageMenu = false;
-    private bool SwordUpEnd = false;
+    public static bool SwordUpEnd = false;
     public bool MouseControl = false;
 
     public GameObject GameController; 
