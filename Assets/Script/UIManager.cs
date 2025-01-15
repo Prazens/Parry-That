@@ -31,7 +31,6 @@ public class UIManager : MonoBehaviour
         rt.anchorMax = Vector2.one;
         rt.offsetMin = Vector2.zero;
         rt.offsetMax = Vector2.zero;
-        DamageOverlayImage.gameObject.SetActive(true);
 
         if (DamageOverlayImage == null)
         {

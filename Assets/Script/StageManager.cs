@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class StageManager : MonoBehaviour
@@ -39,6 +40,12 @@ public class StageManager : MonoBehaviour
         SpawnGuideboxes();
         strikerManager.SpawnStriker(0,0,10,107); // 위쪽에 체력10, bpm120인 striker 소환
         strikerManager.SpawnStriker(1,1,15,107); // 아래쪽에 체력 15, bpm120인 striker 소환환
+
+        GameObject Menu = GameObject.Find("Menu");
+        Menu.SetActive(false);
+        GameObject InGameScreen = Resources.FindObjectsOfTypeAll<GameObject>().FirstOrDefault(obj => obj.name == "InGameScreen");
+        // Debug.Log(InGameScreen != null ? "InGameScreen found" : "InGameScreen not found");
+        InGameScreen.SetActive(true);
     }
     public void SpawnPlayer()
     {
