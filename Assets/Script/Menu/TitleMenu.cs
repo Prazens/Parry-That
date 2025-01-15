@@ -131,9 +131,10 @@ public class TitleMenu : MonoBehaviour
 
     private IEnumerator SlidePanels(Vector2 FirstPanel, Vector2 SecondPanel)
     {
+        RectTransform canvasRect = Sword.GetComponentInParent<Canvas>().GetComponent<RectTransform>();
         float elapsedTime = 0;
-        Vector2 FirstPanelEnd = new Vector2(FirstPanel.x, FirstPanel.y - 2160);
-        Vector2 SecondPanelEnd = new Vector2(SecondPanel.x, SecondPanel.y - 2160);
+        Vector2 FirstPanelEnd = new Vector2(FirstPanel.x, FirstPanel.y - canvasRect.rect.height);
+        Vector2 SecondPanelEnd = new Vector2(SecondPanel.x, SecondPanel.y - canvasRect.rect.height);
 
         while (elapsedTime < slideDuration)
         {
