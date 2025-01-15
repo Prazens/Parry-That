@@ -12,8 +12,10 @@ public class StrikerController : MonoBehaviour
     [SerializeField] public int bpm; // BPM
     public Direction location; // 위치 방향
     private int currentNoteIndex = 0; // 현재 채보 인덱스
-
+    [SerializeField] private Animator animator;
     // 임시로 발사체 저장해놓을 공간
+    private float lastProjectileTime = 0f; // 마지막 투사체 발사 시간
+
     [SerializeField] public Queue<GameObject> projectileQueue = new Queue<GameObject>{};
 
     private void Update() // 현재 striker 자체에서 투사체 일정 간격으로 발사
@@ -22,13 +24,19 @@ public class StrikerController : MonoBehaviour
         if (currentNoteIndex >= chartData.notes.Count) return;
 
         // 현재 시간 가져오기
-        double currentTime = StageManager.Instance.currentTime;
+        float currentTime = StageManager.Instance.currentTime;
 
         // 채보 시간에 맞춰 발사
         if (currentTime >= (chartData.notes[currentNoteIndex].time * (60d / bpm)) + 2f)
         {
             FireProjectile(chartData.notes[currentNoteIndex].type);
             currentNoteIndex++;
+            lastProjectileTime = currentTime;
+        }
+        // 마지막 투사체 발사 이후 2초가 지나면 공격 상태 해제
+        if (currentTime - lastProjectileTime > 2.0f)
+        {
+            animator.SetBool("isAttacking", false);
         }
     }
 
@@ -37,6 +45,10 @@ public class StrikerController : MonoBehaviour
     {
         if (index < 0 || index >= projectilePrefabs.Count) return;
         GameObject selectedProjectile = projectilePrefabs[index];
+        if (!animator.GetBool("isAttacking"))
+        {
+            animator.SetBool("isAttacking", true);
+        }
 
         // 투사체 생성
         GameObject projectile = Instantiate(selectedProjectile, transform.position, Quaternion.identity);
@@ -81,6 +93,17 @@ public class StrikerController : MonoBehaviour
         {
             hp -= damage;
             Debug.Log($"{gameObject.name} took {damage} damage! Current HP: {hp}");
+            StartCoroutine(PlayDamageAnimation());
+            if(hp == 0)
+            {
+                animator.SetBool("isClear", true);
+            }
         }
+    }
+    private IEnumerator PlayDamageAnimation()
+    {
+        animator.SetBool("isDamaged", true);
+        yield return new WaitForSeconds(0.3f); // 피해 애니메이션 시간
+        animator.SetBool("isDamaged", false);
     }
 }
