@@ -54,7 +54,7 @@ public class PlayerManager : MonoBehaviour
         bladeAnimator.SetTrigger("bladePlay");
         bladeAnimator.SetInteger("bladeDirection", (int)direction);
     }
-    private void GameOver()
+    public void GameOver()
     {
         if (stageManager != null)
         {

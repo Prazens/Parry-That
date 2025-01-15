@@ -12,6 +12,7 @@ public class ScoreManager : MonoBehaviour
     public ScoreUI scoreUI;
     public int combo = 0;
     public int score = 0;
+
     public int bpm;
     public int[][] judgeDetails = new int[4][];  // 방향별 판정 정보, index 0은 전체 판정 합
     // { 늦은 MISS, 늦은 GUARD, 늦은 BOUNCE, 완벽한 PARFECT, 빠른 BOUNCE, 빠른 GUARD } 순서
@@ -129,12 +130,12 @@ public class ScoreManager : MonoBehaviour
                 // 피격당한 후 죽었을 때
                 if (--playerManager.hp == 0)
                 {
-
+                    playerManager.GameOver();
                 }
                 // 피격당한 후 죽지 않았을 때
                 else
                 {
-
+                    Debug.Log(playerManager.hp);
                 }
 
                 break;
