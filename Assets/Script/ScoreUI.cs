@@ -9,19 +9,22 @@ using UnityEngine.UI;
 public class ScoreUI : MonoBehaviour
 {
     public GameObject scoreDisplay;
+    public GameObject hpDisplay;
     public GameObject judgeDisplayPrefab;
     public Sprite[] judgeImages = new Sprite[4];
     public ScoreManager scoreManager;
 
     private readonly string[] judgeStrings = { "HIT", "GUARD", "BOUNCE", "PARFECT", "BOUNCE", "GUARD" };
 
-    private Vector3 initialPosition;
+    private Vector3[] initialPosition = new Vector3[2];
 
     public void Initialize_UI()
     {
         scoreDisplay.GetComponent<TextMeshProUGUI>().text = "0";
-        initialPosition = scoreDisplay.transform.position;
+        initialPosition[0] = scoreDisplay.transform.position;
+        initialPosition[1] = hpDisplay.transform.position;
         DisplayScore(0);
+        DisplayHP(100);
     }
 
     public void DisplayScore(int score)
@@ -29,8 +32,17 @@ public class ScoreUI : MonoBehaviour
         scoreDisplay.GetComponent<TextMeshProUGUI>().text = Convert.ToString(score);
 
         StopCoroutine("TextBounceUp");
-        scoreDisplay.transform.position = initialPosition;
-        StartCoroutine(TextBounceUp());
+        scoreDisplay.transform.position = initialPosition[0];
+        StartCoroutine(TextBounceUp(scoreDisplay));
+    }
+
+    public void DisplayHP(int hpValue)
+    {
+        hpDisplay.GetComponent<TextMeshProUGUI>().text = Convert.ToString(hpValue) + "/" + "100";
+
+        StopCoroutine("TextBounceUp");
+        hpDisplay.transform.position = initialPosition[1];
+        StartCoroutine(TextBounceUp(hpDisplay));
     }
 
     public void DisplayJudge(int judge, Direction direction)
@@ -65,15 +77,15 @@ public class ScoreUI : MonoBehaviour
         StartCoroutine(JudgeBounceUp(judgeDisplay));
     }
 
-    IEnumerator TextBounceUp()
+    IEnumerator TextBounceUp(GameObject gameObject)
     {
         for (int i = 3; i >= 1; i--)
         {
-            scoreDisplay.transform.position += Vector3.up * 19 / 3f;
+            gameObject.transform.position += Vector3.up * 19 / 3f;
         }
         for (int i = 9; i >= 1; i--)
         {
-            scoreDisplay.transform.position += Vector3.down * i * i / 15;
+            gameObject.transform.position += Vector3.down * i * i / 15;
             yield return null;
         }
         yield break;

@@ -24,11 +24,11 @@ public class ParriedProjectileManager : MonoBehaviour
         switch (targetDirection)
         {
             case Direction.Up:
-                tempProjectile.transform.rotation = Quaternion.Euler(0, 0, Random.Range(0, 2) == 0 ? 45 : -45);
+                tempProjectile.transform.rotation = Quaternion.Euler(0, 0, Random.Range(0, 2) == 0 ? 60 : -60);
                 break;
             
             case Direction.Down:
-                tempProjectile.transform.rotation = Quaternion.Euler(0, 0, Random.Range(0, 2) == 0 ? 135 : -135);
+                tempProjectile.transform.rotation = Quaternion.Euler(0, 0, Random.Range(0, 2) == 0 ? 120 : -120);
                 break;
         }
     }

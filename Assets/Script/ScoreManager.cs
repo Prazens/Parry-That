@@ -10,6 +10,7 @@ public class ScoreManager : MonoBehaviour
     public PlayerManager playerManager;
     public StrikerManager strikerManager;
     public ParriedProjectileManager parriedProjectileManager;
+    // public SoundManager soundManager;
     public ScoreUI scoreUI;
     public int combo = 0;
     public int score = 0;
@@ -196,6 +197,10 @@ public class ScoreManager : MonoBehaviour
             {
                 parriedProjectileManager.CreateParriedProjectile(targetProjectile.transform.position, direction);
             }
+        }
+        else
+        {
+            scoreUI.DisplayHP(playerManager.hp);
         }
 
         scoreUI.DisplayJudge(judgement, direction);
