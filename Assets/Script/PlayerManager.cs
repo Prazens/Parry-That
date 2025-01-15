@@ -10,6 +10,7 @@ public class PlayerManager : MonoBehaviour
     public Direction currentDirection = Direction.Up;  // 쉴드 방향
     public GameObject shield;
     public bool isShieldMoving = false;
+    public StageManager stageManager; // StageManager 참조
 
     private Vector3[] directionMove = { Vector3.zero, Vector3.up, Vector3.down, Vector3.left, Vector3.right };
 
@@ -76,5 +77,12 @@ public class PlayerManager : MonoBehaviour
         shield.transform.position -= directionMove[(int)currentDirection] / 10;
         isShieldMoving = false;
         yield break;
+    }
+    private void GameOver()
+    {
+        if (stageManager != null)
+        {
+            stageManager.GameOver(); // StageManager에 GameOver 호출
+        }
     }
 }

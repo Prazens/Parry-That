@@ -17,6 +17,8 @@ public class StageManager : MonoBehaviour
     private GameObject guidebox2Instance; // 생성된 Guidebox2 인스턴스
     [SerializeField] private GameObject clearPanelPrefab; // Clear 창 Prefab
     private GameObject clearPanelInstance;
+    [SerializeField] private GameObject gameOverPanelPrefab; // GameOver 창 Prefab
+    private GameObject gameOverPanelInstance;
 
     [SerializeField] private Transform canvasTransform; // Canvas의 Transform
     [SerializeField] private GameController gameController; // GameController 참조
@@ -42,6 +44,11 @@ public class StageManager : MonoBehaviour
             // Clear 창 인스턴스 생성
             clearPanelInstance = Instantiate(clearPanelPrefab, canvasTransform);
             clearPanelInstance.SetActive(false);
+        }
+        if (gameOverPanelPrefab != null && canvasTransform != null)
+        {
+            gameOverPanelInstance = Instantiate(gameOverPanelPrefab, canvasTransform);
+            gameOverPanelInstance.SetActive(false); // 초기 비활성화
         }
     }
     public void StartStage()
@@ -76,7 +83,8 @@ public class StageManager : MonoBehaviour
         PlayerManager playerManager = playerInstance.GetComponent<PlayerManager>();
         if (playerManager != null)
         {
-
+            // StageManager를 PlayerManager에 설정
+            playerManager.stageManager = this;
             // GameController의 TouchManager와 ScoreManager에 PlayerManager 설정
             if (gameController != null)
             {
@@ -163,6 +171,28 @@ public class StageManager : MonoBehaviour
             Debug.Log("Spawn musicProjectile!");
         }
     }
+    public void GameOver()
+    {
+        Debug.Log("Game Over!");
+        isActive = false;
+
+        // 음악 정지
+        if (musicSource != null && musicSource.isPlaying)
+        {
+            musicSource.Stop();
+        }
+
+        // Striker와 Projectile 제거
+        strikerManager.ClearStrikers();
+
+        // GameOver 창 활성화
+        if (gameOverPanelInstance != null)
+        {
+            gameOverPanelInstance.SetActive(true);
+            UpdateGameOverPanel(); // 점수 및 판정 업데이트
+            UpdateStarVisibility(false);
+        }
+    }
     private void EndStage()
     {
         Debug.Log("Stage Complete!");
@@ -175,7 +205,7 @@ public class StageManager : MonoBehaviour
             clearPanelInstance.SetActive(true); // Clear 창 활성화
         }
         UpdateClearPanelScores();
-        UpdateStarVisibility();
+        UpdateStarVisibility(true);
     }
     public void RestartStage()
     {
@@ -193,6 +223,11 @@ public class StageManager : MonoBehaviour
         if (clearPanelInstance != null)
         {
             clearPanelInstance.SetActive(false);
+        }
+        // Gameover 창 비활성화
+        if (gameOverPanelInstance != null)
+        {
+            gameOverPanelInstance.SetActive(false);
         }
 
         // 새로운 스테이지 시작
@@ -233,7 +268,25 @@ public class StageManager : MonoBehaviour
             if (hitText != null) hitText.text = "0000";
         }
     }
-    private void UpdateStarVisibility()
+    private void UpdateGameOverPanel()
+    {
+        // 점수 및 판정 업데이트 로직 (Clear 창과 동일하게 구현 가능)
+        if (gameOverPanelInstance != null)
+        {
+            // 텍스트 컴포넌트 가져오기
+            TextMeshProUGUI parfectText = gameOverPanelInstance.transform.Find("ParfectText").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI bounceText = gameOverPanelInstance.transform.Find("BounceText").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI guardText = gameOverPanelInstance.transform.Find("GuardText").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI hitText = gameOverPanelInstance.transform.Find("HitText").GetComponent<TextMeshProUGUI>();
+
+            // 점수 업데이트 (임시로 0으로 설정)
+            if (parfectText != null) parfectText.text = "0100";
+            if (bounceText != null) bounceText.text = "0010";
+            if (guardText != null) guardText.text = "0001";
+            if (hitText != null) hitText.text = "0000";
+        }
+    }
+    private void UpdateStarVisibility(bool is_clear)
     {
         if (clearPanelInstance != null)
         {
@@ -243,7 +296,7 @@ public class StageManager : MonoBehaviour
             GameObject star3 = clearPanelInstance.transform.Find("Star3").gameObject;
 
             // 별 활성화/비활성화
-            if (star1 != null) star1.SetActive(true); // 1개 조건
+            if (star1 != null) star1.SetActive(is_clear); // 1개 조건
             if (star2 != null) star2.SetActive(true); // 2개 조건 아직 생성 안됨
             if (star3 != null) star3.SetActive(false); // 3개 조건 아직 설정 안됨
         }
