@@ -51,7 +51,7 @@ public class TouchManager : MonoBehaviour
             playerManager.Operate((Direction)judgeDirection, type);
             // playerManager.ShieldMove((Direction)judgeDirection);
 
-            scoreManager.Judge((Direction)judgeDirection, judgeTime, 0);
+            scoreManager.Judge((Direction)judgeDirection, judgeTime, type);
 
             judgeDirection = null;
         }
@@ -70,14 +70,17 @@ public class TouchManager : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.W))
         {
+            playerManager.Operate(Direction.Up, 1);
             scoreManager.Judge(Direction.Up, StageManager.Instance.currentTime, 1);
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
+            playerManager.Operate(Direction.Down, 1);
             scoreManager.Judge(Direction.Down, StageManager.Instance.currentTime, 1);
         }
         else if (Input.GetKeyDown(KeyCode.Space))  // 방향 스와이프 없이 탭만 할때의 움직임
         {
+            playerManager.Operate(playerManager.currentDirection, 0);
             scoreManager.Judge(playerManager.currentDirection, StageManager.Instance.currentTime, 0);
         }
     }

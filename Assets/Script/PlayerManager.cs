@@ -45,7 +45,7 @@ public class PlayerManager : MonoBehaviour
 
     public void Operate(Direction direction, int type)
     {
-        Debug.Log($"{(int)direction} {triggers[(int)direction - 1]} {type}");
+        // Debug.Log($"{(int)direction} {triggers[(int)direction - 1]} {type}");
 
         playerAnimator.SetTrigger(triggers[(int)direction - 1]);
 

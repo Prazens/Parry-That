@@ -10,7 +10,7 @@ public class StrikerController : MonoBehaviour
 
     [SerializeField] private ChartData chartData; // 채보 데이터
     [SerializeField] private int hp; // 스트라이커 HP
-    [SerializeField] private int bpm; // BPM
+    [SerializeField] public int bpm; // BPM
     public Direction location; // 위치 방향
     private int currentNoteIndex = 0; // 현재 채보 인덱스
 

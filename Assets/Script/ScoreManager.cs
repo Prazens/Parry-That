@@ -12,6 +12,7 @@ public class ScoreManager : MonoBehaviour
     public ScoreUI scoreUI;
     public int combo = 0;
     public int score = 0;
+    public int bpm;
     public int[][] judgeDetails = new int[4][];  // 방향별 판정 정보, index 0은 전체 판정 합
     // { 늦은 MISS, 늦은 GUARD, 늦은 BOUNCE, 완벽한 PARFECT, 빠른 BOUNCE, 빠른 GUARD } 순서
     // 나중에 방향별 판정 정보가 아니라 스트라이커별 판정 정보로 바꾸어야 함
@@ -41,13 +42,13 @@ public class ScoreManager : MonoBehaviour
     }
 
     // 판정
-    public void Judge(Direction direction, float touchTime, int type)
+    public void Judge(Direction direction, float touchTimeSec, int type)
     {
         StrikerController strikerController;
         Direction touchDirection = (direction == Direction.None) ? playerManager.currentDirection : direction;
         
         NoteData projectileNoteData;
-        float timeDiff;
+        double timeDiff;
 
         playerManager.currentDirection = touchDirection;
 
@@ -65,7 +66,7 @@ public class ScoreManager : MonoBehaviour
                 projectileNoteData = strikerController.projectileQueue.Peek().GetComponent<projectile>().noteData;
 
                 // 시간에 따라 판정
-                timeDiff = touchTime - projectileNoteData.arriveTime;
+                timeDiff = touchTimeSec - projectileNoteData.arriveTime * (60d / strikerController.bpm) - 1d;
                 
                 // 강공격인데 스와이프로 처리하지 못한 경우
                 if (projectileNoteData.type == 1 && type == 0)
@@ -78,19 +79,19 @@ public class ScoreManager : MonoBehaviour
                 {
                     JudgeManage(direction, 0, type);
                 }
-                else if (timeDiff > 0.9d)
+                else if (timeDiff > 0.09d)
                 {
                     JudgeManage(direction, 1, type);
                 }
-                else if (timeDiff > 0.5d)
+                else if (timeDiff > 0.05d)
                 {
                     JudgeManage(direction, 2, type);
                 }
-                else if (timeDiff >= -0.5d)
+                else if (timeDiff >= -0.05d)
                 {
                     JudgeManage(direction, 3, type);
                 }
-                else if (timeDiff >= -0.9d)
+                else if (timeDiff >= -0.09d)
                 {
                     JudgeManage(direction, 4, type);
                 }
@@ -103,6 +104,8 @@ public class ScoreManager : MonoBehaviour
                     return;
                 }
 
+                // Debug.Log("판정 수행됨");
+                Debug.Log($"{touchTimeSec} - {projectileNoteData.arriveTime * (60d / strikerController.bpm) - 1d} = {touchTimeSec - projectileNoteData.arriveTime * (60d / strikerController.bpm) - 1d}");
                 Destroy(strikerController.projectileQueue.Dequeue());
             }
         }
