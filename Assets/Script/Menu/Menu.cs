@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using static Unity.VisualScripting.Metadata;
 
 public class Menu : MonoBehaviour
 {
@@ -14,7 +13,7 @@ public class Menu : MonoBehaviour
 
     void Start()
     {
-        // Å¸ÀÌÆ² ¹è°æ°ú ½ºÅ×ÀÌÁö ¸Þ´º ¹è°æÀÌ À§¾Æ·¡·Î ¿¬¼ÓµÇ°Ô ¹èÄ¡
+        // Å¸ï¿½ï¿½Æ² ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Æ·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ÓµÇ°ï¿½ ï¿½ï¿½Ä¡
         Title = GameObject.Find("Title");
         Title.GetComponent<RectTransform>().anchorMin = Vector2.zero;
         Title.GetComponent<RectTransform>().anchorMax = Vector2.one;
@@ -38,7 +37,7 @@ public class Menu : MonoBehaviour
         }
         else
         {
-            Debug.Log("background ¸ø Ã£À½");
+            Debug.Log("background ï¿½ï¿½ Ã£ï¿½ï¿½");
         }
         if (background2Image != null)
         {
@@ -46,7 +45,7 @@ public class Menu : MonoBehaviour
         }
         else
         {
-            Debug.Log("background2 ¸ø Ã£À½");
+            Debug.Log("background2 ï¿½ï¿½ Ã£ï¿½ï¿½");
         }
     }
 
