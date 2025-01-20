@@ -9,19 +9,22 @@ using UnityEngine.UI;
 public class ScoreUI : MonoBehaviour
 {
     public GameObject scoreDisplay;
+    public GameObject hpDisplay;
     public GameObject judgeDisplayPrefab;
     public Sprite[] judgeImages = new Sprite[4];
     public ScoreManager scoreManager;
 
     private readonly string[] judgeStrings = { "HIT", "GUARD", "BOUNCE", "PARFECT", "BOUNCE", "GUARD" };
 
-    private Vector3 initialPosition;
+    private Vector3[] initialPosition = new Vector3[2];
 
     public void Initialize_UI()
     {
         scoreDisplay.GetComponent<TextMeshProUGUI>().text = "0";
-        initialPosition = scoreDisplay.transform.position;
+        initialPosition[0] = scoreDisplay.transform.position;
+        initialPosition[1] = hpDisplay.transform.position;
         DisplayScore(0);
+        DisplayHP(10);
     }
 
     public void DisplayScore(int score)
@@ -29,8 +32,17 @@ public class ScoreUI : MonoBehaviour
         scoreDisplay.GetComponent<TextMeshProUGUI>().text = Convert.ToString(score);
 
         StopCoroutine("TextBounceUp");
-        scoreDisplay.transform.position = initialPosition;
-        StartCoroutine(TextBounceUp());
+        scoreDisplay.transform.position = initialPosition[0];
+        StartCoroutine(TextBounceUp(scoreDisplay));
+    }
+
+    public void DisplayHP(int hpValue)
+    {
+        hpDisplay.GetComponent<TextMeshProUGUI>().text = Convert.ToString(hpValue) + "/" + "10";
+
+        StopCoroutine("TextBounceUp");
+        hpDisplay.transform.position = initialPosition[1];
+        StartCoroutine(TextBounceUp(hpDisplay));
     }
 
     public void DisplayJudge(int judge, Direction direction)
@@ -41,11 +53,11 @@ public class ScoreUI : MonoBehaviour
         switch (direction)
         {
             case Direction.Up:
-                generatePosition = Vector3.up * 100;
+                generatePosition = Vector3.up * Screen.height / 8;
                 break;
 
             case Direction.Down:
-                generatePosition = Vector3.down * 100;
+                generatePosition = Vector3.down * Screen.height / 8;
                 break;
 
             case Direction.Left:
@@ -59,21 +71,21 @@ public class ScoreUI : MonoBehaviour
 
         judgeDisplay = Instantiate(judgeDisplayPrefab);
         judgeDisplay.transform.SetParent(transform);
-
-        judgeDisplay.transform.position = new Vector3(240, 400) + generatePosition;
+        judgeDisplay.transform.localScale = new Vector3(.2f, .2f, 0);
+        judgeDisplay.transform.position = new Vector3(Screen.width / 2, Screen.height / 2) + generatePosition;
         judgeDisplay.GetComponent<Image>().sprite = judgeImages[math.abs(judge - 3)];
         StartCoroutine(JudgeBounceUp(judgeDisplay));
     }
 
-    IEnumerator TextBounceUp()
+    IEnumerator TextBounceUp(GameObject gameObject)
     {
         for (int i = 3; i >= 1; i--)
         {
-            scoreDisplay.transform.position += Vector3.up * 19 / 3f;
+            gameObject.transform.position += Vector3.up * 19 / 3f * Screen.height / 800;
         }
         for (int i = 9; i >= 1; i--)
         {
-            scoreDisplay.transform.position += Vector3.down * i * i / 15;
+            gameObject.transform.position += Vector3.down * i * i / 15 * Screen.height / 800;
             yield return null;
         }
         yield break;
@@ -83,11 +95,11 @@ public class ScoreUI : MonoBehaviour
     {
         for (int i = 3; i >= 1; i--)
         {
-            gameObject.transform.position += Vector3.up * 19 / 3f;
+            gameObject.transform.position += Vector3.up * 19 / 3f * Screen.height / 800;
         }
         for (int i = 9; i >= 1; i--)
         {
-            gameObject.transform.position += Vector3.down * i * i / 15;
+            gameObject.transform.position += Vector3.down * i * i / 15 * Screen.height / 800;
             yield return null;
         }
         yield return new WaitForSeconds( 0.4f ); 

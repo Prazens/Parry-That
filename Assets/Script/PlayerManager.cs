@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst.Intrinsics;
-using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
 
 public class PlayerManager : MonoBehaviour

@@ -58,8 +58,8 @@ public class StageManager : MonoBehaviour
     }
     public void FirstStartStage()
     {
-        GameObject Menu = GameObject.Find("Menu");
-        Menu.SetActive(false);
+        // GameObject Menu = GameObject.Find("Menu");
+        // Menu.SetActive(false);
         GameObject InGameScreen = Resources.FindObjectsOfTypeAll<GameObject>().FirstOrDefault(obj => obj.name == "InGameScreen");
         // Debug.Log(InGameScreen != null ? "InGameScreen found" : "InGameScreen not found");
         InGameScreen.SetActive(true);

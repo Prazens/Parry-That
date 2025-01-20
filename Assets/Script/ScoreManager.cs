@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
@@ -10,6 +9,7 @@ public class ScoreManager : MonoBehaviour
     public PlayerManager playerManager;
     public StrikerManager strikerManager;
     public ParriedProjectileManager parriedProjectileManager;
+    // public SoundManager soundManager;
     public ScoreUI scoreUI;
     public int combo = 0;
     public int score = 0;
@@ -162,6 +162,7 @@ public class ScoreManager : MonoBehaviour
                 combo += 1;
                 Debug.Log("BOUNCE! (LATE)");
                 targetStriker?.TakeDamage(1);
+                UIManager.Instance.ShowParticle(direction);
                 break;
 
             case 3:  // 완벽한 PARFECT
@@ -169,6 +170,7 @@ public class ScoreManager : MonoBehaviour
                 combo += 1;
                 Debug.Log("PARFECT!!");
                 targetStriker?.TakeDamage(1);
+                UIManager.Instance.ShowParticle(direction);
                 break;
 
             case 4:  // 빠른 BOUNCE
@@ -176,6 +178,7 @@ public class ScoreManager : MonoBehaviour
                 combo += 1;
                 Debug.Log("BOUNCE! (FAST)");
                 targetStriker?.TakeDamage(1);
+                UIManager.Instance.ShowParticle(direction);
                 break;
 
             case 5:  // 빠른 GUARD
@@ -193,6 +196,10 @@ public class ScoreManager : MonoBehaviour
             {
                 parriedProjectileManager.CreateParriedProjectile(targetProjectile.transform.position, direction);
             }
+        }
+        else
+        {
+            scoreUI.DisplayHP(playerManager.hp);
         }
 
         scoreUI.DisplayJudge(judgement, direction);

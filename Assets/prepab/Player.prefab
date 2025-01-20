@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreManager: {fileID: 0}
-  hp: 5
+  hp: 10
   currentDirection: 1
   stageManager: {fileID: 0}
   playerAnimator: {fileID: 2880315362237362773}
