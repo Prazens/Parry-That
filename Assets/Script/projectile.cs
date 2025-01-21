@@ -34,7 +34,7 @@ public class projectile : MonoBehaviour
         }
 
         // 임시 도착시간 설정
-        noteData.arriveTime = noteData.time * (60f / bpm) + 0.6835f;
+        noteData.arriveTime = noteData.time + 0.6835f * (bpm / 60f);
     }
 
     // Update is called once per frame
@@ -42,9 +42,9 @@ public class projectile : MonoBehaviour
     {
         transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime); // player를 향해서 이동
 
-        if (StageManager.Instance.currentTime > noteData.time * (60d / bpm)  + 2f + 0.6835f + 0.12d)
+        if (StageManager.Instance.currentTime > noteData.arriveTime * (60f / bpm) + 2f + 0.12d)
         {
-            // Debug.Log($"{StageManager.Instance.currentTime} - {noteData.arriveTime} = {StageManager.Instance.currentTime - noteData.arriveTime}");
+            Debug.Log($"superlate {StageManager.Instance.currentTime} - {noteData.arriveTime * (60f / bpm) + 2f} = {StageManager.Instance.currentTime - noteData.arriveTime * (60f / bpm) - 2f}");
             
             scoreManager.JudgeManage(owner.location, 0, noteData.type, owner);
             Destroy(owner.projectileQueue.Dequeue());

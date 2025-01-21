@@ -14,6 +14,8 @@ public class ScoreManager : MonoBehaviour
     public int combo = 0;
     public int score = 0;
 
+    public Queue<JudgeFormat> judgeQueue = new Queue<JudgeFormat>();
+
     public int bpm;
     public int[][] judgeDetails = new int[4][];  // 방향별 판정 정보, index 0은 전체 판정 합
     // { 늦은 MISS, 늦은 GUARD, 늦은 BOUNCE, 완벽한 PARFECT, 빠른 BOUNCE, 빠른 GUARD } 순서
@@ -28,7 +30,11 @@ public class ScoreManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        foreach (JudgeFormat judgeObject in judgeQueue)
+        {
+            Judge(judgeObject.direction, judgeObject.timing, judgeObject.type);
+        }
+        judgeQueue.Clear();
     }
 
     // 초기화
@@ -70,7 +76,7 @@ public class ScoreManager : MonoBehaviour
                 projectileNoteData = strikerController.projectileQueue.Peek().GetComponent<projectile>().noteData;
 
                 // 시간에 따라 판정
-                timeDiff = touchTimeSec - projectileNoteData.arriveTime - 2d;
+                timeDiff = touchTimeSec - projectileNoteData.arriveTime * (60f / strikerController.bpm) - 2d;
                 
                 // 강공격인데 스와이프로 처리하지 못한 경우
                 if (projectileNoteData.type == 1 && type == 0)
@@ -111,7 +117,7 @@ public class ScoreManager : MonoBehaviour
                 JudgeManage(direction, tempJudge, type, strikerController);
 
                 Debug.Log("판정 수행됨");
-                // Debug.Log($"{touchTimeSec} - {projectileNoteData.arriveTime * (60d / strikerController.bpm) - 2d} = {touchTimeSec - projectileNoteData.arriveTime * (60d / strikerController.bpm) - 2d}");
+                Debug.Log($"judge {touchTimeSec} - {projectileNoteData.arriveTime * (60d / strikerController.bpm) - 2d} = {touchTimeSec - projectileNoteData.arriveTime * (60d / strikerController.bpm) - 2d}");
                 Destroy(strikerController.projectileQueue.Dequeue());
             }
         }
