@@ -36,7 +36,7 @@ public class AndroidPlugin : MonoBehaviour
     {
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
-            Vibrate(duration: 100, amplitude: 128);
+            Vibrate(duration: 50, amplitude: 20);
         }
     }
 }
