@@ -6,8 +6,21 @@ public class AndroidPlugin : MonoBehaviour
 {
     private AndroidJavaObject ajo;
 
-    private void Awake() =>
-        ajo = new AndroidJavaObject(className: "com.example.unityvibration.UnityVibration");
+    private static AndroidPlugin instance;
+
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+            ajo = new AndroidJavaObject(className: "com.example.unityvibration.UnityVibration");
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }   
 
     public void Vibrate(long duration, int amplitude)
     {
