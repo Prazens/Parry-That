@@ -794,7 +794,7 @@ MonoBehaviour:
   judgeImages:
   - {fileID: 21300000, guid: 00023a6d07a9db5488a34ce62580fc45, type: 3}
   - {fileID: 21300000, guid: 0d50b0582c76e80499c1bb5035e1e073, type: 3}
-  - {fileID: 21300000, guid: 0d50b0582c76e80499c1bb5035e1e073, type: 3}
+  - {fileID: 21300000, guid: 997982c907db8e042afd8ac51f32ef52, type: 3}
   - {fileID: 21300000, guid: 9c15969099b698845aabd2cd8b8e7dba, type: 3}
   scoreManager: {fileID: 1744429773}
 --- !u!1 &822372182
@@ -1106,6 +1106,7 @@ MonoBehaviour:
   scoreUI: {fileID: 698621756}
   combo: 0
   score: 0
+  musicOffset: 0
   bpm: 0
 --- !u!114 &1744429774
 MonoBehaviour:

@@ -31,6 +31,7 @@ public class StageManager : MonoBehaviour
     public static bool isActive = false; // 스테이지 활성화 여부
     private int clearStrikers = 0;
     public bool is_over = false;
+    
     private void Awake()
     {
         if (Instance == null)

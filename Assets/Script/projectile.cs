@@ -11,6 +11,9 @@ public class projectile : MonoBehaviour
     public NoteData noteData; // 노트의 정보
     public ScoreManager scoreManager;
     public int bpm;
+    private float moveLength;
+    private float calcSpeed;
+    private Vector3 directionVector;
 
     void Start()
     {
@@ -34,17 +37,31 @@ public class projectile : MonoBehaviour
         }
 
         // 임시 도착시간 설정
-        noteData.arriveTime = noteData.time + 0.6835f * (bpm / 60f);
+        noteData.arriveTime = noteData.time + 0.5f * (bpm / 60f);
+        moveLength = 3.4f - owner.playerManager.visualOffset;
+        calcSpeed = moveLength / (noteData.arriveTime - noteData.time) * (bpm / 60f);
+
+        switch (owner.location)
+        {
+            case Direction.Up:
+                directionVector = Vector3.down;
+                break;
+
+            case Direction.Down:
+                directionVector = Vector3.up;
+                break;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime); // player를 향해서 이동
+        // transform.position = Vector3.MoveTowards(transform.position, target.position, calcSpeed * Time.deltaTime); // player를 향해서 이동
+        transform.position += directionVector * calcSpeed * Time.deltaTime;
 
-        if (StageManager.Instance.currentTime > noteData.arriveTime * (60f / bpm) + 2f + 0.12d)
+        if (StageManager.Instance.currentTime > noteData.arriveTime * (60f / bpm) + scoreManager.musicOffset + 0.12d)
         {
-            Debug.Log($"superlate {StageManager.Instance.currentTime} - {noteData.arriveTime * (60f / bpm) + 2f} = {StageManager.Instance.currentTime - noteData.arriveTime * (60f / bpm) - 2f}");
+            Debug.Log($"superlate {StageManager.Instance.currentTime} - {noteData.arriveTime * (60f / bpm) + scoreManager.musicOffset} = {StageManager.Instance.currentTime - noteData.arriveTime * (60f / bpm) - scoreManager.musicOffset}");
             
             scoreManager.JudgeManage(owner.location, 0, noteData.type, owner);
             Destroy(owner.projectileQueue.Dequeue());

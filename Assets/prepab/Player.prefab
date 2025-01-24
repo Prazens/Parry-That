@@ -54,6 +54,8 @@ MonoBehaviour:
   stageManager: {fileID: 0}
   playerAnimator: {fileID: 2880315362237362773}
   bladeAnimator: {fileID: 8891673177329963255}
+  musicOffset: 0
+  visualOffset: -0.2
   triggers:
   - playerParryUp
   - playerParryDown

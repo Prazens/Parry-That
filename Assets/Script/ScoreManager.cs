@@ -13,6 +13,7 @@ public class ScoreManager : MonoBehaviour
     public ScoreUI scoreUI;
     public int combo = 0;
     public int score = 0;
+    public float musicOffset;
 
     public Queue<JudgeFormat> judgeQueue = new Queue<JudgeFormat>();
 
@@ -76,12 +77,12 @@ public class ScoreManager : MonoBehaviour
                 projectileNoteData = strikerController.projectileQueue.Peek().GetComponent<projectile>().noteData;
 
                 // 시간에 따라 판정
-                timeDiff = touchTimeSec - projectileNoteData.arriveTime * (60f / strikerController.bpm) - 2d;
+                timeDiff = touchTimeSec - projectileNoteData.arriveTime * (60f / strikerController.bpm) - musicOffset;
                 
                 // 강공격인데 스와이프로 처리하지 못한 경우
                 if (projectileNoteData.type == 1 && type == 0)
                 {
-                    tempJudge = 0;
+                    return;
                 }
 
                 // 기획서의 판정 표와 반대 순서임
@@ -117,7 +118,7 @@ public class ScoreManager : MonoBehaviour
                 JudgeManage(direction, tempJudge, type, strikerController);
 
                 Debug.Log("판정 수행됨");
-                Debug.Log($"judge {touchTimeSec} - {projectileNoteData.arriveTime * (60d / strikerController.bpm) - 2d} = {touchTimeSec - projectileNoteData.arriveTime * (60d / strikerController.bpm) - 2d}");
+                Debug.Log($"judge {touchTimeSec} - {projectileNoteData.arriveTime * (60d / strikerController.bpm) + musicOffset} = {touchTimeSec - projectileNoteData.arriveTime * (60d / strikerController.bpm) - musicOffset}");
                 Destroy(strikerController.projectileQueue.Dequeue());
             }
         }

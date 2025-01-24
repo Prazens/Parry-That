@@ -6,7 +6,7 @@ public class StrikerController : MonoBehaviour
 {
     // striker 자체에 들어가는 script
     [SerializeField] private List<GameObject> projectilePrefabs; // 투사체 프리팹
-    private PlayerManager playerManager; // Player 정보 저장
+    public PlayerManager playerManager; // Player 정보 저장
     [SerializeField] private ChartData chartData; // 채보 데이터
     [SerializeField] public int hp; // 스트라이커 HP
     [SerializeField] public int bpm; // BPM
@@ -27,7 +27,7 @@ public class StrikerController : MonoBehaviour
         float currentTime = StageManager.Instance.currentTime;
 
         // 채보 시간에 맞춰 발사
-        if (currentTime >= (chartData.notes[currentNoteIndex].time * (60d / bpm)) + 2f)
+        if (currentTime >= (chartData.notes[currentNoteIndex].time * (60d / bpm)) + playerManager.musicOffset)
         {
             FireProjectile(chartData.notes[currentNoteIndex].type);
             currentNoteIndex++;

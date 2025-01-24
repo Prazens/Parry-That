@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst.Intrinsics;
@@ -13,11 +14,18 @@ public class PlayerManager : MonoBehaviour
     public Animator playerAnimator;
     public Animator bladeAnimator;
 
+    
+    public float musicOffset;
+    public float visualOffset;
+
     public string[] triggers = new string[2] { "playerParryUp", "playerParryDown" };
 
     // Start is called before the first frame update
     void Start()
     {
+        musicOffset = 2.34f;  // 판정 오프셋: -일수록 빨리 쳐야 함
+        visualOffset = 0.22f;  // 판정선: -일수록 플레이어에 가까움
+
         GameController gameController = FindObjectOfType<GameController>();
         if (gameController != null)
         {
@@ -35,6 +43,7 @@ public class PlayerManager : MonoBehaviour
         {
             Debug.LogError("GameController not found!");
         }
+        scoreManager.musicOffset = musicOffset;
     }
 
     // Update is called once per frame
@@ -50,8 +59,13 @@ public class PlayerManager : MonoBehaviour
         playerAnimator.SetTrigger(triggers[(int)direction - 1]);
 
         bladeAnimator.SetInteger("attackType", type);
-        bladeAnimator.SetTrigger("bladePlay");
         bladeAnimator.SetInteger("bladeDirection", (int)direction);
+
+        int randomNum = UnityEngine.Random.Range(0, 3);
+        // Debug.Log($"random motion: {randomNum}");
+
+        bladeAnimator.SetInteger("randomSelecter", randomNum);
+        bladeAnimator.SetTrigger("bladePlay");
     }
     public void GameOver()
     {
