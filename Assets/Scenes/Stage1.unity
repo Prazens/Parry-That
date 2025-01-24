@@ -878,7 +878,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 822372185}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1448475905}
+        m_TargetAssemblyTypeName: StageManager, Assembly-CSharp
+        m_MethodName: PauseStage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &822372185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1016,12 +1028,15 @@ MonoBehaviour:
   guidebox2Prefab: {fileID: 6017190040333457750, guid: a2fef0f9cd027cc449b1acd741e7b9d8, type: 3}
   clearPanelPrefab: {fileID: 2877070203629870375, guid: fe93a9c4b01229640af6942344c83aac, type: 3}
   gameOverPanelPrefab: {fileID: 1725435030895975194, guid: 3d6074ed7aa58f54fb4d1eefc5f47b91, type: 3}
+  pausePanelPrefab: {fileID: 7210466680494033712, guid: fd5af501b22535c44a673905e065de25, type: 3}
   canvasTransform: {fileID: 224584158}
   gameController: {fileID: 1744429771}
   scoreManager: {fileID: 1744429773}
   transparentProjectilePrefab: {fileID: 370656999088524864, guid: d287ee2774090a34a9ab4568fd0603ce, type: 3}
   musicSource: {fileID: 583584121}
   is_over: 0
+  isPaused: 0
+  pauseButton: {fileID: 822372182}
 --- !u!4 &1448475906
 Transform:
   m_ObjectHideFlags: 0

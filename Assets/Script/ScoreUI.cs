@@ -102,7 +102,7 @@ public class ScoreUI : MonoBehaviour
             gameObject.transform.position += Vector3.down * i * i / 15 * Screen.height / 800;
             yield return null;
         }
-        yield return new WaitForSeconds( 0.4f ); 
+        yield return new WaitForSecondsRealtime( 0.4f ); 
         Destroy(gameObject);
         yield break;
     }
