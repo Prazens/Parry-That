@@ -27,7 +27,7 @@ public class TitleMenu : MonoBehaviour
 
     public GameObject GameController;
 
-    private int SelectedLV = 1;
+    public static int SelectedLV = 1;
     void Start()
     {
         menuPanel = GameObject.Find("Title").GetComponent<RectTransform>();

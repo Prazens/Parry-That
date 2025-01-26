@@ -229,6 +229,16 @@ public class StageManager : MonoBehaviour
         CalculateStars();
         UpdateClearPanelScores();
         UpdateStar_Clear();
+
+        // 최고 기록 경신하면 데이터베이스에 업데이트
+        ScoreManager scoreManager = gameController.GetComponent<ScoreManager>();
+        DatabaseManager theDatabase = FindObjectOfType<DatabaseManager>();
+        if (scoreManager.score > theDatabase.score[SceneLinkage.StageLV])
+        {
+            theDatabase.score[SceneLinkage.StageLV] = scoreManager.score;
+            theDatabase.SaveScoreData();
+            Debug.Log($"최고기록 경신: {theDatabase.score[SceneLinkage.StageLV]}");
+        }
     }
     public void RestartStage()
     {
@@ -353,6 +363,24 @@ public class StageManager : MonoBehaviour
             if (star1 != null) star1.SetActive(true); // 1개 조건
             if (star2 != null) star2.SetActive(clearStrikers >= 1); // 2개 조건 
             if (star3 != null) star3.SetActive(clearStrikers >= 2); // 3개 조건 
+
+            int currentStars = 0;
+            if (clearStrikers >= 0) currentStars = 1;
+            if (clearStrikers >= 1) currentStars = 2;
+            if (clearStrikers >= 2) currentStars = 3;
+
+            // 데이터베이스에 별 개수 저장
+            DatabaseManager theDatabase = FindObjectOfType<DatabaseManager>();
+            if (theDatabase != null)
+            {
+                // 현재 저장된 별 개수보다 클 경우 업데이트
+                if (currentStars > theDatabase.star[SceneLinkage.StageLV])
+                {
+                    theDatabase.star[SceneLinkage.StageLV] = currentStars;
+                    theDatabase.SaveStarData();
+                    Debug.Log($"별 개수 갱신: 스테이지 {SceneLinkage.StageLV}에 {currentStars}개 달성");
+                }
+            }
         }
     }
     private void UpdateStar_Over()
