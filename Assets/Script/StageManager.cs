@@ -228,6 +228,16 @@ public class StageManager : MonoBehaviour
         CalculateStars();
         UpdateClearPanelScores();
         UpdateStar_Clear();
+
+        // 최고 기록 경신하면 데이터베이스에 업데이트
+        ScoreManager scoreManager = gameController.GetComponent<ScoreManager>();
+        DatabaseManager theDatabase = FindObjectOfType<DatabaseManager>();
+        if (scoreManager.score > theDatabase.score[SceneLinkage.StageLV])
+        {
+            theDatabase.score[SceneLinkage.StageLV] = scoreManager.score;
+            theDatabase.SaveScore();
+            Debug.Log($"최고기록 경신: {theDatabase.score[SceneLinkage.StageLV]}");
+        }
     }
     public void RestartStage()
     {

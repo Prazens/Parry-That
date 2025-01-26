@@ -20,6 +20,23 @@ public class GameController : MonoBehaviour
         //{
         //   Debug.LogError("StageManager is not assigned!");
         //}
+
+        switch (SceneLinkage.StageLV)
+        {
+            case 1:
+                StartStage();
+                Debug.Log("게임시작");
+                break;
+            case 2:
+                //StartStage2()
+                break;
+            case 3:
+                //StartStage2()
+                break;
+            default:
+                // Debug.Log($"{SceneLinkage.StageLV}");
+                break;
+        }
     }
     public void StartStage()
     {
@@ -41,26 +58,6 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        switch (SceneLinkage.StageLV)
-        {
-            case 1:
-                StartStage();
-                SceneLinkage.StageLV = 0;
-                Debug.Log("게임시작");
-                break;
-            case 2:
-                //StartStage2()
-                SceneLinkage.StageLV = 0;
-                break;
-            case 3:
-                //StartStage2()
-                SceneLinkage.StageLV = 0;
-                break;
-            default:
-                // Debug.Log($"{SceneLinkage.StageLV}");
-                break;
-        }
-
         if(stageManager.is_over)
         {
             if (isTouchAvailable)   
