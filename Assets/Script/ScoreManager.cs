@@ -129,6 +129,8 @@ public class ScoreManager : MonoBehaviour
 
         GameObject targetProjectile = targetStriker.projectileQueue.Peek();
 
+        CameraMoving CameraEffect = GameObject.Find("Main Camera").GetComponent<CameraMoving>();
+
         // 따로 처리하는 것들
         switch (judgement)
         {
@@ -147,6 +149,7 @@ public class ScoreManager : MonoBehaviour
                 {
                     Debug.Log(playerManager.hp);
                     UIManager.Instance.ShowDamageOverlayEffect();
+                    CameraEffect.CameraShake();
                 }
 
                 break;
