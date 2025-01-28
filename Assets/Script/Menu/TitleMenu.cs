@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class TitleMenu : MonoBehaviour
 {
@@ -27,6 +28,9 @@ public class TitleMenu : MonoBehaviour
 
     public GameObject GameController;
 
+    public TextMeshProUGUI TitleText;
+    private Color TitleText_originalColor;
+
     public static int SelectedLV = 1;
     void Start()
     {
@@ -36,9 +40,15 @@ public class TitleMenu : MonoBehaviour
         Title = GameObject.Find("Img_Title").GetComponent<Image>();
 
         GameController = GameObject.Find("GameController");
+        TitleText = GameObject.Find("TitleText").GetComponent<TextMeshProUGUI>();
 
         MenuStartPos = menuPanel.anchoredPosition;
         StageMenuStartPos = nextPanel.anchoredPosition;
+
+        if (TitleText != null)
+        {
+            TitleText_originalColor = TitleText.color;
+        }
     }
 
     void Update()   // 위로 스와이프 하면 타이틀 화면에서 스테이지 선택 화면으로 전환
@@ -65,6 +75,12 @@ public class TitleMenu : MonoBehaviour
             {
                 TouchMove();
             }
+        }
+
+        if (TitleText != null)
+        {
+            float alpha = (Mathf.Sin(Time.time * 1f) * 0.35f + 0.65f);
+            TitleText.color = new Color(TitleText_originalColor.r, TitleText_originalColor.g, TitleText_originalColor.b, alpha);
         }
     }
 
@@ -165,7 +181,7 @@ public class TitleMenu : MonoBehaviour
         float relativeHeight = canvasRect.rect.height ;
 
         Vector2 endPosUp = new Vector2(startPos.x, startPos.y + relativeHeight);
-        Vector2 endPosDown = new Vector2(startPos.x, startPos.y + canvasRect.rect.height);
+        Vector2 endPosDown = new Vector2(startPos.x, startPos.y + canvasRect.rect.height - 100);
 
         float durationUp = 2f;
         float durationDown = 1f;
