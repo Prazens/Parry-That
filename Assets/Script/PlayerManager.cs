@@ -18,7 +18,7 @@ public class PlayerManager : MonoBehaviour
     public float musicOffset;
     public float visualOffset;
 
-    public string[] triggers = new string[2] { "playerParryUp", "playerParryDown" };
+    // public string[] triggers = new string[2] { "playerParryUp", "playerParryDown" };
 
     // Start is called before the first frame update
     void Start()
@@ -56,13 +56,18 @@ public class PlayerManager : MonoBehaviour
     {
         // Debug.Log($"{(int)direction} {triggers[(int)direction - 1]} {type}");
 
-        playerAnimator.SetTrigger(triggers[(int)direction - 1]);
+        int randomNum = UnityEngine.Random.Range(0, 3);
+        // Debug.Log($"random motion: {randomNum}");
+
+        // playerAnimator.SetTrigger(triggers[(int)direction - 1]);
+        playerAnimator.SetInteger("attackType", type);
+        playerAnimator.SetInteger("parryDirection", (int)direction);
+
+        playerAnimator.SetInteger("randomSelecter", randomNum);
+        playerAnimator.SetTrigger("playerParryPlay");
 
         bladeAnimator.SetInteger("attackType", type);
         bladeAnimator.SetInteger("bladeDirection", (int)direction);
-
-        int randomNum = UnityEngine.Random.Range(0, 3);
-        // Debug.Log($"random motion: {randomNum}");
 
         bladeAnimator.SetInteger("randomSelecter", randomNum);
         bladeAnimator.SetTrigger("bladePlay");
