@@ -1150,10 +1150,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cea726b7ed9acde48a1dbd7b39827245, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parriedProjectilePrefab: {fileID: 1305294611871443350, guid: a3c2494ecd8ebda4b88c5601a74de13c, type: 3}
-  strikerLocations:
-  - {fileID: 1172636501}
-  - {fileID: 1448434801}
+  prefabUp:
+  - {fileID: 2592163038995887151, guid: 82defdb956bec7441a5e6d7cd847eeac, type: 3}
+  - {fileID: 8957900412173708375, guid: 244dce1fe6a904243805cabcf11689f4, type: 3}
+  - {fileID: 7791240614869971936, guid: 2ab9cdbac57cdd94cb7de9b5eb72e049, type: 3}
+  - {fileID: 3514978874313016589, guid: f7fb5cb53b7335c4c873e88c39b4c06b, type: 3}
+  prefabDown:
+  - {fileID: 922539353611782906, guid: 1c6e4a46e6336884797122fd87178b26, type: 3}
+  - {fileID: 735402349161785632, guid: d1a78f4c343a4db4fba86d712e3ef047, type: 3}
+  - {fileID: 7275745348520807119, guid: 439a5c2dd3e0d144ea2d61fabbeb720d, type: 3}
+  - {fileID: 6094729451512931245, guid: 1931b3a4df495e74a9deea580e08cc57, type: 3}
+  parriedTusacheParent: {fileID: 1844794991}
+  MainCamera: {fileID: 519420031}
 --- !u!1 &1801923830
 GameObject:
   m_ObjectHideFlags: 0
@@ -1234,6 +1242,37 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.03, y: -0.09, z: -5.02}
   m_LocalScale: {x: 7.008452, y: 11.504019, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1844794990
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1844794991}
+  m_Layer: 0
+  m_Name: ParriedTusache
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1844794991
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1844794990}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -9.90269, y: -0.81036806, z: -0.06696961}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1507,3 +1546,4 @@ SceneRoots:
   - {fileID: 698621755}
   - {fileID: 224584158}
   - {fileID: 1801923832}
+  - {fileID: 1844794991}

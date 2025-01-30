@@ -8,7 +8,7 @@ public class ScoreManager : MonoBehaviour
     public List<GameObject> strikerList_;
     public PlayerManager playerManager;
     public StrikerManager strikerManager;
-    public ParriedProjectileManager parriedProjectileManager;
+    [SerializeField] public ParriedProjectileManager parriedProjectileManager;
     // public SoundManager soundManager;
     public ScoreUI scoreUI;
     public int combo = 0;
@@ -204,7 +204,15 @@ public class ScoreManager : MonoBehaviour
             
             if (judgement != 1 && judgement != 5)
             {
-                parriedProjectileManager.CreateParriedProjectile(targetProjectile.transform.position, direction);
+                // parriedProjectileManager.CreateParriedProjectile(targetProjectile.transform.position, direction);
+                if (parriedProjectileManager != null)
+                {
+                    parriedProjectileManager.ParryTusache(direction, type);
+                }
+                else
+                {
+                    Debug.Log("패링투사체 못찾음");
+                }
             }
         }
         else
