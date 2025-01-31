@@ -69,6 +69,17 @@ public class GameController : MonoBehaviour
                 DetectMouseSwipe();
             }
         }
+        if(stageManager.isPaused)
+        {
+            if (isTouchAvailable)   
+            {
+                DetectSwipe();
+            }
+            else    
+            { 
+                DetectMouseSwipe();
+            }
+        }
     }
     private void DetectSwipe()
     {
@@ -142,6 +153,10 @@ public class GameController : MonoBehaviour
         if (stageManager != null && stageManager.is_over)
         {
             stageManager.RestartStage();
+        }
+        if (stageManager != null && stageManager.isPaused)
+        {
+            stageManager.ResumeStage();
         }
     }
     

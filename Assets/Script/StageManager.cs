@@ -21,7 +21,8 @@ public class StageManager : MonoBehaviour
     private GameObject clearPanelInstance;
     [SerializeField] private GameObject gameOverPanelPrefab; // GameOver 창 Prefab
     private GameObject gameOverPanelInstance;
-
+    [SerializeField] private GameObject pausePanelPrefab; // Pause 창 Prefab
+    private GameObject PausePanelInstance;
     [SerializeField] private Transform canvasTransform; // Canvas의 Transform
     [SerializeField] private GameController gameController; // GameController 참조
     [SerializeField] private ScoreManager scoreManager;
@@ -56,6 +57,12 @@ public class StageManager : MonoBehaviour
             gameOverPanelInstance = Instantiate(gameOverPanelPrefab, canvasTransform);
             gameOverPanelInstance.SetActive(false); // 초기 비활성화
         }
+        if (pausePanelPrefab != null && canvasTransform != null)
+        {
+            // Clear 창 인스턴스 생성
+            PausePanelInstance = Instantiate(pausePanelPrefab, canvasTransform);
+            PausePanelInstance.SetActive(false);
+        }
     }
     public void FirstStartStage()
     {
@@ -75,6 +82,7 @@ public class StageManager : MonoBehaviour
         musicPlayed = false;
         clearStrikers = 0;
         is_over = false;
+        isPaused = false;
         scoreUI.Initialize_UI();
         scoreManager.Initialize();
         SpawnPlayer();
@@ -210,7 +218,7 @@ public class StageManager : MonoBehaviour
         if (gameOverPanelInstance != null)
         {
             gameOverPanelInstance.SetActive(true);
-            UpdateGameOverPanel(); // 점수 및 판정 업데이트
+            UpdatePanelScores(gameOverPanelInstance); // 점수 및 판정 업데이트
             UpdateStar_Over();
         }
     }
@@ -227,7 +235,7 @@ public class StageManager : MonoBehaviour
             clearPanelInstance.SetActive(true); // Clear 창 활성화
         }
         CalculateStars();
-        UpdateClearPanelScores();
+        UpdatePanelScores(clearPanelInstance);
         UpdateStar_Clear();
 
         // 최고 기록 경신하면 데이터베이스에 업데이트
@@ -266,6 +274,54 @@ public class StageManager : MonoBehaviour
         // 새로운 스테이지 시작
         StartStage();
     }
+    public bool isPaused = false;
+    private float savedMusicTime;
+    [SerializeField] private GameObject pauseButton;
+
+    public void PauseStage()
+    {
+        if (isPaused) return;
+        isPaused = true;
+        isActive = false;
+        //투사체 멈추기
+        Time.timeScale = 0f;
+        // 음악 멈춤 및 재생 시간 저장
+        if (musicSource != null && musicPlayed)
+        {
+            savedMusicTime = musicSource.time;
+            musicSource.Pause();
+        }
+        if(PausePanelInstance != null) PausePanelInstance.SetActive(true);
+        UpdatePanelScores(PausePanelInstance);
+        // Pause 버튼 숨기기
+        if (pauseButton != null) pauseButton.SetActive(false);
+        Debug.Log("Stage Paused!");
+    }
+    public void ResumeStage()
+    {
+        if (!isPaused) return;
+        isPaused = false;
+        if(PausePanelInstance != null) PausePanelInstance.SetActive(false);
+        // Pause 버튼 다시 활성화
+        if (pauseButton != null) pauseButton.SetActive(true);
+        StartCoroutine(ResumeAfterDelay());
+    }
+    private IEnumerator ResumeAfterDelay()
+    {
+        Debug.Log("Resuming Stage in 1 seconds...");
+        yield return new WaitForSecondsRealtime(1);
+        isActive = true;
+        Time.timeScale = 1f;
+        // 음악 재개
+        if (musicSource != null && musicPlayed)
+        {
+            musicSource.time = savedMusicTime;
+            musicSource.Play();
+        }
+        //투사체 이동 재개
+
+        Debug.Log("Stage Resumed!");
+    }
     private void SpawnTransparentProjectile()
     {
         if (transparentProjectilePrefab == null || playerInstance == null)
@@ -284,15 +340,16 @@ public class StageManager : MonoBehaviour
             projectileScript.musicSource = musicSource; // 음악 소스 전달
         }
     }
-    private void UpdateClearPanelScores()
+    private void UpdatePanelScores(GameObject panelInstance)
     {
-        if (clearPanelInstance != null)
+        if (panelInstance != null)
         {
             // 텍스트 컴포넌트 가져오기
-            TextMeshProUGUI parfectText = clearPanelInstance.transform.Find("ParfectText").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI bounceText = clearPanelInstance.transform.Find("BounceText").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI guardText = clearPanelInstance.transform.Find("GuardText").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI hitText = clearPanelInstance.transform.Find("HitText").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI parfectText = panelInstance.transform.Find("ParfectText").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI bounceText = panelInstance.transform.Find("BounceText").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI guardText = panelInstance.transform.Find("GuardText").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI hitText = panelInstance.transform.Find("HitText").GetComponent<TextMeshProUGUI>();
+
             if (scoreManager != null && scoreManager.judgeDetails != null)
             {
                 int[][] judgeDetails = scoreManager.judgeDetails;
@@ -315,39 +372,9 @@ public class StageManager : MonoBehaviour
                 Debug.LogError("ScoreManager or judgeDetails is null!");
             }
         }
-    }
-    private void UpdateGameOverPanel()
-    {
-        // 점수 및 판정 업데이트 로직 (Clear 창과 동일하게 구현 가능)
-        if (gameOverPanelInstance != null)
+        else
         {
-            // 텍스트 컴포넌트 가져오기
-            TextMeshProUGUI parfectText = gameOverPanelInstance.transform.Find("ParfectText").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI bounceText = gameOverPanelInstance.transform.Find("BounceText").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI guardText = gameOverPanelInstance.transform.Find("GuardText").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI hitText = gameOverPanelInstance.transform.Find("HitText").GetComponent<TextMeshProUGUI>();
-
-            if (scoreManager != null && scoreManager.judgeDetails != null)
-            {
-                int[][] judgeDetails = scoreManager.judgeDetails;
-
-                // 각각의 값을 최소 4자리 정수로 포맷팅하여 텍스트에 설정
-                if (parfectText != null) 
-                    parfectText.text = judgeDetails[0][3].ToString("D4");
-
-                if (bounceText != null) 
-                    bounceText.text = (judgeDetails[0][2] + judgeDetails[0][4]).ToString("D4");
-
-                if (guardText != null) 
-                    guardText.text = (judgeDetails[0][1] + judgeDetails[0][5]).ToString("D4");
-
-                if (hitText != null) 
-                    hitText.text = judgeDetails[0][0].ToString("D4");
-            }
-            else
-            {
-                Debug.LogError("ScoreManager or judgeDetails is null!");
-            }
+            Debug.LogError("Panel instance is null!");
         }
     }
     private void UpdateStar_Clear()
