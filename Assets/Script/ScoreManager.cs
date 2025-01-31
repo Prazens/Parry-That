@@ -15,11 +15,13 @@ public class ScoreManager : MonoBehaviour
     public int score = 0;
     public float musicOffset;
 
+    public double lastNonMissJudge = 0;
+
     public Queue<JudgeFormat> judgeQueue = new Queue<JudgeFormat>();
 
     public int bpm;
     public int[][] judgeDetails = new int[4][];  // 방향별 판정 정보, index 0은 전체 판정 합
-    // { 늦은 MISS, 늦은 GUARD, 늦은 BOUNCE, 완벽한 PARFECT, 빠른 BOUNCE, 빠른 GUARD } 순서
+    // { 총 노트수(미구현), 늦은 MISS, 늦은 GUARD, 늦은 BOUNCE, 완벽한 PARFECT, 빠른 BOUNCE, 빠른 GUARD } 순서
     // 나중에 방향별 판정 정보가 아니라 스트라이커별 판정 정보로 바꾸어야 함
 
     // Start is called before the first frame update
@@ -46,7 +48,7 @@ public class ScoreManager : MonoBehaviour
         strikerList_ = strikerManager.strikerList;
         for (int i = 0; i < 4; i++)
         {
-            judgeDetails[i] = new int[6] { 0, 0, 0, 0, 0, 0 };
+            judgeDetails[i] = new int[7] { 0, 0, 0, 0, 0, 0, 0 };
         }
     }
 
@@ -62,6 +64,13 @@ public class ScoreManager : MonoBehaviour
         int tempJudge;
 
         playerManager.currentDirection = touchDirection;
+
+        timeDiff = touchTimeSec - lastNonMissJudge;
+        if (type == 1 && timeDiff < 0.01d)
+        {
+            Debug.Log("판정 무시됨");
+            return;
+        }
 
         // Vector3 projectileLocation;
         // double distance;
@@ -79,8 +88,8 @@ public class ScoreManager : MonoBehaviour
                 // 시간에 따라 판정
                 timeDiff = touchTimeSec - projectileNoteData.arriveTime * (60f / strikerController.bpm) - musicOffset;
                 
-                // 강공격인데 스와이프로 처리하지 못한 경우
-                if (projectileNoteData.type == 1 && type == 0)
+                // 터치 타입이 다른 경우
+                if (projectileNoteData.type != type && !(type == 1 && projectileNoteData.type == 0))
                 {
                     return;
                 }
@@ -115,11 +124,15 @@ public class ScoreManager : MonoBehaviour
                     return;
                 }
 
+                lastNonMissJudge = touchTimeSec;
+
                 JudgeManage(direction, tempJudge, type, strikerController);
 
                 Debug.Log("판정 수행됨");
                 Debug.Log($"judge {touchTimeSec} - {projectileNoteData.arriveTime * (60d / strikerController.bpm) + musicOffset} = {touchTimeSec - projectileNoteData.arriveTime * (60d / strikerController.bpm) - musicOffset}");
                 Destroy(strikerController.projectileQueue.Dequeue());
+
+                return;
             }
         }
     }
@@ -149,6 +162,7 @@ public class ScoreManager : MonoBehaviour
                 // 피격당한 후 죽었을 때
                 if (--playerManager.hp == 0)
                 {
+                    scoreUI.HideAll();
                     playerManager.GameOver();
                 }
                 // 피격당한 후 죽지 않았을 때

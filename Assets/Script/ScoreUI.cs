@@ -9,12 +9,15 @@ using UnityEngine.UI;
 public class ScoreUI : MonoBehaviour
 {
     public GameObject scoreDisplay;
-    public GameObject hpDisplay;
     public GameObject judgeDisplayPrefab;
     public Sprite[] judgeImages = new Sprite[4];
+    public GameObject hpDisplay;
+    public GameObject[] heartDisplays = new GameObject[10];
+    public GameObject heartDisplayPrefab;
+    public Sprite[] heartImages = new Sprite[2];
     public ScoreManager scoreManager;
 
-    private readonly string[] judgeStrings = { "HIT", "GUARD", "BOUNCE", "PARFECT", "BOUNCE", "GUARD" };
+    private readonly string[] judgeStrings = { "BAD", "BLOCKED", "PARRIED", "PERFECT", "PARRIED", "BLOCKED" };
 
     private Vector3[] initialPosition = new Vector3[2];
 
@@ -24,25 +27,52 @@ public class ScoreUI : MonoBehaviour
         initialPosition[0] = scoreDisplay.transform.position;
         initialPosition[1] = hpDisplay.transform.position;
         DisplayScore(0);
-        DisplayHP(10);
+
+        GameObject heartDisplay;
+        for (int i = 0; i < 10; i++)
+        {
+            heartDisplay = Instantiate(heartDisplayPrefab, hpDisplay.transform);
+            heartDisplay.transform.localPosition = new Vector3(27 * (i % 5), -27 * (i / 5), 0);
+            
+            // Debug.Log($"Heart Display spawn at: {heartDisplay.transform.position}");
+
+            heartDisplays[i] = heartDisplay;
+            heartDisplay.GetComponent<Image>().sprite = heartImages[0];
+        }
+    }
+
+    public void HideAll()
+    {
+        scoreDisplay.GetComponent<TextMeshProUGUI>().text = " ";
+        foreach (GameObject heartDisplay in heartDisplays)
+        {
+            Destroy(heartDisplay);
+        }
     }
 
     public void DisplayScore(int score)
     {
         scoreDisplay.GetComponent<TextMeshProUGUI>().text = Convert.ToString(score);
 
-        StopCoroutine("TextBounceUp");
+        StopCoroutine("BounceUp");
         scoreDisplay.transform.position = initialPosition[0];
-        StartCoroutine(TextBounceUp(scoreDisplay));
+        StartCoroutine(BounceUp(scoreDisplay));
     }
 
-    public void DisplayHP(int hpValue)
+    public void DisplayHP(int hpValue, bool isHeal = false)
     {
-        hpDisplay.GetComponent<TextMeshProUGUI>().text = Convert.ToString(hpValue) + "/" + "10";
+        if (!isHeal)
+        {
+            heartDisplays[hpValue].GetComponent<Image>().sprite = heartImages[1];
+        }
+        else
+        {
+            heartDisplays[hpValue - 1].GetComponent<Image>().sprite = heartImages[0];
+        }
 
-        StopCoroutine("TextBounceUp");
+        StopCoroutine("BounceUp");
         hpDisplay.transform.position = initialPosition[1];
-        StartCoroutine(TextBounceUp(hpDisplay));
+        StartCoroutine(BounceUp(hpDisplay));
     }
 
     public void DisplayJudge(int judge, Direction direction)
@@ -53,11 +83,11 @@ public class ScoreUI : MonoBehaviour
         switch (direction)
         {
             case Direction.Up:
-                generatePosition = Vector3.up * Screen.height / 8;
+                generatePosition = Vector3.up * Screen.height / 6;
                 break;
 
             case Direction.Down:
-                generatePosition = Vector3.down * Screen.height / 8;
+                generatePosition = Vector3.down * Screen.height / 6;
                 break;
 
             case Direction.Left:
@@ -71,13 +101,13 @@ public class ScoreUI : MonoBehaviour
 
         judgeDisplay = Instantiate(judgeDisplayPrefab);
         judgeDisplay.transform.SetParent(transform);
-        judgeDisplay.transform.localScale = new Vector3(.2f, .2f, 0);
+        judgeDisplay.transform.localScale = new Vector3(.12f, .12f, 0);
         judgeDisplay.transform.position = new Vector3(Screen.width / 2, Screen.height / 2) + generatePosition;
         judgeDisplay.GetComponent<Image>().sprite = judgeImages[math.abs(judge - 3)];
         StartCoroutine(JudgeBounceUp(judgeDisplay));
     }
 
-    IEnumerator TextBounceUp(GameObject gameObject)
+    IEnumerator BounceUp(GameObject gameObject)
     {
         for (int i = 3; i >= 1; i--)
         {

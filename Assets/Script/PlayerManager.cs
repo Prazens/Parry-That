@@ -72,6 +72,7 @@ public class PlayerManager : MonoBehaviour
         bladeAnimator.SetInteger("randomSelecter", randomNum);
         bladeAnimator.SetTrigger("bladePlay");
     }
+    
     public void GameOver()
     {
         if (stageManager != null)

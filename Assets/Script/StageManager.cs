@@ -86,7 +86,7 @@ public class StageManager : MonoBehaviour
         scoreUI.Initialize_UI();
         scoreManager.Initialize();
         SpawnPlayer();
-        SpawnGuideboxes();
+        // SpawnGuideboxes();
         strikerManager.SpawnStriker(0,0,108,107); 
         strikerManager.SpawnStriker(1,1,110,107);
         isActive = true; // 스테이지 활성화
@@ -356,16 +356,16 @@ public class StageManager : MonoBehaviour
 
                 // 각각의 값을 최소 4자리 정수로 포맷팅하여 텍스트에 설정
                 if (parfectText != null) 
-                    parfectText.text = judgeDetails[0][3].ToString("D4");
+                    parfectText.text = judgeDetails[0][4].ToString("D4");
 
                 if (bounceText != null) 
-                    bounceText.text = (judgeDetails[0][2] + judgeDetails[0][4]).ToString("D4");
+                    bounceText.text = (judgeDetails[0][3] + judgeDetails[0][5]).ToString("D4");
 
                 if (guardText != null) 
-                    guardText.text = (judgeDetails[0][1] + judgeDetails[0][5]).ToString("D4");
+                    guardText.text = (judgeDetails[0][2] + judgeDetails[0][6]).ToString("D4");
 
                 if (hitText != null) 
-                    hitText.text = judgeDetails[0][0].ToString("D4");
+                    hitText.text = judgeDetails[0][1].ToString("D4");
             }
             else
             {

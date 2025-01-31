@@ -7,8 +7,10 @@ public class StrikerController : MonoBehaviour
     // striker 자체에 들어가는 script
     [SerializeField] private List<GameObject> projectilePrefabs; // 투사체 프리팹
     public PlayerManager playerManager; // Player 정보 저장
-    [SerializeField] private ChartData chartData; // 채보 데이터
+    public UIManager uiManager;
+    [SerializeField] public ChartData chartData; // 채보 데이터
     [SerializeField] public int hp; // 스트라이커 HP
+    private int initialHp; // 스트라이커 initialHp
     [SerializeField] public int bpm; // BPM
     public Direction location; // 위치 방향
     private int currentNoteIndex = 0; // 현재 채보 인덱스
@@ -17,6 +19,10 @@ public class StrikerController : MonoBehaviour
     private float lastProjectileTime = 0f; // 마지막 투사체 발사 시간
 
     [SerializeField] public Queue<GameObject> projectileQueue = new Queue<GameObject>{};
+
+    public GameObject hpBarPrefab;
+    private GameObject hpBar;
+    private Transform hpControl;
 
     private void Update() // 현재 striker 자체에서 투사체 일정 간격으로 발사
     {
@@ -67,15 +73,23 @@ public class StrikerController : MonoBehaviour
         // 투사체에 노트 정보 저장
         projScript.noteData = chartData.notes[currentNoteIndex];
     }
-    public void Initialize(int initialHp, int initialBpm, PlayerManager targetPlayer, Direction direction, ChartData chart) //striker 정보 초기화(spawn될 때 얻어오는 정보보)
+
+    public void Initialize(int _initialHp, int initialBpm, PlayerManager targetPlayer, Direction direction, ChartData chart) //striker 정보 초기화(spawn될 때 얻어오는 정보보)
     {
-        hp = initialHp;
+        hp = _initialHp;
+        initialHp = _initialHp;
         bpm = initialBpm;
         playerManager = targetPlayer;
         Debug.Log($"{gameObject.name} spawned with HP: {hp}, BPM: {bpm}");
         location = direction;
         chartData = chart; // 채보 데이터 설정
+
+        hpBar = Instantiate(hpBarPrefab, transform);
+        hpBar.transform.localPosition = Vector3.down * 2f;
+        hpControl = hpBar.transform.GetChild(0);
+        hpControl.transform.localScale = new Vector3(0, 1, 1);
     }
+
     public void ClearProjectiles()
     {
         while (projectileQueue.Count > 0)
@@ -87,19 +101,24 @@ public class StrikerController : MonoBehaviour
             }
         }
     }
+
     public void TakeDamage(int damage)
     {
         if (hp >= 0)
         {
+            hpControl.transform.localScale = new Vector3(1 - ((float)hp / initialHp), 1, 1);
+
             hp -= damage;
             Debug.Log($"{gameObject.name} took {damage} damage! Current HP: {hp}");
             StartCoroutine(PlayDamageAnimation());
-            if(hp == 0)
+            if (hp == 0)
             {
                 animator.SetBool("isClear", true);
+                playerManager.hp =+ 1;
             }
         }
     }
+
     private IEnumerator PlayDamageAnimation()
     {
         animator.SetBool("isDamaged", true);

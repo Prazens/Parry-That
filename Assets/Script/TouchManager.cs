@@ -48,15 +48,15 @@ public class TouchManager : MonoBehaviour
             }
             else
             {
-                // KeyChecker();
-                MouseChecker();  // 터치에 중복될 가능성 높음
+                // KeyChecker();  // Legacy
+                MouseChecker();  // 터치에 중복
             }
 
             // judgeDirection에 값이 null이 아니라 존재할 경우 : 판정 실시, null로 값 삭제
             // 임시로 좌우 입력은 막아둠
             if (judgeDirection.HasValue && (judgeDirection == Direction.Up || judgeDirection == Direction.Down || judgeDirection == Direction.None))
             {
-                Debug.Log($"판정 전송 : {judgeDirection} {previousDirection}");
+                Debug.Log($"판정 전송 : {judgeDirection}");
                 if (judgeDirection == Direction.None)
                 {
                     type = 0;
@@ -68,18 +68,19 @@ public class TouchManager : MonoBehaviour
                 }
 
                 playerManager.Operate((Direction)judgeDirection, type);
-                // playerManager.ShieldMove((Direction)judgeDirection);
+                // playerManager.ShieldMove((Direction)judgeDirection);  // Legacy
 
                 scoreManager.judgeQueue.Enqueue(new JudgeFormat((Direction)judgeDirection, judgeTime, type));
+                // scoreManager.Judge((Direction)judgeDirection, judgeTime, type);  // Legacy
 
-                // scoreManager.Judge((Direction)judgeDirection, judgeTime, type);
-                Debug.Log("판정 전송 : 널됨");
+                // Debug.Log("판정 전송 : 널됨");
                 judgeDirection = null;
             }
         }
     }
 
     // 임시 조작 확인기
+    // Legacy
     private void KeyChecker()
     {
         if (Input.GetKeyDown(KeyCode.A))
@@ -121,9 +122,7 @@ public class TouchManager : MonoBehaviour
     private void MouseChecker()
     {
 
-        // 조작 시작 : 초기화, 시작점 기록
-        // if ((Input.GetMouseButtonDown(0) && !isSwiping)
-        //     || (Input.GetMouseButton(0) && !isSwiping))  // 옵션
+        // 최초 입력시 : 스와이프 판별 시작
         if (Input.GetMouseButtonDown(0) && !isSwiping)
         {
             initialPos = Input.mousePosition;
@@ -132,7 +131,7 @@ public class TouchManager : MonoBehaviour
             isSwiping = true;
             isTapAndSwipe = true;
 
-            Debug.Log("input: 마우스 입력 시작");
+            // Debug.Log("input: 마우스 입력 시작");
             judgeDirection = Direction.None;
             previousDirection = Direction.None;
 
@@ -152,8 +151,7 @@ public class TouchManager : MonoBehaviour
 
         
         // 설정된 조작 길이를 넘었을 경우 : 스와이프한 것으로 취급, 판정 실시
-        // 
-        else if (sumLength > 30f && isSwiping)
+        else if (sumLength > 20f && isSwiping)
         {
             lastPos -= initialPos;
             double angle = Mathf.Atan2(lastPos.y, lastPos.x) * Mathf.Rad2Deg;
@@ -195,11 +193,11 @@ public class TouchManager : MonoBehaviour
         }
 
         // 조작 한계 시간을 초과한 경우 : 무방향 조작으로 취급, 판정 실시
-        else if (StageManager.Instance.currentTime - judgeTime > 0.1f && isSwiping)
+        else if (StageManager.Instance.currentTime - judgeTime > 0.0625f && isSwiping)
         {
             Debug.Log("Maximum swipe time exceeded.");
 
-            // if (isTapAndSwipe)
+            // if (isTapAndSwipe)  // Legacy
             // {
             //     judgeDirection = Direction.None;
             // }
@@ -216,7 +214,7 @@ public class TouchManager : MonoBehaviour
         // (조작 길이를 채우지 못하고) 조작을 종료했을 경우 : 무방향 조작으로 취급, 판정 실시
         else if (Input.GetMouseButtonUp(0) && isSwiping)
         {
-            // if (isTapAndSwipe)
+            // if (isTapAndSwipe)  // Legacy
             // {
             //     judgeDirection = Direction.None;
             // }
@@ -235,46 +233,59 @@ public class TouchManager : MonoBehaviour
 
             tempTouchs = Input.GetTouch(0);
 
-            // 터치 시작 : 초기화, 시작점 기록
+            // 최초 입력시 : 스와이프 판별 시작
             if (tempTouchs.phase == TouchPhase.Began && !isSwiping)
             {
                 // Debug.Log("Touch on");
 
+                // 스와이프 시작점 기록, 스와이프 길이 초기화
                 initialPos = Camera.main.ScreenToWorldPoint(tempTouchs.position);
                 lastPos = Camera.main.ScreenToWorldPoint(tempTouchs.position);
                 sumLength = 0;
+
+                // 스와이프하는지, 터치 후 첫 스와이프 체크인지 초기화
                 isSwiping = true;
                 isTapAndSwipe = true;
+                
+                // 판별 시작 시간 기록
+                judgeTime = StageManager.Instance.currentTime;
 
+                // 무방향 입력 판정
                 judgeDirection = Direction.None;
                 previousDirection = Direction.None;
-
-                judgeTime = StageManager.Instance.currentTime;
             }
 
+            // 스와이프가 판별되었거나 시간 초과 후에도 입력 홀드시 : 스와이프 판별 재시작
             else if (!isSwiping)
             {
+                // 스와이프 시작점 기록, 스와이프 길이 초기화
                 initialPos = Camera.main.ScreenToWorldPoint(tempTouchs.position);
                 lastPos = Camera.main.ScreenToWorldPoint(tempTouchs.position);
                 sumLength = 0;
+
+                // 판별 시작 시간 기록
+                judgeTime = StageManager.Instance.currentTime;
+
+                // 스와이프하는지, 터치 후 첫 스와이프 체크인지 초기화
                 isSwiping = true;
                 isTapAndSwipe = false;
-
-                judgeTime = StageManager.Instance.currentTime;
             }
 
 
             // 설정된 터치 길이를 넘었을 경우 : 스와이프한 것으로 취급, 판정 실시
-            else if (sumLength > 0.15f && isSwiping)
+            else if (sumLength > 0.1f && isSwiping)
             {
+                // 시작점으로부터 끝점까지의 각도 측정
                 lastPos -= initialPos;
                 double angle = Mathf.Atan2(lastPos.y, lastPos.x) * Mathf.Rad2Deg;
                 
-                Debug.Log(sumLength);
-                Debug.Log(angle);
+                // Debug.Log(sumLength);
+                // Debug.Log(angle);
 
+                // 스와이프 판별 끝
                 isSwiping = false;
 
+                // 각도에 따라 방향 산출
                 if (angle > 135 || angle <= -135)
                 {
                     if (isTapAndSwipe || previousDirection != Direction.Left)
@@ -309,13 +320,15 @@ public class TouchManager : MonoBehaviour
                 }
             }
 
-            // 터치 한계 시간을 초과한 경우 : 무방향 터치로 취급, 판정 실시
-            else if (StageManager.Instance.currentTime - judgeTime > 0.1f && isSwiping)
+            // 터치 한계 시간을 초과한 경우 : 스와이프 판별 종료, 롱노트 판별 계속
+            else if (StageManager.Instance.currentTime - judgeTime > 0.0625f && isSwiping)
             {
-                // if (isTapAndSwipe)
+                // if (isTapAndSwipe)  // Legacy
                 // {
                 //     judgeDirection = Direction.None;
                 // }
+
+                // 스와이프 판별 끝
                 isSwiping = false;
             }
 
@@ -327,17 +340,20 @@ public class TouchManager : MonoBehaviour
             }
         }
 
-        // (터치 길이를 채우지 못하고) 터치를 종료했을 경우 : 무방향 터치로 취급, 판정 실시
+        // 터치 길이를 채우지 못하고 터치를 종료했을 경우 : 스와이프 판별 종료, 롱노트 떼는 판정
         if (tempTouchs.phase == TouchPhase.Ended && isSwiping)
         {
-            // if (isTapAndSwipe)
+            // if (isTapAndSwipe)  // Legacy
             // {
             //     judgeDirection = Direction.None;
             // }
             
             // Debug.Log("Touch out");
 
+            // 스와이프 판별 끝
             isSwiping = false;
+            
+            // 롱노트 미구현
         }
     }
 }
