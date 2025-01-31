@@ -702,8 +702,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DamageOverlayImage: {fileID: 634732728}
-  fadeDuration: 0.5
-  maxAlpha: 0.5
+  fadeDuration: 0.4
+  maxAlpha: 0.05
+  ParticleParried:
+  - {fileID: 9128950236090559336, guid: c37d4ec3d9a51bf43be48a9312c9dfe7, type: 3}
+  - {fileID: 8383254907930360100, guid: 944995aeeb008244490b9a29d913633a, type: 3}
+  - {fileID: 3159418058163683536, guid: 314e3c6c1a7bde241b122269806b1446, type: 3}
+  ParticlePerfect:
+  - {fileID: 9029442871752451990, guid: 143294d3b002d2d4ca3f2452f1d6fc1b, type: 3}
+  - {fileID: 1888235362120343003, guid: ec9ae111fd0ca0e40b6b632721c2f1da, type: 3}
+  - {fileID: 6868093653260204414, guid: 5edb3a50aba096c4890516d92d0baa55, type: 3}
   particlePrefab: {fileID: 695506783536675238, guid: 526ba324f370fd34ca7e7a83878fb05a, type: 3}
 --- !u!114 &698621752
 MonoBehaviour:

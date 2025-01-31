@@ -186,7 +186,7 @@ public class ScoreManager : MonoBehaviour
                 combo += 1;
                 Debug.Log("BOUNCE! (LATE)");
                 targetStriker?.TakeDamage(1);
-                UIManager.Instance.ShowParticle(direction);
+                UIManager.Instance.ShowParticle(direction, false);
                 break;
 
             case 3:  // 완벽한 PARFECT
@@ -194,7 +194,7 @@ public class ScoreManager : MonoBehaviour
                 combo += 1;
                 Debug.Log("PARFECT!!");
                 targetStriker?.TakeDamage(1);
-                UIManager.Instance.ShowParticle(direction);
+                UIManager.Instance.ShowParticle(direction, true);
                 break;
 
             case 4:  // 빠른 BOUNCE
@@ -202,7 +202,7 @@ public class ScoreManager : MonoBehaviour
                 combo += 1;
                 Debug.Log("BOUNCE! (FAST)");
                 targetStriker?.TakeDamage(1);
-                UIManager.Instance.ShowParticle(direction);
+                UIManager.Instance.ShowParticle(direction, false);
                 break;
 
             case 5:  // 빠른 GUARD

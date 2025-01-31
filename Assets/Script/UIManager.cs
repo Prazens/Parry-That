@@ -9,7 +9,10 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private Image DamageOverlayImage;
     [SerializeField] private float fadeDuration;
-    [SerializeField] private float maxAlpha = 0.5f;
+    [SerializeField] private float maxAlpha = 0.05f;
+
+    public GameObject[] ParticleParried;
+    public GameObject[] ParticlePerfect;
 
     private bool isFading = false;
     private Sprite cachedDamageOverlaySprite;
@@ -58,7 +61,7 @@ public class UIManager : MonoBehaviour
 
         Debug.Log("페이드인 시작");
         float elapsedTime = 0f;
-        while (elapsedTime < fadeDuration * 0.2f)
+        while (elapsedTime < fadeDuration * 0.01f)
         {
             elapsedTime += Time.deltaTime;
             float alpha = Mathf.Lerp(0f, maxAlpha, elapsedTime / (fadeDuration / 2));
@@ -69,7 +72,7 @@ public class UIManager : MonoBehaviour
 
         Debug.Log("페이드아웃 시작");
         elapsedTime = 0f;
-        while (elapsedTime < fadeDuration * 0.8f)
+        while (elapsedTime < fadeDuration * 0.99f)
         {
             elapsedTime += Time.deltaTime;
             float alpha = Mathf.Lerp(maxAlpha, 0f, elapsedTime / (fadeDuration / 2));
@@ -95,15 +98,15 @@ public class UIManager : MonoBehaviour
     // UIManager.Instance.ShowDamageOverlayEffect(); 호출
 
 
-    [SerializeField] private GameObject particlePrefab;
+    // [SerializeField] private GameObject particlePrefab;
 
     private Vector2 position_up = new Vector2(0, 0.6f);
     private Vector2 position_down = new Vector2(0, -0.6f);
 
-    public void ShowParticle(Direction direction)   // 패링 파티클 이펙트 효과
+    public void ShowParticle(Direction direction, bool perfect)   // 패링 파티클 이펙트 효과
     {
         Vector2 spawnPos = new Vector2(0, 0);
-        switch (direction)
+        switch (direction)  // 좌우 패링 추가 시 해당 부분 작업 필요
         {
             case Direction.Up:
                 spawnPos = position_up; break;
@@ -116,12 +119,42 @@ public class UIManager : MonoBehaviour
             // case Direction.Right:
 
         }
-        GameObject particleObj = Instantiate(particlePrefab, spawnPos, Quaternion.identity);
+        //GameObject particleObj = Instantiate(particlePrefab, spawnPos, Quaternion.identity);
 
-        ParticleSystem ps = particleObj.GetComponent<ParticleSystem>();
-        if (ps != null)
+        //ParticleSystem ps = particleObj.GetComponentInChildren<ParticleSystem>();
+        //if (ps != null)
+        //{
+        //    ps.Play();
+        //}
+
+        ////////////////////////////////////////////////////////////////////////////////////////////
+        GameObject particleObj2;
+        int randNum = Random.Range(0, 3);
+        if (perfect)
         {
-            ps.Play();
+            particleObj2 = Instantiate(ParticlePerfect[randNum], spawnPos, Quaternion.identity);
         }
+        else
+        {
+            particleObj2 = Instantiate(ParticleParried[randNum], spawnPos, Quaternion.identity);
+        }
+        Animator particle = particleObj2.GetComponentInChildren<Animator>();
+        if (particle != null)
+        {
+            string animationTriggerName = ParticleParried[randNum].name;
+            particle.Play(animationTriggerName);
+
+            float length = particle.GetCurrentAnimatorStateInfo(0).length;
+            StartCoroutine(DestroyAfterAnimation(particleObj2, (float)length));
+        }
+
     }
+
+
+    private System.Collections.IEnumerator DestroyAfterAnimation(GameObject obj, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        Destroy(obj);
+    }
+
 }
