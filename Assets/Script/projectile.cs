@@ -61,7 +61,7 @@ public class projectile : MonoBehaviour
 
         if (StageManager.Instance.currentTime > noteData.arriveTime * (60f / bpm) + scoreManager.musicOffset + 0.12d)
         {
-            Debug.Log($"superlate {StageManager.Instance.currentTime} - {noteData.arriveTime * (60f / bpm) + scoreManager.musicOffset} = {StageManager.Instance.currentTime - noteData.arriveTime * (60f / bpm) - scoreManager.musicOffset}");
+            Debug.Log($"미조작 판정 수행 : {StageManager.Instance.currentTime - noteData.arriveTime * (60f / bpm) - scoreManager.musicOffset:3F} -> \"늦은 MISS\"");
             
             scoreManager.JudgeManage(owner.location, 0, (AttackType)noteData.type, owner, true);
         }

@@ -17,5 +17,6 @@ public enum AttackType
     Normal = 0,
     Strong = 1,
     HoldStart = 2,
-    HoldFinish = 3
+    HoldFinish = 3,
+    // HoldFinishStrong = 4
 }

@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-#nullable enable
 
 public class ScoreManager : MonoBehaviour
 {
@@ -29,7 +28,7 @@ public class ScoreManager : MonoBehaviour
     // 디버깅용
     private string[] judgeStrings = new string[7]
                                     { "공노트", "늦은 MISS", "늦은 GUARD", "늦은 BOUNCE",
-                                      "완벽한 PARFECT", "빠른 BOUNCE", "빠른 GUARD" };
+                                      "PERFECT", "빠른 BOUNCE", "빠른 GUARD" };
 
     void Update()
     {
@@ -62,23 +61,38 @@ public class ScoreManager : MonoBehaviour
     // 판정 - 입력이 들어왔을 때에 실행
     public void Judge(Direction direction, double touchTimeSec, AttackType type)
     {
-        StrikerController? strikerController = null;
-        Direction touchDirection = (direction == Direction.None) ? playerManager.currentDirection : direction;
-        
-        NoteData projectileNoteData;
-        double timeDiff;
-        int tempJudge = -1;
+        // 홀드 중이 아닐 때의 의미없는 홀드종료
+        if (type == AttackType.HoldFinish && !isHolding)
+        {
+            Debug.Log("홀드종료 판정 무시됨");
+            return;
+        }
 
-        playerManager.currentDirection = touchDirection;
+        // 홀드 중인데 다른 판정 입력
+        if (type != AttackType.HoldFinish && isHolding)
+        {
+            Debug.Log("홀드 중의 다른 판정 무시됨");
+            return;
+        }
+
+        double timeDiff;
         timeDiff = touchTimeSec - lastNonMissJudge;
 
         // 간접 미스 방지
         if (type == AttackType.Strong && timeDiff < 0.01d)
         {
-            Debug.Log("판정 무시됨");
+            Debug.Log("겹치는 강패링 판정 무시됨");
             return;
         }
 
+        StrikerController strikerController = null;
+        Direction touchDirection = (direction == Direction.None) ? playerManager.currentDirection : direction;
+        
+        NoteData projectileNoteData;
+        int tempJudge = -1;
+
+        playerManager.currentDirection = touchDirection;
+       
         // 스트라이커마다 탐지
         foreach (GameObject striker in strikerList_)
         {
@@ -92,9 +106,8 @@ public class ScoreManager : MonoBehaviour
                 // 시간에 따라 판정
                 timeDiff = touchTimeSec - projectileNoteData.arriveTime * (60f / strikerController.bpm) - musicOffset;
                 
-                // 터치 타입이 다른 경우
-                if ((AttackType)projectileNoteData.type != type &&
-                    !(type == AttackType.Strong && (AttackType)projectileNoteData.type == AttackType.Normal))
+                // 강공격을 약패링으로 처리한 경우
+                if (type == AttackType.Normal && (AttackType)projectileNoteData.type == AttackType.Strong)
                 {
                     tempJudge = -1;
                 }
@@ -130,6 +143,26 @@ public class ScoreManager : MonoBehaviour
                     tempJudge = -1;
                 }
 
+                // 홀드 시작
+                if (!isHolding && (AttackType)projectileNoteData.type == AttackType.HoldStart && tempJudge >= 1)
+                {
+                    isHolding = true;
+                }
+
+                // 홀드 끝
+                else if (isHolding && type == AttackType.HoldFinish)
+                {
+                    isHolding = false;
+
+                    // 홀드 아직 남았는데 입력 종료시
+                    if (tempJudge == -1)
+                    {
+                        tempJudge = 0;
+                    }
+                }
+                // 홀드 시간이 지났는데도 놓지 않는 경우는 미구현
+                // 홀드 관련 테스트 안해봄 - 버그가 있을 수 있음
+
                 lastNonMissJudge = touchTimeSec;
                 // Debug.Log("노트를 갖고 있고 같은 방향의 Striker를 찾았습니다");
                 break;
@@ -141,7 +174,7 @@ public class ScoreManager : MonoBehaviour
         }
 
         // 판정 전송
-        Debug.Log($"판정 수행 : Direction.{direction}, AttackType.{type}, {timeDiff:F4} -> \"{judgeStrings[tempJudge + 1]}\"");
+        Debug.Log($"판정 수행 : Direction.{direction}, AttackType.{type}, {timeDiff:F3} -> \"{judgeStrings[tempJudge + 1]}\"");
         JudgeManage(touchDirection, tempJudge, type, strikerController);
 
         return;
@@ -149,9 +182,9 @@ public class ScoreManager : MonoBehaviour
 
     // 판정 결과를 이용해 결과에 맞는 행동 수행 : 스코어, SFX, ...
     public void JudgeManage(Direction direction, int judgement, AttackType type,
-                            StrikerController? strikerController, bool isPassing = false)
+                            StrikerController strikerController, bool isPassing = false)
     {
-        // 플레이어가 조작하지 않은 경우
+        // 플레이어가 조작하지 않거나 조작이 무시되는 경우
         if (!isPassing)
         {
             playerManager.Operate(direction, type);

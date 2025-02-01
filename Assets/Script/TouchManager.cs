@@ -301,7 +301,7 @@ public class TouchManager : MonoBehaviour
     {
         if (_judgeDirection.HasValue)
         {
-            Debug.Log($"판정 전송");
+            // Debug.Log($"판정 전송");
 
             scoreManager.judgeQueue.Enqueue(new JudgeFormat((Direction)_judgeDirection, _judgeTime, _type));
         }
