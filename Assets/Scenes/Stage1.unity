@@ -712,7 +712,6 @@ MonoBehaviour:
   - {fileID: 9029442871752451990, guid: 143294d3b002d2d4ca3f2452f1d6fc1b, type: 3}
   - {fileID: 1888235362120343003, guid: ec9ae111fd0ca0e40b6b632721c2f1da, type: 3}
   - {fileID: 6868093653260204414, guid: 5edb3a50aba096c4890516d92d0baa55, type: 3}
-  particlePrefab: {fileID: 695506783536675238, guid: 526ba324f370fd34ca7e7a83878fb05a, type: 3}
 --- !u!114 &698621752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -815,9 +814,9 @@ MonoBehaviour:
   judgeDisplayPrefab: {fileID: 2130270614330469501, guid: 5a8cce8052826fa4e9b56476920ccb06, type: 3}
   judgeImages:
   - {fileID: 21300000, guid: 7af589f9b7dfa2d4899cd7ddeb8db6b6, type: 3}
-  - {fileID: 21300000, guid: 5d8bea6ce22b7de45adfae7e2df19101, type: 3}
-  - {fileID: 21300000, guid: 039889530893cdd499d79eb77419e5f1, type: 3}
-  - {fileID: 21300000, guid: 56e22b30156d5ca4fb60bcfac023f7df, type: 3}
+  - {fileID: 21300000, guid: 3fe6a08bc38661f4bae0c04752eea299, type: 3}
+  - {fileID: 21300000, guid: 0f13aedbf5e0dc44baac999c81c616f0, type: 3}
+  - {fileID: 21300000, guid: 9809d0fd211e62840b8f27bd2b15d720, type: 3}
   hpDisplay: {fileID: 1968400584}
   heartDisplays:
   - {fileID: 0}

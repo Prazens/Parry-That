@@ -128,7 +128,7 @@ public class ScoreManager : MonoBehaviour
 
                 JudgeManage(direction, tempJudge, type, strikerController);
 
-                Debug.Log("판정 수행됨");
+                Debug.Log($"판정 수행됨 : {direction}, {type}");
                 Debug.Log($"judge {touchTimeSec} - {projectileNoteData.arriveTime * (60d / strikerController.bpm) + musicOffset} = {touchTimeSec - projectileNoteData.arriveTime * (60d / strikerController.bpm) - musicOffset}");
                 Destroy(strikerController.projectileQueue.Dequeue());
 
@@ -141,8 +141,8 @@ public class ScoreManager : MonoBehaviour
     public void JudgeManage(Direction direction, int judgement, int type, StrikerController strikerController)
     {
         // index로 한번에 처리하는 것들
-        judgeDetails[0][judgement] += 1;
-        judgeDetails[(int)direction][judgement] += 1;
+        judgeDetails[0][judgement + 1] += 1;
+        judgeDetails[(int)direction][judgement + 1] += 1;
 
         // 특정 Striker 찾기
         StrikerController targetStriker = strikerController;
@@ -154,10 +154,10 @@ public class ScoreManager : MonoBehaviour
         // 따로 처리하는 것들
         switch (judgement)
         {
-            case 0:  // 늦은 MISS
+            case 0:  // 늦은 BAD (MISS)
                 score += 0;
                 combo = 0;
-                Debug.Log("HIT (MISS)");
+                Debug.Log("BAD (MISS)");
 
                 // 피격당한 후 죽었을 때
                 if (--playerManager.hp == 0)
@@ -175,40 +175,40 @@ public class ScoreManager : MonoBehaviour
 
                 break;
 
-            case 1:  // 늦은 GUARD
+            case 1:  // 늦은 BLOCKED
                 score += 300;
                 combo = 0;
-                Debug.Log("GUARD (LATE)");
+                Debug.Log("BLOCKED (LATE)");
                 break;
 
-            case 2:  // 늦은 BOUNCE
+            case 2:  // 늦은 PARRIED
                 score += 9000;
                 combo += 1;
-                Debug.Log("BOUNCE! (LATE)");
+                Debug.Log("PARRIED! (LATE)");
                 targetStriker?.TakeDamage(1);
                 UIManager.Instance.ShowParticle(direction, false);
                 break;
 
-            case 3:  // 완벽한 PARFECT
+            case 3:  // 완벽한 PERFECT
                 score += 30000;
                 combo += 1;
-                Debug.Log("PARFECT!!");
+                Debug.Log("PERFECT!!");
                 targetStriker?.TakeDamage(1);
                 UIManager.Instance.ShowParticle(direction, true);
                 break;
 
-            case 4:  // 빠른 BOUNCE
+            case 4:  // 빠른 PARRIED
                 score += 9000;
                 combo += 1;
-                Debug.Log("BOUNCE! (FAST)");
+                Debug.Log("PARRIED! (FAST)");
                 targetStriker?.TakeDamage(1);
                 UIManager.Instance.ShowParticle(direction, false);
                 break;
 
-            case 5:  // 빠른 GUARD
+            case 5:  // 빠른 BLOCKED
                 score += 300;
                 combo = 0;
-                Debug.Log("GUARD (FAST)");
+                Debug.Log("BLOCKED (FAST)");
                 break;
         }
 

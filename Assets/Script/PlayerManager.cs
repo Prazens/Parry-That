@@ -54,12 +54,10 @@ public class PlayerManager : MonoBehaviour
 
     public void Operate(Direction direction, int type)
     {
-        // Debug.Log($"{(int)direction} {triggers[(int)direction - 1]} {type}");
-
         int randomNum = UnityEngine.Random.Range(0, 3);
-        // Debug.Log($"random motion: {randomNum}");
 
-        // playerAnimator.SetTrigger(triggers[(int)direction - 1]);
+        Debug.Log($"Animation : {direction}, {type}, {randomNum}");
+
         playerAnimator.SetInteger("attackType", type);
         playerAnimator.SetInteger("parryDirection", (int)direction);
 

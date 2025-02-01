@@ -53,8 +53,7 @@ public class TouchManager : MonoBehaviour
             }
 
             // judgeDirection에 값이 null이 아니라 존재할 경우 : 판정 실시, null로 값 삭제
-            // 임시로 좌우 입력은 막아둠
-            if (judgeDirection.HasValue && (judgeDirection == Direction.Up || judgeDirection == Direction.Down || judgeDirection == Direction.None))
+            if (judgeDirection.HasValue)
             {
                 Debug.Log($"판정 전송 : {judgeDirection}");
                 if (judgeDirection == Direction.None)
