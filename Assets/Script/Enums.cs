@@ -10,3 +10,12 @@ public enum Direction
     Left = 3,
     Right = 4
 }
+
+// 너무 헷갈려서 만듬
+public enum AttackType
+{
+    Normal = 0,
+    Strong = 1,
+    HoldStart = 2,
+    HoldFinish = 3
+}

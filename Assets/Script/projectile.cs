@@ -63,8 +63,7 @@ public class projectile : MonoBehaviour
         {
             Debug.Log($"superlate {StageManager.Instance.currentTime} - {noteData.arriveTime * (60f / bpm) + scoreManager.musicOffset} = {StageManager.Instance.currentTime - noteData.arriveTime * (60f / bpm) - scoreManager.musicOffset}");
             
-            scoreManager.JudgeManage(owner.location, 0, noteData.type, owner);
-            Destroy(owner.projectileQueue.Dequeue());
+            scoreManager.JudgeManage(owner.location, 0, (AttackType)noteData.type, owner, true);
         }
 
         // 일정거리 가까워지면 destroy로 임시 구현

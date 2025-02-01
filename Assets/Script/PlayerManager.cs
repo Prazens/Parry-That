@@ -52,10 +52,11 @@ public class PlayerManager : MonoBehaviour
 
     }
 
-    public void Operate(Direction direction, int type)
+    public void Operate(Direction direction, AttackType type)
     {
         int randomNum;
 
+        // 모션이 위아래는 3개, 좌우는 2개임
         if (direction == Direction.Up || direction == Direction.Down)
         {
             randomNum = UnityEngine.Random.Range(0, 3);
@@ -67,13 +68,13 @@ public class PlayerManager : MonoBehaviour
 
         Debug.Log($"Animation : {direction}, {type}, {randomNum}");
 
-        playerAnimator.SetInteger("attackType", type);
+        playerAnimator.SetInteger("attackType", (int)type);
         playerAnimator.SetInteger("parryDirection", (int)direction);
 
         playerAnimator.SetInteger("randomSelecter", randomNum);
         playerAnimator.SetTrigger("playerParryPlay");
 
-        bladeAnimator.SetInteger("attackType", type);
+        bladeAnimator.SetInteger("attackType", (int)type);
         bladeAnimator.SetInteger("bladeDirection", (int)direction);
 
         bladeAnimator.SetInteger("randomSelecter", randomNum);

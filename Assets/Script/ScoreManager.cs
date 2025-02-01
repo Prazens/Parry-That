@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+#nullable enable
 
 public class ScoreManager : MonoBehaviour
 {
@@ -9,13 +10,13 @@ public class ScoreManager : MonoBehaviour
     public PlayerManager playerManager;
     public StrikerManager strikerManager;
     [SerializeField] public ParriedProjectileManager parriedProjectileManager;
-    // public SoundManager soundManager;
     public ScoreUI scoreUI;
     public int combo = 0;
     public int score = 0;
-    public float musicOffset;
+    public float musicOffset;  // 원본은 PlayerManager에 있음
 
     public double lastNonMissJudge = 0;
+    public bool isHolding = false;
 
     public Queue<JudgeFormat> judgeQueue = new Queue<JudgeFormat>();
 
@@ -25,20 +26,22 @@ public class ScoreManager : MonoBehaviour
     // 나중에 방향별 판정 정보가 아니라 스트라이커별 판정 정보로 바꾸어야 함
     // 리스트로 바꾸기
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        Initialize();
-    }
+    // 디버깅용
+    private string[] judgeStrings = new string[7]
+                                    { "공노트", "늦은 MISS", "늦은 GUARD", "늦은 BOUNCE",
+                                      "완벽한 PARFECT", "빠른 BOUNCE", "빠른 GUARD" };
 
-    // Update is called once per frame
     void Update()
     {
         foreach (JudgeFormat judgeObject in judgeQueue)
         {
             Judge(judgeObject.direction, judgeObject.timing, judgeObject.type);
         }
-        judgeQueue.Clear();
+
+        if (judgeQueue.Count != 0)
+        {
+            judgeQueue.Clear();
+        }
     }
 
     // 초기화
@@ -47,34 +50,34 @@ public class ScoreManager : MonoBehaviour
         combo = 0;
         score = 0;
         strikerList_ = strikerManager.strikerList;
+        isHolding = false;
         for (int i = 0; i < 4; i++)
         {
             judgeDetails[i] = new int[7] { 0, 0, 0, 0, 0, 0, 0 };
         }
+
+        return;
     }
 
-    // 판정
-    public void Judge(Direction direction, double touchTimeSec, int type)
+    // 판정 - 입력이 들어왔을 때에 실행
+    public void Judge(Direction direction, double touchTimeSec, AttackType type)
     {
-        StrikerController strikerController;
+        StrikerController? strikerController = null;
         Direction touchDirection = (direction == Direction.None) ? playerManager.currentDirection : direction;
         
         NoteData projectileNoteData;
         double timeDiff;
-
-        int tempJudge;
+        int tempJudge = -1;
 
         playerManager.currentDirection = touchDirection;
-
         timeDiff = touchTimeSec - lastNonMissJudge;
-        if (type == 1 && timeDiff < 0.01d)
+
+        // 간접 미스 방지
+        if (type == AttackType.Strong && timeDiff < 0.01d)
         {
             Debug.Log("판정 무시됨");
             return;
         }
-
-        // Vector3 projectileLocation;
-        // double distance;
 
         // 스트라이커마다 탐지
         foreach (GameObject striker in strikerList_)
@@ -90,11 +93,13 @@ public class ScoreManager : MonoBehaviour
                 timeDiff = touchTimeSec - projectileNoteData.arriveTime * (60f / strikerController.bpm) - musicOffset;
                 
                 // 터치 타입이 다른 경우
-                if (projectileNoteData.type != type && !(type == 1 && projectileNoteData.type == 0))
+                if ((AttackType)projectileNoteData.type != type &&
+                    !(type == AttackType.Strong && (AttackType)projectileNoteData.type == AttackType.Normal))
                 {
-                    return;
+                    tempJudge = -1;
                 }
 
+                // 판정 나누기
                 // 기획서의 판정 표와 반대 순서임
                 else if (timeDiff > 0.12d)
                 {
@@ -122,43 +127,60 @@ public class ScoreManager : MonoBehaviour
                 }
                 else  // 공노트? 공POOR?
                 {
-                    return;
+                    tempJudge = -1;
                 }
 
                 lastNonMissJudge = touchTimeSec;
-
-                JudgeManage(direction, tempJudge, type, strikerController);
-
-                Debug.Log($"판정 수행됨 : {direction}, {type}");
-                Debug.Log($"judge {touchTimeSec} - {projectileNoteData.arriveTime * (60d / strikerController.bpm) + musicOffset} = {touchTimeSec - projectileNoteData.arriveTime * (60d / strikerController.bpm) - musicOffset}");
-                Destroy(strikerController.projectileQueue.Dequeue());
-
-                return;
+                // Debug.Log("노트를 갖고 있고 같은 방향의 Striker를 찾았습니다");
+                break;
+            }
+            else
+            {
+                strikerController = null;
             }
         }
+
+        // 판정 전송
+        Debug.Log($"판정 수행 : Direction.{direction}, AttackType.{type}, {timeDiff:F4} -> \"{judgeStrings[tempJudge + 1]}\"");
+        JudgeManage(touchDirection, tempJudge, type, strikerController);
+
+        return;
     }
 
     // 판정 결과를 이용해 결과에 맞는 행동 수행 : 스코어, SFX, ...
-    public void JudgeManage(Direction direction, int judgement, int type, StrikerController strikerController)
+    public void JudgeManage(Direction direction, int judgement, AttackType type,
+                            StrikerController? strikerController, bool isPassing = false)
     {
-        // index로 한번에 처리하는 것들
+        // 플레이어가 조작하지 않은 경우
+        if (!isPassing)
+        {
+            playerManager.Operate(direction, type);
+        }
+
+        // 노트가 처리되지 않은 경우
+        if (judgement == -1)
+        {
+            lastNonMissJudge = 0;
+            return;
+        }
+
+        // index로 한번에 처리
         judgeDetails[0][judgement + 1] += 1;
         judgeDetails[(int)direction][judgement + 1] += 1;
 
         // 특정 Striker 찾기
         StrikerController targetStriker = strikerController;
 
-        GameObject targetProjectile = targetStriker.projectileQueue.Peek();
+        // GameObject targetProjectile = targetStriker.projectileQueue.Peek();
 
         CameraMoving CameraEffect = GameObject.Find("Main Camera").GetComponent<CameraMoving>();
 
-        // 따로 처리하는 것들
+        // 따로 처리
         switch (judgement)
         {
             case 0:  // 늦은 BAD (MISS)
                 score += 0;
                 combo = 0;
-                Debug.Log("BAD (MISS)");
 
                 // 피격당한 후 죽었을 때
                 if (--playerManager.hp == 0)
@@ -179,13 +201,11 @@ public class ScoreManager : MonoBehaviour
             case 1:  // 늦은 BLOCKED
                 score += 300;
                 combo = 0;
-                Debug.Log("BLOCKED (LATE)");
                 break;
 
             case 2:  // 늦은 PARRIED
                 score += 9000;
                 combo += 1;
-                Debug.Log("PARRIED! (LATE)");
                 targetStriker?.TakeDamage(1);
                 UIManager.Instance.ShowParticle(direction, false);
                 break;
@@ -193,7 +213,6 @@ public class ScoreManager : MonoBehaviour
             case 3:  // 완벽한 PERFECT
                 score += 30000;
                 combo += 1;
-                Debug.Log("PERFECT!!");
                 targetStriker?.TakeDamage(1);
                 UIManager.Instance.ShowParticle(direction, true);
                 break;
@@ -201,7 +220,6 @@ public class ScoreManager : MonoBehaviour
             case 4:  // 빠른 PARRIED
                 score += 9000;
                 combo += 1;
-                Debug.Log("PARRIED! (FAST)");
                 targetStriker?.TakeDamage(1);
                 UIManager.Instance.ShowParticle(direction, false);
                 break;
@@ -209,7 +227,6 @@ public class ScoreManager : MonoBehaviour
             case 5:  // 빠른 BLOCKED
                 score += 300;
                 combo = 0;
-                Debug.Log("BLOCKED (FAST)");
                 break;
         }
 
@@ -222,7 +239,7 @@ public class ScoreManager : MonoBehaviour
                 // parriedProjectileManager.CreateParriedProjectile(targetProjectile.transform.position, direction);
                 if (parriedProjectileManager != null)
                 {
-                    parriedProjectileManager.ParryTusache(direction, type);
+                    parriedProjectileManager.ParryTusache(direction, (int)type);
                 }
                 else
                 {
@@ -237,6 +254,10 @@ public class ScoreManager : MonoBehaviour
 
         scoreUI.DisplayJudge(judgement, direction);
 
+        // 대상 노트 제거
+        Destroy(strikerController.projectileQueue.Dequeue());
         // Destroy(targetProjectile);
+
+        return;
     }
 }

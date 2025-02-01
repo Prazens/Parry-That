@@ -12,13 +12,13 @@ public struct JudgeFormat
 {
     public Direction direction;
     public double timing;
-    public int type;
+    public AttackType type;
 
-    public JudgeFormat(Direction _direction, double _timing, int _type)
+    public JudgeFormat(Direction _direction, double _timing, AttackType _type)
     {
-        this.direction = _direction;
-        this.timing = _timing;
-        this.type = _type;
+        direction = _direction;
+        timing = _timing;
+        type = _type;
     }
 }
 
@@ -29,15 +29,17 @@ public class TouchManager : MonoBehaviour
     [SerializeField] public PlayerManager playerManager;
     [SerializeField] private bool isTouchAvailable = false;
 
-    int type;
+    private Vector3 initialPos;
+    private Vector3 lastPos;
+    private bool isSwiping = false;
+    private double sumLength = 0;
+    private double judgeTime;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private bool isTapAndSwipe = false;  // 같은 방향 연속 스와이프 입력 방지
+    private Direction previousDirection;  // 같은 방향 연속 스와이프 입력 방지
 
-    // Update is called once per frame
+    private Touch tempTouchs;
+
     void Update()
     {
         if (StageManager.isActive)
@@ -51,87 +53,33 @@ public class TouchManager : MonoBehaviour
                 // KeyChecker();  // Legacy
                 MouseChecker();  // 터치에 중복
             }
-
-            // judgeDirection에 값이 null이 아니라 존재할 경우 : 판정 실시, null로 값 삭제
-            // 수정 예정: Update에서는 연산하지 않고 큐에 넣는것만,
-            //          Direction.None을 해석하는 것은 ScoreManager에,
-            //          JudgeFormat을 만드는 것은 ~~Checker에 맡길 계획,
-            //          애니메이션 재생은 ScoreManager의 Judge 맨 끝으로?
-            if (judgeDirection.HasValue)
-            {
-                Debug.Log($"판정 전송 : {judgeDirection}");
-                if (judgeDirection == Direction.None)
-                {
-                    type = 0;
-                    judgeDirection = playerManager.currentDirection;
-                }
-                else
-                {
-                    type = 1;
-                }
-
-                playerManager.Operate((Direction)judgeDirection, type);
-                // playerManager.ShieldMove((Direction)judgeDirection);  // Legacy
-
-                scoreManager.judgeQueue.Enqueue(new JudgeFormat((Direction)judgeDirection, judgeTime, type));
-                // scoreManager.Judge((Direction)judgeDirection, judgeTime, type);  // Legacy
-
-                // Debug.Log("판정 전송 : 널됨");
-                judgeDirection = null;
-            }
-
-            // if (judgeFormat.HasValue)
-            // {
-            //     Debug.Log($"판정 전송");
-
-
-            //     scoreManager.judgeQueue.Enqueue((JudgeFormat)judgeFormat);
-            //     judgeFormat = null;
-            // }
         }
     }
 
     // 임시 조작 확인기
-    // Legacy
     private void KeyChecker()
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
-            // scoreManager.Judge(Direction.Left, StageManager.Instance.currentTime);
+            SendJudge(Direction.Left, StageManager.Instance.currentTime, AttackType.Strong);
         }
         else if (Input.GetKeyDown(KeyCode.D))
         {
-            // scoreManager.Judge(Direction.Right, StageManager.Instance.currentTime);
+            SendJudge(Direction.Right, StageManager.Instance.currentTime, AttackType.Strong);
         }
         else if (Input.GetKeyDown(KeyCode.W))
         {
-            playerManager.Operate(Direction.Up, 1);
-            scoreManager.Judge(Direction.Up, StageManager.Instance.currentTime, 1);
+            SendJudge(Direction.Up, StageManager.Instance.currentTime, AttackType.Strong);
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
-            playerManager.Operate(Direction.Down, 1);
-            scoreManager.Judge(Direction.Down, StageManager.Instance.currentTime, 1);
+            SendJudge(Direction.Down, StageManager.Instance.currentTime, AttackType.Strong);
         }
         else if (Input.GetKeyDown(KeyCode.Space))  // 방향 스와이프 없이 탭만 할때의 움직임
         {
-            playerManager.Operate(playerManager.currentDirection, 0);
-            scoreManager.Judge(playerManager.currentDirection, StageManager.Instance.currentTime, 0);
+            SendJudge(Direction.None, StageManager.Instance.currentTime, AttackType.Normal);
         }
     }
-
-
-    private Vector3 initialPos;
-    private Vector3 lastPos;
-    private bool isSwiping = false;
-    private double sumLength = 0;
-    private double judgeTime;
-
-    private Direction? judgeDirection = null; // null이면 판정하지 않고, 실제 값을 가진 경우 판정
-    // private JudgeFormat? judgeFormat = null; // null이면 판정하지 않고, 실제 값을 가진 경우 판정
-
-    private bool isTapAndSwipe = false;  // 같은 방향 연속 스와이프 입력 방지
-    private Direction previousDirection;  // 같은 방향 연속 스와이프 입력 방지
 
     // 임시 조작 확인기
     private void MouseChecker()
@@ -145,12 +93,12 @@ public class TouchManager : MonoBehaviour
             sumLength = 0;
             isSwiping = true;
             isTapAndSwipe = true;
+            judgeTime = StageManager.Instance.currentTime;
 
             // Debug.Log("input: 마우스 입력 시작");
-            judgeDirection = Direction.None;
+            SendJudge(Direction.None, judgeTime, AttackType.Normal);
             previousDirection = Direction.None;
 
-            judgeTime = StageManager.Instance.currentTime;
         }
 
         else if (Input.GetMouseButton(0) && !isSwiping)
@@ -163,7 +111,6 @@ public class TouchManager : MonoBehaviour
 
             judgeTime = StageManager.Instance.currentTime;
         }
-
         
         // 설정된 조작 길이를 넘었을 경우 : 스와이프한 것으로 취급, 판정 실시
         else if (sumLength > 20f && isSwiping)
@@ -177,7 +124,7 @@ public class TouchManager : MonoBehaviour
             {
                 if (isTapAndSwipe || previousDirection != Direction.Left)
                 {
-                    judgeDirection = Direction.Left;
+                    SendJudge(Direction.Left, judgeTime, AttackType.Strong);
                     previousDirection = Direction.Left;
                 }
             }
@@ -185,7 +132,7 @@ public class TouchManager : MonoBehaviour
             {
                 if (isTapAndSwipe || previousDirection != Direction.Up)
                 {
-                    judgeDirection = Direction.Up;
+                    SendJudge(Direction.Up, judgeTime, AttackType.Strong);
                     previousDirection = Direction.Up;
                 }
             }
@@ -193,7 +140,7 @@ public class TouchManager : MonoBehaviour
             {
                 if (isTapAndSwipe || previousDirection != Direction.Right)
                 {
-                    judgeDirection = Direction.Right;
+                    SendJudge(Direction.Right, judgeTime, AttackType.Strong);
                     previousDirection = Direction.Right;
                 }
             }
@@ -201,7 +148,7 @@ public class TouchManager : MonoBehaviour
             {
                 if (isTapAndSwipe || previousDirection != Direction.Down)
                 {
-                    judgeDirection = Direction.Down;
+                    SendJudge(Direction.Down, judgeTime, AttackType.Strong);
                     previousDirection = Direction.Down;
                 }
             }
@@ -210,12 +157,6 @@ public class TouchManager : MonoBehaviour
         // 조작 한계 시간을 초과한 경우 : 무방향 조작으로 취급, 판정 실시
         else if (StageManager.Instance.currentTime - judgeTime > 0.0625f && isSwiping)
         {
-            Debug.Log("Maximum swipe time exceeded.");
-
-            // if (isTapAndSwipe)  // Legacy
-            // {
-            //     judgeDirection = Direction.None;
-            // }
             isSwiping = false;
         }
 
@@ -229,15 +170,11 @@ public class TouchManager : MonoBehaviour
         // (조작 길이를 채우지 못하고) 조작을 종료했을 경우 : 무방향 조작으로 취급, 판정 실시
         else if (Input.GetMouseButtonUp(0) && isSwiping)
         {
-            // if (isTapAndSwipe)  // Legacy
-            // {
-            //     judgeDirection = Direction.None;
-            // }
             isSwiping = false;
+            SendJudge(Direction.None, judgeTime, AttackType.HoldFinish);
         }
     }
 
-    private Touch tempTouchs;
     // Touch Checker
     private void TouchChecker()
     {
@@ -266,7 +203,7 @@ public class TouchManager : MonoBehaviour
                 judgeTime = StageManager.Instance.currentTime;
 
                 // 무방향 입력 판정
-                judgeDirection = Direction.None;
+                SendJudge(Direction.None, judgeTime, AttackType.Normal);
                 previousDirection = Direction.None;
             }
 
@@ -293,9 +230,6 @@ public class TouchManager : MonoBehaviour
                 // 시작점으로부터 끝점까지의 각도 측정
                 lastPos -= initialPos;
                 double angle = Mathf.Atan2(lastPos.y, lastPos.x) * Mathf.Rad2Deg;
-                
-                // Debug.Log(sumLength);
-                // Debug.Log(angle);
 
                 // 스와이프 판별 끝
                 isSwiping = false;
@@ -305,7 +239,9 @@ public class TouchManager : MonoBehaviour
                 {
                     if (isTapAndSwipe || previousDirection != Direction.Left)
                     {
-                        judgeDirection = Direction.Left;
+                        // 판정을 보냄
+                        SendJudge(Direction.Left, judgeTime, AttackType.Strong);
+                        // 이전 판정과 같은 스와이프로 판정이 연사되지 않게 기록
                         previousDirection = Direction.Left;
                     }
                 }
@@ -313,7 +249,7 @@ public class TouchManager : MonoBehaviour
                 {
                     if (isTapAndSwipe || previousDirection != Direction.Up)
                     {
-                        judgeDirection = Direction.Up;
+                        SendJudge(Direction.Up, judgeTime, AttackType.Strong);
                         previousDirection = Direction.Up;
                     }
                 }
@@ -321,7 +257,7 @@ public class TouchManager : MonoBehaviour
                 {
                     if (isTapAndSwipe || previousDirection != Direction.Right)
                     {
-                        judgeDirection = Direction.Right;
+                        SendJudge(Direction.Right, judgeTime, AttackType.Strong);
                         previousDirection = Direction.Right;
                     }
                 }
@@ -329,7 +265,7 @@ public class TouchManager : MonoBehaviour
                 {
                     if (isTapAndSwipe || previousDirection != Direction.Down)
                     {
-                        judgeDirection = Direction.Down;
+                        SendJudge(Direction.Down, judgeTime, AttackType.Strong);
                         previousDirection = Direction.Down;
                     }
                 }
@@ -338,11 +274,6 @@ public class TouchManager : MonoBehaviour
             // 터치 한계 시간을 초과한 경우 : 스와이프 판별 종료, 롱노트 판별 계속
             else if (StageManager.Instance.currentTime - judgeTime > 0.0625f && isSwiping)
             {
-                // if (isTapAndSwipe)  // Legacy
-                // {
-                //     judgeDirection = Direction.None;
-                // }
-
                 // 스와이프 판별 끝
                 isSwiping = false;
             }
@@ -358,17 +289,21 @@ public class TouchManager : MonoBehaviour
         // 터치 길이를 채우지 못하고 터치를 종료했을 경우 : 스와이프 판별 종료, 롱노트 떼는 판정
         if (tempTouchs.phase == TouchPhase.Ended && isSwiping)
         {
-            // if (isTapAndSwipe)  // Legacy
-            // {
-            //     judgeDirection = Direction.None;
-            // }
-            
-            // Debug.Log("Touch out");
-
             // 스와이프 판별 끝
             isSwiping = false;
             
-            // 롱노트 미구현
+            // 롱노트 끝판정 전송
+            SendJudge(Direction.None, judgeTime, AttackType.HoldFinish);
+        }
+    }
+
+    private void SendJudge(Direction? _judgeDirection, double _judgeTime, AttackType _type)
+    {
+        if (_judgeDirection.HasValue)
+        {
+            Debug.Log($"판정 전송");
+
+            scoreManager.judgeQueue.Enqueue(new JudgeFormat((Direction)_judgeDirection, _judgeTime, _type));
         }
     }
 }
