@@ -53,6 +53,10 @@ public class TouchManager : MonoBehaviour
             }
 
             // judgeDirection에 값이 null이 아니라 존재할 경우 : 판정 실시, null로 값 삭제
+            // 수정 예정: Update에서는 연산하지 않고 큐에 넣는것만,
+            //          Direction.None을 해석하는 것은 ScoreManager에,
+            //          JudgeFormat을 만드는 것은 ~~Checker에 맡길 계획,
+            //          애니메이션 재생은 ScoreManager의 Judge 맨 끝으로?
             if (judgeDirection.HasValue)
             {
                 Debug.Log($"판정 전송 : {judgeDirection}");
@@ -75,6 +79,15 @@ public class TouchManager : MonoBehaviour
                 // Debug.Log("판정 전송 : 널됨");
                 judgeDirection = null;
             }
+
+            // if (judgeFormat.HasValue)
+            // {
+            //     Debug.Log($"판정 전송");
+
+
+            //     scoreManager.judgeQueue.Enqueue((JudgeFormat)judgeFormat);
+            //     judgeFormat = null;
+            // }
         }
     }
 
@@ -113,7 +126,10 @@ public class TouchManager : MonoBehaviour
     private bool isSwiping = false;
     private double sumLength = 0;
     private double judgeTime;
+
     private Direction? judgeDirection = null; // null이면 판정하지 않고, 실제 값을 가진 경우 판정
+    // private JudgeFormat? judgeFormat = null; // null이면 판정하지 않고, 실제 값을 가진 경우 판정
+
     private bool isTapAndSwipe = false;  // 같은 방향 연속 스와이프 입력 방지
     private Direction previousDirection;  // 같은 방향 연속 스와이프 입력 방지
 

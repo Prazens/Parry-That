@@ -54,7 +54,16 @@ public class PlayerManager : MonoBehaviour
 
     public void Operate(Direction direction, int type)
     {
-        int randomNum = UnityEngine.Random.Range(0, 3);
+        int randomNum;
+
+        if (direction == Direction.Up || direction == Direction.Down)
+        {
+            randomNum = UnityEngine.Random.Range(0, 3);
+        }
+        else
+        {
+            randomNum = UnityEngine.Random.Range(0, 2);
+        }
 
         Debug.Log($"Animation : {direction}, {type}, {randomNum}");
 

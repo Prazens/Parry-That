@@ -23,6 +23,7 @@ public class ScoreManager : MonoBehaviour
     public int[][] judgeDetails = new int[4][];  // 방향별 판정 정보, index 0은 전체 판정 합
     // { 총 노트수(미구현), 늦은 MISS, 늦은 GUARD, 늦은 BOUNCE, 완벽한 PARFECT, 빠른 BOUNCE, 빠른 GUARD } 순서
     // 나중에 방향별 판정 정보가 아니라 스트라이커별 판정 정보로 바꾸어야 함
+    // 리스트로 바꾸기
 
     // Start is called before the first frame update
     void Start()
