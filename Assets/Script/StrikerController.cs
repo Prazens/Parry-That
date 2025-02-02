@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Microsoft.Unity.VisualStudio.Editor;
 using UnityEngine;
 
 public class StrikerController : MonoBehaviour
@@ -22,11 +23,19 @@ public class StrikerController : MonoBehaviour
     [SerializeField] public Queue<GameObject> projectileQueue = new Queue<GameObject>{};
     private Queue<Tuple<float, int>> prepareQueue = new Queue<Tuple<float, int>>(); // (arriveTime, type) 저장
 
-
     public GameObject hpBarPrefab;
     private GameObject hpBar;
     private Transform hpControl;
 
+    //투사체 발사 시의 !관련
+    [SerializeField] private GameObject exclamationPrefab; // 공통 느낌표 프리팹
+    private Transform exclamationParent; // 느낌표 표시 위치
+    private List<GameObject> prepareExclamation = new List<GameObject>(); // 느낌표 오브젝트 저장
+
+    private void Start()
+    {
+        SetupExclamationParent();// exclamationParent 자동 생성
+    }
     private void Update() // 현재 striker 자체에서 투사체 일정 간격으로 발사
     {
         // 투사체 발사 타이밍 계산
@@ -47,8 +56,8 @@ public class StrikerController : MonoBehaviour
             prepareQueue.Dequeue(); // 발사된 노트 제거
             lastProjectileTime = currentTime;
         }
-        // 마지막 투사체 발사 이후 2초가 지나면 공격 상태 해제
-        if (currentTime - lastProjectileTime > 2.0f)
+        // 마지막 투사체 발사 이후 1.5초가 지나면 공격 상태 해제
+        if (currentTime - lastProjectileTime > 1.5f)
         {
             animator.SetBool("isAttacking", false);
         }
@@ -59,11 +68,52 @@ public class StrikerController : MonoBehaviour
         int noteType = chartData.notes[currentNoteIndex].type; // 노트 타입 저장
 
         prepareQueue.Enqueue(new Tuple<float, int>(arriveTime, noteType)); // 도착 시간과 타입 저장
+        ShowExclamation(noteType); // 느낌표 표시
         Debug.Log("prepare!");
 
         // 애니메이션 실행 (느낌표 표시)
+        // **애니메이션 실행 (공격 준비)**
+        animator.SetTrigger("isPrepare");
 
         currentNoteIndex++; // 다음 노트로 이동
+    }
+    
+    // 느낌표 생성 관련 함수
+    private void SetupExclamationParent()
+    {
+        // `exclamationParent`가 없으면 자동 생성
+        if (exclamationParent == null)
+        {
+            GameObject newParent = new GameObject("ExclamationHolder");
+            newParent.transform.SetParent(this.transform);
+            newParent.transform.localPosition = new Vector3(1.8f, 0.0f, 0.0f); // Striker의 오른쪽에 배치
+            exclamationParent = newParent.transform;
+        }
+    }
+    private void ShowExclamation(int type)
+    {
+        GameObject newExclamation = Instantiate(exclamationPrefab, exclamationParent);
+        newExclamation.transform.localPosition = new Vector3(prepareExclamation.Count * 0.3f, 0, 0); // 왼쪽부터 배치
+
+        // 색상 변경
+        SpriteRenderer exclamationSprite = newExclamation.GetComponent<SpriteRenderer>();
+        if (exclamationSprite != null)
+        {
+            switch (type)
+            {
+                case 0:  // 일반 투사체
+                    exclamationSprite.color = Color.yellow;
+                    break;
+                case 1:  // 강한 투사체
+                    exclamationSprite.color = Color.red;
+                    break;
+                default: // 예외 처리
+                    exclamationSprite.color = Color.white; // 기본값
+                    break;
+            }
+        }
+
+        prepareExclamation.Add(newExclamation);
     }
 
     // 투사체 발사
@@ -90,6 +140,18 @@ public class StrikerController : MonoBehaviour
             projScript.owner = this;   // 소유자로 현재 스트라이커 설정
             projScript.arriveTime = time;
             projScript.type = index;
+        }
+        // ⭐ 발사 시 느낌표 제거 (좌측부터)
+        if (prepareExclamation.Count > 0)
+        {
+            Destroy(prepareExclamation[0]); // 가장 오래된 느낌표 제거
+            prepareExclamation.RemoveAt(0);
+
+            // 남은 느낌표 위치 재배치
+            for (int i = 0; i < prepareExclamation.Count; i++)
+            {
+                prepareExclamation[i].transform.localPosition = new Vector3(i * 0.3f, 0, 0);
+            }
         }
     }
 
@@ -129,19 +191,12 @@ public class StrikerController : MonoBehaviour
 
             hp -= damage;
             Debug.Log($"{gameObject.name} took {damage} damage! Current HP: {hp}");
-            StartCoroutine(PlayDamageAnimation());
+            animator.SetTrigger("isDamaged");
             if (hp == 0)
             {
                 animator.SetBool("isClear", true);
                 playerManager.hp =+ 1;
             }
         }
-    }
-
-    private IEnumerator PlayDamageAnimation()
-    {
-        animator.SetBool("isDamaged", true);
-        yield return new WaitForSeconds(0.3f); // 피해 애니메이션 시간
-        animator.SetBool("isDamaged", false);
     }
 }
