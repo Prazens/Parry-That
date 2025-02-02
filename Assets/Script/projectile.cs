@@ -63,14 +63,11 @@ public class projectile : MonoBehaviour
         {
             float fractionOfJourney = (arriveTime * (60f / bpm) + 2f - currentTime) / 0.5f;
             transform.position = Vector3.Lerp(targetPosition, startPosition, fractionOfJourney);
-            Debug.Log($"arrive: {arriveTime:F2}, current: {currentTime:F2}, frac: {fractionOfJourney:F2}");
 
             if (fractionOfJourney < 0f)
             {
                 hasReachedTarget = true;
                 finalVelocity = (targetPosition - startPosition) / 0.5f; // Lerp의 속도를 저장
-                Debug.Log("arrive!");
-                Debug.Log(currentTime);
             }
         }
         else
