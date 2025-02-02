@@ -32,6 +32,15 @@ public class StrikerController : MonoBehaviour
     private Transform exclamationParent; // 느낌표 표시 위치
     private List<GameObject> prepareExclamation = new List<GameObject>(); // 느낌표 오브젝트 저장
 
+    //준비 효과음
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip prepareSoundNormal;  // 일반 공격 준비 효과음 (type 0)
+    [SerializeField] private AudioClip prepareSoundStrong;  // 강한 공격 준비 효과음 (type 1)
+    //패링 효과음
+    [SerializeField] private AudioClip parrySoundNormal;  // 일반 공격 준비 효과음 (type 0)
+    [SerializeField] private AudioClip parrySoundStrong;  // 강한 공격 준비 효과음 (type 1)
+
+
     private void Start()
     {
         SetupExclamationParent();// exclamationParent 자동 생성
@@ -74,8 +83,24 @@ public class StrikerController : MonoBehaviour
         // 애니메이션 실행 (느낌표 표시)
         // **애니메이션 실행 (공격 준비)**
         animator.SetTrigger("isPrepare");
+        // **🔹 효과음 재생 (일반 / 강한 공격에 따라 다름)**
+        PlayPrepareSound(noteType);
 
         currentNoteIndex++; // 다음 노트로 이동
+    }
+    private void PlayPrepareSound(int type)
+    {
+        if (audioSource != null)
+        {
+            if (type == 0 && prepareSoundNormal != null)
+            {
+                audioSource.PlayOneShot(prepareSoundNormal);
+            }
+            else if (type == 1 && prepareSoundStrong != null)
+            {
+                audioSource.PlayOneShot(prepareSoundStrong);
+            }
+        }
     }
     
     // 느낌표 생성 관련 함수
@@ -183,8 +208,19 @@ public class StrikerController : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, AttackType type)
     {
+        if (audioSource != null)
+        {
+            if (type == AttackType.Normal && prepareSoundNormal != null)
+            {
+                audioSource.PlayOneShot(parrySoundNormal);
+            }
+            else if (type == AttackType.Strong && prepareSoundStrong != null)
+            {
+                audioSource.PlayOneShot(parrySoundStrong);
+            }
+        }
         if (hp >= 0)
         {
             hpControl.transform.localScale = new Vector3(1 - ((float)hp / initialHp), 1, 1);

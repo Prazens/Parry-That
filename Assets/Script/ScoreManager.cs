@@ -242,21 +242,21 @@ public class ScoreManager : MonoBehaviour
             case 2:  // 늦은 PARRIED
                 score += 9000;
                 combo += 1;
-                targetStriker?.TakeDamage(1);
+                targetStriker?.TakeDamage(1, type);
                 UIManager.Instance.ShowParticle(direction, false);
                 break;
 
             case 3:  // 완벽한 PERFECT
                 score += 30000;
                 combo += 1;
-                targetStriker?.TakeDamage(1);
+                targetStriker?.TakeDamage(1, type);
                 UIManager.Instance.ShowParticle(direction, true);
                 break;
 
             case 4:  // 빠른 PARRIED
                 score += 9000;
                 combo += 1;
-                targetStriker?.TakeDamage(1);
+                targetStriker?.TakeDamage(1, type);
                 UIManager.Instance.ShowParticle(direction, false);
                 break;
 
