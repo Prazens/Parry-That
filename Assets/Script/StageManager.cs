@@ -26,7 +26,6 @@ public class StageManager : MonoBehaviour
     [SerializeField] private Transform canvasTransform; // Canvas의 Transform
     [SerializeField] private GameController gameController; // GameController 참조
     [SerializeField] private ScoreManager scoreManager;
-    [SerializeField] private GameObject transparentProjectilePrefab; // 투명 투사체 프리팹
     [SerializeField] private AudioSource musicSource; // 음악 재생을 위한 AudioSource
     private bool musicPlayed = false; // 음악이 재생되었는지 확인
     public static bool isActive = false; // 스테이지 활성화 여부
@@ -322,24 +321,6 @@ public class StageManager : MonoBehaviour
         //투사체 이동 재개
 
         Debug.Log("Stage Resumed!");
-    }
-    private void SpawnTransparentProjectile()
-    {
-        if (transparentProjectilePrefab == null || playerInstance == null)
-        {
-            Debug.LogError("TransparentProjectilePrefab or PlayerInstance is not assigned!");
-            return;
-        }
-
-        // 투사체 생성
-        GameObject projectile = Instantiate(transparentProjectilePrefab, new Vector3(0, 4.0f, 0), Quaternion.identity);
-
-        TransparentProjectile projectileScript = projectile.GetComponent<TransparentProjectile>();
-        if (projectileScript != null)
-        {
-            projectileScript.target = playerInstance.transform; // 플레이어를 타겟으로 설정
-            projectileScript.musicSource = musicSource; // 음악 소스 전달
-        }
     }
     private void UpdatePanelScores(GameObject panelInstance)
     {

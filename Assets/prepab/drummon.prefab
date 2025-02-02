@@ -123,9 +123,11 @@ MonoBehaviour:
   - {fileID: 9160765054753558952, guid: 4b1fc64b6f20804459cae34d57b7e7a0, type: 3}
   - {fileID: 7152690855388890206, guid: 873bca72101daef41a84215eae8c8992, type: 3}
   playerManager: {fileID: 0}
+  uiManager: {fileID: 0}
   chartData: {fileID: 0}
   hp: 0
   bpm: 0
   location: 0
   animator: {fileID: 6433468795391492344}
   hpBarPrefab: {fileID: 8497898252444216346, guid: 89cb566f97c8d124381826ff7e0c4402, type: 3}
+  exclamationPrefab: {fileID: 6564652604273379325, guid: 37a0fd3627a8c4f468ec75e41a80536b, type: 3}

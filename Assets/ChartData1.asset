@@ -21,22 +21,22 @@ MonoBehaviour:
     type: 0
   - time: 3
     arriveTime: 7
-    type: 0
+    type: 1
   - time: 9
     arriveTime: 13
     type: 0
   - time: 9.5
     arriveTime: 13.5
-    type: 0
+    type: 1
   - time: 10
     arriveTime: 14
     type: 0
   - time: 11
     arriveTime: 15
-    type: 0
+    type: 1
   - time: 11.5
     arriveTime: 15.5
-    type: 0
+    type: 1
   - time: 17
     arriveTime: 17
     type: 0
