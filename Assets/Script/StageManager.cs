@@ -196,9 +196,10 @@ public class StageManager : MonoBehaviour
         }
         if (currentTime >= 2d && !musicPlayed)
         {
-            SpawnTransparentProjectile();
+            //SpawnTransparentProjectile();
+            musicSource.Play();
             musicPlayed = true;
-            Debug.Log("Spawn musicProjectile!");
+            Debug.Log("Music Start!");
         }
     }
     public void GameOver()

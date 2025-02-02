@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,6 +20,8 @@ public class StrikerController : MonoBehaviour
     private float lastProjectileTime = 0f; // 마지막 투사체 발사 시간
 
     [SerializeField] public Queue<GameObject> projectileQueue = new Queue<GameObject>{};
+    private Queue<Tuple<float, int>> prepareQueue = new Queue<Tuple<float, int>>(); // (arriveTime, type) 저장
+
 
     public GameObject hpBarPrefab;
     private GameObject hpBar;
@@ -31,12 +34,17 @@ public class StrikerController : MonoBehaviour
 
         // 현재 시간 가져오기
         float currentTime = StageManager.Instance.currentTime;
+        // 1️⃣ `prepareTime` 확인 → 준비 상태 활성화 & `arriveTime`과 `type` 저장
+        if (currentNoteIndex < chartData.notes.Count && currentTime >= chartData.notes[currentNoteIndex].time * (60f / bpm) + playerManager.musicOffset)
+        {
+            PrepareForFire();
+        }
 
         // 채보 시간에 맞춰 발사
-        if (currentTime >= (chartData.notes[currentNoteIndex].time * (60d / bpm)) + playerManager.musicOffset)
+        if (prepareQueue.Count > 0 && currentTime >= (prepareQueue.Peek().Item1 * (60d / bpm)) + playerManager.musicOffset - 0.5f)
         {
-            FireProjectile(chartData.notes[currentNoteIndex].type);
-            currentNoteIndex++;
+            FireProjectile(prepareQueue.Peek().Item1, prepareQueue.Peek().Item2);
+            prepareQueue.Dequeue(); // 발사된 노트 제거
             lastProjectileTime = currentTime;
         }
         // 마지막 투사체 발사 이후 2초가 지나면 공격 상태 해제
@@ -45,9 +53,21 @@ public class StrikerController : MonoBehaviour
             animator.SetBool("isAttacking", false);
         }
     }
+    private void PrepareForFire()
+    {
+        float arriveTime = chartData.notes[currentNoteIndex].arriveTime;
+        int noteType = chartData.notes[currentNoteIndex].type; // 노트 타입 저장
+
+        prepareQueue.Enqueue(new Tuple<float, int>(arriveTime, noteType)); // 도착 시간과 타입 저장
+        Debug.Log("prepare!");
+
+        // 애니메이션 실행 (느낌표 표시)
+
+        currentNoteIndex++; // 다음 노트로 이동
+    }
 
     // 투사체 발사
-    private void FireProjectile(int index)
+    private void FireProjectile(float time, int index)
     {
         if (index < 0 || index >= projectilePrefabs.Count) return;
         GameObject selectedProjectile = projectilePrefabs[index];
@@ -68,10 +88,9 @@ public class StrikerController : MonoBehaviour
         {
             projScript.target = playerManager.transform; // 플레이어를 타겟으로 설정
             projScript.owner = this;   // 소유자로 현재 스트라이커 설정
+            projScript.arriveTime = time;
+            projScript.type = index;
         }
-
-        // 투사체에 노트 정보 저장
-        projScript.noteData = chartData.notes[currentNoteIndex];
     }
 
     public void Initialize(int _initialHp, int initialBpm, PlayerManager targetPlayer, Direction direction, ChartData chart) //striker 정보 초기화(spawn될 때 얻어오는 정보보)

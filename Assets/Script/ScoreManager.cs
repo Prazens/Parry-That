@@ -61,6 +61,8 @@ public class ScoreManager : MonoBehaviour
     // 판정 - 입력이 들어왔을 때에 실행
     public void Judge(Direction direction, double touchTimeSec, AttackType type)
     {
+        float arriveTime;
+        int projectile_type;
         // 홀드 중이 아닐 때의 의미없는 홀드종료
         if (type == AttackType.HoldFinish && !isHolding)
         {
@@ -88,7 +90,6 @@ public class ScoreManager : MonoBehaviour
         StrikerController strikerController = null;
         Direction touchDirection = (direction == Direction.None) ? playerManager.currentDirection : direction;
         
-        NoteData projectileNoteData;
         int tempJudge = -1;
 
         playerManager.currentDirection = touchDirection;
@@ -101,13 +102,15 @@ public class ScoreManager : MonoBehaviour
             // 터치 방향과 맞는 방향에서 공격하는 스트라이커라면
             if (strikerController.location == touchDirection && strikerController.projectileQueue.Count != 0)
             {
-                projectileNoteData = strikerController.projectileQueue.Peek().GetComponent<projectile>().noteData;
+                arriveTime = strikerController.projectileQueue.Peek().GetComponent<projectile>().arriveTime * 60f / strikerController.bpm;
+                projectile_type = strikerController.projectileQueue.Peek().GetComponent<projectile>().type;
 
                 // 시간에 따라 판정
-                timeDiff = touchTimeSec - projectileNoteData.arriveTime * (60f / strikerController.bpm) - musicOffset;
+                timeDiff = touchTimeSec - arriveTime - musicOffset;
+                //timeDiff = touchTimeSec - projectileNoteData.arriveTime * (60f / strikerController.bpm) - musicOffset;
                 
                 // 강공격을 약패링으로 처리한 경우
-                if (type == AttackType.Normal && (AttackType)projectileNoteData.type == AttackType.Strong)
+                if (type == AttackType.Normal && (AttackType)projectile_type == AttackType.Strong)
                 {
                     tempJudge = -1;
                 }
@@ -144,7 +147,7 @@ public class ScoreManager : MonoBehaviour
                 }
 
                 // 홀드 시작
-                if (!isHolding && (AttackType)projectileNoteData.type == AttackType.HoldStart && tempJudge >= 1)
+                if (!isHolding && (AttackType)projectile_type == AttackType.HoldStart && tempJudge >= 1)
                 {
                     isHolding = true;
                 }

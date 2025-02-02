@@ -14,219 +14,326 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   notes:
   - time: 1
+    arriveTime: 5
+    type: 0
+  - time: 2
+    arriveTime: 6
     type: 0
   - time: 3
-    type: 0
-  - time: 5
-    type: 0
-  - time: 7
+    arriveTime: 7
     type: 0
   - time: 9
+    arriveTime: 13
+    type: 0
+  - time: 9.5
+    arriveTime: 13.5
+    type: 0
+  - time: 10
+    arriveTime: 14
     type: 0
   - time: 11
+    arriveTime: 15
     type: 0
-  - time: 13
-    type: 0
-  - time: 15
+  - time: 11.5
+    arriveTime: 15.5
     type: 0
   - time: 17
+    arriveTime: 17
     type: 0
   - time: 19
+    arriveTime: 19
     type: 0
   - time: 21
+    arriveTime: 21
     type: 0
   - time: 23
+    arriveTime: 30
     type: 0
   - time: 25
+    arriveTime: 30
     type: 0
   - time: 27
+    arriveTime: 30
     type: 0
   - time: 29
+    arriveTime: 16.945183
     type: 0
   - time: 64
+    arriveTime: 36.57135
     type: 0
   - time: 65
+    arriveTime: 37.1321
     type: 0
   - time: 66
+    arriveTime: 37.692844
     type: 0
   - time: 67
+    arriveTime: 38.253593
     type: 1
   - time: 68
+    arriveTime: 38.814342
     type: 0
   - time: 69
+    arriveTime: 39.375088
     type: 0
   - time: 70
+    arriveTime: 39.935837
     type: 0
   - time: 71
+    arriveTime: 40.496586
     type: 1
   - time: 72
+    arriveTime: 0
     type: 0
   - time: 73
+    arriveTime: 0
     type: 0
   - time: 74
+    arriveTime: 0
     type: 0
   - time: 75
+    arriveTime: 0
     type: 1
   - time: 76
+    arriveTime: 0
     type: 0
   - time: 77
+    arriveTime: 0
     type: 0
   - time: 78
+    arriveTime: 0
     type: 0
   - time: 79
+    arriveTime: 0
     type: 1
   - time: 80
+    arriveTime: 0
     type: 0
   - time: 81
+    arriveTime: 0
     type: 0
   - time: 82
+    arriveTime: 0
     type: 0
   - time: 83
+    arriveTime: 0
     type: 1
   - time: 84
+    arriveTime: 0
     type: 0
   - time: 85
+    arriveTime: 0
     type: 0
   - time: 86
+    arriveTime: 0
     type: 0
   - time: 87
+    arriveTime: 0
     type: 1
   - time: 88
+    arriveTime: 0
     type: 0
   - time: 89
+    arriveTime: 0
     type: 0
   - time: 90
+    arriveTime: 0
     type: 0
   - time: 91
+    arriveTime: 0
     type: 1
   - time: 92
+    arriveTime: 0
     type: 0
   - time: 160
+    arriveTime: 0
     type: 0
   - time: 161
+    arriveTime: 0
     type: 0
   - time: 162
+    arriveTime: 0
     type: 0
   - time: 163
+    arriveTime: 0
     type: 1
   - time: 164
+    arriveTime: 0
     type: 0
   - time: 165
+    arriveTime: 0
     type: 0
   - time: 166
+    arriveTime: 0
     type: 0
   - time: 167
+    arriveTime: 0
     type: 1
   - time: 168
+    arriveTime: 0
     type: 0
   - time: 169
+    arriveTime: 0
     type: 0
   - time: 170
+    arriveTime: 0
     type: 0
   - time: 171
+    arriveTime: 0
     type: 1
   - time: 172
+    arriveTime: 0
     type: 0
   - time: 173
+    arriveTime: 0
     type: 0
   - time: 174
+    arriveTime: 0
     type: 0
   - time: 175
+    arriveTime: 0
     type: 1
   - time: 176
+    arriveTime: 0
     type: 0
   - time: 177
+    arriveTime: 0
     type: 0
   - time: 178
+    arriveTime: 0
     type: 0
   - time: 179
+    arriveTime: 0
     type: 1
   - time: 180
+    arriveTime: 0
     type: 0
   - time: 181
+    arriveTime: 0
     type: 0
   - time: 182
+    arriveTime: 0
     type: 0
   - time: 183
+    arriveTime: 0
     type: 1
   - time: 184
+    arriveTime: 0
     type: 0
   - time: 185
+    arriveTime: 0
     type: 0
   - time: 186
+    arriveTime: 0
     type: 0
   - time: 187
+    arriveTime: 0
     type: 1
   - time: 188
+    arriveTime: 0
     type: 0
   - time: 225
+    arriveTime: 0
     type: 0
   - time: 229
+    arriveTime: 0
     type: 0
   - time: 233
+    arriveTime: 0
     type: 0
   - time: 237
+    arriveTime: 0
     type: 0
   - time: 241
+    arriveTime: 0
     type: 0
   - time: 245
+    arriveTime: 0
     type: 0
   - time: 249
+    arriveTime: 0
     type: 0
   - time: 260
+    arriveTime: 0
     type: 0
   - time: 261
+    arriveTime: 0
     type: 0
   - time: 262
+    arriveTime: 0
     type: 0
   - time: 263
+    arriveTime: 0
     type: 1
   - time: 268
+    arriveTime: 0
     type: 0
   - time: 269
+    arriveTime: 0
     type: 0
   - time: 270
+    arriveTime: 0
     type: 0
   - time: 271
+    arriveTime: 0
     type: 1
   - time: 276
+    arriveTime: 0
     type: 0
   - time: 277
+    arriveTime: 0
     type: 0
   - time: 278
+    arriveTime: 0
     type: 0
   - time: 279
+    arriveTime: 0
     type: 1
   - time: 288
+    arriveTime: 0
     type: 0
   - time: 289
+    arriveTime: 0
     type: 0
   - time: 290
+    arriveTime: 0
     type: 0
   - time: 291
+    arriveTime: 0
     type: 1
   - time: 296
+    arriveTime: 0
     type: 0
   - time: 297
+    arriveTime: 0
     type: 0
   - time: 298
+    arriveTime: 0
     type: 0
   - time: 299
+    arriveTime: 0
     type: 1
   - time: 304
+    arriveTime: 0
     type: 0
   - time: 305
+    arriveTime: 0
     type: 0
   - time: 306
+    arriveTime: 0
     type: 0
   - time: 307
+    arriveTime: 0
     type: 1
   - time: 312
+    arriveTime: 0
     type: 0
   - time: 313
+    arriveTime: 0
     type: 0
   - time: 314
+    arriveTime: 0
     type: 0
   - time: 315
+    arriveTime: 0
     type: 1
-
