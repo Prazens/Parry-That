@@ -1,3 +1,5 @@
+using System.IO;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,7 +14,20 @@ public class NoteData
 }
 
 [CreateAssetMenu(fileName = "NewChart", menuName = "Chart Data")]
-public class ChartData : ScriptableObject
+[Serializable]
+public class ChartData
 {
-    public List<NoteData> notes; // 채보 데이터 리스트
+    public NoteData[] notes; // 채보 데이터 리스트
+}
+
+public class JsonReader
+{
+    static public ChartData ReadJson(TextAsset jsonFile)
+    {
+        // JSON 파일을 읽어오기
+        string json = jsonFile.text;
+
+        // JSON 데이터를 MyDataList 객체로 변환
+        return JsonUtility.FromJson<ChartData>(json);
+    }
 }

@@ -1073,6 +1073,9 @@ MonoBehaviour:
   musicSource: {fileID: 583584121}
   is_over: 0
   countdownText: {fileID: 2121608883}
+  jsonCharts:
+  - {fileID: 4900000, guid: 52df8f19fd84e7c4fa298ef9a80fccf8, type: 3}
+  - {fileID: 4900000, guid: 47673d4f5ab79264f932a680b45ffe9e, type: 3}
   isPaused: 0
   pauseButton: {fileID: 822372182}
 --- !u!4 &1448475906
@@ -1152,7 +1155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35c5716c5f2e7d84887798ca32a473fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  strikerList_: []
+  _strikerList: []
   playerManager: {fileID: 0}
   strikerManager: {fileID: 1860902388}
   parriedProjectileManager: {fileID: 1744429775}

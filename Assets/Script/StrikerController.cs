@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Microsoft.Unity.VisualStudio.Editor;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class StrikerController : MonoBehaviour
@@ -20,7 +21,7 @@ public class StrikerController : MonoBehaviour
     // 임시로 발사체 저장해놓을 공간
     private float lastProjectileTime = 0f; // 마지막 투사체 발사 시간
 
-    [SerializeField] public Queue<GameObject> projectileQueue = new Queue<GameObject>{};
+    [SerializeField] public Queue<Judgeable> judgeableQueue = new Queue<Judgeable>{};
     private Queue<Tuple<float, int>> prepareQueue = new Queue<Tuple<float, int>>(); // (arriveTime, type) 저장
 
     public GameObject hpBarPrefab;
@@ -48,12 +49,12 @@ public class StrikerController : MonoBehaviour
     private void Update() // 현재 striker 자체에서 투사체 일정 간격으로 발사
     {
         // 투사체 발사 타이밍 계산
-        if (currentNoteIndex >= chartData.notes.Count) return;
+        if (currentNoteIndex >= chartData.notes.Length) return;
 
         // 현재 시간 가져오기
         float currentTime = StageManager.Instance.currentTime;
         // 1️⃣ `prepareTime` 확인 → 준비 상태 활성화 & `arriveTime`과 `type` 저장
-        if (currentNoteIndex < chartData.notes.Count && currentTime >= chartData.notes[currentNoteIndex].time * (60f / bpm) + playerManager.musicOffset)
+        if (currentNoteIndex < chartData.notes.Length && currentTime >= chartData.notes[currentNoteIndex].time * (60f / bpm) + playerManager.musicOffset)
         {
             PrepareForFire();
         }
@@ -203,7 +204,8 @@ public class StrikerController : MonoBehaviour
         }
 
         // 투사체 저장
-        projectileQueue.Enqueue(projectile);
+        judgeableQueue.Enqueue(new Judgeable((AttackType)index, time, location, this, projectile));
+        // Debug.Log($"judgeableQueue의 길이:{judgeableQueue.Count}");
 
         // 투사체에 타겟 설정
         projectile projScript = projectile.GetComponent<projectile>();
@@ -247,9 +249,9 @@ public class StrikerController : MonoBehaviour
 
     public void ClearProjectiles()
     {
-        while (projectileQueue.Count > 0)
+        while (judgeableQueue.Count > 0)
         {
-            GameObject projectile = projectileQueue.Dequeue();
+            GameObject projectile = judgeableQueue.Dequeue().judgeableObject;
             if (projectile != null)
             {
                 Destroy(projectile); // Projectile 삭제
