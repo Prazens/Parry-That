@@ -1348,14 +1348,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d51d5170f78da64db22ae3b92a174c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  strikerPrefab: {fileID: 2602888780548359756, guid: 4f9ef16d30cd7f9449a8fb6ee08991e9, type: 3}
+  strikerPrefabs:
+  - {fileID: 2602888780548359756, guid: 4f9ef16d30cd7f9449a8fb6ee08991e9, type: 3}
+  - {fileID: 8735992909591658843, guid: d20adaf2a206c3c4fa934f5aba011c76, type: 3}
   spawnPositions:
   - {fileID: 1172636502}
   - {fileID: 1448434802}
   uiManager: {fileID: 698621751}
   charts:
-  - {fileID: 11400000, guid: 35e4e3acb3444c74abf8dbbd9968617c, type: 2}
-  - {fileID: 11400000, guid: cac9ea0dd543428429688703aeb6ebaf, type: 2}
+  - notes: []
+  - notes: []
   strikerList: []
 --- !u!4 &1860902389
 Transform:

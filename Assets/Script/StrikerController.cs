@@ -40,11 +40,24 @@ public class StrikerController : MonoBehaviour
     //패링 효과음
     [SerializeField] private AudioClip parrySoundNormal;  // 일반 공격 준비 효과음 (type 0)
     [SerializeField] private AudioClip parrySoundStrong;  // 강한 공격 준비 효과음 (type 1)
-
+    // 근접 공격 관련 변수
+    private Vector3 originalPosition;
+    private Vector3 targetPosition;
+    private bool isMoved = false;
+    public float moveTime = 0.2f;
+    private float backtime = 0f;
+    public bool isMelee; // 근접 공격 여부 확인
+    public float animeOffset = 0.1f;
 
     private void Start()
     {
+        backtime = 0f;
+        originalPosition = transform.position;
         SetupExclamationParent();// exclamationParent 자동 생성
+        if (isMelee)
+        {
+            SetMeleeTargetPosition();
+        }
     }
     private void Update() // 현재 striker 자체에서 투사체 일정 간격으로 발사
     {
@@ -56,23 +69,109 @@ public class StrikerController : MonoBehaviour
         // 1️⃣ `prepareTime` 확인 → 준비 상태 활성화 & `arriveTime`과 `type` 저장
         if (currentNoteIndex < chartData.notes.Length && currentTime >= chartData.notes[currentNoteIndex].time * (60f / bpm) + playerManager.musicOffset)
         {
-            PrepareForFire();
+            PrepareForAttack();
+        }
+        if (isMelee)
+        {
+            HandleMeleeMovement();
+        }
+        else
+        {
+            HandleProjectileAttack();
+        }
+    }
+    private void HandleMeleeMovement()
+    {
+        float currentTime = StageManager.Instance.currentTime;
+
+        if (prepareQueue.Count > 0 && currentTime >= (prepareQueue.Peek().Item1 * (60d / bpm)) + playerManager.musicOffset - 1f - moveTime && !isMoved)
+        {
+            float fraction = (prepareQueue.Peek().Item1 * (60f / bpm) + playerManager.musicOffset - 1f - currentTime) / moveTime;
+            transform.position = Vector3.Lerp(targetPosition, originalPosition, Mathf.Clamp01(fraction));
+
+            if (fraction <= 0f)
+            {
+                isMoved = true;
+            }
+        }
+        // 채보 시간에 맞춰 공격
+        if (prepareQueue.Count > 0 && currentTime >= (prepareQueue.Peek().Item1 * (60d / bpm)) + playerManager.musicOffset - animeOffset && isMoved)
+        {
+            int attackType = prepareQueue.Peek().Item2;
+            float attackTime = prepareQueue.Peek().Item1;
+
+            // 공격
+            //근접 전용의 scoreManager의 judge를 이용해야함. projectile과 구분해서 애니메이션도 다르게 되어야한다.
+            // 투사체 저장
+            judgeableQueue.Enqueue(new Judgeable((AttackType)attackType, attackTime, location, this, null));
+            //공격 애니메이션 작용
+
+            // 공격격 시 느낌표 제거 (좌측부터)
+            if (prepareExclamation.Count > 0)
+            {
+                Destroy(prepareExclamation[0]); // 가장 오래된 느낌표 제거
+                prepareExclamation.RemoveAt(0);
+
+                // 남은 느낌표 위치 재배치
+                for (int i = 0; i < prepareExclamation.Count; i++)
+                {
+                    prepareExclamation[i].transform.localPosition = new Vector3(i * 0.3f, 0, 0);
+                }
+            }
+            prepareQueue.Dequeue(); // 준비된 공격 제거
         }
 
-        // 채보 시간에 맞춰 발사
+        if (prepareQueue.Count == 0 && isMoved)
+        {
+            if (backtime == 0f) backtime = currentTime;
+            float fraction = (currentTime - backtime) / moveTime;
+            transform.position = Vector3.Lerp(targetPosition, originalPosition, Mathf.Clamp01(fraction));
+
+            if (fraction >= 1f)
+            {
+                isMoved = false;
+                backtime = 0f;
+            }
+        }
+    }
+    private void SetMeleeTargetPosition()
+    {
+        targetPosition = playerManager.transform.position;
+
+        switch (location)
+        {
+            case Direction.Up:
+                targetPosition += Vector3.up * 1.5f;
+                break;
+            case Direction.Down:
+                targetPosition += Vector3.down * 1.5f;
+                break;
+            case Direction.Left:
+                targetPosition += Vector3.right * 1.5f;
+                break;
+            case Direction.Right:
+                targetPosition += Vector3.left * 1.5f;
+                break;
+        }
+    }
+
+    private void HandleProjectileAttack()
+    {
+        float currentTime = StageManager.Instance.currentTime;
+
         if (prepareQueue.Count > 0 && currentTime >= (prepareQueue.Peek().Item1 * (60d / bpm)) + playerManager.musicOffset - 0.5f)
         {
             FireProjectile(prepareQueue.Peek().Item1, prepareQueue.Peek().Item2);
-            prepareQueue.Dequeue(); // 발사된 노트 제거
+            prepareQueue.Dequeue();
             lastProjectileTime = currentTime;
         }
-        // 마지막 투사체 발사 이후 1.5초가 지나면 공격 상태 해제
+        //마지막 투사체 발사 이후 1.5초가 지나면 공격 상태 해제
         if (currentTime - lastProjectileTime > 1.5f)
         {
             animator.SetBool("isAttacking", false);
         }
     }
-    private void PrepareForFire()
+    private void PrepareForAttack()
     {
         float arriveTime = chartData.notes[currentNoteIndex].arriveTime;
         int noteType = chartData.notes[currentNoteIndex].type; // 노트 타입 저장
@@ -83,7 +182,7 @@ public class StrikerController : MonoBehaviour
 
         // 애니메이션 실행 (느낌표 표시)
         // **애니메이션 실행 (공격 준비)**
-        animator.SetTrigger("isPrepare");
+        //animator.SetTrigger("isPrepare");
         // **🔹 효과음 재생 (일반 / 강한 공격에 따라 다름)**
         PlayPrepareSound(noteType);
 
@@ -231,7 +330,7 @@ public class StrikerController : MonoBehaviour
         }
     }
 
-    public void Initialize(int _initialHp, int initialBpm, PlayerManager targetPlayer, Direction direction, ChartData chart) //striker 정보 초기화(spawn될 때 얻어오는 정보보)
+    public void Initialize(int _initialHp, int initialBpm, PlayerManager targetPlayer, Direction direction, ChartData chart, int prepabindex) //striker 정보 초기화(spawn될 때 얻어오는 정보보)
     {
         hp = _initialHp;
         initialHp = _initialHp;
@@ -245,6 +344,11 @@ public class StrikerController : MonoBehaviour
         hpBar.transform.localPosition = Vector3.down * 2f;
         hpControl = hpBar.transform.GetChild(0);
         hpControl.transform.localScale = new Vector3(0, 1, 1);
+        if(prepabindex == 0)
+        {
+            isMelee = false;
+        }
+        else isMelee = true;
     }
 
     public void ClearProjectiles()
@@ -278,10 +382,10 @@ public class StrikerController : MonoBehaviour
 
             hp -= damage;
             Debug.Log($"{gameObject.name} took {damage} damage! Current HP: {hp}");
-            animator.SetTrigger("isDamaged");
+            //animator.SetTrigger("isDamaged");
             if (hp == 0)
             {
-                animator.SetBool("isClear", true);
+                //animator.SetBool("isClear", true);
                 playerManager.hp =+ 1;
             }
         }
