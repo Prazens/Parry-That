@@ -17,6 +17,6 @@ public enum AttackType
     Normal = 0,
     Strong = 1,
     HoldStart = 2,
-    HoldFinish = 3,
-    // HoldFinishStrong = 4
+    HoldFinishStrong = 3,
+    HoldStop = 4  // 홀드 끝에서 스와이프하지 않고 그냥 손을 뗐을 경우
 }

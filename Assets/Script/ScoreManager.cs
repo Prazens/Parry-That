@@ -63,18 +63,25 @@ public class ScoreManager : MonoBehaviour
     {
         float arriveTime;
         int projectile_type;
-        // 홀드 중이 아닐 때의 의미없는 홀드종료
-        if (type == AttackType.HoldFinish && !isHolding)
+
+        // 홀드 중이 아닐 때의 의미없는 홀드정지
+        if (type == AttackType.HoldStop && !isHolding)
         {
-            Debug.Log("홀드종료 판정 무시됨");
+            Debug.Log("홀드정지 판정 무시됨");
             return;
         }
 
         // 홀드 중인데 다른 판정 입력
-        if (type != AttackType.HoldFinish && isHolding)
+        // if (type != AttackType.HoldFinish && isHolding)
+        if (!(type == AttackType.Strong || type == AttackType.HoldStop) && isHolding)
         {
-            Debug.Log("홀드 중의 다른 판정 무시됨");
+            Debug.Log("홀드 중에서 스와이프 제외한 다른 판정 무시됨");
             return;
+        }
+        // 홀드 중일 때의 스와이프는 홀드 종료로 판정
+        else if (type == AttackType.Strong && isHolding)
+        {
+            type = AttackType.HoldFinishStrong;
         }
 
         double timeDiff;
@@ -150,20 +157,27 @@ public class ScoreManager : MonoBehaviour
                 if (!isHolding && (AttackType)projectile_type == AttackType.HoldStart && tempJudge >= 1)
                 {
                     isHolding = true;
+                    type = AttackType.HoldStart;
                 }
 
                 // 홀드 끝
-                else if (isHolding && type == AttackType.HoldFinish)
+                else if (isHolding)
                 {
                     isHolding = false;
 
+                    // 스와이프 하지 않고 그냥 종료시
+                    if (type == AttackType.HoldStop)
+                    {
+                        tempJudge = 0;
+                    }
+
                     // 홀드 아직 남았는데 입력 종료시
-                    if (tempJudge == -1)
+                    else if (tempJudge == -1)
                     {
                         tempJudge = 0;
                     }
                 }
-                // 홀드 시간이 지났는데도 놓지 않는 경우는 미구현
+                // 홀드 시간이 지났는데도 놓지 않는 경우는 미구현 - 근접과 같은 경우에서 투사체 없는 때의 판정과 관련됨
                 // 홀드 관련 테스트 안해봄 - 버그가 있을 수 있음
 
                 lastNonMissJudge = touchTimeSec;

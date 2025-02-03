@@ -171,7 +171,7 @@ public class TouchManager : MonoBehaviour
         else if (Input.GetMouseButtonUp(0) && isSwiping)
         {
             isSwiping = false;
-            SendJudge(Direction.None, judgeTime, AttackType.HoldFinish);
+            SendJudge(Direction.None, judgeTime, AttackType.HoldStop);
         }
     }
 
@@ -293,7 +293,7 @@ public class TouchManager : MonoBehaviour
             isSwiping = false;
             
             // 롱노트 끝판정 전송
-            SendJudge(Direction.None, judgeTime, AttackType.HoldFinish);
+            SendJudge(Direction.None, judgeTime, AttackType.HoldStop);
         }
     }
 

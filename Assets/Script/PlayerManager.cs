@@ -77,7 +77,8 @@ public class PlayerManager : MonoBehaviour
                 break;
         }
 
-        if (type == AttackType.HoldFinish)
+        // 홀드 끝 모션
+        if (type == AttackType.HoldFinishStrong || type == AttackType.HoldStop)
         {
             playerAnimator.SetTrigger("playerHoldFinish");
             bladeAnimator.SetTrigger("bladeHoldFinish");
