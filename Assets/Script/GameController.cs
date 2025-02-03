@@ -156,7 +156,7 @@ public class GameController : MonoBehaviour
         }
         if (stageManager != null && stageManager.isPaused)
         {
-            stageManager.ResumeStage();
+            stageManager.RestartStage();
         }
     }
     
