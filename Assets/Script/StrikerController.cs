@@ -153,6 +153,23 @@ public class StrikerController : MonoBehaviour
 
         // 투사체 생성
         GameObject projectile = Instantiate(selectedProjectile, transform.position, Quaternion.identity);
+        switch (location)
+        {
+            case Direction.Up:
+                projectile.transform.rotation = Quaternion.Euler(0, 0, 0);
+                break;
+            case Direction.Down:
+                projectile.transform.rotation = Quaternion.Euler(0, 0, 180);
+                break;
+            case Direction.Left:
+                projectile.transform.rotation = Quaternion.Euler(0, 0, 270);
+                break;
+            case Direction.Right:
+                projectile.transform.rotation = Quaternion.Euler(0, 0, 90);
+                break;
+            default:
+                break;
+        }
 
         // 투사체 저장
         projectileQueue.Enqueue(projectile);

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 793635658234800999}
   - component: {fileID: 4823659980016708117}
   - component: {fileID: 9063046585755960342}
+  - component: {fileID: -109837244542765315}
   m_Layer: 0
   m_Name: projectile_stronger
   m_TagString: note
@@ -101,12 +102,11 @@ MonoBehaviour:
   target: {fileID: 0}
   speed: 5
   owner: {fileID: 0}
-  noteData:
-    time: 0
-    arriveTime: 0
-    type: 0
   scoreManager: {fileID: 0}
   bpm: 0
+  moveTime: 0.5
+  arriveTime: 0
+  type: 0
 --- !u!61 &9063046585755960342
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -152,3 +152,24 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!95 &-109837244542765315
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7152690855388890206}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1525b6e312fc5c04ebdec22afbaf281c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

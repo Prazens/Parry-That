@@ -28,6 +28,7 @@ public class TitleMenu : MonoBehaviour
 
     public GameObject GameController;
 
+    public GameObject TitleTextObj;
     public TextMeshProUGUI TitleText;
     private Color TitleText_originalColor;
 
@@ -40,7 +41,8 @@ public class TitleMenu : MonoBehaviour
         Title = GameObject.Find("Img_Title").GetComponent<Image>();
 
         GameController = GameObject.Find("GameController");
-        TitleText = GameObject.Find("TitleText").GetComponent<TextMeshProUGUI>();
+        TitleTextObj = GameObject.Find("TitleText");
+        TitleText = TitleTextObj.GetComponent<TextMeshProUGUI>();
 
         MenuStartPos = menuPanel.anchoredPosition;
         StageMenuStartPos = nextPanel.anchoredPosition;
@@ -148,6 +150,7 @@ public class TitleMenu : MonoBehaviour
 
     public void OnSwipeUp()
     {
+        TitleTextObj.SetActive(false);
         StartCoroutine(SlidePanels(MenuStartPos, StageMenuStartPos));
         StartCoroutine(SwordUp());
     }

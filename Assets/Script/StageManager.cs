@@ -34,8 +34,10 @@ public class StageManager : MonoBehaviour
     private int clearStrikers = 0;
     public bool is_over = false;
     [SerializeField] private TextMeshProUGUI countdownText; // 카운트다운 표시용 Text UI
-    
-    
+    private GameObject overlay; // 검은 필터
+
+
+
     private void Awake()
     {
         if (Instance == null)
@@ -49,6 +51,18 @@ public class StageManager : MonoBehaviour
     }
     private void Start()
     {
+        // 검은 필터 오버레이 생성
+        overlay = new GameObject("BlackOverlay");
+        overlay.transform.SetParent(canvasTransform, false);
+        Image overlayImage = overlay.AddComponent<Image>();
+        overlayImage.color = new Color(0f, 0f, 0f, 0.7f);
+        RectTransform overlayRect = overlay.GetComponent<RectTransform>();
+        overlayRect.anchorMin = Vector2.zero;
+        overlayRect.anchorMax = Vector2.one;
+        overlayRect.offsetMin = Vector2.zero;
+        overlayRect.offsetMax = Vector2.zero;
+        overlay.SetActive(false);
+
         if (clearPanelPrefab != null && canvasTransform != null)
         {
             // Clear 창 인스턴스 생성
@@ -231,6 +245,7 @@ public class StageManager : MonoBehaviour
             UpdatePanelScores(gameOverPanelInstance); // 점수 및 판정 업데이트
             UpdateStar_Over();
         }
+        overlay.SetActive(true);
     }
     private void EndStage()
     {
@@ -247,6 +262,7 @@ public class StageManager : MonoBehaviour
         CalculateStars();
         UpdatePanelScores(clearPanelInstance);
         UpdateStar_Clear();
+        overlay.SetActive(true);
 
         // 최고 기록 경신하면 데이터베이스에 업데이트
         ScoreManager scoreManager = gameController.GetComponent<ScoreManager>();
@@ -281,6 +297,7 @@ public class StageManager : MonoBehaviour
             gameOverPanelInstance.SetActive(false);
         }
         if(PausePanelInstance != null) PausePanelInstance.SetActive(false);
+        overlay.SetActive(false);
 
         // 새로운 스테이지 시작
         StartStage();
@@ -315,6 +332,7 @@ public class StageManager : MonoBehaviour
         }
         if(PausePanelInstance != null) PausePanelInstance.SetActive(true);
         UpdatePanelScores(PausePanelInstance);
+        overlay.SetActive(true);
         Debug.Log("Stage Paused!");
     }
     public void ResumeStage()
@@ -322,6 +340,7 @@ public class StageManager : MonoBehaviour
         if (!isPaused) return;
         isPaused = false;
         if(PausePanelInstance != null) PausePanelInstance.SetActive(false);
+        overlay.SetActive(false);
         StartCoroutine(ResumeAfterDelay());
     }
     private IEnumerator ResumeAfterDelay()
