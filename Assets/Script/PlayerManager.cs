@@ -14,6 +14,8 @@ public class PlayerManager : MonoBehaviour
     public Animator playerAnimator;
     public Animator bladeAnimator;
 
+    private Transform direcrionDisplayer;
+
     
     public float musicOffset;
     public float visualOffset;
@@ -44,6 +46,8 @@ public class PlayerManager : MonoBehaviour
             Debug.LogError("GameController not found!");
         }
         scoreManager.musicOffset = musicOffset;
+
+        direcrionDisplayer = transform.GetChild(0);
     }
 
     // Update is called once per frame
@@ -54,6 +58,32 @@ public class PlayerManager : MonoBehaviour
 
     public void Operate(Direction direction, AttackType type)
     {
+        switch (direction)
+        {
+            case Direction.Up:
+                direcrionDisplayer.rotation = Quaternion.Euler(0, 0, 0);
+                break;
+
+            case Direction.Down:
+                direcrionDisplayer.rotation = Quaternion.Euler(0, 0, 180);
+                break;
+
+            case Direction.Left:
+                direcrionDisplayer.rotation = Quaternion.Euler(0, 0, 90);
+                break;
+
+            case Direction.Right:
+                direcrionDisplayer.rotation = Quaternion.Euler(0, 0, 270);
+                break;
+        }
+
+        if (type == AttackType.HoldFinish)
+        {
+            playerAnimator.SetTrigger("playerHoldFinish");
+            bladeAnimator.SetTrigger("bladeHoldFinish");
+            return;
+        }
+
         int randomNum;
 
         // 모션이 위아래는 3개, 좌우는 2개임
@@ -79,6 +109,8 @@ public class PlayerManager : MonoBehaviour
 
         bladeAnimator.SetInteger("randomSelecter", randomNum);
         bladeAnimator.SetTrigger("bladePlay");
+
+        return;
     }
     
     public void GameOver()

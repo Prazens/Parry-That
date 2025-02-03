@@ -10,7 +10,7 @@ public class StrikerManager : MonoBehaviour
     [SerializeField] private UIManager uiManager;
     [SerializeField] private ChartData[] charts; // 각 스트라이커의 채보 데이터
 
-    // 임시로 스트라이커 저장해놓을 공간
+    // 스트라이커 저장해놓을 공간
     public List<GameObject> strikerList = new List<GameObject>();
     public void SetPlayer(PlayerManager player)
     {
