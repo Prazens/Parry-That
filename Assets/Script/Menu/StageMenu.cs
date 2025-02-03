@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
+using UnityEditor;
 
-public class StageMenu : MonoBehaviour
+public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
 {
     Image imgStage1;
     Image Sword;
@@ -15,6 +17,7 @@ public class StageMenu : MonoBehaviour
     private float elapsedTime = 0f;
     // 스테이지 점수
     DatabaseManager theDatabase;
+    [SerializeField] TextMeshProUGUI txtStageName;
     [SerializeField] TextMeshProUGUI txtStageScore;
 
     private bool EnableStageMenuText = true;
@@ -25,6 +28,8 @@ public class StageMenu : MonoBehaviour
     bool isFadingIn = true;
     float fadeInTimer = 0f;
     private float fadeInStartTime = 0f;
+
+    private string[] StageName = { "Beat Master", "Stage2", "Stage3", "Stage4" };
 
     void Start()
     {
@@ -111,9 +116,9 @@ public class StageMenu : MonoBehaviour
 
 
         // 임시로 update에 구현
-        txtStageScore.text = string.Format("{0:#,##0}", theDatabase.score[TitleMenu.SelectedLV]);     
-
-        switch (theDatabase.star[TitleMenu.SelectedLV])
+        txtStageScore.text = string.Format("{0:#,##0}", theDatabase.score[currentIndex + 1]);
+        txtStageName.text = StageName[currentIndex];
+        switch (theDatabase.star[currentIndex + 1])
         {
             case 0:
                 Star0.SetActive(true);
@@ -149,4 +154,209 @@ public class StageMenu : MonoBehaviour
     {
         
     }
+
+    // 여기서부터 좌우 스와이프 관련 코드
+    [Header("Stage Objects")]
+    public List<RectTransform> stageObjects;  
+    public static int currentIndex = 0;
+
+    private float threshold = 300f;
+    private float swipeSpeed = 0.6f;   // 감도
+    private float transitionTime = 0.3f; // 애니메이션 시간
+
+    private float screenWidth;
+    private bool isDragging = false;
+
+    private float minScale = 0.8f;            // 양옆일 때 최소 스케일
+    private float maxScale = 1.0f;            // 중앙일 때 최대 스케일
+    private float distanceToFullDark = 600f;  // 중앙에서 이만큼 떨어지면 어둡게
+    private Color darkColor = new Color(1f, 1f, 1f, 0.5f);
+    private Color brightColor = new Color(1f, 1f, 1f, 1f);
+
+    private void Awake()
+    {
+        screenWidth = Screen.width;
+
+        // 모든 오브젝트를 "현재 인덱스" 기준으로 자리 배치
+        UpdateStagePositions();
+
+        // 크기/색상 보정
+        UpdateScaleAndColor();
+
+        // "현재, 양옆"만 켜고, 나머지 끔, 없어도 되는 함수
+        ActivateOnlyRelevantObjects();
+    }
+
+    private void ActivateOnlyRelevantObjects()
+    {
+        for (int i = 0; i < stageObjects.Count; i++)
+        {
+            stageObjects[i].gameObject.SetActive(false);
+        }
+
+        stageObjects[currentIndex].gameObject.SetActive(true);
+        if (currentIndex - 1 >= 0)
+            stageObjects[currentIndex - 1].gameObject.SetActive(true);
+        if (currentIndex + 1 < stageObjects.Count)
+            stageObjects[currentIndex + 1].gameObject.SetActive(true);
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        isDragging = true;
+        float deltaX = eventData.delta.x * swipeSpeed;
+
+        for (int i = 0; i < stageObjects.Count; i++)
+        {
+            if (!stageObjects[i].gameObject.activeSelf)
+                continue;
+
+            stageObjects[i].anchoredPosition += new Vector2(deltaX, 0);
+        }
+
+        UpdateScaleAndColor();
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        isDragging = false;
+
+        float centerX = stageObjects[currentIndex].anchoredPosition.x;
+
+        if (Mathf.Abs(centerX) > threshold)
+        {
+            // 왼쪽 스와이프(centerX < 0) → currentIndex + 1
+            if (centerX < 0)
+            {
+                if (currentIndex < stageObjects.Count - 1)
+                {
+                    currentIndex++;
+                }
+            }
+            // 오른쪽 스와이프(centerX > 0) → currentIndex - 1
+            else
+            {
+                if (currentIndex > 0)
+                {
+                    currentIndex--;
+                }
+            }
+        }
+
+        // 위치 보정(코루틴)
+        StopAllCoroutines();
+        StartCoroutine(SmoothMove());
+    }
+
+    private IEnumerator SmoothMove()
+    {
+        List<Vector2> startPositions = new List<Vector2>();
+        for (int i = 0; i < stageObjects.Count; i++)
+        {
+            startPositions.Add(stageObjects[i].anchoredPosition);
+        }
+        Dictionary<int, Vector2> targetPos = CalculateTargetPositions();
+
+        ActivateOnlyRelevantObjects();
+
+        float elapsed = 0f;
+        while (elapsed < transitionTime)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / transitionTime);
+
+            for (int i = 0; i < stageObjects.Count; i++)
+            {
+                if (!stageObjects[i].gameObject.activeSelf)
+                    continue;
+
+                Vector2 sp = startPositions[i];
+                Vector2 ep = targetPos[i];
+                stageObjects[i].anchoredPosition = Vector2.Lerp(sp, ep, t);
+            }
+
+            UpdateScaleAndColor();
+            yield return null;
+        }
+
+        foreach (var kv in targetPos)
+        {
+            if (stageObjects[kv.Key].gameObject.activeSelf)
+            {
+                stageObjects[kv.Key].anchoredPosition = kv.Value;
+            }
+        }
+
+        UpdateScaleAndColor();
+    }
+
+    private Dictionary<int, Vector2> CalculateTargetPositions()
+    {
+        Dictionary<int, Vector2> result = new Dictionary<int, Vector2>();
+
+        for (int i = 0; i < stageObjects.Count; i++)
+        {
+            int diff = i - currentIndex;
+
+            Vector2 pos;
+            if (diff == 0)
+            {
+                pos = Vector2.zero;
+            }
+            else if (diff == 1)
+            {
+                pos = new Vector2(screenWidth, 0);
+            }
+            else if (diff == -1)
+            {
+                pos = new Vector2(-screenWidth, 0);
+            }
+            else if (diff > 1)
+            {
+                pos = new Vector2(screenWidth * 2, 0);
+            }
+            else
+            {
+                pos = new Vector2(-screenWidth * 2, 0);
+            }
+
+            result[i] = pos;
+        }
+
+        return result;
+    }
+
+    private void UpdateScaleAndColor()
+    {
+        for (int i = 0; i < stageObjects.Count; i++)
+        {
+            if (!stageObjects[i].gameObject.activeSelf)
+                continue;
+
+            float dist = Mathf.Abs(stageObjects[i].anchoredPosition.x);
+            float factor = Mathf.Clamp01(dist / distanceToFullDark);
+
+            // 스케일 보간
+            float scaleVal = Mathf.Lerp(maxScale, minScale, factor);
+            stageObjects[i].localScale = new Vector3(scaleVal, scaleVal, 1f);
+
+            // 컬러 보간 
+            Image img = stageObjects[i].GetComponent<Image>();
+            if (img)
+            {
+                img.color = Color.Lerp(brightColor, darkColor, factor);
+            }
+        }
+    }
+
+
+    private void UpdateStagePositions()
+    {
+        var targets = CalculateTargetPositions();
+        foreach (var kv in targets)
+        {
+            stageObjects[kv.Key].anchoredPosition = kv.Value;
+        }
+    }
+
 }

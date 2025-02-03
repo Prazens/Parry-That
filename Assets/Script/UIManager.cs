@@ -142,7 +142,7 @@ public class UIManager : MonoBehaviour
         if (particle != null)
         {
             string animationTriggerName = ParticleParried[randNum].name;
-            particle.Play(animationTriggerName);
+            // particle.Play(animationTriggerName);
 
             float length = particle.GetCurrentAnimatorStateInfo(0).length;
             StartCoroutine(DestroyAfterAnimation(particleObj2, (float)length));
