@@ -106,13 +106,13 @@ public class StageManager : MonoBehaviour
         is_over = false;
         isPaused = false;
         scoreUI.Initialize_UI();
-        scoreManager.Initialize();
         musicSource.time = 0f;
         SpawnPlayer();
         // SpawnGuideboxes();
         strikerManager.SpawnStriker(0,0,108,107); 
         strikerManager.SpawnStriker(1,1,110,107);
         isActive = true; // 스테이지 활성화
+        scoreManager.Initialize();
         Debug.Log("Stage Started!");
     }
     public void SpawnPlayer()
@@ -378,7 +378,7 @@ public class StageManager : MonoBehaviour
 
             if (scoreManager != null && scoreManager.judgeDetails != null)
             {
-                int[][] judgeDetails = scoreManager.judgeDetails;
+                List<int[]> judgeDetails = scoreManager.judgeDetails;
 
                 // 각각의 값을 최소 4자리 정수로 포맷팅하여 텍스트에 설정
                 if (parfectText != null) 

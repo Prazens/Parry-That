@@ -76,12 +76,12 @@ public class projectile : MonoBehaviour
             transform.position += finalVelocity * Time.deltaTime;
         }
 
-        if (currentTime > (arriveTime * 60d / bpm) + scoreManager.musicOffset + 0.12d)
-        {
-            // Debug.Log($"{StageManager.Instance.currentTime} - {noteData.arriveTime} = {StageManager.Instance.currentTime - noteData.arriveTime}");
+        // if (currentTime > (arriveTime * 60d / bpm) + scoreManager.musicOffset + 0.12d)
+        // {
+        //     // Debug.Log($"{StageManager.Instance.currentTime} - {noteData.arriveTime} = {StageManager.Instance.currentTime - noteData.arriveTime}");
             
-            scoreManager.JudgeManage(owner.location, 0, (AttackType)type, owner, true);
-        }
+        //     scoreManager.JudgeManage(owner.location, 0, (AttackType)type, owner, true);
+        // }
 
         // 일정거리 가까워지면 destroy로 임시 구현
         // if (Vector3.Distance(transform.position, target.position) <= 0.6f)
