@@ -36,6 +36,7 @@ public class StageManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI countdownText; // 카운트다운 표시용 Text UI
     private GameObject overlay; // 검은 필터
 
+    [SerializeField] private TextAsset[] jsonCharts;
 
 
     private void Awake()
@@ -109,6 +110,11 @@ public class StageManager : MonoBehaviour
         musicSource.time = 0f;
         SpawnPlayer();
         // SpawnGuideboxes();
+        for (int i = 0; i < 2; i++)
+        {
+            strikerManager.charts[i] = JsonReader.ReadJson(jsonCharts[i]);
+        }
+        
         strikerManager.SpawnStriker(0,0,108,107); 
         strikerManager.SpawnStriker(1,1,110,107);
         isActive = true; // 스테이지 활성화

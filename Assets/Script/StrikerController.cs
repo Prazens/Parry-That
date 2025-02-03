@@ -49,12 +49,12 @@ public class StrikerController : MonoBehaviour
     private void Update() // 현재 striker 자체에서 투사체 일정 간격으로 발사
     {
         // 투사체 발사 타이밍 계산
-        if (currentNoteIndex >= chartData.notes.Count) return;
+        if (currentNoteIndex >= chartData.notes.Length) return;
 
         // 현재 시간 가져오기
         float currentTime = StageManager.Instance.currentTime;
         // 1️⃣ `prepareTime` 확인 → 준비 상태 활성화 & `arriveTime`과 `type` 저장
-        if (currentNoteIndex < chartData.notes.Count && currentTime >= chartData.notes[currentNoteIndex].time * (60f / bpm) + playerManager.musicOffset)
+        if (currentNoteIndex < chartData.notes.Length && currentTime >= chartData.notes[currentNoteIndex].time * (60f / bpm) + playerManager.musicOffset)
         {
             PrepareForFire();
         }

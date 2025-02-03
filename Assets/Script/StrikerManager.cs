@@ -8,7 +8,7 @@ public class StrikerManager : MonoBehaviour
     public Transform[] spawnPositions;
     private PlayerManager playerManager; // Player 정보 저장
     [SerializeField] private UIManager uiManager;
-    [SerializeField] private ChartData[] charts; // 각 스트라이커의 채보 데이터
+    public List<ChartData> charts; // 각 스트라이커의 채보 데이터
 
     // 스트라이커 저장해놓을 공간
     public List<GameObject> strikerList = new List<GameObject>();
@@ -27,7 +27,7 @@ public class StrikerManager : MonoBehaviour
             Debug.LogError("Invalid spawn position index!");
             return;
         }
-        if (chartIndex < 0 || chartIndex >= charts.Length) return;
+        if (chartIndex < 0 || chartIndex >= charts.Count) return;
 
         // 스트라이커 생성
         GameObject striker = Instantiate(strikerPrefab, spawnPositions[positionIndex].position, Quaternion.identity);
