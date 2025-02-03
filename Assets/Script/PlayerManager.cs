@@ -77,6 +77,13 @@ public class PlayerManager : MonoBehaviour
                 break;
         }
 
+        if (type == AttackType.HoldFinish)
+        {
+            playerAnimator.SetTrigger("playerHoldFinish");
+            bladeAnimator.SetTrigger("bladeHoldFinish");
+            return;
+        }
+
         int randomNum;
 
         // 모션이 위아래는 3개, 좌우는 2개임
@@ -102,6 +109,8 @@ public class PlayerManager : MonoBehaviour
 
         bladeAnimator.SetInteger("randomSelecter", randomNum);
         bladeAnimator.SetTrigger("bladePlay");
+
+        return;
     }
     
     public void GameOver()
