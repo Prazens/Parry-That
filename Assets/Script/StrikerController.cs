@@ -111,34 +111,65 @@ public class StrikerController : MonoBehaviour
         {
             GameObject newParent = new GameObject("ExclamationHolder");
             newParent.transform.SetParent(this.transform);
-            newParent.transform.localPosition = new Vector3(1.8f, 0.0f, 0.0f); // Striker의 오른쪽에 배치
+            // **🔹 느낌표 기본 위치 설정**
+            switch (location)
+            {
+                case Direction.Up:
+                    newParent.transform.localPosition = new Vector3(0, 1.5f, 0);
+                    break;
+                case Direction.Down:
+                    newParent.transform.localPosition = new Vector3(0, -1.5f, 0);
+                    break;
+                case Direction.Left:
+                case Direction.Right:
+                    newParent.transform.localPosition = new Vector3(0, -1.5f, 0);
+                    break;
+            }
             exclamationParent = newParent.transform;
         }
     }
     private void ShowExclamation(int type)
     {
-        GameObject newExclamation = Instantiate(exclamationPrefab, exclamationParent);
-        newExclamation.transform.localPosition = new Vector3(prepareExclamation.Count * 0.3f, 0, 0); // 왼쪽부터 배치
-
-        // 색상 변경
-        SpriteRenderer exclamationSprite = newExclamation.GetComponent<SpriteRenderer>();
-        if (exclamationSprite != null)
+        // ** 기존 느낌표 지우고 다시 생성**
+        foreach (GameObject ex in prepareExclamation)
         {
-            switch (type)
-            {
-                case 0:  // 일반 투사체
-                    exclamationSprite.color = Color.yellow;
-                    break;
-                case 1:  // 강한 투사체
-                    exclamationSprite.color = Color.red;
-                    break;
-                default: // 예외 처리
-                    exclamationSprite.color = Color.white; // 기본값
-                    break;
-            }
+            Destroy(ex);
         }
+        int count = prepareQueue.Count; // 현재 준비된 공격 개수
+        float spacing = 0.3f;  // 느낌표 간격
+        prepareExclamation.Clear();
 
-        prepareExclamation.Add(newExclamation);
+        List<Tuple<float, int>> tempList = new List<Tuple<float, int>>(prepareQueue); // 현재 큐를 리스트로 변환 (순서 유지)
+
+
+        for (int i = 0; i < count; i++)
+        {
+            Vector3 exclamationPosition = new Vector3((i - (count - 1) / 2f) * spacing, 0, 0);
+            GameObject newExclamation = Instantiate(exclamationPrefab, exclamationParent);
+            newExclamation.transform.localPosition = exclamationPosition; // **🔹 `exclamationParent` 기준 정렬**
+
+
+            // **🔹 색상 변경 (공격 유형에 따라)**
+            SpriteRenderer exclamationSprite = newExclamation.GetComponent<SpriteRenderer>();
+            if (exclamationSprite != null)
+            {
+                int noteColor = tempList[i].Item2;
+                switch (noteColor)
+                {
+                    case 0:  // 일반 공격
+                        exclamationSprite.color = Color.yellow;
+                        break;
+                    case 1:  // 강한 공격
+                        exclamationSprite.color = Color.red;
+                        break;
+                    default:
+                        exclamationSprite.color = Color.white;
+                        break;
+                }
+            }
+
+            prepareExclamation.Add(newExclamation);
+        }
     }
 
     // 투사체 발사
@@ -188,11 +219,12 @@ public class StrikerController : MonoBehaviour
         {
             Destroy(prepareExclamation[0]); // 가장 오래된 느낌표 제거
             prepareExclamation.RemoveAt(0);
-
+            int count = prepareExclamation.Count;
+            float spacing = 0.3f;
             // 남은 느낌표 위치 재배치
-            for (int i = 0; i < prepareExclamation.Count; i++)
+            for (int i = 0; i < count; i++)
             {
-                prepareExclamation[i].transform.localPosition = new Vector3(i * 0.3f, 0, 0);
+                prepareExclamation[i].transform.localPosition = new Vector3((i - (count - 1) / 2f) * spacing, 0, 0);
             }
         }
     }
