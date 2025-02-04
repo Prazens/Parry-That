@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
 using UnityEditor;
+using UnityEngine.SceneManagement;
 
 public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
 {
@@ -29,6 +30,9 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
     float fadeInTimer = 0f;
     private float fadeInStartTime = 0f;
 
+    [SerializeField] private GameObject BlackOverlayObj;
+    private Image BlackOverlay;
+
     private string[] StageName = { "Beat Master", "Stage2", "Stage3", "Stage4" };
 
     void Start()
@@ -52,11 +56,16 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
 
         imgHistoryRect.anchorMin = new Vector2(0, 0.75f);
         imgHistoryRect.anchorMax = new Vector2(1, 1);
-
         imgHistoryRect.offsetMin = Vector2.zero;
         imgHistoryRect.offsetMax = Vector2.zero;
-
         imgHistoryRect.pivot = new Vector2(0.5f, 1);
+
+        BlackOverlay = BlackOverlayObj.GetComponent<Image>();
+        RectTransform BlackOverlayRT = BlackOverlay.GetComponent<RectTransform>();
+        BlackOverlayRT.anchorMin = new Vector2(0, 0);
+        BlackOverlayRT.anchorMax = new Vector2(1, 1);
+        Color originalOverlayColor = BlackOverlay.color;
+        BlackOverlay.color = new Color (originalOverlayColor.r, originalOverlayColor.g, originalOverlayColor.b, 0f);
     }
 
     // Update is called once per frame
@@ -72,6 +81,7 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
             float newY = Sword.rectTransform.anchoredPosition.y + Mathf.Sin(elapsedTime) * 0.05f;
             Sword.rectTransform.anchoredPosition = new Vector2(Sword.rectTransform.anchoredPosition.x, newY);
         }
+
 
         if (TitleMenu.SwordUpEnd & EnableStageMenuText)
         {
@@ -150,6 +160,34 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
         }
     }
 
+    public void SelectStage()
+    {
+        StartCoroutine(SelectStageCoroutine());
+    }
+    public IEnumerator SelectStageCoroutine()
+    {
+        BlackOverlayObj.SetActive(true);
+        Vector2 startPosition = Sword.rectTransform.anchoredPosition;
+        Vector2 targetPosition = new Vector2(startPosition.x, Screen.height * 1.5f);
+        float elapsedTime = 0f;
+        float duration = 1f; // 애니메이션 지속 시간
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsedTime / duration);
+
+            Sword.rectTransform.anchoredPosition = Vector2.Lerp(startPosition, targetPosition, t);
+
+            float overlayAlpha = (t > 0.8f) ? 1f : Mathf.Clamp01(t * 1.3f);
+            BlackOverlay.color = new Color(0f, 0f, 0f, overlayAlpha);
+
+            yield return null; // 다음 프레임까지 대기
+        }
+
+        SceneLinkage.StageLV = currentIndex + 1;
+        SceneManager.LoadScene("Loading");
+    }
     private void OnEnable()
     {
         

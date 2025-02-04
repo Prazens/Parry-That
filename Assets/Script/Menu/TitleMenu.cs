@@ -32,6 +32,8 @@ public class TitleMenu : MonoBehaviour
     public TextMeshProUGUI TitleText;
     private Color TitleText_originalColor;
 
+    [SerializeField] private StageMenu stageMenu;
+
     void Start()
     {
         menuPanel = GameObject.Find("Title").GetComponent<RectTransform>();
@@ -99,9 +101,8 @@ public class TitleMenu : MonoBehaviour
             {
                 if (GoStageMenu & SwordUpEnd)
                 {
+                    stageMenu.SelectStage();
                     // GameController.GetComponent<GameController>().StartStage();
-                    SceneLinkage.StageLV = StageMenu.currentIndex + 1;
-                    SceneManager.LoadScene("Loading");
                 }
                 if (!GoStageMenu)
                 {
@@ -132,9 +133,8 @@ public class TitleMenu : MonoBehaviour
                 {
                     if (GoStageMenu & SwordUpEnd)
                     {
+                        stageMenu.SelectStage();
                         // GameController.GetComponent<GameController>().StartStage();
-                        SceneLinkage.StageLV = StageMenu.currentIndex + 1;
-                        SceneManager.LoadScene("Loading");
                     }
                     if (!GoStageMenu)
                     {
