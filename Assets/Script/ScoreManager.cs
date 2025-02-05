@@ -33,16 +33,6 @@ public class ScoreManager : MonoBehaviour
     private Judgeable tempJudgeable;
     void Update()
     {
-        foreach (JudgeFormat judgeObject in judgeQueue)
-        {
-            Judge(judgeObject.direction, judgeObject.timing, judgeObject.type);
-        }
-
-        if (judgeQueue.Count != 0)
-        {
-            judgeQueue.Clear();
-        }
-
         // 각 선두 노트에 대해 늦은 MISS가 발생 가능한지 확인
         foreach (GameObject striker in _strikerList)
         {
@@ -62,10 +52,24 @@ public class ScoreManager : MonoBehaviour
                         tempJudgeable = tempStrikerController.judgeableQueue.Peek();
                         tempTimeDiff = StageManager.Instance.currentTime - tempJudgeable.arriveBeat * 60f / tempStrikerController.bpm - musicOffset;
                     }
+                    else if (tempJudgeable.attackType == AttackType.HoldFinishStrong)
+                    {
+                        isHolding = false;
+                    }
                     Debug.Log($"무조작 판정 : Direction.{tempJudgeable.noteDirection}, AttackType.{tempJudgeable.attackType}, {tempTimeDiff:F3} -> \"{judgeStrings[1]}\"");
                     JudgeManage(tempJudgeable, 0, true);
                 }
             }
+        }
+
+        foreach (JudgeFormat judgeObject in judgeQueue)
+        {
+            Judge(judgeObject.direction, judgeObject.timing, judgeObject.type);
+        }
+
+        if (judgeQueue.Count != 0)
+        {
+            judgeQueue.Clear();
         }
     }
 
@@ -76,6 +80,7 @@ public class ScoreManager : MonoBehaviour
         score = 0;
         _strikerList = strikerManager.strikerList;
         isHolding = false;
+        judgeDetails = new List<int[]>();
 
         Debug.Log($"_strikerList의 길이:{_strikerList.Count}");
         for (int i = 0; i < _strikerList.Count + 1; i++)
@@ -175,6 +180,7 @@ public class ScoreManager : MonoBehaviour
                 {
                     tempJudge = 5;
                 }
+
                 else  // 공노트? 공POOR?
                 {
                     tempJudge = -1;
@@ -213,6 +219,19 @@ public class ScoreManager : MonoBehaviour
                     else if (tempJudge != -1)
                     {
                         isHolding = false;
+
+                        // 홀드 끝판정 보정 (너무빡셈)
+                        if (tempJudge != 0)
+                        {
+                            if (tempJudge < 3)
+                            {
+                                tempJudge++;
+                            }
+                            else if (tempJudge > 3)
+                            {
+                                tempJudge--;
+                            }
+                        }
                     }
                 }
                 // 홀드 관련 테스트 안해봄 - 버그가 있을 수 있음
@@ -249,7 +268,7 @@ public class ScoreManager : MonoBehaviour
         if (judgeObject == null || judgement == -1)
         {
             lastNonMissJudge = 0;
-            if (judgeObject.attackType == AttackType.HoldFinishStrong)
+            if (tpT == AttackType.HoldFinishStrong)
             {
                 return;
             }
@@ -258,7 +277,7 @@ public class ScoreManager : MonoBehaviour
         }
 
         // 플레이어가 조작하지 않거나 조작이 무시되는 경우, 홀드 늦게떼기 제외
-        if (!isPassing && judgeObject.attackType != AttackType.HoldFinishStrong)
+        if (!isPassing || judgeObject.attackType == AttackType.HoldFinishStrong)
         {
             playerManager.Operate(judgeObject.noteDirection, judgeObject.attackType);
         }

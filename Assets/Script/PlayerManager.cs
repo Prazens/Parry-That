@@ -50,12 +50,6 @@ public class PlayerManager : MonoBehaviour
         direcrionDisplayer = transform.GetChild(0);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void Operate(Direction direction, AttackType type)
     {
         switch (direction)
@@ -77,11 +71,21 @@ public class PlayerManager : MonoBehaviour
                 break;
         }
 
-        // 홀드 끝 모션
-        if (type == AttackType.HoldFinishStrong || type == AttackType.HoldStop)
+        if (type == AttackType.HoldStart)
         {
-            playerAnimator.SetTrigger("playerHoldFinish");
+            transform.GetChild(2).transform.position = Dir2Vec.Trans(direction) * 1f;
+        }
+
+        // 홀드 끝 모션
+        else if (type == AttackType.HoldFinishStrong || type == AttackType.HoldStop)
+        {
+            Debug.Log($"Animation : {direction}, {type}");
+
             bladeAnimator.SetTrigger("bladeHoldFinish");
+            
+            playerAnimator.SetInteger("parryDirection", (int)direction);
+            playerAnimator.SetTrigger("playerHoldFinish");
+            transform.GetChild(2).transform.position = Vector3.zero;
             return;
         }
 

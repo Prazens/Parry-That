@@ -20,3 +20,27 @@ public enum AttackType
     HoldFinishStrong = 3,
     HoldStop = 4  // 홀드 끝에서 스와이프하지 않고 그냥 손을 뗐을 경우
 }
+
+public class Dir2Vec
+{
+    static public Vector3 Trans(Direction direction)
+    {
+        switch (direction)
+        {
+            case Direction.Up:
+                return Vector3.up;
+            
+            case Direction.Down:
+                return Vector3.down;
+            
+            case Direction.Left:
+                return Vector3.left;
+            
+            case Direction.Right:
+                return Vector3.right;
+
+            default:
+                return Vector3.zero;
+        }
+    }
+}
