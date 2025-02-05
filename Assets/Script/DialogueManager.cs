@@ -9,13 +9,19 @@ public class DialogueManager : MonoBehaviour
     public Font DialogueFont;
     public Sprite panelImageSource;
     public GameObject triangleObj;
+    private AudioSource TypingSound;
+    private AudioClip TypingSoundClip;
 
     private float letterDelay = 0.05f;
-    private float fastLetterDelay = 0.01f;
+    private float fastLetterDelay = 0f;
 
     bool daehwaON = false;
     bool accelerate = false;
 
+    private void Start()
+    {
+        TypingSound = GetComponent<AudioSource>();
+    }
     private void Update()
     {
         if (daehwaON)
@@ -23,7 +29,7 @@ public class DialogueManager : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 accelerate = true;
-                Debug.Log("클릭됨");
+                // Debug.Log("클릭됨");
             }
         }
     }
@@ -113,10 +119,17 @@ public class DialogueManager : MonoBehaviour
         // 텍스트 한 글자씩 출력 (터치 시 빠른 속도로 출력)
         daehwaON = true;
         int charIndex = 0;
+        int TypingSoundDelay = 0;
         while (charIndex < dialogueText.Length)
         {
             dialogueUIText.text += dialogueText[charIndex];
             charIndex++;
+            if (TypingSoundDelay >= 3 && !accelerate)
+            {
+                TypingSound.Play();
+                TypingSoundDelay = 0;
+            }
+            TypingSoundDelay++;
 
             float delay = accelerate ? fastLetterDelay : letterDelay;
             yield return new WaitForSeconds(delay);
