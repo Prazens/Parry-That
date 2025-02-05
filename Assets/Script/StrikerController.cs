@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Microsoft.Unity.VisualStudio.Editor;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -44,10 +45,12 @@ public class StrikerController : MonoBehaviour
     private Vector3 originalPosition;
     private Vector3 targetPosition;
     private bool isMoved = false;
-    public float moveTime = 0.2f;
+    public float moveTime = 0.08f;
     private float backtime = 0f;
     public bool isMelee; // 근접 공격 여부 확인
     public float animeOffset = 0.1f;
+
+    private bool isHolding = false;
 
     private void Start()
     {
@@ -84,9 +87,9 @@ public class StrikerController : MonoBehaviour
     {
         float currentTime = StageManager.Instance.currentTime;
 
-        if (prepareQueue.Count > 0 && currentTime >= (prepareQueue.Peek().Item1 * (60d / bpm)) + playerManager.musicOffset - 1f - moveTime && !isMoved)
+        if (prepareQueue.Count > 0 && currentTime >= (prepareQueue.Peek().Item1 * (60d / bpm)) + playerManager.musicOffset - moveTime && !isMoved)
         {
-            float fraction = (prepareQueue.Peek().Item1 * (60f / bpm) + playerManager.musicOffset - 1f - currentTime) / moveTime;
+            float fraction = (prepareQueue.Peek().Item1 * (60f / bpm) + playerManager.musicOffset - currentTime) / moveTime;
             transform.position = Vector3.Lerp(targetPosition, originalPosition, Mathf.Clamp01(fraction));
 
             if (fraction <= 0f)
@@ -103,7 +106,16 @@ public class StrikerController : MonoBehaviour
             // 공격
             //근접 전용의 scoreManager의 judge를 이용해야함. projectile과 구분해서 애니메이션도 다르게 되어야한다.
             // 투사체 저장
-            judgeableQueue.Enqueue(new Judgeable((AttackType)attackType, attackTime, location, this, null));
+            if (attackType == 2)
+            {
+                judgeableQueue.Enqueue(new Judgeable((AttackType)attackType, attackTime, location, this, null, this.MeleeHoldStart));
+                judgeableQueue.Enqueue(new Judgeable((AttackType)chartData.notes[currentNoteIndex].type, chartData.notes[currentNoteIndex].arriveTime, location, this, null, this.MeleeHoldFinish));
+            }
+            else if (attackType != 3)
+            {
+                judgeableQueue.Enqueue(new Judgeable((AttackType)attackType, attackTime, location, this, null, this.MeleeHit));
+            }
+
             //공격 애니메이션 작용
 
             // 공격격 시 느낌표 제거 (좌측부터)
@@ -120,20 +132,68 @@ public class StrikerController : MonoBehaviour
             }
             prepareQueue.Dequeue(); // 준비된 공격 제거
         }
+    }
 
-        if (prepareQueue.Count == 0 && isMoved)
+    public void MeleeHit()
+    {
+        Debug.Log("MeleeHit");
+        StartCoroutine(MeleeGoBack());
+    }
+
+    public void MeleeHoldStart()
+    {
+        Debug.Log("MeleeHoldStart");
+        // StartCoroutine(MeleeHoldStartAnim());
+        isHolding = true;
+    }
+
+    public void MeleeHoldFinish()
+    {
+        Debug.Log("MeleeHoldFinish");
+        StartCoroutine(MeleeGoBack());
+        isHolding = false;
+    }
+
+    private IEnumerator MeleeGoBack()
+    {
+        while (isMoved)
         {
+            float currentTime = StageManager.Instance.currentTime;
+
             if (backtime == 0f) backtime = currentTime;
-            float fraction = (currentTime - backtime) / moveTime;
+            float fraction = (currentTime - backtime) / (moveTime / 3);
             transform.position = Vector3.Lerp(targetPosition, originalPosition, Mathf.Clamp01(fraction));
 
             if (fraction >= 1f)
             {
                 isMoved = false;
                 backtime = 0f;
+                yield break;
             }
+            yield return null;
         }
     }
+
+    private IEnumerator MeleeHoldStartAnim()
+    {
+        while (isMoved)
+        {
+            float currentTime = StageManager.Instance.currentTime;
+
+            if (backtime == 0f) backtime = currentTime;
+            float fraction = (currentTime - backtime) / (moveTime / 3);
+            transform.position = Vector3.Lerp(targetPosition, originalPosition, Mathf.Clamp01(fraction));
+
+            if (fraction >= 1f)
+            {
+                isMoved = false;
+                backtime = 0f;
+                yield break;
+            }
+            yield return null;
+        }
+    }
+
     private void SetMeleeTargetPosition()
     {
         targetPosition = playerManager.transform.position;
@@ -176,9 +236,12 @@ public class StrikerController : MonoBehaviour
         float arriveTime = chartData.notes[currentNoteIndex].arriveTime;
         int noteType = chartData.notes[currentNoteIndex].type; // 노트 타입 저장
 
-        prepareQueue.Enqueue(new Tuple<float, int>(arriveTime, noteType)); // 도착 시간과 타입 저장
-        ShowExclamation(noteType); // 느낌표 표시
-        Debug.Log("prepare!");
+        if (noteType != 3 || isHolding)
+        {
+            prepareQueue.Enqueue(new Tuple<float, int>(arriveTime, noteType)); // 도착 시간과 타입 저장
+            ShowExclamation(noteType); // 느낌표 표시
+            Debug.Log("prepare!");
+        }
 
         // 애니메이션 실행 (느낌표 표시)
         // **애니메이션 실행 (공격 준비)**

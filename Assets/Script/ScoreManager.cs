@@ -52,10 +52,17 @@ public class ScoreManager : MonoBehaviour
             {
                 tempJudgeable = tempStrikerController.judgeableQueue.Peek();
 
-                float tmepTimeDiff = StageManager.Instance.currentTime - tempJudgeable.arriveBeat * 60f / tempStrikerController.bpm - musicOffset;
-                if (tmepTimeDiff > 0.12d)
+                float tempTimeDiff = StageManager.Instance.currentTime - tempJudgeable.arriveBeat * 60f / tempStrikerController.bpm - musicOffset;
+                if (tempTimeDiff > 0.12d)
                 {
-                    Debug.Log($"무조작 판정 : Direction.{tempJudgeable.noteDirection}, AttackType.{tempJudgeable.attackType}, {tmepTimeDiff:F3} -> \"{judgeStrings[1]}\"");
+                    if (tempJudgeable.attackType == AttackType.HoldStart)
+                    {
+                        Debug.Log($"무조작 판정 : Direction.{tempJudgeable.noteDirection}, AttackType.{tempJudgeable.attackType}, {tempTimeDiff:F3} -> \"{judgeStrings[1]}\"");
+                        JudgeManage(tempJudgeable, 0, true);
+                        tempJudgeable = tempStrikerController.judgeableQueue.Peek();
+                        tempTimeDiff = StageManager.Instance.currentTime - tempJudgeable.arriveBeat * 60f / tempStrikerController.bpm - musicOffset;
+                    }
+                    Debug.Log($"무조작 판정 : Direction.{tempJudgeable.noteDirection}, AttackType.{tempJudgeable.attackType}, {tempTimeDiff:F3} -> \"{judgeStrings[1]}\"");
                     JudgeManage(tempJudgeable, 0, true);
                 }
             }
@@ -174,27 +181,38 @@ public class ScoreManager : MonoBehaviour
                 }
 
                 // 홀드 시작
-                if (!isHolding && _judgeable.attackType == AttackType.HoldStart && tempJudge >= 1)
+                if (!isHolding && _judgeable.attackType == AttackType.HoldStart)
                 {
-                    isHolding = true;
-                    type = AttackType.HoldStart;
+                    if (tempJudge >= 1)
+                    {
+                        isHolding = true;
+                        type = AttackType.HoldStart;
+                    }
+
+                    if (tempJudge == 0)
+                    {
+                        Debug.Log($"판정 수행 : Direction.{direction}, AttackType.{type}, {timeDiff:F3} -> \"{judgeStrings[tempJudge + 1]}\"");
+                        JudgeManage(_judgeable, tempJudge, false, touchDirection, type);
+                        _judgeable = tempStrikerController.judgeableQueue.Peek();
+                        arriveSec = _judgeable.arriveBeat * 60f / tempStrikerController.bpm;
+                        timeDiff = touchTimeSec - arriveSec - musicOffset;
+                    }
                 }
 
                 // 홀드 끝
                 else if (isHolding)
                 {
-                    isHolding = false;
-
                     // 스와이프 하지 않고 그냥 종료시
                     if (type == AttackType.HoldStop)
                     {
+                        isHolding = false;
                         tempJudge = 0;
                     }
 
-                    // 홀드 아직 남았는데 입력 종료시
-                    else if (tempJudge == -1)
+                    // 홀드 정상 종료시
+                    else if (tempJudge != -1)
                     {
-                        tempJudge = 0;
+                        isHolding = false;
                     }
                 }
                 // 홀드 관련 테스트 안해봄 - 버그가 있을 수 있음
@@ -226,11 +244,16 @@ public class ScoreManager : MonoBehaviour
     // 자주 생성하는 것이 성능에 큰 영향을 끼치지는 않는다고 함. 어떤 방법이 더 나을까요
     public void JudgeManage(Judgeable judgeObject, int judgement, bool isPassing = false, Direction tpD = Direction.None, AttackType tpT = AttackType.Normal)
     {
+        
         // 노트가 처리되지 않은 경우
         if (judgeObject == null || judgement == -1)
         {
-            playerManager.Operate(tpD, tpT);
             lastNonMissJudge = 0;
+            if (judgeObject.attackType == AttackType.HoldFinishStrong)
+            {
+                return;
+            }
+            playerManager.Operate(tpD, tpT);
             return;
         }
 

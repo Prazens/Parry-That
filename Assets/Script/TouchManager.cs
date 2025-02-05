@@ -119,38 +119,29 @@ public class TouchManager : MonoBehaviour
             double angle = Mathf.Atan2(lastPos.y, lastPos.x) * Mathf.Rad2Deg;
 
             isSwiping = false;
+            Direction tempDirection;
 
             if (angle > 135 || angle <= -135)
             {
-                if (isTapAndSwipe || previousDirection != Direction.Left)
-                {
-                    SendJudge(Direction.Left, judgeTime, AttackType.Strong);
-                    previousDirection = Direction.Left;
-                }
+                tempDirection = Direction.Left;
             }
             else if (angle > 45)
             {
-                if (isTapAndSwipe || previousDirection != Direction.Up)
-                {
-                    SendJudge(Direction.Up, judgeTime, AttackType.Strong);
-                    previousDirection = Direction.Up;
-                }
+                tempDirection = Direction.Up;
             }
             else if (angle > -45)
             {
-                if (isTapAndSwipe || previousDirection != Direction.Right)
-                {
-                    SendJudge(Direction.Right, judgeTime, AttackType.Strong);
-                    previousDirection = Direction.Right;
-                }
+                tempDirection = Direction.Right;
             }
             else
             {
-                if (isTapAndSwipe || previousDirection != Direction.Down)
-                {
-                    SendJudge(Direction.Down, judgeTime, AttackType.Strong);
-                    previousDirection = Direction.Down;
-                }
+                tempDirection = Direction.Down;
+            }
+
+            if (isTapAndSwipe || previousDirection != tempDirection || scoreManager.isHolding)
+            {
+                SendJudge(tempDirection, judgeTime, AttackType.Strong);
+                previousDirection = tempDirection;
             }
         }
 
@@ -233,41 +224,33 @@ public class TouchManager : MonoBehaviour
 
                 // 스와이프 판별 끝
                 isSwiping = false;
+                Direction tempDirection;
 
                 // 각도에 따라 방향 산출
                 if (angle > 135 || angle <= -135)
                 {
-                    if (isTapAndSwipe || previousDirection != Direction.Left)
-                    {
-                        // 판정을 보냄
-                        SendJudge(Direction.Left, judgeTime, AttackType.Strong);
-                        // 이전 판정과 같은 스와이프로 판정이 연사되지 않게 기록
-                        previousDirection = Direction.Left;
-                    }
+                    tempDirection = Direction.Left;
                 }
                 else if (angle > 45)
                 {
-                    if (isTapAndSwipe || previousDirection != Direction.Up)
-                    {
-                        SendJudge(Direction.Up, judgeTime, AttackType.Strong);
-                        previousDirection = Direction.Up;
-                    }
+                    tempDirection = Direction.Up;
                 }
                 else if (angle > -45)
                 {
-                    if (isTapAndSwipe || previousDirection != Direction.Right)
-                    {
-                        SendJudge(Direction.Right, judgeTime, AttackType.Strong);
-                        previousDirection = Direction.Right;
-                    }
+                    tempDirection = Direction.Right;
                 }
                 else
                 {
-                    if (isTapAndSwipe || previousDirection != Direction.Down)
-                    {
-                        SendJudge(Direction.Down, judgeTime, AttackType.Strong);
-                        previousDirection = Direction.Down;
-                    }
+                    tempDirection = Direction.Down;
+                }
+
+                // 홀드 중에는 같은 방향이라도 홀드 종료를 위해 판정을 보냄
+                if (isTapAndSwipe || previousDirection != tempDirection || scoreManager.isHolding)
+                {
+                    // 판정을 보냄
+                    SendJudge(tempDirection, judgeTime, AttackType.Strong);
+                    // 이전 판정과 같은 스와이프로 판정이 연사되지 않게 기록
+                    previousDirection = tempDirection;
                 }
             }
 
