@@ -21,9 +21,9 @@ public enum AttackType
     HoldStop = 4  // 홀드 끝에서 스와이프하지 않고 그냥 손을 뗐을 경우
 }
 
-public class Dir2Vec
+public class DirTool
 {
-    static public Vector3 Trans(Direction direction)
+    static public Vector3 TranstoVec(Direction direction)
     {
         switch (direction)
         {
@@ -41,6 +41,27 @@ public class Dir2Vec
 
             default:
                 return Vector3.zero;
+        }
+    }
+
+    static public Direction ReverseDir(Direction direction)
+    {
+        switch (direction)
+        {
+            case Direction.Up:
+                return Direction.Down;
+            
+            case Direction.Down:
+                return Direction.Up;
+            
+            case Direction.Left:
+                return Direction.Right;
+            
+            case Direction.Right:
+                return Direction.Left;
+
+            default:
+                return Direction.None;
         }
     }
 }

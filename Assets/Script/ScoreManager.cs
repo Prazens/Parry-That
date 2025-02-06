@@ -82,7 +82,7 @@ public class ScoreManager : MonoBehaviour
         isHolding = false;
         judgeDetails = new List<int[]>();
 
-        Debug.Log($"_strikerList의 길이:{_strikerList.Count}");
+        // Debug.Log($"_strikerList의 길이:{_strikerList.Count}");
         for (int i = 0; i < _strikerList.Count + 1; i++)
         {
             judgeDetails.Add(new int[7] { 0, 0, 0, 0, 0, 0, 0 });
@@ -103,17 +103,27 @@ public class ScoreManager : MonoBehaviour
             return;
         }
 
+        bool findHoldFinish = false;
+
         // 홀드 중인데 다른 판정 입력
         // if (type != AttackType.HoldFinish && isHolding)
-        if (!(type == AttackType.Strong || type == AttackType.HoldStop) && isHolding)
+        if (isHolding)
         {
-            Debug.Log("홀드 중에서 스와이프 제외한 다른 판정 무시됨");
-            return;
-        }
-        // 홀드 중일 때의 스와이프는 홀드 종료로 판정
-        else if (type == AttackType.Strong && isHolding)
-        {
-            type = AttackType.HoldFinishStrong;
+            if (!(type == AttackType.Strong || type == AttackType.HoldStop))
+            {
+                Debug.Log("홀드 중에서 스와이프 제외한 다른 판정 무시됨");
+                return;
+            }
+            // 홀드 중일 때의 스와이프는 홀드 종료로 판정
+            else if (type == AttackType.Strong)
+            {
+                type = AttackType.HoldFinishStrong;
+                findHoldFinish = true;
+            }
+            else if (type == AttackType.HoldStop)
+            {
+                findHoldFinish = true;
+            }
         }
 
         Direction touchDirection = (direction == Direction.None) ? playerManager.currentDirection : direction;
@@ -139,9 +149,21 @@ public class ScoreManager : MonoBehaviour
             tempStrikerController = striker.GetComponent<StrikerController>();
 
             // 터치 방향과 맞는 방향에서 공격하는 스트라이커라면
-            if (tempStrikerController.location == touchDirection && tempStrikerController.judgeableQueue.Count != 0)
+            if ((tempStrikerController.location == touchDirection || findHoldFinish)
+                && tempStrikerController.judgeableQueue.Count != 0)
             {
                 _judgeable = tempStrikerController.judgeableQueue.Peek();
+
+                // 홀드 틀렸을 경우
+                if (findHoldFinish && _judgeable.attackType == AttackType.HoldFinishStrong
+                    && (tempStrikerController.location != touchDirection || type == AttackType.HoldStop))
+                {
+                    Debug.Log("홀드 틀림");
+                    isHolding = false;
+                    tempJudge = 0;
+                    break;
+                }
+
                 arriveSec = _judgeable.arriveBeat * 60f / tempStrikerController.bpm;
 
                 // 시간에 따라 판정
@@ -191,6 +213,7 @@ public class ScoreManager : MonoBehaviour
                 {
                     if (tempJudge >= 1)
                     {
+                        Debug.Log("홀드 시작");
                         isHolding = true;
                         type = AttackType.HoldStart;
                     }
@@ -206,35 +229,24 @@ public class ScoreManager : MonoBehaviour
                 }
 
                 // 홀드 끝
-                else if (isHolding)
+                else if (isHolding && tempJudge != -1)
                 {
-                    // 스와이프 하지 않고 그냥 종료시
-                    if (type == AttackType.HoldStop)
-                    {
-                        isHolding = false;
-                        tempJudge = 0;
-                    }
+                    Debug.Log("홀드 종료");
+                    isHolding = false;
 
-                    // 홀드 정상 종료시
-                    else if (tempJudge != -1)
+                    // 홀드 끝판정 보정 (너무빡셈)
+                    if (tempJudge != 0)
                     {
-                        isHolding = false;
-
-                        // 홀드 끝판정 보정 (너무빡셈)
-                        if (tempJudge != 0)
+                        if (tempJudge < 3)
                         {
-                            if (tempJudge < 3)
-                            {
-                                tempJudge++;
-                            }
-                            else if (tempJudge > 3)
-                            {
-                                tempJudge--;
-                            }
+                            tempJudge++;
+                        }
+                        else if (tempJudge > 3)
+                        {
+                            tempJudge--;
                         }
                     }
                 }
-                // 홀드 관련 테스트 안해봄 - 버그가 있을 수 있음
 
                 lastNonMissJudge = touchTimeSec;
                 // Debug.Log("노트를 갖고 있고 같은 방향의 Striker를 찾았습니다");

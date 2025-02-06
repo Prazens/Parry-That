@@ -113,7 +113,7 @@ public class TouchManager : MonoBehaviour
         }
         
         // 설정된 조작 길이를 넘었을 경우 : 스와이프한 것으로 취급, 판정 실시
-        else if (sumLength > 20f && isSwiping)
+        else if (sumLength > 40f && isSwiping)
         {
             lastPos -= initialPos;
             double angle = Mathf.Atan2(lastPos.y, lastPos.x) * Mathf.Rad2Deg;
@@ -121,15 +121,15 @@ public class TouchManager : MonoBehaviour
             isSwiping = false;
             Direction tempDirection;
 
-            if (angle > 135 || angle <= -135)
+            if (angle > 150 || angle <= -150)
             {
                 tempDirection = Direction.Left;
             }
-            else if (angle > 45)
+            else if (angle > 30)
             {
                 tempDirection = Direction.Up;
             }
-            else if (angle > -45)
+            else if (angle > -30)
             {
                 tempDirection = Direction.Right;
             }
@@ -146,7 +146,7 @@ public class TouchManager : MonoBehaviour
         }
 
         // 조작 한계 시간을 초과한 경우 : 무방향 조작으로 취급, 판정 실시
-        else if (StageManager.Instance.currentTime - judgeTime > 0.0625f && isSwiping)
+        else if (StageManager.Instance.currentTime - judgeTime > 0.1f && isSwiping)
         {
             isSwiping = false;
         }
@@ -162,6 +162,12 @@ public class TouchManager : MonoBehaviour
         else if (Input.GetMouseButtonUp(0) && isSwiping)
         {
             isSwiping = false;
+            SendJudge(Direction.None, judgeTime, AttackType.HoldStop);
+        }
+
+        // 그냥 뗐을 때
+        else if (scoreManager.isHolding && !Input.GetMouseButtonUp(0))
+        {
             SendJudge(Direction.None, judgeTime, AttackType.HoldStop);
         }
     }
@@ -227,15 +233,15 @@ public class TouchManager : MonoBehaviour
                 Direction tempDirection;
 
                 // 각도에 따라 방향 산출
-                if (angle > 135 || angle <= -135)
+                if (angle > 150 || angle <= -150)
                 {
                     tempDirection = Direction.Left;
                 }
-                else if (angle > 45)
+                else if (angle > 30)
                 {
                     tempDirection = Direction.Up;
                 }
-                else if (angle > -45)
+                else if (angle > -30)
                 {
                     tempDirection = Direction.Right;
                 }
@@ -255,7 +261,7 @@ public class TouchManager : MonoBehaviour
             }
 
             // 터치 한계 시간을 초과한 경우 : 스와이프 판별 종료, 롱노트 판별 계속
-            else if (StageManager.Instance.currentTime - judgeTime > 0.0625f && isSwiping)
+            else if (StageManager.Instance.currentTime - judgeTime > 0.1f && isSwiping)
             {
                 // 스와이프 판별 끝
                 isSwiping = false;
@@ -278,13 +284,19 @@ public class TouchManager : MonoBehaviour
             // 롱노트 끝판정 전송
             SendJudge(Direction.None, judgeTime, AttackType.HoldStop);
         }
+
+        // 그냥 뗐을 때
+        else if (scoreManager.isHolding && Input.touchCount == 0)
+        {
+            SendJudge(Direction.None, judgeTime, AttackType.HoldStop);
+        }
     }
 
     private void SendJudge(Direction? _judgeDirection, double _judgeTime, AttackType _type)
     {
         if (_judgeDirection.HasValue)
         {
-            // Debug.Log($"판정 전송");
+            Debug.Log($"판정 전송");
 
             scoreManager.judgeQueue.Enqueue(new JudgeFormat((Direction)_judgeDirection, _judgeTime, _type));
         }

@@ -19,6 +19,7 @@ public class StrikerController : MonoBehaviour
     public Direction location; // 위치 방향
     private int currentNoteIndex = 0; // 현재 채보 인덱스
     [SerializeField] private Animator animator;
+    [SerializeField] private Animator bladeAnimator = null;
     // 임시로 발사체 저장해놓을 공간
     private float lastProjectileTime = 0f; // 마지막 투사체 발사 시간
 
@@ -45,6 +46,7 @@ public class StrikerController : MonoBehaviour
     private Vector3 originalPosition;
     private Vector3 targetPosition;
     private bool isMoved = false;
+    private bool isMoving = false;
     public float moveTime = 0.08f;
     private float backtime = 0f;
     public bool isMelee; // 근접 공격 여부 확인
@@ -60,6 +62,12 @@ public class StrikerController : MonoBehaviour
         if (isMelee)
         {
             SetMeleeTargetPosition();
+        }
+        
+        animator.SetInteger("direction", (int)location);
+        if (bladeAnimator != null)
+        {
+            bladeAnimator.SetInteger("bladeDirection", (int)location);
         }
     }
     private void Update() // 현재 striker 자체에서 투사체 일정 간격으로 발사
@@ -87,36 +95,37 @@ public class StrikerController : MonoBehaviour
     {
         float currentTime = StageManager.Instance.currentTime;
 
-        if (prepareQueue.Count > 0 && currentTime >= (prepareQueue.Peek().Item1 * (60d / bpm)) + playerManager.musicOffset - moveTime && !isMoved)
+        if (prepareQueue.Count > 0 && currentTime >= (prepareQueue.Peek().Item1 * (60d / bpm)) + playerManager.musicOffset - animeOffset - moveTime && !isMoved && prepareQueue.Peek().Item2 != 3 && !isMoving)
         {
-            float fraction = (prepareQueue.Peek().Item1 * (60f / bpm) + playerManager.musicOffset - currentTime) / moveTime;
-            transform.position = Vector3.Lerp(targetPosition, originalPosition, Mathf.Clamp01(fraction));
+            animator.SetBool("isAttacking", false);
+            animator.SetInteger("attackType", prepareQueue.Peek().Item2);
+            animator.SetTrigger("attackStart");
+            isMoving = true;
 
-            if (fraction <= 0f)
-            {
-                isMoved = true;
-            }
+            StartCoroutine(MeleeGo(prepareQueue.Peek().Item1 * (60f / bpm) + playerManager.musicOffset - animeOffset));
         }
+
         // 채보 시간에 맞춰 공격
-        if (prepareQueue.Count > 0 && currentTime >= (prepareQueue.Peek().Item1 * (60d / bpm)) + playerManager.musicOffset - animeOffset && isMoved)
+        if (prepareQueue.Count > 0 && currentTime >= (prepareQueue.Peek().Item1 * (60d / bpm)) + playerManager.musicOffset - animeOffset)
         {
             int attackType = prepareQueue.Peek().Item2;
             float attackTime = prepareQueue.Peek().Item1;
 
             // 공격
             //근접 전용의 scoreManager의 judge를 이용해야함. projectile과 구분해서 애니메이션도 다르게 되어야한다.
-            // 투사체 저장
-            if (attackType == 2)
-            {
-                judgeableQueue.Enqueue(new Judgeable((AttackType)attackType, attackTime, location, this, null, this.MeleeHoldStart));
-                judgeableQueue.Enqueue(new Judgeable((AttackType)chartData.notes[currentNoteIndex].type, chartData.notes[currentNoteIndex].arriveTime, location, this, null, this.MeleeHoldFinish));
-            }
-            else if (attackType != 3)
-            {
-                judgeableQueue.Enqueue(new Judgeable((AttackType)attackType, attackTime, location, this, null, this.MeleeHit));
-            }
+            // 투사체 저장은 PrepareForAttack에서 미리함
+
+            Debug.Log("MeleeAnimationPlay");
 
             //공격 애니메이션 작용
+            if (attackType != 3)
+            {
+                if (attackType == 2)
+                {
+                    transform.GetChild(0).transform.localPosition = DirTool.TranstoVec(DirTool.ReverseDir(location)) * 2f;
+                }
+                bladeAnimator.SetInteger("attackType", attackType);
+            }
 
             // 공격격 시 느낌표 제거 (좌측부터)
             if (prepareExclamation.Count > 0)
@@ -134,28 +143,78 @@ public class StrikerController : MonoBehaviour
         }
     }
 
-    public void MeleeHit()
+    public void ActMeleeHit()
     {
-        Debug.Log("MeleeHit");
+        Debug.Log("ActMeleeHit");
         StartCoroutine(MeleeGoBack());
     }
 
-    public void MeleeHoldStart()
+    public void ActMeleeHoldStart()
     {
-        Debug.Log("MeleeHoldStart");
+        Debug.Log($"ActMeleeHoldStart {judgeableQueue.Peek().arriveBeat} {bpm} {StageManager.Instance.currentTime}");
+        bladeAnimator.SetTrigger("bladePlay");
+
+        uiManager.CutInDisplay(judgeableQueue.Peek().arriveBeat * (60f / bpm) - StageManager.Instance.currentTime + playerManager.musicOffset);
+
         // StartCoroutine(MeleeHoldStartAnim());
         isHolding = true;
     }
 
-    public void MeleeHoldFinish()
+    public void ActMeleeHoldFinish()
     {
-        Debug.Log("MeleeHoldFinish");
+        Debug.Log("ActMeleeHoldFinish");
+        animator.SetBool("isAttacking", false);
+        bladeAnimator.SetTrigger("bladeHoldFinish");
+        
+        transform.GetChild(0).transform.localPosition = Vector3.zero;
+
         StartCoroutine(MeleeGoBack());
         isHolding = false;
+
+        // 미스났는데도 느낌표 남아있는 거 방지
+        while (prepareExclamation.Count > 0)
+        {
+            Destroy(prepareExclamation[0]); // 가장 오래된 느낌표 제거
+            prepareExclamation.RemoveAt(0);
+        }
+        if (prepareQueue.Count != 0)
+        {
+            prepareQueue.Dequeue(); // 준비된 공격 제거
+        }
+
+        uiManager.CutInDisplay(0, true);
     }
 
+    private IEnumerator MeleeGo(float targetTime)
+    {
+        Debug.Log("MeleeGo");
+        while (!isMoved)
+        {
+            float currentTime = StageManager.Instance.currentTime;
+
+            float fraction = (targetTime - currentTime) / moveTime;
+            transform.position = Vector3.Lerp(targetPosition, originalPosition, Mathf.Clamp01(fraction));
+
+            if (fraction <= 0f)
+            {
+                Debug.Log("MeleeGoEnd");
+                animator.SetBool("isAttacking", true);
+
+                int randomNum = UnityEngine.Random.Range(0, 2);
+                animator.SetInteger("randomSelecter", randomNum);
+                bladeAnimator.SetInteger("randomSelecter", randomNum);
+
+                isMoved = true;
+                isMoving = false;
+                yield break;
+            }
+            yield return null;
+        }
+    }
+    
     private IEnumerator MeleeGoBack()
     {
+        Debug.Log("MeleeGoBack");
         while (isMoved)
         {
             float currentTime = StageManager.Instance.currentTime;
@@ -166,6 +225,7 @@ public class StrikerController : MonoBehaviour
 
             if (fraction >= 1f)
             {
+                animator.SetTrigger("attackFinish");
                 isMoved = false;
                 backtime = 0f;
                 yield break;
@@ -176,6 +236,7 @@ public class StrikerController : MonoBehaviour
 
     private IEnumerator MeleeHoldStartAnim()
     {
+        Debug.Log("MeleeHoldStartAnim");
         while (isMoved)
         {
             float currentTime = StageManager.Instance.currentTime;
@@ -201,16 +262,16 @@ public class StrikerController : MonoBehaviour
         switch (location)
         {
             case Direction.Up:
-                targetPosition += Vector3.up * 1.5f;
+                targetPosition += Vector3.up * 2f;
                 break;
             case Direction.Down:
-                targetPosition += Vector3.down * 1.5f;
+                targetPosition += Vector3.down * 2f;
                 break;
             case Direction.Left:
-                targetPosition += Vector3.right * 1.5f;
+                targetPosition += Vector3.right * 2f;
                 break;
             case Direction.Right:
-                targetPosition += Vector3.left * 1.5f;
+                targetPosition += Vector3.left * 2f;
                 break;
         }
     }
@@ -241,6 +302,19 @@ public class StrikerController : MonoBehaviour
             prepareQueue.Enqueue(new Tuple<float, int>(arriveTime, noteType)); // 도착 시간과 타입 저장
             ShowExclamation(noteType); // 느낌표 표시
             Debug.Log("prepare!");
+        }
+
+        if (isMelee)
+        {
+            if (noteType == 2)
+            {
+                judgeableQueue.Enqueue(new Judgeable((AttackType)noteType, arriveTime, location, this, null, this.ActMeleeHoldStart));
+                judgeableQueue.Enqueue(new Judgeable((AttackType)chartData.notes[currentNoteIndex + 1].type, chartData.notes[currentNoteIndex + 1].arriveTime, location, this, null, this.ActMeleeHoldFinish));
+            }
+            else if (noteType != 3)
+            {
+                judgeableQueue.Enqueue(new Judgeable((AttackType)noteType, arriveTime, location, this, null, this.ActMeleeHit));
+            }
         }
 
         // 애니메이션 실행 (느낌표 표시)
@@ -430,11 +504,11 @@ public class StrikerController : MonoBehaviour
     {
         if (audioSource != null)
         {
-            if (type == AttackType.Normal && prepareSoundNormal != null)
+            if (type == AttackType.Normal && parrySoundNormal != null)
             {
                 audioSource.PlayOneShot(parrySoundNormal);
             }
-            else if (type == AttackType.Strong && prepareSoundStrong != null)
+            else if (type == AttackType.Strong && parrySoundStrong != null)
             {
                 audioSource.PlayOneShot(parrySoundStrong);
             }

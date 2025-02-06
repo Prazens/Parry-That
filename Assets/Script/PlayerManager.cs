@@ -18,7 +18,7 @@ public class PlayerManager : MonoBehaviour
 
     
     public float musicOffset;
-    public float visualOffset;
+    // public float visualOffset;
 
     // public string[] triggers = new string[2] { "playerParryUp", "playerParryDown" };
 
@@ -26,7 +26,7 @@ public class PlayerManager : MonoBehaviour
     void Start()
     {
         musicOffset = 2f;  // 판정 오프셋: -일수록 빨리 쳐야 함
-        visualOffset = 0.22f;  // 판정선: -일수록 플레이어에 가까움
+        // visualOffset = 0.22f;  // 판정선: -일수록 플레이어에 가까움
 
         GameController gameController = FindObjectOfType<GameController>();
         if (gameController != null)
@@ -73,7 +73,7 @@ public class PlayerManager : MonoBehaviour
 
         if (type == AttackType.HoldStart)
         {
-            transform.GetChild(2).transform.position = Dir2Vec.Trans(direction) * 1f;
+            transform.GetChild(2).transform.position = DirTool.TranstoVec(direction) * 0.8f;
         }
 
         // 홀드 끝 모션
@@ -82,9 +82,8 @@ public class PlayerManager : MonoBehaviour
             Debug.Log($"Animation : {direction}, {type}");
 
             bladeAnimator.SetTrigger("bladeHoldFinish");
-            
-            playerAnimator.SetInteger("parryDirection", (int)direction);
             playerAnimator.SetTrigger("playerHoldFinish");
+            
             transform.GetChild(2).transform.position = Vector3.zero;
             return;
         }
