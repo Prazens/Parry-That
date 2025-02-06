@@ -66,6 +66,9 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
         BlackOverlayRT.anchorMax = new Vector2(1, 1);
         Color originalOverlayColor = BlackOverlay.color;
         BlackOverlay.color = new Color (originalOverlayColor.r, originalOverlayColor.g, originalOverlayColor.b, 0f);
+
+        // 스테이지에서 나왔을 때 현재 인덱스를 그 스테이지로 설정
+        currentIndex = SceneLinkage.StageLV == 0 ? 0 : SceneLinkage.StageLV - 1;
     }
 
     // Update is called once per frame
@@ -73,6 +76,9 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
     {
         if (TitleMenu.SwordUpEnd)
         {
+            Debug.Log("Time.timeScale: " + Time.timeScale);
+
+            if (imgStage1 == null) Debug.Log("CD이미지 없음");
             // CD 회전
             imgStage1.rectTransform.Rotate(0, 0, 1.7f * Time.deltaTime);  
 
@@ -187,10 +193,6 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
 
         SceneLinkage.StageLV = currentIndex + 1;
         SceneManager.LoadScene("Loading");
-    }
-    private void OnEnable()
-    {
-        
     }
 
     // 여기서부터 좌우 스와이프 관련 코드
