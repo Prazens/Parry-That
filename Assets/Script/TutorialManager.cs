@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class TutorialManager : MonoBehaviour
@@ -15,9 +16,12 @@ public class TutorialManager : MonoBehaviour
     [Header("캐릭터 이미지")]
     [SerializeField] private Sprite[] CharacterSprite;
 
+    DatabaseManager databaseManager;
+
     private void Awake()
     {
         // 튜토리얼 시작시 소환/세팅할 것들
+        databaseManager = GameObject.FindObjectOfType<DatabaseManager>();
 
         // 공격 설명 텍스트 생성
         GameObject GameDescription = new GameObject("GameDescription");
@@ -189,6 +193,9 @@ public class TutorialManager : MonoBehaviour
         yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "부인공", Daehwa7_Text2, false));
 
         // Main Scene 전환
+        DatabaseManager.isTutorialDone = true;
+        databaseManager.SaveTutorialDone();
+        SceneManager.LoadScene("Main");
     }
 
 

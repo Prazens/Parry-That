@@ -85,7 +85,7 @@ public class PrologueManager : MonoBehaviour
     private void Update()
     {
         // 마우스 클릭(터치) 감지
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) || Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
 
             // 조작 금지 조건
@@ -306,7 +306,10 @@ public class PrologueManager : MonoBehaviour
     {
         isTyping = true;
 
-        
+        if (currentCutsceneIndex == 0)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
 
         // 텍스트 한 글자씩 나오게
         int charIndex = 0;

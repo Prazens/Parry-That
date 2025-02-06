@@ -26,7 +26,7 @@ public class DialogueManager : MonoBehaviour
     {
         if (daehwaON)
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) || Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
             {
                 accelerate = true;
                 // Debug.Log("클릭됨");
