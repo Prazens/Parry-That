@@ -25,6 +25,7 @@ public class TitleMenu : MonoBehaviour
     private bool GoStageMenu = false;
     public static bool SwordUpEnd = false;
     public bool MouseControl;   // Inspector 창에서 설정
+    public static bool TitlePassed = false;
 
     public GameObject GameController;
 
@@ -52,6 +53,14 @@ public class TitleMenu : MonoBehaviour
         {
             TitleText_originalColor = TitleText.color;
         }
+
+        if (TitlePassed)  // 스테이지에서 나왔을 때 스테이지 메뉴창 상태로 위치 설정
+        {
+            ChangePanelPosition(MenuStartPos, StageMenuStartPos);
+            ChangeSwordPosition();
+            GoStageMenu = true;
+        }
+        Debug.Log($"{TitlePassed}");
     }
 
     void Update()   // 위로 스와이프 하면 타이틀 화면에서 스테이지 선택 화면으로 전환
@@ -89,26 +98,30 @@ public class TitleMenu : MonoBehaviour
 
     private void MouseMove()
     {
-        if (Input.GetMouseButtonDown(0))        // 터치 조작으로 바꿔야 함. 아직 마우스 조작만 구현
+        if (Input.GetMouseButtonDown(0))
         {
             startPos = Input.mousePosition;
         }
         if (Input.GetMouseButtonUp(0))
         {
+            Debug.Log("마우스무브 호출");
             Vector2 endPos = Input.mousePosition;
             float swipeDistance = startPos.y - endPos.y;
             if (swipeDistance < -swipeThreshold)
             {
                 if (GoStageMenu & SwordUpEnd)
                 {
+                    Debug.Log("마우스무브 안에 2번째 조건 호출");
                     stageMenu.SelectStage();
                     // GameController.GetComponent<GameController>().StartStage();
                 }
                 if (!GoStageMenu)
                 {
+                    Debug.Log("마우스무브 안에 1번째 조건 호출");
                     OnSwipeUp();
                     LogoFadeOut();
                     GoStageMenu = true;
+                    TitlePassed = true;
                 }
             }
         }
@@ -141,6 +154,7 @@ public class TitleMenu : MonoBehaviour
                         OnSwipeUp();
                         LogoFadeOut();
                         GoStageMenu = true;
+                        TitlePassed = true;
                     }
                 }
             }
@@ -150,8 +164,11 @@ public class TitleMenu : MonoBehaviour
     public void OnSwipeUp()
     {
         TitleTextObj.SetActive(false);
-        StartCoroutine(SlidePanels(MenuStartPos, StageMenuStartPos));
-        StartCoroutine(SwordUp());
+        if (!TitlePassed)   // 처음 실행했을 때
+        {
+            StartCoroutine(SlidePanels(MenuStartPos, StageMenuStartPos));
+            StartCoroutine(SwordUp());
+        }
     }
 
     private IEnumerator SlidePanels(Vector2 FirstPanel, Vector2 SecondPanel)
@@ -170,6 +187,15 @@ public class TitleMenu : MonoBehaviour
             yield return null;
         }
 
+        menuPanel.anchoredPosition = FirstPanelEnd;
+        nextPanel.anchoredPosition = SecondPanelEnd;
+    }
+
+    private void ChangePanelPosition(Vector2 FirstPanel, Vector2 SecondPanel)
+    {
+        RectTransform canvasRect = Sword.GetComponentInParent<Canvas>().GetComponent<RectTransform>();
+        Vector2 FirstPanelEnd = new Vector2(FirstPanel.x, FirstPanel.y - canvasRect.rect.height);
+        Vector2 SecondPanelEnd = new Vector2(SecondPanel.x, SecondPanel.y - canvasRect.rect.height);
         menuPanel.anchoredPosition = FirstPanelEnd;
         nextPanel.anchoredPosition = SecondPanelEnd;
     }
@@ -213,6 +239,15 @@ public class TitleMenu : MonoBehaviour
         swordRect.anchoredPosition = endPosDown;
         SwordUpEnd = true;
         Debug.Log("SwordUpEnd");
+    }
+
+    private void ChangeSwordPosition()
+    {
+        RectTransform swordRect = Sword.GetComponent<RectTransform>();
+        RectTransform canvasRect = Sword.GetComponentInParent<Canvas>().GetComponent<RectTransform>();
+        Vector2 endPosDown = new Vector2(startPos.x, startPos.y + canvasRect.rect.height + 400);
+        swordRect.anchoredPosition = endPosDown;
+        SwordUpEnd = true;
     }
 
 
