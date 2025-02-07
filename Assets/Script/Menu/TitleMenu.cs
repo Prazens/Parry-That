@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
+using System.Linq;
 
 public class TitleMenu : MonoBehaviour
 {
@@ -21,11 +22,14 @@ public class TitleMenu : MonoBehaviour
 
     private Image Sword;
     private Image Title;
+    private GameObject imsi;
+    private Image rt_imsi;
 
     private bool GoStageMenu = false;
     public static bool SwordUpEnd = false;
     public bool MouseControl;   // Inspector 창에서 설정
     public static bool TitlePassed = false;
+    public bool isPossibleStage = true;
 
     public GameObject GameController;
 
@@ -41,6 +45,8 @@ public class TitleMenu : MonoBehaviour
         nextPanel = GameObject.Find("StageMenu").GetComponent<RectTransform>();
         Sword = GameObject.Find("Img_Sword").GetComponent<Image>();
         Title = GameObject.Find("Img_Title").GetComponent<Image>();
+        imsi = GameObject.Find("imsi");
+        rt_imsi = imsi.GetComponent<Image>();
 
         GameController = GameObject.Find("GameController");
         TitleTextObj = GameObject.Find("TitleText");
@@ -65,7 +71,7 @@ public class TitleMenu : MonoBehaviour
 
     void Update()   // 위로 스와이프 하면 타이틀 화면에서 스테이지 선택 화면으로 전환
     {
-        if (!GoStageMenu)
+        if (!GoStageMenu || SwordUpEnd)
         {
             if (MouseControl)   // 마우스 조작
             {
@@ -77,23 +83,20 @@ public class TitleMenu : MonoBehaviour
             }
         }
 
-        if (SwordUpEnd)
-        {
-            if (MouseControl)   // 마우스 조작
-            {
-                MouseMove();
-            } 
-            else    // 터치 조작
-            {
-                TouchMove();
-            }
-        }
-
         if (TitleText != null)
         {
             float alpha = (Mathf.Sin(Time.time * 1f) * 0.35f + 0.65f);
             TitleText.color = new Color(TitleText_originalColor.r, TitleText_originalColor.g, TitleText_originalColor.b, alpha);
         }
+
+        // 현재 플레이 가능한 스테이지 제한
+        int[] possibleStages = { 0 };
+        isPossibleStage = possibleStages.Contains(StageMenu.currentIndex);
+
+        // 임시코드 for imsi
+        rt_imsi.rectTransform.anchoredPosition = Sword.rectTransform.anchoredPosition;
+        if (1 <= StageMenu.currentIndex && StageMenu.currentIndex <= 100) imsi.SetActive(true);
+        else imsi.SetActive(false);
     }
 
     private void MouseMove()
@@ -104,20 +107,18 @@ public class TitleMenu : MonoBehaviour
         }
         if (Input.GetMouseButtonUp(0))
         {
-            Debug.Log("마우스무브 호출");
             Vector2 endPos = Input.mousePosition;
             float swipeDistance = startPos.y - endPos.y;
             if (swipeDistance < -swipeThreshold)
             {
-                if (GoStageMenu & SwordUpEnd)
+                if (GoStageMenu & SwordUpEnd & isPossibleStage)
                 {
-                    Debug.Log("마우스무브 안에 2번째 조건 호출");
-                    stageMenu.SelectStage();
+                    if (Mathf.Abs(startPos.x - endPos.x) >= stageMenu.threshold) return;
+                    else stageMenu.SelectStage();
                     // GameController.GetComponent<GameController>().StartStage();
                 }
                 if (!GoStageMenu)
                 {
-                    Debug.Log("마우스무브 안에 1번째 조건 호출");
                     OnSwipeUp();
                     LogoFadeOut();
                     GoStageMenu = true;
@@ -146,7 +147,8 @@ public class TitleMenu : MonoBehaviour
                 {
                     if (GoStageMenu & SwordUpEnd)
                     {
-                        stageMenu.SelectStage();
+                        if (Mathf.Abs(startPos.x - endPos.x) >= stageMenu.threshold) return;
+                        else stageMenu.SelectStage();
                         // GameController.GetComponent<GameController>().StartStage();
                     }
                     if (!GoStageMenu)
