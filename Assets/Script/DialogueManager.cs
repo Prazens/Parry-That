@@ -63,16 +63,16 @@ public class DialogueManager : MonoBehaviour
             characterRect.anchorMin = new Vector2(0f, 0.33f);
             characterRect.anchorMax = new Vector2(0f, 0.33f);
             characterRect.pivot = new Vector2(0f, 0f);
-            characterRect.anchoredPosition = new Vector2(-460f, -430f);
-            characterRect.sizeDelta = new Vector2(1536f, 960f);
+            characterRect.anchoredPosition = new Vector2(Screen.width * 0.02f, - Screen.width * 0.12f); 
+            characterRect.sizeDelta = new Vector2(Screen.width * 0.33f * 1.5f, Screen.width * 0.33f * 1.2988f * 1.5f);
         }
         else
         {
             characterRect.anchorMin = new Vector2(1f, 0.33f);
             characterRect.anchorMax = new Vector2(1f, 0.33f);
             characterRect.pivot = new Vector2(1f, 0f);
-            characterRect.anchoredPosition = new Vector2(460f, -430f);
-            characterRect.sizeDelta = new Vector2(1536f, 960f);
+            characterRect.anchoredPosition = new Vector2(- Screen.width * 0.02f, - Screen.width * 0.12f);
+            characterRect.sizeDelta = new Vector2(Screen.width * 0.33f * 1.5f, Screen.width * 0.33f * 1.2988f * 1.5f);
         }
 
         // 대화창 패널

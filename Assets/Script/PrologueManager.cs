@@ -28,26 +28,46 @@ public class PrologueManager : MonoBehaviour
     GameObject PrologueTextObj;
     Text PrologueText;
 
+    private GameObject CutScenes;
+
     private void Start()
     {
         // 텍스트 내용
-        TextSet[0] = "대학생 에코는 시험을 앞두고 팔자 좋게 자고 있었습니다.";
+        TextSet[0] = "대학생 '소리'는 시험을 앞두고 팔자 좋게 자고 있었습니다.";
         TextSet[1] = " 심지어 꿈까지 꾸고 있네요.";
-        TextSet[2] = "용사 에코시여, 세계를 구해주소서!!";
+        TextSet[2] = "용사 '소리'시여, 세계를 구해주소서!!";
         TextSet[3] = "마왕이 소리의 정령들을 타락시켜 자기 부하로 바꾸고 있습니다!";
         TextSet[4] = "지금 마왕을 멈추지 못하면 세상에 소리가 없어져 버릴 겁니다!";
         TextSet[5] = "\"미안한데 꿈인 거 다 티난다.\"";
-        TextSet[6] = "에코는 9시에 시험이 있었으므로, 꿈 꿀 시간따위 없었습니다.";
+        TextSet[6] = "'소리'는 9시에 시험이 있었으므로, 꿈 꿀 시간따위 없었습니다.";
         TextSet[7] = "그러나 짜잔\n                                            \n\"아\"";
         TextSet[8] = "\"아니, 알람이 분명 울렸어야했는데...?\"\n                                            \n\n\"아?\"";
         TextSet[9] = "                          \n죽여버리겠다 마왕!!!!";
+
+        // 씬 위치 조정
+        CutScenes = GameObject.Find("CutScenes");
+        RectTransform rt = CutScenes.GetComponent<RectTransform>();
+        rt.anchorMin = new Vector2(0.5f, 1f);
+        rt.anchorMax = new Vector2(0.5f, 1f);
+        rt.offsetMin = Vector2.zero;
+        rt.offsetMax = Vector2.zero;
+        rt.sizeDelta = new Vector2(Screen.width * 0.8f, Screen.width * 0.8f * 1.103f);
+        rt.anchoredPosition = new Vector2(0, -Screen.width * (1.103f * 0.5f + 0.1f));
+
+        RectTransform rt_S1 = cutscenePanels[0].GetComponent<RectTransform>();
+        rt_S1.sizeDelta = new Vector2(Screen.width * 0.8f, Screen.width * 0.8f * 0.7f);
+        rt_S1.anchoredPosition = new Vector2(0, Screen.width * 0.2f);
+
+        RectTransform rt_S2 = cutscenePanels[1].GetComponent<RectTransform>();
+        rt_S2.sizeDelta = new Vector2(Screen.width * 0.8f, Screen.width * 0.8f * 0.686f);
+        rt_S2.anchoredPosition = new Vector2(0, -Screen.width * 0.2f);
 
         // 텍스트창 생성
         PrologueTextObj = new GameObject("PrologueText");
         PrologueTextObj.transform.SetParent(mainCanvas.transform, false);
         PrologueText = PrologueTextObj.AddComponent<Text>();
         PrologueText.font = PrologueFont;
-        PrologueText.fontSize = 50;
+        PrologueText.fontSize = 60 * (Screen.width / 1080);
         PrologueText.color = Color.white;
         PrologueText.alignment = TextAnchor.UpperCenter;
         RectTransform textRect = PrologueTextObj.GetComponent<RectTransform>();

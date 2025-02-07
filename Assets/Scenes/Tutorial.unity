@@ -648,7 +648,16 @@ MonoBehaviour:
   mainCanvas: {fileID: 1050887133}
   DescriptionFont: {fileID: 12800000, guid: 7006438c118bb1748b904fe654b08d95, type: 3}
   CharacterSprite:
-  - {fileID: 21300000, guid: c8cc79a6e1a385e43855308f977e953d, type: 3}
+  - {fileID: 21300000, guid: a5961eac7d81bcd4dad7b4c7cf4966ef, type: 3}
+  - {fileID: 21300000, guid: 89ffcfb6e701bd446a115039f98b6289, type: 3}
+  - {fileID: 21300000, guid: c07b9590d8ca7244f838596ea0452bce, type: 3}
+  - {fileID: 21300000, guid: c7fe0a8aede09df4e985c57f02fe8bc4, type: 3}
+  - {fileID: 21300000, guid: 5b0e7ecc6ada3714d9afcf1bd70c148c, type: 3}
+  - {fileID: 21300000, guid: 1efd8e6e88ef5db4c99a1c054df95352, type: 3}
+  - {fileID: 21300000, guid: 15ade16487cea8f4ea5c94021c0137b8, type: 3}
+  - {fileID: 21300000, guid: 8782d35a65465e9418cc6dfc33712165, type: 3}
+  - {fileID: 21300000, guid: eeb5adb6d9207764f82241c56a71ff7e, type: 3}
+  - {fileID: 21300000, guid: 687a5fc0406ccb9458d228ddd6d4011b, type: 3}
 --- !u!4 &1355106858
 Transform:
   m_ObjectHideFlags: 0
