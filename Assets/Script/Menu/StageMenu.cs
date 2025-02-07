@@ -9,12 +9,10 @@ using UnityEngine.SceneManagement;
 
 public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
 {
-    Image imgStage1;
+    [SerializeField] private Image[] StageImgSet;
     Image Sword;
-    GameObject Star0;
-    GameObject Star1;
-    GameObject Star2;
-    GameObject Star3;
+    [SerializeField] private GameObject[] Stars;
+
     private float elapsedTime = 0f;
     // 스테이지 점수
     DatabaseManager theDatabase;
@@ -33,17 +31,12 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
     [SerializeField] private GameObject BlackOverlayObj;
     private Image BlackOverlay;
 
-    private string[] StageName = { "Beat Master", "Stage2", "Stage3", "Stage4" };
+    private string[] StageName = { "Beat Master", "Stage2", "Boss Stage", "Stage4" };
 
     void Start()
     {
         RectTransform imgHistoryRect = GameObject.Find("Img_History").GetComponent<RectTransform>();
-        imgStage1 = GameObject.Find("Img_Stage1").GetComponent<Image>(); ;
         Sword = GameObject.Find("Img_Sword").GetComponent<Image>();
-        Star0 = GameObject.Find("Img_Star0");
-        Star1 = GameObject.Find("Img_Star1");
-        Star2 = GameObject.Find("Img_Star2");
-        Star3 = GameObject.Find("Img_Star3");
         StageMenuTextObj = GameObject.Find("StageMenuText");
         StageMenuText = StageMenuTextObj.GetComponent<TextMeshProUGUI>();
         StageMenuTextObj.SetActive(false);
@@ -76,11 +69,8 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
     {
         if (TitleMenu.SwordUpEnd)
         {
-            Debug.Log("Time.timeScale: " + Time.timeScale);
-
-            if (imgStage1 == null) Debug.Log("CD이미지 없음");
             // CD 회전
-            imgStage1.rectTransform.Rotate(0, 0, 1.7f * Time.deltaTime);  
+            StageImgSet[currentIndex].rectTransform.Rotate(0, 0, 1.7f * Time.deltaTime);  
 
             // 칼 둥둥 떠다니는 느낌
             elapsedTime += Time.deltaTime;
@@ -137,28 +127,28 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
         switch (theDatabase.star[currentIndex + 1])
         {
             case 0:
-                Star0.SetActive(true);
-                Star1.SetActive(false);
-                Star2.SetActive(false);
-                Star3.SetActive(false);
+                Stars[0].SetActive(true);
+                Stars[1].SetActive(false);
+                Stars[2].SetActive(false);
+                Stars[3].SetActive(false);
                 break;
             case 1:
-                Star0.SetActive(false);
-                Star1.SetActive(true);
-                Star2.SetActive(false);
-                Star3.SetActive(false);
+                Stars[0].SetActive(false);
+                Stars[1].SetActive(true);
+                Stars[2].SetActive(false);
+                Stars[3].SetActive(false);
                 break;
             case 2:
-                Star0.SetActive(false);
-                Star1.SetActive(false);
-                Star2.SetActive(true);
-                Star3.SetActive(false);
+                Stars[0].SetActive(false);
+                Stars[1].SetActive(false);
+                Stars[2].SetActive(true);
+                Stars[3].SetActive(false);
                 break;
             case 3:
-                Star0.SetActive(false);
-                Star1.SetActive(false);
-                Star2.SetActive(false);
-                Star3.SetActive(true);
+                Stars[0].SetActive(false);
+                Stars[1].SetActive(false);
+                Stars[2].SetActive(false);
+                Stars[3].SetActive(true);
                 break;
             default:
                 Debug.Log("잘못된 데이터베이스 정보(Star)");
@@ -172,9 +162,11 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
     }
     public IEnumerator SelectStageCoroutine()
     {
+        RectTransform canvasRect = Sword.GetComponentInParent<Canvas>().GetComponent<RectTransform>();
+
         BlackOverlayObj.SetActive(true);
         Vector2 startPosition = Sword.rectTransform.anchoredPosition;
-        Vector2 targetPosition = new Vector2(startPosition.x, Screen.height * 1.5f);
+        Vector2 targetPosition = new Vector2(startPosition.x, canvasRect.rect.height * 1.5f);
         float elapsedTime = 0f;
         float duration = 1f; // 애니메이션 지속 시간
 
@@ -200,8 +192,8 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
     public List<RectTransform> stageObjects;  
     public static int currentIndex = 0;
 
-    private float threshold = 300f;
-    private float swipeSpeed = 0.6f;   // 감도
+    public float threshold = 270f;
+    private float swipeSpeed = 0.5f;   // 감도
     private float transitionTime = 0.3f; // 애니메이션 시간
 
     private float screenWidth;
