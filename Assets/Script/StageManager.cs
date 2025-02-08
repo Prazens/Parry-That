@@ -118,7 +118,7 @@ public class StageManager : MonoBehaviour
             strikerManager.charts[i] = JsonReader.ReadJson(jsonCharts[i]);
         }
         strikerManager.SpawnStriker(0,0,1,108,107); 
-        strikerManager.SpawnStriker(1,1,0,110,107);
+        strikerManager.SpawnStriker(1,1,1,110,107);
         isActive = true; // 스테이지 활성화
         scoreManager.Initialize();
         Debug.Log("Stage Started!");
