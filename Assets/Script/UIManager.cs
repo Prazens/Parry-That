@@ -225,8 +225,8 @@ public class UIManager : MonoBehaviour
         animator.SetTrigger("cutOut");
     }
 
-    private bool isStop1 = false;
-    private bool isStop2 = false;
+    public bool isStop1 = false;
+    public bool isStop2 = false;
 
     public void CutInDisplay(float _duration, bool isHide = false)
     {

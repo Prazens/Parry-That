@@ -309,6 +309,9 @@ public class StageManager : MonoBehaviour
         if(PausePanelInstance != null) PausePanelInstance.SetActive(false);
         overlay.SetActive(false);
 
+        UIManager.Instance.isStop1 = false;
+        UIManager.Instance.isStop2 = false;
+
         // 새로운 스테이지 시작
         StartStage();
     }
