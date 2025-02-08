@@ -35,6 +35,7 @@ public class StageManager : MonoBehaviour
     public bool is_over = false;
     [SerializeField] private TextMeshProUGUI countdownText; // 카운트다운 표시용 Text UI
     private GameObject overlay; // 검은 필터
+    private bool button_active = true;
 
     [SerializeField] private TextAsset[] jsonCharts;
 
@@ -57,6 +58,7 @@ public class StageManager : MonoBehaviour
         overlay.transform.SetParent(canvasTransform, false);
         Image overlayImage = overlay.AddComponent<Image>();
         overlayImage.color = new Color(0f, 0f, 0f, 0.7f);
+        overlayImage.raycastTarget = false;
         RectTransform overlayRect = overlay.GetComponent<RectTransform>();
         overlayRect.anchorMin = Vector2.zero;
         overlayRect.anchorMax = Vector2.one;
@@ -312,6 +314,7 @@ public class StageManager : MonoBehaviour
     [SerializeField] private GameObject pauseButton;
     public void TogglePause()
     {
+        if(!button_active) return;
         if (isPaused)
         {
             ResumeStage();
@@ -343,6 +346,7 @@ public class StageManager : MonoBehaviour
     public void ResumeStage()
     {
         if (!isPaused) return;
+        button_active = false;
         isPaused = false;
         if(PausePanelInstance != null) PausePanelInstance.SetActive(false);
         overlay.SetActive(false);
@@ -359,6 +363,7 @@ public class StageManager : MonoBehaviour
         }
         countdownText.gameObject.SetActive(false);
         isActive = true;
+        button_active = true;
         Time.timeScale = 1f;
         // 음악 재개
         if (musicSource != null && musicPlayed)

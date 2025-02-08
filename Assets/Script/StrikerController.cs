@@ -51,6 +51,7 @@ public class StrikerController : MonoBehaviour
     private float backtime = 0f;
     public bool isMelee; // 근접 공격 여부 확인
     public float animeOffset = 0.1f;
+    private float spacing = 0.25f;
 
     private bool isHolding = false;
 
@@ -126,19 +127,7 @@ public class StrikerController : MonoBehaviour
                 }
                 bladeAnimator.SetInteger("attackType", attackType);
             }
-
-            // 공격격 시 느낌표 제거 (좌측부터)
-            if (prepareExclamation.Count > 0)
-            {
-                Destroy(prepareExclamation[0]); // 가장 오래된 느낌표 제거
-                prepareExclamation.RemoveAt(0);
-
-                // 남은 느낌표 위치 재배치
-                for (int i = 0; i < prepareExclamation.Count; i++)
-                {
-                    prepareExclamation[i].transform.localPosition = new Vector3(i * 0.3f, 0, 0);
-                }
-            }
+            exclamationRelocation();
             prepareQueue.Dequeue(); // 준비된 공격 제거
         }
     }
@@ -352,10 +341,10 @@ public class StrikerController : MonoBehaviour
             switch (location)
             {
                 case Direction.Up:
-                    newParent.transform.localPosition = new Vector3(0, 1.5f, 0);
+                    newParent.transform.localPosition = new Vector3(1.5f, 0, 0);
                     break;
                 case Direction.Down:
-                    newParent.transform.localPosition = new Vector3(0, -1.5f, 0);
+                    newParent.transform.localPosition = new Vector3(1.5f, 0, 0);
                     break;
                 case Direction.Left:
                 case Direction.Right:
@@ -367,13 +356,12 @@ public class StrikerController : MonoBehaviour
     }
     private void ShowExclamation(int type)
     {
-        // ** 기존 느낌표 지우고 다시 생성**
+        //** 기존 느낌표 지우고 다시 생성**
         foreach (GameObject ex in prepareExclamation)
         {
             Destroy(ex);
         }
         int count = prepareQueue.Count; // 현재 준비된 공격 개수
-        float spacing = 0.3f;  // 느낌표 간격
         prepareExclamation.Clear();
 
         List<Tuple<float, int>> tempList = new List<Tuple<float, int>>(prepareQueue); // 현재 큐를 리스트로 변환 (순서 유지)
@@ -381,7 +369,7 @@ public class StrikerController : MonoBehaviour
 
         for (int i = 0; i < count; i++)
         {
-            Vector3 exclamationPosition = new Vector3((i - (count - 1) / 2f) * spacing, 0, 0);
+            Vector3 exclamationPosition = new Vector3( (i+1) * spacing, 0, 0); //(i - (count - 1) / 2f) 
             GameObject newExclamation = Instantiate(exclamationPrefab, exclamationParent);
             newExclamation.transform.localPosition = exclamationPosition; // **🔹 `exclamationParent` 기준 정렬**
 
@@ -453,16 +441,19 @@ public class StrikerController : MonoBehaviour
             projScript.type = index;
         }
         // ⭐ 발사 시 느낌표 제거 (좌측부터)
+        exclamationRelocation();
+    }
+    private void exclamationRelocation()
+    {
         if (prepareExclamation.Count > 0)
         {
             Destroy(prepareExclamation[0]); // 가장 오래된 느낌표 제거
             prepareExclamation.RemoveAt(0);
             int count = prepareExclamation.Count;
-            float spacing = 0.3f;
             // 남은 느낌표 위치 재배치
             for (int i = 0; i < count; i++)
             {
-                prepareExclamation[i].transform.localPosition = new Vector3((i - (count - 1) / 2f) * spacing, 0, 0);
+                prepareExclamation[i].transform.localPosition = new Vector3((i +1) * spacing, 0, 0);
             }
         }
     }
