@@ -239,6 +239,11 @@ MonoBehaviour:
   bladeAnimator: {fileID: 7491916606276098673}
   hpBarPrefab: {fileID: 8497898252444216346, guid: 89cb566f97c8d124381826ff7e0c4402, type: 3}
   exclamationPrefab: {fileID: 6564652604273379325, guid: 37a0fd3627a8c4f468ec75e41a80536b, type: 3}
+  exclamationSprites:
+  - {fileID: 21300000, guid: b64a8416733f88b40ad3691c40e4f62e, type: 3}
+  - {fileID: 21300000, guid: 3d8e24c1eb63dd449bdd00bb0b2408ad, type: 3}
+  - {fileID: 21300000, guid: 806b81a6803e8db4dbbc0780adad968b, type: 3}
+  - {fileID: 21300000, guid: 806b81a6803e8db4dbbc0780adad968b, type: 3}
   audioSource: {fileID: 9120506532451307555}
   prepareSoundNormal: {fileID: 8300000, guid: f59be02f63ba0b348b50c617dd3fc21a, type: 3}
   prepareSoundStrong: {fileID: 8300000, guid: a014fc7a30d019440ae4d95c47741b5e, type: 3}

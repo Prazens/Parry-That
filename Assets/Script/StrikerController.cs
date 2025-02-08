@@ -32,6 +32,8 @@ public class StrikerController : MonoBehaviour
 
     //투사체 발사 시의 !관련
     [SerializeField] private GameObject exclamationPrefab; // 공통 느낌표 프리팹
+    // 🔹 `List<Sprite>`로 변경 (느낌표 타입별 이미지 저장)
+    [SerializeField] private List<Sprite> exclamationSprites = new List<Sprite>(); 
     private Transform exclamationParent; // 느낌표 표시 위치
     private List<GameObject> prepareExclamation = new List<GameObject>(); // 느낌표 오브젝트 저장
 
@@ -52,6 +54,7 @@ public class StrikerController : MonoBehaviour
     public bool isMelee; // 근접 공격 여부 확인
     public float animeOffset = 0.1f;
     private float spacing = 0.25f;
+
 
     private bool isHolding = false;
 
@@ -379,17 +382,15 @@ public class StrikerController : MonoBehaviour
             if (exclamationSprite != null)
             {
                 int noteColor = tempList[i].Item2;
-                switch (noteColor)
+                // 🔹 `type`이 `exclamationSprites` 범위 내에 있는지 확인
+                if (noteColor >= 0 && noteColor < exclamationSprites.Count)
                 {
-                    case 0:  // 일반 공격
-                        exclamationSprite.color = Color.yellow;
-                        break;
-                    case 1:  // 강한 공격
-                        exclamationSprite.color = Color.red;
-                        break;
-                    default:
-                        exclamationSprite.color = Color.white;
-                        break;
+                    exclamationSprite.sprite = exclamationSprites[noteColor]; // 리스트에서 해당 타입에 맞는 스프라이트 적용
+                }
+                else
+                {
+                    Debug.LogWarning($"Unknown attack type {noteColor}! Defaulting to first sprite.");
+                    exclamationSprite.sprite = exclamationSprites[0]; // 기본값
                 }
             }
 
