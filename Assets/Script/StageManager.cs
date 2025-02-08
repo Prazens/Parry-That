@@ -29,7 +29,7 @@ public class StageManager : MonoBehaviour
     [SerializeField] private GameObject transparentProjectilePrefab; // 투명 투사체 프리팹
     [SerializeField] private AudioSource musicSource; // 음악 재생을 위한 AudioSource
     private bool musicPlayed = false; // 음악이 재생되었는지 확인
-    public static bool isActive = false; // 스테이지 활성화 여부
+    public bool isActive = false; // 스테이지 활성화 여부
     private int clearStrikers = 0;
     public bool is_over = false;
     
@@ -321,6 +321,10 @@ public class StageManager : MonoBehaviour
         //투사체 이동 재개
 
         Debug.Log("Stage Resumed!");
+    }
+    public void ChangeTime(float time)
+    {
+        currentTime = time;
     }
     private void SpawnTransparentProjectile()
     {
