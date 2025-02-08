@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using System.Xml.Linq;
 
 public class StageManager : MonoBehaviour
 {
@@ -38,6 +39,13 @@ public class StageManager : MonoBehaviour
 
     [SerializeField] private TextAsset[] jsonCharts;
 
+    // 빅토리 애니메이션 관련
+    [SerializeField] GameObject VictoryAnimatorObj;
+    private Animator VictoryAnimator;
+    private bool AnimationEnable = true;
+    private Image VictoryImage;
+    private SpriteRenderer VictoryRenderer;
+    [SerializeField] AudioSource VictoryAudioSource;
 
     private void Awake()
     {
@@ -63,6 +71,18 @@ public class StageManager : MonoBehaviour
         overlayRect.offsetMin = Vector2.zero;
         overlayRect.offsetMax = Vector2.zero;
         overlay.SetActive(false);
+
+        // 엔딩 애니메이터 컴포넌트 가져오기
+        VictoryAnimator = VictoryAnimatorObj.GetComponent<Animator>();
+        VictoryImage = VictoryAnimatorObj.GetComponent<Image>();
+        VictoryRenderer = VictoryAnimatorObj.GetComponent<SpriteRenderer>();
+        VictoryAnimatorObj.SetActive(false);
+
+        RectTransform rtVictory = VictoryAnimatorObj.GetComponent<RectTransform>();
+        rtVictory.anchorMin = Vector2.zero;
+        rtVictory.anchorMax = Vector2.one;
+        rtVictory.offsetMin = Vector2.zero;
+        rtVictory.offsetMax = Vector2.zero;
 
         if (clearPanelPrefab != null && canvasTransform != null)
         {
@@ -217,10 +237,22 @@ public class StageManager : MonoBehaviour
         if (!isActive) return;
 
         currentTime += Time.deltaTime;
-
+        VictoryImage.sprite = VictoryRenderer.sprite;
         if (currentTime >= stageDuration)
         {
-            EndStage();
+            if (AnimationEnable)
+            {
+                Debug.Log("victory!");
+                VictoryAudioSource.Play();
+                VictoryAnimatorObj.SetActive(true);
+                VictoryAnimator.SetTrigger("Play");
+                AnimationEnable = false;
+            }
+            if (VictoryAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
+            {
+                VictoryAnimatorObj.SetActive(false);
+                EndStage();
+            }
         }
         if (currentTime >= 2d && !musicPlayed)
         {
@@ -281,6 +313,8 @@ public class StageManager : MonoBehaviour
     }
     public void RestartStage()
     {
+        AnimationEnable = true;
+
         Debug.Log("Restarting Stage...");
         Time.timeScale = 1f;
         // 기존 Striker 삭제

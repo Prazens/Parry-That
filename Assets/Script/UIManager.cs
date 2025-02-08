@@ -9,7 +9,7 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private Image DamageOverlayImage;
     [SerializeField] private float fadeDuration;
-    [SerializeField] private float maxAlpha = 0.05f;
+    [SerializeField] private float maxAlpha;
 
     public GameObject[] ParticleParried;
     public GameObject[] ParticlePerfect;
