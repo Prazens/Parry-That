@@ -263,6 +263,7 @@ MonoBehaviour:
   - {fileID: 1413199336}
   - {fileID: 1532445319}
   - {fileID: 394771124}
+  threshold: 270
 --- !u!1 &178762382
 GameObject:
   m_ObjectHideFlags: 0
