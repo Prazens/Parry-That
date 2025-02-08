@@ -583,8 +583,9 @@ public class StrikerController : MonoBehaviour
             //animator.SetTrigger("isDamaged");
             if (hp == 0)
             {
-                //animator.SetBool("isClear", true);
+                if(!isMelee) beCleared();
                 playerManager.hp =+ 1;
+                
                 //기타몬 전용 굴러가기 퇴장
                 //original position 도착후 isClear 세팅
                 //이후 투명해지는 animation 진행
