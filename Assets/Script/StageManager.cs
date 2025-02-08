@@ -322,6 +322,10 @@ public class StageManager : MonoBehaviour
 
         Debug.Log("Stage Resumed!");
     }
+    public void ChangeTime(float time)
+    {
+        currentTime = time;
+    }
     private void SpawnTransparentProjectile()
     {
         if (transparentProjectilePrefab == null || playerInstance == null)

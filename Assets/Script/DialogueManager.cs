@@ -132,7 +132,7 @@ public class DialogueManager : MonoBehaviour
             TypingSoundDelay++;
 
             float delay = accelerate ? fastLetterDelay : letterDelay;
-            yield return new WaitForSeconds(delay);
+            yield return new WaitForSecondsRealtime(delay);
         }
         dialogueUIText.text = dialogueText;
 

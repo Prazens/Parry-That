@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -12,12 +13,18 @@ public class TutorialManager : MonoBehaviour
     [Header("기본 UI참조")]
     [SerializeField] private Canvas mainCanvas;
     [SerializeField] private Font DescriptionFont;
+    [SerializeField] private StageManager stageManager;
+    [SerializeField] private StrikerManager strikerManager;
 
     [Header("캐릭터 이미지")]
     [SerializeField] private Sprite[] CharacterSprite;
 
-    DatabaseManager databaseManager;
+    [SerializeField] private List<float> daewaTimeList;
 
+    DatabaseManager databaseManager;
+    private int daehwaIndex = 0;
+    private bool patternComplete = false;
+    private bool isDaehwa = true;
     private void Awake()
     {
         // 튜토리얼 시작시 소환/세팅할 것들
@@ -43,9 +50,30 @@ public class TutorialManager : MonoBehaviour
     private void Start()
     {
         StartCoroutine(Daehwa1());
+        StageManager.isActive = false;
+    }
+    private void Update()
+    {
+        float currentTime = StageManager.Instance.currentTime;
+        if (daehwaIndex >= daewaTimeList.Count) return;
+        if (!isDaehwa)
+        {
+            if (currentTime >= daewaTimeList[daehwaIndex])   // idx번째 대화 -> idx번째 게임 -> idx+1 번째 대화
+            {
+                checkComplete();
+                if (!patternComplete)
+                {
+                    stageManager.ChangeTime(daewaTimeList[daehwaIndex - 1]);
+                    return;
+                }
+                isDaehwa = true;
+            }
+        }
     }
     private IEnumerator Daehwa1()
     {
+        isDaehwa = true;
+
         string Daehwa1_Text1 = "어디 있느냐 마왕!!!";
         yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[9], "소리", Daehwa1_Text1, false));
 
@@ -67,13 +95,13 @@ public class TutorialManager : MonoBehaviour
         string Daehwa1_Text7 = "물범이 띄우는 느낌표의 리듬에 맞춰 공격을 받아치세요!";
         yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "정령", Daehwa1_Text7, true));
 
+        isDaehwa = false;
 
-
-        
-
-        // 튜토 게임 1 함수
-        // 
-
+        // 튜토 게임 1
+        daehwaIndex += 1;
+        StageManager.isActive = true;
+        yield return new WaitUntil(() => isDaehwa);  // 패턴 성공할 때까지 대기
+        StageManager.isActive = false;
         StartCoroutine(Daehwa2());
     }
 
@@ -85,9 +113,13 @@ public class TutorialManager : MonoBehaviour
         string Daehwa2_Text2 = "이제 더 강한 공격도 같이 오니 조심하십시오!";
         yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "정령", Daehwa2_Text2, true));
 
+        isDaehwa = false;
+
         // 튜토 게임 2 함수
-        // 
-        
+        daehwaIndex += 1;
+        StageManager.isActive = true;
+        yield return new WaitUntil(() => isDaehwa);  // 패턴 성공할 때까지 대기
+        StageManager.isActive = false;
         StartCoroutine(Daehwa3());
     }
 
@@ -108,8 +140,13 @@ public class TutorialManager : MonoBehaviour
         string Daehwa3_Text5 = "...좀 더 때릴 맛이 나네.";
         yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[5], "소리", Daehwa3_Text5, false));
 
+        isDaehwa = false;
+
         // 튜토 게임 3 함수
-        // 
+        daehwaIndex += 1;
+        StageManager.isActive = true;
+        yield return new WaitUntil(() => isDaehwa);  // 패턴 성공할 때까지 대기
+        StageManager.isActive = false;
         StartCoroutine(Daehwa4());
     }
 
@@ -127,8 +164,13 @@ public class TutorialManager : MonoBehaviour
         string Daehwa4_Text4 = "그야 이건 텍스트잖아요.공부 안 한 티 좀 내지 마세요.";
         yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "정령", Daehwa4_Text4, true));
 
+        isDaehwa = false;
+
         // 튜토 게임 4 함수
-        // 
+        daehwaIndex += 1;
+        StageManager.isActive = true;
+        yield return new WaitUntil(() => isDaehwa);  // 패턴 성공할 때까지 대기
+        StageManager.isActive = false;
         StartCoroutine(Daehwa5());
     }
 
@@ -140,9 +182,13 @@ public class TutorialManager : MonoBehaviour
         string Daehwa5_Text2 = "에레레렐레 레레렐렐";
         yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "부인공", Daehwa5_Text2, false));
 
-        // 튜토 게임 5 함수
-        // 
+        isDaehwa = false;
 
+        // 튜토 게임 5 함수
+        daehwaIndex += 1;
+        StageManager.isActive = true;
+        yield return new WaitUntil(() => isDaehwa);  // 패턴 성공할 때까지 대기
+        StageManager.isActive = false;
         StartCoroutine(Daehwa6());
     }
 
@@ -154,9 +200,13 @@ public class TutorialManager : MonoBehaviour
         string Daehwa6_Text2 = "에레레렐레 레레렐렐";
         yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "부인공", Daehwa6_Text2, false));
 
-        // 튜토 게임 6 함수
-        // 
+        isDaehwa = false;
 
+        // 튜토 게임 6 함수
+        daehwaIndex += 1;
+        StageManager.isActive = true;
+        yield return new WaitUntil(() => isDaehwa);  // 패턴 성공할 때까지 대기
+        StageManager.isActive = false;
         StartCoroutine(Daehwa_Final());
     }
 
@@ -175,4 +225,20 @@ public class TutorialManager : MonoBehaviour
     }
 
 
+    private void checkComplete()
+    {
+        //stiker clear이후 stiker destroy가 되게 끔 구현해야함
+        List<GameObject> strikerList_ = strikerManager.strikerList;
+        if (strikerList_.Count == 0) patternComplete = true;
+
+
+        //or hp = 0인지를 확인 하는거로 바꿔도 됨
+
+        // StrikerController? strikerController = null;
+        // foreach (GameObject striker in strikerList_)
+        // {
+        //     strikerController = striker.GetComponent<StrikerController>();
+        //     if(strikerController.hp != 0) patternComplete = false; 
+        // }
+    }
 }
