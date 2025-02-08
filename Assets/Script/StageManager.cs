@@ -108,6 +108,7 @@ public class StageManager : MonoBehaviour
         clearStrikers = 0;
         is_over = false;
         isPaused = false;
+        button_active = true;
         scoreUI.Initialize_UI();
         musicSource.time = 0f;
         SpawnPlayer();
@@ -237,6 +238,7 @@ public class StageManager : MonoBehaviour
         Debug.Log("Game Over!");
         isActive = false;
         is_over = true;
+        button_active = false;
 
         // 음악 정지
         if (musicSource != null && musicSource.isPlaying)
@@ -261,6 +263,7 @@ public class StageManager : MonoBehaviour
         currentTime = stageDuration; // 시간 고정
         isActive = false;
         is_over = true;
+        button_active = false;
         // Clear 창 활성화 및 점수 업데이트
         if (clearPanelInstance != null)
         {
