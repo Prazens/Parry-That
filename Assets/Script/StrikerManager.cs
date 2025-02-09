@@ -35,7 +35,7 @@ public class StrikerManager : MonoBehaviour
             else if (currentTime >= charts[i].disappearTime * (60f / charts[i].bpm) + playerManager.musicOffset &&
                      strikerStatus[i] == 1)
             {
-                // disappear
+                strikerList[i].GetComponent<StrikerController>().beCleared();
                 strikerStatus[i] = 2;
             }
         }

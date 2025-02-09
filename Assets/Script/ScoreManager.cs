@@ -35,28 +35,31 @@ public class ScoreManager : MonoBehaviour
         // 각 선두 노트에 대해 늦은 MISS가 발생 가능한지 확인
         foreach (GameObject striker in strikerManager.strikerList)
         {
-            tempStrikerController = striker.GetComponent<StrikerController>();
-
-            if (tempStrikerController.judgeableQueue.Count != 0)
+            if (striker != null)
             {
-                tempJudgeable = tempStrikerController.judgeableQueue.Peek();
+                tempStrikerController = striker.GetComponent<StrikerController>();
 
-                float tempTimeDiff = StageManager.Instance.currentTime - tempJudgeable.arriveBeat * 60f / tempStrikerController.bpm - musicOffset;
-                if (tempTimeDiff > 0.12d)
+                if (tempStrikerController.judgeableQueue.Count != 0)
                 {
-                    if (tempJudgeable.attackType == AttackType.HoldStart)
+                    tempJudgeable = tempStrikerController.judgeableQueue.Peek();
+
+                    float tempTimeDiff = StageManager.Instance.currentTime - tempJudgeable.arriveBeat * 60f / tempStrikerController.bpm - musicOffset;
+                    if (tempTimeDiff > 0.12d)
                     {
+                        if (tempJudgeable.attackType == AttackType.HoldStart)
+                        {
+                            Debug.Log($"무조작 판정 : Direction.{tempJudgeable.noteDirection}, AttackType.{tempJudgeable.attackType}, {tempTimeDiff:F3} -> \"{judgeStrings[1]}\"");
+                            JudgeManage(tempJudgeable, 0, true);
+                            tempJudgeable = tempStrikerController.judgeableQueue.Peek();
+                            tempTimeDiff = StageManager.Instance.currentTime - tempJudgeable.arriveBeat * 60f / tempStrikerController.bpm - musicOffset;
+                        }
+                        else if (tempJudgeable.attackType == AttackType.HoldFinishStrong)
+                        {
+                            isHolding = false;
+                        }
                         Debug.Log($"무조작 판정 : Direction.{tempJudgeable.noteDirection}, AttackType.{tempJudgeable.attackType}, {tempTimeDiff:F3} -> \"{judgeStrings[1]}\"");
                         JudgeManage(tempJudgeable, 0, true);
-                        tempJudgeable = tempStrikerController.judgeableQueue.Peek();
-                        tempTimeDiff = StageManager.Instance.currentTime - tempJudgeable.arriveBeat * 60f / tempStrikerController.bpm - musicOffset;
                     }
-                    else if (tempJudgeable.attackType == AttackType.HoldFinishStrong)
-                    {
-                        isHolding = false;
-                    }
-                    Debug.Log($"무조작 판정 : Direction.{tempJudgeable.noteDirection}, AttackType.{tempJudgeable.attackType}, {tempTimeDiff:F3} -> \"{judgeStrings[1]}\"");
-                    JudgeManage(tempJudgeable, 0, true);
                 }
             }
         }
@@ -144,115 +147,118 @@ public class ScoreManager : MonoBehaviour
         // 스트라이커마다 탐지
         foreach (GameObject striker in strikerManager.strikerList)
         {
-            tempStrikerController = striker.GetComponent<StrikerController>();
-
-            // 터치 방향과 맞는 방향에서 공격하는 스트라이커라면
-            if ((tempStrikerController.location == touchDirection || findHoldFinish)
-                && tempStrikerController.judgeableQueue.Count != 0)
+            if (striker != null)
             {
-                _judgeable = tempStrikerController.judgeableQueue.Peek();
+                tempStrikerController = striker.GetComponent<StrikerController>();
 
-                // 홀드 틀렸을 경우
-                if (findHoldFinish && _judgeable.attackType == AttackType.HoldFinishStrong
-                    && (tempStrikerController.location != touchDirection || type == AttackType.HoldStop))
+                // 터치 방향과 맞는 방향에서 공격하는 스트라이커라면
+                if ((tempStrikerController.location == touchDirection || findHoldFinish)
+                    && tempStrikerController.judgeableQueue.Count != 0)
                 {
-                    Debug.Log("홀드 틀림");
-                    isHolding = false;
-                    tempJudge = 0;
+                    _judgeable = tempStrikerController.judgeableQueue.Peek();
+
+                    // 홀드 틀렸을 경우
+                    if (findHoldFinish && _judgeable.attackType == AttackType.HoldFinishStrong
+                        && (tempStrikerController.location != touchDirection || type == AttackType.HoldStop))
+                    {
+                        Debug.Log("홀드 틀림");
+                        isHolding = false;
+                        tempJudge = 0;
+                        break;
+                    }
+
+                    arriveSec = _judgeable.arriveBeat * 60f / tempStrikerController.bpm;
+
+                    // 시간에 따라 판정
+                    timeDiff = touchTimeSec - arriveSec - musicOffset;
+                    //timeDiff = touchTimeSec - projectileNoteData.arriveTime * (60f / strikerController.bpm) - musicOffset;
+                    
+                    // 강공격을 약패링으로 처리한 경우
+                    if (type == AttackType.Normal && _judgeable.attackType == AttackType.Strong)
+                    {
+                        tempJudge = -1;
+                    }
+
+                    // 판정 나누기
+                    // 기획서의 판정 표와 반대 순서임
+                    else if (timeDiff > 0.12d)
+                    {
+                        tempJudge = 0;
+                    }
+                    else if (timeDiff > 0.09d)
+                    {
+                        tempJudge = 1;
+                    }
+                    else if (timeDiff > 0.05d)
+                    {
+                        tempJudge = 2;
+                    }
+                    else if (timeDiff >= -0.05d)
+                    {
+                        tempJudge = 3;
+                    }
+                    else if (timeDiff >= -0.09d)
+                    {
+                        tempJudge = 4;
+                    }
+                    else if (timeDiff >= -0.12d)
+                    {
+                        tempJudge = 5;
+                    }
+
+                    else  // 공노트? 공POOR?
+                    {
+                        tempJudge = -1;
+                    }
+
+                    // 홀드 시작
+                    if (!isHolding && _judgeable.attackType == AttackType.HoldStart)
+                    {
+                        if (tempJudge >= 1)
+                        {
+                            Debug.Log("홀드 시작");
+                            isHolding = true;
+                            type = AttackType.HoldStart;
+                        }
+
+                        if (tempJudge == 0)
+                        {
+                            Debug.Log($"판정 수행 : Direction.{direction}, AttackType.{type}, {timeDiff:F3} -> \"{judgeStrings[tempJudge + 1]}\"");
+                            JudgeManage(_judgeable, tempJudge, false, touchDirection, type);
+                            _judgeable = tempStrikerController.judgeableQueue.Peek();
+                            arriveSec = _judgeable.arriveBeat * 60f / tempStrikerController.bpm;
+                            timeDiff = touchTimeSec - arriveSec - musicOffset;
+                        }
+                    }
+
+                    // 홀드 끝
+                    else if (isHolding && tempJudge != -1)
+                    {
+                        Debug.Log("홀드 종료");
+                        isHolding = false;
+
+                        // 홀드 끝판정 보정 (너무빡셈)
+                        if (tempJudge != 0)
+                        {
+                            if (tempJudge < 3)
+                            {
+                                tempJudge++;
+                            }
+                            else if (tempJudge > 3)
+                            {
+                                tempJudge--;
+                            }
+                        }
+                    }
+
+                    lastNonMissJudge = touchTimeSec;
+                    // Debug.Log("노트를 갖고 있고 같은 방향의 Striker를 찾았습니다");
                     break;
                 }
-
-                arriveSec = _judgeable.arriveBeat * 60f / tempStrikerController.bpm;
-
-                // 시간에 따라 판정
-                timeDiff = touchTimeSec - arriveSec - musicOffset;
-                //timeDiff = touchTimeSec - projectileNoteData.arriveTime * (60f / strikerController.bpm) - musicOffset;
-                
-                // 강공격을 약패링으로 처리한 경우
-                if (type == AttackType.Normal && _judgeable.attackType == AttackType.Strong)
+                else
                 {
-                    tempJudge = -1;
+                    tempStrikerController = null;
                 }
-
-                // 판정 나누기
-                // 기획서의 판정 표와 반대 순서임
-                else if (timeDiff > 0.12d)
-                {
-                    tempJudge = 0;
-                }
-                else if (timeDiff > 0.09d)
-                {
-                    tempJudge = 1;
-                }
-                else if (timeDiff > 0.05d)
-                {
-                    tempJudge = 2;
-                }
-                else if (timeDiff >= -0.05d)
-                {
-                    tempJudge = 3;
-                }
-                else if (timeDiff >= -0.09d)
-                {
-                    tempJudge = 4;
-                }
-                else if (timeDiff >= -0.12d)
-                {
-                    tempJudge = 5;
-                }
-
-                else  // 공노트? 공POOR?
-                {
-                    tempJudge = -1;
-                }
-
-                // 홀드 시작
-                if (!isHolding && _judgeable.attackType == AttackType.HoldStart)
-                {
-                    if (tempJudge >= 1)
-                    {
-                        Debug.Log("홀드 시작");
-                        isHolding = true;
-                        type = AttackType.HoldStart;
-                    }
-
-                    if (tempJudge == 0)
-                    {
-                        Debug.Log($"판정 수행 : Direction.{direction}, AttackType.{type}, {timeDiff:F3} -> \"{judgeStrings[tempJudge + 1]}\"");
-                        JudgeManage(_judgeable, tempJudge, false, touchDirection, type);
-                        _judgeable = tempStrikerController.judgeableQueue.Peek();
-                        arriveSec = _judgeable.arriveBeat * 60f / tempStrikerController.bpm;
-                        timeDiff = touchTimeSec - arriveSec - musicOffset;
-                    }
-                }
-
-                // 홀드 끝
-                else if (isHolding && tempJudge != -1)
-                {
-                    Debug.Log("홀드 종료");
-                    isHolding = false;
-
-                    // 홀드 끝판정 보정 (너무빡셈)
-                    if (tempJudge != 0)
-                    {
-                        if (tempJudge < 3)
-                        {
-                            tempJudge++;
-                        }
-                        else if (tempJudge > 3)
-                        {
-                            tempJudge--;
-                        }
-                    }
-                }
-
-                lastNonMissJudge = touchTimeSec;
-                // Debug.Log("노트를 갖고 있고 같은 방향의 Striker를 찾았습니다");
-                break;
-            }
-            else
-            {
-                tempStrikerController = null;
             }
         }
 

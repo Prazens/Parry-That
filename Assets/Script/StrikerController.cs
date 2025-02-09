@@ -87,6 +87,15 @@ public class StrikerController : MonoBehaviour
     }
     private void Update() // 현재 striker 자체에서 투사체 일정 간격으로 발사
     {
+        if (isMelee)
+        {
+            HandleMeleeMovement();
+        }
+        else
+        {
+            HandleProjectileAttack();
+        }
+        
         // 투사체 발사 타이밍 계산
         if (currentNoteIndex >= chartData.notes.Length) return;
 
@@ -96,14 +105,6 @@ public class StrikerController : MonoBehaviour
         if (currentNoteIndex < chartData.notes.Length && currentTime >= chartData.notes[currentNoteIndex].time * (60f / bpm) + playerManager.musicOffset)
         {
             PrepareForAttack();
-        }
-        if (isMelee)
-        {
-            HandleMeleeMovement();
-        }
-        else
-        {
-            HandleProjectileAttack();
         }
     }
     private void HandleMeleeMovement()
@@ -430,6 +431,7 @@ public class StrikerController : MonoBehaviour
     // 투사체 발사
     private void FireProjectile(float time, int index)
     {
+        Debug.Log("FireProjectile");
         if (index < 0 || index >= projectilePrefabs.Count) return;
         GameObject selectedProjectile = projectilePrefabs[index];
         if (!animator.GetBool("isAttacking"))
@@ -584,7 +586,7 @@ public class StrikerController : MonoBehaviour
             if (hp == 0)
             {
                 if(!isMelee) beCleared();
-                playerManager.hp =+ 1;
+                playerManager.hp += 1;
                 
                 //기타몬 전용 굴러가기 퇴장
                 //original position 도착후 isClear 세팅
@@ -592,7 +594,7 @@ public class StrikerController : MonoBehaviour
             }
         }
     }
-    private void beCleared()
+    public void beCleared()
     {
         animator.SetBool("isClear", true);
         StartCoroutine(DestroyAfterAnimation());
@@ -606,6 +608,7 @@ public class StrikerController : MonoBehaviour
         yield return new WaitForSeconds(exitAnimationTime);
 
         // 오브젝트 삭제
-        Destroy(gameObject);
+        // Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 }
