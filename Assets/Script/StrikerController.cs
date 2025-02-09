@@ -61,6 +61,7 @@ public class StrikerController : MonoBehaviour
     //spawn후 입장장 변수
     private float moveDuration = 1.0f; // 이동 시간
     private float spawnOffset = 3.0f; // 화면 밖에서 등장하는 거리
+    private Vector3 spawnPosition;
 
     private void Start()
     {
@@ -78,7 +79,7 @@ public class StrikerController : MonoBehaviour
             bladeAnimator.SetInteger("bladeDirection", (int)location);
         }
         // 초기 위치를 화면 밖으로 설정
-        Vector3 spawnPosition = GetSpawnPosition();
+        spawnPosition = GetSpawnPosition();
         // 스트라이커를 화면 밖에서 시작 위치로 이동
         transform.position = spawnPosition;
 
@@ -318,7 +319,6 @@ public class StrikerController : MonoBehaviour
         {
             prepareQueue.Enqueue(new Tuple<float, int>(arriveTime, noteType)); // 도착 시간과 타입 저장
             ShowExclamation(noteType); // 느낌표 표시
-            Debug.Log("prepare!");
         }
 
         if (isMelee)
@@ -586,19 +586,42 @@ public class StrikerController : MonoBehaviour
             }
         }
     }
+    public void strikerExit()
+    {
+        if(hp != 0)
+        {
+            StartCoroutine(ExitToSpawnPosition());
+        }
+    }
+    private IEnumerator ExitToSpawnPosition()
+    {
+        float elapsedTime = 0;
+
+        // 부드러운 이동을 위한 Lerp 적용
+        while (elapsedTime < moveDuration)
+        {
+            transform.position = Vector3.Lerp(transform.position, spawnPosition, elapsedTime / moveDuration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // 최종 위치 고정
+        transform.position = spawnPosition;
+        gameObject.SetActive(false);
+    }
     public void beCleared()
     {
         animator.SetBool("isClear", true);
+        animator.SetTrigger("Cleared");
         StartCoroutine(DestroyAfterAnimation());
     }
     private IEnumerator DestroyAfterAnimation()
     {
-        // 애니메이션 길이 가져오기
-        float exitAnimationTime = animator.GetCurrentAnimatorStateInfo(0).length;
+        // float exitAnimationTime = animator.GetCurrentAnimatorStateInfo(0).length;
         
-        // 애니메이션 실행 시간만큼 대기
-        yield return new WaitForSeconds(exitAnimationTime);
-
+        // yield return new WaitForSeconds(exitAnimationTime);
+        //기타몬 애니메이션 길이 기준으로 그냥 2.5초 지정해버렸습니다.
+        yield return new WaitForSeconds(2.5f);
         // 오브젝트 삭제
         // Destroy(gameObject);
         gameObject.SetActive(false);
