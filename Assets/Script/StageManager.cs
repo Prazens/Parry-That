@@ -111,7 +111,7 @@ public class StageManager : MonoBehaviour
         }
         if (musicSource != null && musicSource.clip != null)
         {
-            stageDuration = musicSource.clip.length + musicOffset + 2f;
+            stageDuration = musicSource.clip.length + musicOffset + 1f;
             Debug.Log($"Stage duration set to: {stageDuration} seconds");
         }
         else
