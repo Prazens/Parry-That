@@ -9,7 +9,7 @@ public class projectile : MonoBehaviour
     public float speed = 5.0f; // 노트 이동 속도
     public StrikerController owner; // 상위 striker
     public ScoreManager scoreManager;
-    public int bpm;
+    public float bpm;
     private float moveLength;
     private float calcSpeed;
     private Vector3 directionVector;

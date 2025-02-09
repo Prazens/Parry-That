@@ -38,6 +38,8 @@ public class StageManager : MonoBehaviour
     private GameObject overlay; // 검은 필터
     private bool button_active = true;
 
+    public float musicOffset;
+
     [SerializeField] private TextAsset[] jsonCharts;
 
     // 빅토리 애니메이션 관련
@@ -109,6 +111,7 @@ public class StageManager : MonoBehaviour
             countdownText.gameObject.SetActive(false);
         }
     }
+
     public void FirstStartStage()
     {
         // GameObject Menu = GameObject.Find("Menu");
@@ -121,6 +124,7 @@ public class StageManager : MonoBehaviour
         musicSource.time = 0f;
         StartStage();
     }
+
     private void StartStage()
     {
         currentTime = 0f; // 시간 초기화
@@ -135,14 +139,14 @@ public class StageManager : MonoBehaviour
         // SpawnGuideboxes();
         for (int i = 0; i < 2; i++)
         {
-            strikerManager.charts[i] = JsonReader.ReadJson(jsonCharts[i]);
+            strikerManager.charts[i] = JsonReader.ReadJson<ChartData>(jsonCharts[i]);
         }
-        strikerManager.SpawnStriker(0,0,1,108,107); 
-        strikerManager.SpawnStriker(1,1,1,110,107);
+        strikerManager.InitStriker();
         isActive = true; // 스테이지 활성화
         scoreManager.Initialize();
         Debug.Log("Stage Started!");
     }
+
     public void SpawnPlayer()
     {
         if (playerPrefab == null)
@@ -164,6 +168,7 @@ public class StageManager : MonoBehaviour
         PlayerManager playerManager = playerInstance.GetComponent<PlayerManager>();
         if (playerManager != null)
         {
+            playerManager.musicOffset = musicOffset;
             // StageManager를 PlayerManager에 설정
             playerManager.stageManager = this;
             // GameController의 TouchManager와 ScoreManager에 PlayerManager 설정
@@ -206,6 +211,7 @@ public class StageManager : MonoBehaviour
             Debug.LogError("PlayerPrefab is missing PlayerManager component!");
         }
     }
+
     private void SpawnGuideboxes()
     {
         if (guidebox1Prefab == null || guidebox2Prefab == null)
@@ -232,7 +238,6 @@ public class StageManager : MonoBehaviour
         guidebox2Instance = Instantiate(guidebox2Prefab, new Vector3(0, -0.6f, 0), Quaternion.identity);
         Debug.Log("Guidebox2 spawned at (0, -0.6, 0).");
     }
-
 
     // Update is called once per frame
     void Update()
@@ -265,6 +270,7 @@ public class StageManager : MonoBehaviour
             Debug.Log("Music Start!");
         }
     }
+
     public void GameOver()
     {
         Debug.Log("Game Over!");
@@ -288,6 +294,7 @@ public class StageManager : MonoBehaviour
         }
         overlay.SetActive(true);
     }
+
     private void EndStage()
     {
         Debug.Log("Stage Complete!");
@@ -316,6 +323,7 @@ public class StageManager : MonoBehaviour
             Debug.Log($"최고기록 경신: {theDatabase.score[SceneLinkage.StageLV]}");
         }
     }
+
     public void RestartStage()
     {
         AnimationEnable = true;
@@ -349,9 +357,11 @@ public class StageManager : MonoBehaviour
         // 새로운 스테이지 시작
         StartStage();
     }
+
     public bool isPaused = false;
     private float savedMusicTime;
     [SerializeField] private GameObject pauseButton;
+
     public void TogglePause()
     {
         if(!button_active) return;
@@ -383,6 +393,7 @@ public class StageManager : MonoBehaviour
         overlay.SetActive(true);
         Debug.Log("Stage Paused!");
     }
+
     public void ResumeStage()
     {
         if (!isPaused) return;
@@ -392,6 +403,7 @@ public class StageManager : MonoBehaviour
         overlay.SetActive(false);
         StartCoroutine(ResumeAfterDelay());
     }
+
     private IEnumerator ResumeAfterDelay()
     {
         Debug.Log("Resuming Stage in 3 seconds...");
@@ -415,6 +427,7 @@ public class StageManager : MonoBehaviour
 
         Debug.Log("Stage Resumed!");
     }
+
     private void UpdatePanelScores(GameObject panelInstance)
     {
         if (panelInstance != null)
@@ -456,6 +469,7 @@ public class StageManager : MonoBehaviour
             Debug.LogError("Panel instance is null!");
         }
     }
+
     private void UpdateStar_Clear()
     {
         if (clearPanelInstance != null)
@@ -489,6 +503,7 @@ public class StageManager : MonoBehaviour
             }
         }
     }
+
     private void UpdateStar_Over()
     {
         if (clearPanelInstance != null)
@@ -504,6 +519,7 @@ public class StageManager : MonoBehaviour
             if (star3 != null) star3.SetActive(clearStrikers >= 2); // 3개 조건 
         }
     }
+    
     private void CalculateStars()
     {
         // StrikerManager에서 모든 Striker 확인

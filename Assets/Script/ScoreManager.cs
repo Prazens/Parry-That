@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
 {
-    public List<GameObject> _strikerList;
     public PlayerManager playerManager;
     public StrikerManager strikerManager;
     [SerializeField] public ParriedProjectileManager parriedProjectileManager;
@@ -34,7 +33,7 @@ public class ScoreManager : MonoBehaviour
     void Update()
     {
         // 각 선두 노트에 대해 늦은 MISS가 발생 가능한지 확인
-        foreach (GameObject striker in _strikerList)
+        foreach (GameObject striker in strikerManager.strikerList)
         {
             tempStrikerController = striker.GetComponent<StrikerController>();
 
@@ -78,12 +77,11 @@ public class ScoreManager : MonoBehaviour
     {
         combo = 0;
         score = 0;
-        _strikerList = strikerManager.strikerList;
         isHolding = false;
         judgeDetails = new List<int[]>();
 
-        // Debug.Log($"_strikerList의 길이:{_strikerList.Count}");
-        for (int i = 0; i < _strikerList.Count + 1; i++)
+        Debug.Log($"strikerManager.charts 의 길이:{strikerManager.charts.Count}");
+        for (int i = 0; i < strikerManager.charts.Count + 1; i++)
         {
             judgeDetails.Add(new int[7] { 0, 0, 0, 0, 0, 0, 0 });
         }
@@ -144,7 +142,7 @@ public class ScoreManager : MonoBehaviour
         playerManager.currentDirection = touchDirection;
        
         // 스트라이커마다 탐지
-        foreach (GameObject striker in _strikerList)
+        foreach (GameObject striker in strikerManager.strikerList)
         {
             tempStrikerController = striker.GetComponent<StrikerController>();
 

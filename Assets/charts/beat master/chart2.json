@@ -1,4 +1,12 @@
 {
+	"bpm": 107,
+	"strikerType": 0,
+	"direction": 2,
+	"moves": [
+		{
+            "appearTime": 0.0,
+            "disappearTime": 328.0,
+        },
     "notes": [
         {
             "time": 17.0,
