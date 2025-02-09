@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Microsoft.Unity.VisualStudio.Editor;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -18,6 +19,7 @@ public class StrikerController : MonoBehaviour
     public Direction location; // 위치 방향
     private int currentNoteIndex = 0; // 현재 채보 인덱스
     [SerializeField] private Animator animator;
+    [SerializeField] private Animator bladeAnimator = null;
     // 임시로 발사체 저장해놓을 공간
     private float lastProjectileTime = 0f; // 마지막 투사체 발사 시간
 
@@ -30,6 +32,8 @@ public class StrikerController : MonoBehaviour
 
     //투사체 발사 시의 !관련
     [SerializeField] private GameObject exclamationPrefab; // 공통 느낌표 프리팹
+    // 🔹 `List<Sprite>`로 변경 (느낌표 타입별 이미지 저장)
+    [SerializeField] private List<Sprite> exclamationSprites = new List<Sprite>(); 
     private Transform exclamationParent; // 느낌표 표시 위치
     private List<GameObject> prepareExclamation = new List<GameObject>(); // 느낌표 오브젝트 저장
 
@@ -44,10 +48,19 @@ public class StrikerController : MonoBehaviour
     private Vector3 originalPosition;
     private Vector3 targetPosition;
     private bool isMoved = false;
-    public float moveTime = 0.2f;
+    private bool isMoving = false;
+    public float moveTime = 0.1f;
     private float backtime = 0f;
     public bool isMelee; // 근접 공격 여부 확인
-    public float animeOffset = 0.1f;
+    public float animeOffset = 0.02f;
+    private float spacing = 0.25f;
+
+
+    private bool isHolding = false;
+
+    //spawn후 입장장 변수
+    private float moveDuration = 1.0f; // 이동 시간
+    private float spawnOffset = 3.0f; // 화면 밖에서 등장하는 거리
 
     private void Start()
     {
@@ -58,6 +71,19 @@ public class StrikerController : MonoBehaviour
         {
             SetMeleeTargetPosition();
         }
+        
+        animator.SetInteger("direction", (int)location);
+        if (bladeAnimator != null)
+        {
+            bladeAnimator.SetInteger("bladeDirection", (int)location);
+        }
+        // 초기 위치를 화면 밖으로 설정
+        Vector3 spawnPosition = GetSpawnPosition();
+        // 스트라이커를 화면 밖에서 시작 위치로 이동
+        transform.position = spawnPosition;
+
+        // 화면 밖에서 targetPosition으로 이동
+        StartCoroutine(MoveToOriginalPosition());
     }
     private void Update() // 현재 striker 자체에서 투사체 일정 간격으로 발사
     {
@@ -84,56 +110,172 @@ public class StrikerController : MonoBehaviour
     {
         float currentTime = StageManager.Instance.currentTime;
 
-        if (prepareQueue.Count > 0 && currentTime >= (prepareQueue.Peek().Item1 * (60d / bpm)) + playerManager.musicOffset - 1f - moveTime && !isMoved)
+        //공격 이전에 출발
+        if (prepareQueue.Count > 0 && currentTime >= (prepareQueue.Peek().Item1 * (60d / bpm)) + playerManager.musicOffset - animeOffset - moveTime && !isMoved && prepareQueue.Peek().Item2 != 3 && !isMoving)
         {
-            float fraction = (prepareQueue.Peek().Item1 * (60f / bpm) + playerManager.musicOffset - 1f - currentTime) / moveTime;
-            transform.position = Vector3.Lerp(targetPosition, originalPosition, Mathf.Clamp01(fraction));
-
-            if (fraction <= 0f)
-            {
-                isMoved = true;
-            }
+            isMoving = true;
+            StartCoroutine(MeleeGo(prepareQueue.Peek().Item1 * (60f / bpm) + playerManager.musicOffset - animeOffset));
         }
+
         // 채보 시간에 맞춰 공격
-        if (prepareQueue.Count > 0 && currentTime >= (prepareQueue.Peek().Item1 * (60d / bpm)) + playerManager.musicOffset - animeOffset && isMoved)
+        if (prepareQueue.Count > 0 && currentTime >= (prepareQueue.Peek().Item1 * (60d / bpm)) + playerManager.musicOffset - animeOffset)
         {
             int attackType = prepareQueue.Peek().Item2;
             float attackTime = prepareQueue.Peek().Item1;
 
             // 공격
             //근접 전용의 scoreManager의 judge를 이용해야함. projectile과 구분해서 애니메이션도 다르게 되어야한다.
-            // 투사체 저장
-            judgeableQueue.Enqueue(new Judgeable((AttackType)attackType, attackTime, location, this, null));
+            // 투사체 저장은 PrepareForAttack에서 미리함
+
+            animator.SetInteger("attackType", attackType);
+
             //공격 애니메이션 작용
-
-            // 공격격 시 느낌표 제거 (좌측부터)
-            if (prepareExclamation.Count > 0)
+            if (attackType != 3)
             {
-                Destroy(prepareExclamation[0]); // 가장 오래된 느낌표 제거
-                prepareExclamation.RemoveAt(0);
-
-                // 남은 느낌표 위치 재배치
-                for (int i = 0; i < prepareExclamation.Count; i++)
+                if (attackType == 2)
                 {
-                    prepareExclamation[i].transform.localPosition = new Vector3(i * 0.3f, 0, 0);
+                    animator.SetBool("isAttacking", true);
+                    transform.GetChild(0).transform.localPosition = DirTool.TranstoVec(DirTool.ReverseDir(location)) * 2f;
                 }
+                else
+                {
+                    int randomNum = UnityEngine.Random.Range(0, 2);
+                    animator.SetInteger("randomSelecter", randomNum);
+                    bladeAnimator.SetInteger("randomSelecter", randomNum);
+                    animator.SetTrigger("Attack");
+                }
+                bladeAnimator.SetInteger("attackType", attackType);
             }
+            exclamationRelocation();
             prepareQueue.Dequeue(); // 준비된 공격 제거
         }
+    }
 
-        if (prepareQueue.Count == 0 && isMoved)
+    public void ActMeleeHit()
+    {
+        if(prepareQueue.Count == 0) 
         {
+            isMoved = false;
+            isMoving = true;
+            StartCoroutine(MeleeGoBack());
+        }
+    }
+
+    public void ActMeleeHoldStart()
+    {
+        Debug.Log($"ActMeleeHoldStart {judgeableQueue.Peek().arriveBeat} {bpm} {StageManager.Instance.currentTime}");
+        bladeAnimator.SetTrigger("bladePlay");
+
+        uiManager.CutInDisplay(judgeableQueue.Peek().arriveBeat * (60f / bpm) - StageManager.Instance.currentTime + playerManager.musicOffset);
+
+        // StartCoroutine(MeleeHoldStartAnim());
+        isHolding = true;
+    }
+
+    public void ActMeleeHoldFinish()
+    {
+        Debug.Log("ActMeleeHoldFinish");
+        animator.SetBool("isAttacking", false);
+        bladeAnimator.SetTrigger("bladeHoldFinish");
+        
+        transform.GetChild(0).transform.localPosition = Vector3.zero;
+        isHolding = false;
+
+        // 미스났는데도 느낌표 남아있는 거 방지
+        while (prepareExclamation.Count > 0)
+        {
+            Destroy(prepareExclamation[0]); // 가장 오래된 느낌표 제거
+            prepareExclamation.RemoveAt(0);
+        }
+        if (prepareQueue.Count != 0)
+        {
+            prepareQueue.Dequeue(); // 준비된 공격 제거
+        }
+        ActMeleeHit();
+        uiManager.CutInDisplay(0, true);
+    }
+
+    private IEnumerator MeleeGo(float targetTime)
+    {
+        animator.SetBool("MovingGo", true);
+        Debug.Log("melee go 호출");
+        Debug.Log(isMoved);
+        while (!isMoved)
+        {
+            float currentTime = StageManager.Instance.currentTime;
+
+            float fraction = (targetTime - currentTime) / moveTime;
+            transform.position = Vector3.Lerp(targetPosition, originalPosition, Mathf.Clamp01(fraction));
+
+            if (fraction <= 0f)
+            {
+                animator.SetBool("MovingGo", false);
+                isMoved = true;
+                Debug.Log("isMove true in melee go");
+                isMoving = false;
+                transform.position = targetPosition;
+                yield break;
+            }
+            yield return null;
+        }
+    }
+    
+    private IEnumerator MeleeGoBack()
+    {
+        Debug.Log("MeleeGoBack");
+        if(hp == 0) animator.SetBool("hp0", true);
+        else animator.SetBool("MovingBack", true);
+        Debug.Log(isMoving);
+        while (isMoving)
+        {
+            Debug.Log("back while문 진입");
+            float currentTime = StageManager.Instance.currentTime;
+
             if (backtime == 0f) backtime = currentTime;
-            float fraction = (currentTime - backtime) / moveTime;
+            float fraction = (currentTime - backtime) / (moveTime / 3);
+            transform.position = Vector3.Lerp(targetPosition, originalPosition, Mathf.Clamp01(fraction));
+            if (fraction >= 0.99f)
+            {
+                Debug.Log("fraction if문 진입");
+                backtime = 0f;
+                transform.position = originalPosition;
+                if(hp == 0)
+                {
+                    beCleared();
+                }
+                else
+                {
+                    animator.SetBool("MovingBack", false);
+                    Debug.Log("moveBack False");
+                }
+                isMoving = false;
+                Debug.Log("isMoving false");
+            }
+            yield return null;
+        }
+    }
+
+    private IEnumerator MeleeHoldStartAnim()
+    {
+        Debug.Log("MeleeHoldStartAnim");
+        while (isMoved)
+        {
+            float currentTime = StageManager.Instance.currentTime;
+
+            if (backtime == 0f) backtime = currentTime;
+            float fraction = (currentTime - backtime) / (moveTime / 3);
             transform.position = Vector3.Lerp(targetPosition, originalPosition, Mathf.Clamp01(fraction));
 
             if (fraction >= 1f)
             {
                 isMoved = false;
                 backtime = 0f;
+                yield break;
             }
+            yield return null;
         }
     }
+
     private void SetMeleeTargetPosition()
     {
         targetPosition = playerManager.transform.position;
@@ -141,16 +283,16 @@ public class StrikerController : MonoBehaviour
         switch (location)
         {
             case Direction.Up:
-                targetPosition += Vector3.up * 1.5f;
+                targetPosition += Vector3.up * 2f;
                 break;
             case Direction.Down:
-                targetPosition += Vector3.down * 1.5f;
+                targetPosition += Vector3.down * 2f;
                 break;
             case Direction.Left:
-                targetPosition += Vector3.right * 1.5f;
+                targetPosition += Vector3.right * 2f;
                 break;
             case Direction.Right:
-                targetPosition += Vector3.left * 1.5f;
+                targetPosition += Vector3.left * 2f;
                 break;
         }
     }
@@ -176,9 +318,25 @@ public class StrikerController : MonoBehaviour
         float arriveTime = chartData.notes[currentNoteIndex].arriveTime;
         int noteType = chartData.notes[currentNoteIndex].type; // 노트 타입 저장
 
-        prepareQueue.Enqueue(new Tuple<float, int>(arriveTime, noteType)); // 도착 시간과 타입 저장
-        ShowExclamation(noteType); // 느낌표 표시
-        Debug.Log("prepare!");
+        if (noteType != 3 || isHolding)
+        {
+            prepareQueue.Enqueue(new Tuple<float, int>(arriveTime, noteType)); // 도착 시간과 타입 저장
+            ShowExclamation(noteType); // 느낌표 표시
+            Debug.Log("prepare!");
+        }
+
+        if (isMelee)
+        {
+            if (noteType == 2)
+            {
+                judgeableQueue.Enqueue(new Judgeable((AttackType)noteType, arriveTime, location, this, null, this.ActMeleeHoldStart));
+                judgeableQueue.Enqueue(new Judgeable((AttackType)chartData.notes[currentNoteIndex + 1].type, chartData.notes[currentNoteIndex + 1].arriveTime, location, this, null, this.ActMeleeHoldFinish));
+            }
+            else if (noteType != 3)
+            {
+                judgeableQueue.Enqueue(new Judgeable((AttackType)noteType, arriveTime, location, this, null, this.ActMeleeHit));
+            }
+        }
 
         // 애니메이션 실행 (느낌표 표시)
         // **애니메이션 실행 (공격 준비)**
@@ -215,10 +373,10 @@ public class StrikerController : MonoBehaviour
             switch (location)
             {
                 case Direction.Up:
-                    newParent.transform.localPosition = new Vector3(0, 1.5f, 0);
+                    newParent.transform.localPosition = new Vector3(1.5f, 0, 0);
                     break;
                 case Direction.Down:
-                    newParent.transform.localPosition = new Vector3(0, -1.5f, 0);
+                    newParent.transform.localPosition = new Vector3(1.5f, 0, 0);
                     break;
                 case Direction.Left:
                 case Direction.Right:
@@ -230,13 +388,12 @@ public class StrikerController : MonoBehaviour
     }
     private void ShowExclamation(int type)
     {
-        // ** 기존 느낌표 지우고 다시 생성**
+        //** 기존 느낌표 지우고 다시 생성**
         foreach (GameObject ex in prepareExclamation)
         {
             Destroy(ex);
         }
         int count = prepareQueue.Count; // 현재 준비된 공격 개수
-        float spacing = 0.3f;  // 느낌표 간격
         prepareExclamation.Clear();
 
         List<Tuple<float, int>> tempList = new List<Tuple<float, int>>(prepareQueue); // 현재 큐를 리스트로 변환 (순서 유지)
@@ -244,7 +401,7 @@ public class StrikerController : MonoBehaviour
 
         for (int i = 0; i < count; i++)
         {
-            Vector3 exclamationPosition = new Vector3((i - (count - 1) / 2f) * spacing, 0, 0);
+            Vector3 exclamationPosition = new Vector3( (i+1) * spacing, 0, 0); //(i - (count - 1) / 2f) 
             GameObject newExclamation = Instantiate(exclamationPrefab, exclamationParent);
             newExclamation.transform.localPosition = exclamationPosition; // **🔹 `exclamationParent` 기준 정렬**
 
@@ -254,17 +411,15 @@ public class StrikerController : MonoBehaviour
             if (exclamationSprite != null)
             {
                 int noteColor = tempList[i].Item2;
-                switch (noteColor)
+                // 🔹 `type`이 `exclamationSprites` 범위 내에 있는지 확인
+                if (noteColor >= 0 && noteColor < exclamationSprites.Count)
                 {
-                    case 0:  // 일반 공격
-                        exclamationSprite.color = Color.yellow;
-                        break;
-                    case 1:  // 강한 공격
-                        exclamationSprite.color = Color.red;
-                        break;
-                    default:
-                        exclamationSprite.color = Color.white;
-                        break;
+                    exclamationSprite.sprite = exclamationSprites[noteColor]; // 리스트에서 해당 타입에 맞는 스프라이트 적용
+                }
+                else
+                {
+                    Debug.LogWarning($"Unknown attack type {noteColor}! Defaulting to first sprite.");
+                    exclamationSprite.sprite = exclamationSprites[0]; // 기본값
                 }
             }
 
@@ -316,16 +471,19 @@ public class StrikerController : MonoBehaviour
             projScript.type = index;
         }
         // ⭐ 발사 시 느낌표 제거 (좌측부터)
+        exclamationRelocation();
+    }
+    private void exclamationRelocation()
+    {
         if (prepareExclamation.Count > 0)
         {
             Destroy(prepareExclamation[0]); // 가장 오래된 느낌표 제거
             prepareExclamation.RemoveAt(0);
             int count = prepareExclamation.Count;
-            float spacing = 0.3f;
             // 남은 느낌표 위치 재배치
             for (int i = 0; i < count; i++)
             {
-                prepareExclamation[i].transform.localPosition = new Vector3((i - (count - 1) / 2f) * spacing, 0, 0);
+                prepareExclamation[i].transform.localPosition = new Vector3((i +1) * spacing, 0, 0);
             }
         }
     }
@@ -350,6 +508,46 @@ public class StrikerController : MonoBehaviour
         }
         else isMelee = true;
     }
+    private Vector3 GetSpawnPosition()
+    {
+        // 기본적으로 targetPosition을 유지
+        Vector3 spawnPosition =  originalPosition;
+
+        // 화면 밖에서 등장하는 위치 설정
+        switch (location)
+        {
+            case Direction.Up:
+                spawnPosition += Vector3.up * spawnOffset;
+                break;
+            case Direction.Down:
+                spawnPosition += Vector3.down * spawnOffset;
+                break;
+            case Direction.Left:
+                spawnPosition += Vector3.left * spawnOffset;
+                break;
+            case Direction.Right:
+                spawnPosition += Vector3.right * spawnOffset;
+                break;
+        }
+
+        return spawnPosition;
+    }
+
+    private IEnumerator MoveToOriginalPosition()
+    {
+        float elapsedTime = 0;
+
+        // 부드러운 이동을 위한 Lerp 적용
+        while (elapsedTime < moveDuration)
+        {
+            transform.position = Vector3.Lerp(transform.position, originalPosition, elapsedTime / moveDuration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // 최종 위치 고정
+        transform.position = originalPosition;
+    }
 
     public void ClearProjectiles()
     {
@@ -367,11 +565,11 @@ public class StrikerController : MonoBehaviour
     {
         if (audioSource != null)
         {
-            if (type == AttackType.Normal && prepareSoundNormal != null)
+            if (type == AttackType.Normal && parrySoundNormal != null)
             {
                 audioSource.PlayOneShot(parrySoundNormal);
             }
-            else if (type == AttackType.Strong && prepareSoundStrong != null)
+            else if (type == AttackType.Strong && parrySoundStrong != null)
             {
                 audioSource.PlayOneShot(parrySoundStrong);
             }
@@ -385,9 +583,29 @@ public class StrikerController : MonoBehaviour
             //animator.SetTrigger("isDamaged");
             if (hp == 0)
             {
-                //animator.SetBool("isClear", true);
+                if(!isMelee) beCleared();
                 playerManager.hp =+ 1;
+                
+                //기타몬 전용 굴러가기 퇴장
+                //original position 도착후 isClear 세팅
+                //이후 투명해지는 animation 진행
             }
         }
+    }
+    private void beCleared()
+    {
+        animator.SetBool("isClear", true);
+        StartCoroutine(DestroyAfterAnimation());
+    }
+    private IEnumerator DestroyAfterAnimation()
+    {
+        // 애니메이션 길이 가져오기
+        float exitAnimationTime = animator.GetCurrentAnimatorStateInfo(0).length;
+        
+        // 애니메이션 실행 시간만큼 대기
+        yield return new WaitForSeconds(exitAnimationTime);
+
+        // 오브젝트 삭제
+        Destroy(gameObject);
     }
 }

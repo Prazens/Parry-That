@@ -18,7 +18,7 @@ public class PlayerManager : MonoBehaviour
 
     
     public float musicOffset;
-    public float visualOffset;
+    // public float visualOffset;
 
     private AudioSource audioSource;
     [SerializeField] private AudioClip blocked;
@@ -32,7 +32,7 @@ public class PlayerManager : MonoBehaviour
     void Start()
     {
         musicOffset = 2f;  // 판정 오프셋: -일수록 빨리 쳐야 함
-        visualOffset = 0.22f;  // 판정선: -일수록 플레이어에 가까움
+        // visualOffset = 0.22f;  // 판정선: -일수록 플레이어에 가까움
 
         GameController gameController = FindObjectOfType<GameController>();
         if (gameController != null)
@@ -58,12 +58,6 @@ public class PlayerManager : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void Operate(Direction direction, AttackType type)
     {
         switch (direction)
@@ -85,11 +79,20 @@ public class PlayerManager : MonoBehaviour
                 break;
         }
 
-        // 홀드 끝 모션
-        if (type == AttackType.HoldFinishStrong || type == AttackType.HoldStop)
+        if (type == AttackType.HoldStart)
         {
-            playerAnimator.SetTrigger("playerHoldFinish");
+            transform.GetChild(2).transform.position = DirTool.TranstoVec(direction) * 0.8f;
+        }
+
+        // 홀드 끝 모션
+        else if (type == AttackType.HoldFinishStrong || type == AttackType.HoldStop)
+        {
+            Debug.Log($"Animation : {direction}, {type}");
+
             bladeAnimator.SetTrigger("bladeHoldFinish");
+            playerAnimator.SetTrigger("playerHoldFinish");
+            
+            transform.GetChild(2).transform.position = Vector3.zero;
             return;
         }
 

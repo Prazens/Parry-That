@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,6 +17,8 @@ public class UIManager : MonoBehaviour
 
     private bool isFading = false;
     private Sprite cachedDamageOverlaySprite;
+
+    [SerializeField] private GameObject[] cutScenes;
 
     private void Awake()
     {
@@ -129,7 +132,7 @@ public class UIManager : MonoBehaviour
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         GameObject particleObj2;
-        int randNum = Random.Range(0, 3);
+        int randNum = UnityEngine.Random.Range(0, 3);
         if (perfect)
         {
             particleObj2 = Instantiate(ParticlePerfect[randNum], spawnPos, Quaternion.identity);
@@ -155,6 +158,88 @@ public class UIManager : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         Destroy(obj);
+    }
+
+    private IEnumerator EaseInEffect(GameObject targetUIImage, Direction direction, float _duration)
+    {
+        float elapsedTime = 0;
+        float duration = _duration;
+
+        Animator animator = targetUIImage.GetComponent<Animator>();
+        animator.SetTrigger("cutIn");
+
+        Image uiImage = targetUIImage.GetComponent<Image>();
+        RectTransform uiElement = targetUIImage.GetComponent<RectTransform>();
+
+        Vector2 startPos = uiElement.anchoredPosition;
+
+        while (elapsedTime < duration + 0.12f)
+        {
+            if (isStop1)
+            {
+                elapsedTime = 0;
+                isStop1 = false;
+                break;
+            }
+            if (isStop2)
+            {
+                elapsedTime = 0;
+                isStop2 = false;
+                break;
+            }
+
+            float t = elapsedTime / duration;
+            t = Mathf.Sqrt(Mathf.Sqrt(t)); // Ease out 적용 (t^4)
+
+            // 위치 이동 (Ease In)
+            switch (direction)
+            {
+                case Direction.Up:
+                    uiElement.anchoredPosition = Vector2.Lerp(startPos, startPos + Vector2.right * 1600, t);
+                    break;
+                case Direction.Down:
+                    uiElement.anchoredPosition = Vector2.Lerp(startPos, startPos + Vector2.left * 1600, t);
+                    break;
+            }
+            
+            // 밝기 조절 (Ease out)
+            uiImage.color = Color.Lerp(Color.black, Color.white, t);
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        Vector2 currentPos = uiElement.anchoredPosition;
+        while (elapsedTime < 0.3f)
+        {
+            float t = elapsedTime / 0.3f;
+
+            // 위치 이동
+            uiElement.anchoredPosition = Vector2.Lerp(currentPos, startPos, t);
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        uiImage.color = Color.white;
+        uiElement.anchoredPosition = startPos;
+        animator.SetTrigger("cutOut");
+    }
+
+    public bool isStop1 = false;
+    public bool isStop2 = false;
+
+    public void CutInDisplay(float _duration, bool isHide = false)
+    {
+        if (isHide)
+        {
+            isStop1 = true;
+            isStop2 = true;
+        }
+        else
+        {
+            StartCoroutine(EaseInEffect(cutScenes[0], Direction.Up, _duration));
+            StartCoroutine(EaseInEffect(cutScenes[1], Direction.Down, _duration));
+        }
     }
 
 }

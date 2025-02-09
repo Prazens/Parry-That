@@ -36,6 +36,7 @@ public class StageManager : MonoBehaviour
     public bool is_over = false;
     [SerializeField] private TextMeshProUGUI countdownText; // 카운트다운 표시용 Text UI
     private GameObject overlay; // 검은 필터
+    private bool button_active = true;
 
     [SerializeField] private TextAsset[] jsonCharts;
 
@@ -65,6 +66,7 @@ public class StageManager : MonoBehaviour
         overlay.transform.SetParent(canvasTransform, false);
         Image overlayImage = overlay.AddComponent<Image>();
         overlayImage.color = new Color(0f, 0f, 0f, 0.7f);
+        overlayImage.raycastTarget = false;
         RectTransform overlayRect = overlay.GetComponent<RectTransform>();
         overlayRect.anchorMin = Vector2.zero;
         overlayRect.anchorMax = Vector2.one;
@@ -126,6 +128,7 @@ public class StageManager : MonoBehaviour
         clearStrikers = 0;
         is_over = false;
         isPaused = false;
+        button_active = true;
         scoreUI.Initialize_UI();
         musicSource.time = 0f;
         SpawnPlayer();
@@ -135,7 +138,7 @@ public class StageManager : MonoBehaviour
             strikerManager.charts[i] = JsonReader.ReadJson(jsonCharts[i]);
         }
         strikerManager.SpawnStriker(0,0,1,108,107); 
-        strikerManager.SpawnStriker(1,1,0,110,107);
+        strikerManager.SpawnStriker(1,1,1,110,107);
         isActive = true; // 스테이지 활성화
         scoreManager.Initialize();
         Debug.Log("Stage Started!");
@@ -267,6 +270,7 @@ public class StageManager : MonoBehaviour
         Debug.Log("Game Over!");
         isActive = false;
         is_over = true;
+        button_active = false;
 
         // 음악 정지
         if (musicSource != null && musicSource.isPlaying)
@@ -291,6 +295,7 @@ public class StageManager : MonoBehaviour
         currentTime = stageDuration; // 시간 고정
         isActive = false;
         is_over = true;
+        button_active = false;
         // Clear 창 활성화 및 점수 업데이트
         if (clearPanelInstance != null)
         {
@@ -338,6 +343,9 @@ public class StageManager : MonoBehaviour
         if(PausePanelInstance != null) PausePanelInstance.SetActive(false);
         overlay.SetActive(false);
 
+        UIManager.Instance.isStop1 = false;
+        UIManager.Instance.isStop2 = false;
+
         // 새로운 스테이지 시작
         StartStage();
     }
@@ -346,6 +354,7 @@ public class StageManager : MonoBehaviour
     [SerializeField] private GameObject pauseButton;
     public void TogglePause()
     {
+        if(!button_active) return;
         if (isPaused)
         {
             ResumeStage();
@@ -377,6 +386,7 @@ public class StageManager : MonoBehaviour
     public void ResumeStage()
     {
         if (!isPaused) return;
+        button_active = false;
         isPaused = false;
         if(PausePanelInstance != null) PausePanelInstance.SetActive(false);
         overlay.SetActive(false);
@@ -393,6 +403,7 @@ public class StageManager : MonoBehaviour
         }
         countdownText.gameObject.SetActive(false);
         isActive = true;
+        button_active = true;
         Time.timeScale = 1f;
         // 음악 재개
         if (musicSource != null && musicPlayed)
