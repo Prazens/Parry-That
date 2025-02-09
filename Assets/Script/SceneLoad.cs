@@ -19,7 +19,21 @@ public class SceneLoad : MonoBehaviour
 
     IEnumerator LoadScene()
     {
-        AsyncOperation operation = SceneManager.LoadSceneAsync("Stage1");
+        AsyncOperation operation = null;
+        switch(SceneLinkage.StageLV)
+        {
+            case 1:
+                operation = SceneManager.LoadSceneAsync("Stage1");
+                break;
+            case 2:
+                operation = SceneManager.LoadSceneAsync("Stage2");
+                break;
+            ///
+
+            default:
+                Debug.Log("스테이지 로드 실패");
+                break;
+        }
         operation.allowSceneActivation = false;
 
         while (!operation.isDone)
