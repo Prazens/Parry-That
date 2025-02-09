@@ -252,8 +252,8 @@ MonoBehaviour:
   audioSource: {fileID: 9120506532451307555}
   prepareSoundNormal: {fileID: 8300000, guid: f59be02f63ba0b348b50c617dd3fc21a, type: 3}
   prepareSoundStrong: {fileID: 8300000, guid: a014fc7a30d019440ae4d95c47741b5e, type: 3}
-  parrySoundNormal: {fileID: 8300000, guid: 9d8fed8aa14fe9d4eabb8f88c23f9cdc, type: 3}
-  parrySoundStrong: {fileID: 8300000, guid: b6f671d8c01af504890e22bbb213a324, type: 3}
+  parrySoundNormal: {fileID: 8300000, guid: 96972401467906a42b50272645414fee, type: 3}
+  parrySoundStrong: {fileID: 8300000, guid: 20353a13f678ac34f83635b7b2503a29, type: 3}
   moveTime: 0.2
   isMelee: 1
   animeOffset: 0.1
