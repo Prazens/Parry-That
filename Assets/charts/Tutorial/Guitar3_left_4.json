@@ -1,0 +1,19 @@
+{
+    "notes": [
+        {
+            "time": 50,
+            "arriveTime": 54,
+            "type": 1
+        },
+        {
+            "time": 66,
+            "arriveTime": 70,
+            "type": 1
+        },
+        {
+            "time": 67,
+            "arriveTime": 71,
+            "type": 1
+        }
+    ]
+}

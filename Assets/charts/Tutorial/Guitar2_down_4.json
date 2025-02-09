@@ -1,0 +1,29 @@
+{
+    "notes": [
+        {
+            "time": 49,
+            "arriveTime": 53,
+            "type": 1
+        },
+        {
+            "time": 64.5,
+            "arriveTime": 68.5,
+            "type": 1
+        },
+        {
+            "time": 65.5,
+            "arriveTime": 69.5,
+            "type": 1
+        },
+        {
+            "time": 97,
+            "arriveTime": 99,
+            "type": 2
+        },
+        {
+            "time": 98,
+            "arriveTime": 103,
+            "type": 3
+        }
+    ]
+}

@@ -516,7 +516,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 1ed0075ff4b452744b85edb6f34f1c90, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 5381ba5496f170d4b88a6e932088ac8b, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -967,7 +967,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35c5716c5f2e7d84887798ca32a473fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _strikerList: []
   playerManager: {fileID: 0}
   strikerManager: {fileID: 2036327256}
   parriedProjectileManager: {fileID: 768575886}
@@ -2170,9 +2169,20 @@ MonoBehaviour:
   - {fileID: 313345823}
   uiManager: {fileID: 1305503422}
   charts:
-  - notes: []
-  - notes: []
+  - bpm: 0
+    strikerType: 0
+    direction: 0
+    appearTime: 0
+    disappearTime: 0
+    notes: []
+  - bpm: 0
+    strikerType: 0
+    direction: 0
+    appearTime: 0
+    disappearTime: 0
+    notes: []
   strikerList: []
+  strikerStatus: 
 --- !u!4 &2036327257
 Transform:
   m_ObjectHideFlags: 0
@@ -2332,8 +2342,22 @@ MonoBehaviour:
   is_over: 0
   countdownText: {fileID: 477627792}
   jsonCharts:
-  - {fileID: 4900000, guid: a0124470c072fb646a50ec46cb51a3f6, type: 3}
-  - {fileID: 4900000, guid: 47673d4f5ab79264f932a680b45ffe9e, type: 3}
+  - {fileID: 4900000, guid: ec7eb06c25e03fc468cce5f51f4cf8a8, type: 3}
+  - {fileID: 4900000, guid: 86b2ee788f5412c4d9732751183a7016, type: 3}
+  - {fileID: 4900000, guid: 1a3e2527e75d60f44b01f7342ab8e4e0, type: 3}
+  - {fileID: 4900000, guid: 1f6d5948a5ea759418263ce5ce04006b, type: 3}
+  - {fileID: 4900000, guid: f39161e90b94762459e702721872ccea, type: 3}
+  - {fileID: 4900000, guid: 52a5462ce51ecb54688445d26813cb7c, type: 3}
+  - {fileID: 4900000, guid: 7ea2eae58e72b904ba6b8540ee3ae50a, type: 3}
+  - {fileID: 4900000, guid: 14c5bcaa1ffab924fb52b678bbc8402b, type: 3}
+  - {fileID: 4900000, guid: 28dde19a75abcda47b85c80216ad058f, type: 3}
+  - {fileID: 4900000, guid: 5b379fe2d021ec64798cc226bba4ede7, type: 3}
+  - {fileID: 4900000, guid: c92cbbca346768a448112efb0ab504b8, type: 3}
+  - {fileID: 4900000, guid: f6e44a0c93053db44b670b017691b157, type: 3}
+  - {fileID: 4900000, guid: c0ba8446201d88c45aa82b40191bbb36, type: 3}
+  musicOffset: 0
+  VictoryAnimatorObj: {fileID: 0}
+  VictoryAudioSource: {fileID: 0}
   isPaused: 0
   pauseButton: {fileID: 849816421}
 --- !u!4 &2102237518

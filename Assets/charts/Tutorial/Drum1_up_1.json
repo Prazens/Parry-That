@@ -1,0 +1,49 @@
+{
+    "notes": [
+        {
+            "time": 8,
+            "arriveTime": 12,
+            "type": 0
+        },
+        {
+            "time": 9,
+            "arriveTime": 13,
+            "type": 0
+        },
+        {
+            "time": 10,
+            "arriveTime": 14,
+            "type": 0
+        },
+        {
+            "time": 24,
+            "arriveTime": 28,
+            "type": 0
+        },
+        {
+            "time": 24.5,
+            "arriveTime": 28.5,
+            "type": 1
+        },
+        {
+            "time": 25,
+            "arriveTime": 29,
+            "type": 0
+        },
+        {
+            "time": 25.5,
+            "arriveTime": 29.5,
+            "type": 1
+        },
+        {
+            "time": 26,
+            "arriveTime": 30,
+            "type": 0
+        },
+        {
+            "time": 26.5,
+            "arriveTime": 30.5,
+            "type": 1
+        }
+    ]
+}
