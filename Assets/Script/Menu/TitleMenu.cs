@@ -90,7 +90,7 @@ public class TitleMenu : MonoBehaviour
         }
 
         // 현재 플레이 가능한 스테이지 제한
-        int[] possibleStages = { 0 };
+        int[] possibleStages = { 0, 1 };
         isPossibleStage = possibleStages.Contains(StageMenu.currentIndex);
 
         // 임시코드 for imsi

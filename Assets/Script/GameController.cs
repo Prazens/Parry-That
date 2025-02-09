@@ -22,22 +22,24 @@ public class GameController : MonoBehaviour
         //   Debug.LogError("StageManager is not assigned!");
         //}
 
-        switch (SceneLinkage.StageLV)
-        {
-            case 1:
-                StartStage();
-                Debug.Log("게임시작");
-                break;
-            case 2:
-                //StartStage2()
-                break;
-            case 3:
-                //StartStage2()
-                break;
-            default:
-                // Debug.Log($"{SceneLinkage.StageLV}");
-                break;
-        }
+        StartStage();
+        Debug.Log("게임시작");
+        // switch (SceneLinkage.StageLV)
+        // {
+        //     case 1:
+        //         StartStage();
+        //         Debug.Log("게임시작");
+        //         break;
+        //     case 2:
+        //         //StartStage()
+        //         break;
+        //     case 3:
+        //         //StartStage2()
+        //         break;
+        //     default:
+        //         // Debug.Log($"{SceneLinkage.StageLV}");
+        //         break;
+        // }
     }
     public void StartStage()
     {
