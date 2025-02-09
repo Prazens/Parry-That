@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
+using System.Linq;
 
 public class TitleMenu : MonoBehaviour
 {
@@ -21,10 +22,14 @@ public class TitleMenu : MonoBehaviour
 
     private Image Sword;
     private Image Title;
+    private GameObject imsi;
+    private Image rt_imsi;
 
     private bool GoStageMenu = false;
     public static bool SwordUpEnd = false;
     public bool MouseControl;   // Inspector 창에서 설정
+    public static bool TitlePassed = false;
+    public bool isPossibleStage = true;
 
     public GameObject GameController;
 
@@ -40,6 +45,8 @@ public class TitleMenu : MonoBehaviour
         nextPanel = GameObject.Find("StageMenu").GetComponent<RectTransform>();
         Sword = GameObject.Find("Img_Sword").GetComponent<Image>();
         Title = GameObject.Find("Img_Title").GetComponent<Image>();
+        imsi = GameObject.Find("imsi");
+        rt_imsi = imsi.GetComponent<Image>();
 
         GameController = GameObject.Find("GameController");
         TitleTextObj = GameObject.Find("TitleText");
@@ -52,11 +59,19 @@ public class TitleMenu : MonoBehaviour
         {
             TitleText_originalColor = TitleText.color;
         }
+
+        if (TitlePassed)  // 스테이지에서 나왔을 때 스테이지 메뉴창 상태로 위치 설정
+        {
+            ChangePanelPosition(MenuStartPos, StageMenuStartPos);
+            ChangeSwordPosition();
+            GoStageMenu = true;
+        }
+        Debug.Log($"{TitlePassed}");
     }
 
     void Update()   // 위로 스와이프 하면 타이틀 화면에서 스테이지 선택 화면으로 전환
     {
-        if (!GoStageMenu)
+        if (!GoStageMenu || SwordUpEnd)
         {
             if (MouseControl)   // 마우스 조작
             {
@@ -68,28 +83,25 @@ public class TitleMenu : MonoBehaviour
             }
         }
 
-        if (SwordUpEnd)
-        {
-            if (MouseControl)   // 마우스 조작
-            {
-                MouseMove();
-            } 
-            else    // 터치 조작
-            {
-                TouchMove();
-            }
-        }
-
         if (TitleText != null)
         {
             float alpha = (Mathf.Sin(Time.time * 1f) * 0.35f + 0.65f);
             TitleText.color = new Color(TitleText_originalColor.r, TitleText_originalColor.g, TitleText_originalColor.b, alpha);
         }
+
+        // 현재 플레이 가능한 스테이지 제한
+        int[] possibleStages = { 0, 1 };
+        isPossibleStage = possibleStages.Contains(StageMenu.currentIndex);
+
+        // 임시코드 for imsi
+        rt_imsi.rectTransform.anchoredPosition = Sword.rectTransform.anchoredPosition;
+        if (1 <= StageMenu.currentIndex && StageMenu.currentIndex <= 100) imsi.SetActive(true);
+        else imsi.SetActive(false);
     }
 
     private void MouseMove()
     {
-        if (Input.GetMouseButtonDown(0))        // 터치 조작으로 바꿔야 함. 아직 마우스 조작만 구현
+        if (Input.GetMouseButtonDown(0))
         {
             startPos = Input.mousePosition;
         }
@@ -99,9 +111,10 @@ public class TitleMenu : MonoBehaviour
             float swipeDistance = startPos.y - endPos.y;
             if (swipeDistance < -swipeThreshold)
             {
-                if (GoStageMenu & SwordUpEnd)
+                if (GoStageMenu & SwordUpEnd & isPossibleStage)
                 {
-                    stageMenu.SelectStage();
+                    if (Mathf.Abs(startPos.x - endPos.x) >= stageMenu.threshold) return;
+                    else stageMenu.SelectStage();
                     // GameController.GetComponent<GameController>().StartStage();
                 }
                 if (!GoStageMenu)
@@ -109,6 +122,7 @@ public class TitleMenu : MonoBehaviour
                     OnSwipeUp();
                     LogoFadeOut();
                     GoStageMenu = true;
+                    TitlePassed = true;
                 }
             }
         }
@@ -133,7 +147,8 @@ public class TitleMenu : MonoBehaviour
                 {
                     if (GoStageMenu & SwordUpEnd)
                     {
-                        stageMenu.SelectStage();
+                        if (Mathf.Abs(startPos.x - endPos.x) >= stageMenu.threshold) return;
+                        else stageMenu.SelectStage();
                         // GameController.GetComponent<GameController>().StartStage();
                     }
                     if (!GoStageMenu)
@@ -141,6 +156,7 @@ public class TitleMenu : MonoBehaviour
                         OnSwipeUp();
                         LogoFadeOut();
                         GoStageMenu = true;
+                        TitlePassed = true;
                     }
                 }
             }
@@ -150,8 +166,11 @@ public class TitleMenu : MonoBehaviour
     public void OnSwipeUp()
     {
         TitleTextObj.SetActive(false);
-        StartCoroutine(SlidePanels(MenuStartPos, StageMenuStartPos));
-        StartCoroutine(SwordUp());
+        if (!TitlePassed)   // 처음 실행했을 때
+        {
+            StartCoroutine(SlidePanels(MenuStartPos, StageMenuStartPos));
+            StartCoroutine(SwordUp());
+        }
     }
 
     private IEnumerator SlidePanels(Vector2 FirstPanel, Vector2 SecondPanel)
@@ -170,6 +189,15 @@ public class TitleMenu : MonoBehaviour
             yield return null;
         }
 
+        menuPanel.anchoredPosition = FirstPanelEnd;
+        nextPanel.anchoredPosition = SecondPanelEnd;
+    }
+
+    private void ChangePanelPosition(Vector2 FirstPanel, Vector2 SecondPanel)
+    {
+        RectTransform canvasRect = Sword.GetComponentInParent<Canvas>().GetComponent<RectTransform>();
+        Vector2 FirstPanelEnd = new Vector2(FirstPanel.x, FirstPanel.y - canvasRect.rect.height);
+        Vector2 SecondPanelEnd = new Vector2(SecondPanel.x, SecondPanel.y - canvasRect.rect.height);
         menuPanel.anchoredPosition = FirstPanelEnd;
         nextPanel.anchoredPosition = SecondPanelEnd;
     }
@@ -213,6 +241,15 @@ public class TitleMenu : MonoBehaviour
         swordRect.anchoredPosition = endPosDown;
         SwordUpEnd = true;
         Debug.Log("SwordUpEnd");
+    }
+
+    private void ChangeSwordPosition()
+    {
+        RectTransform swordRect = Sword.GetComponent<RectTransform>();
+        RectTransform canvasRect = Sword.GetComponentInParent<Canvas>().GetComponent<RectTransform>();
+        Vector2 endPosDown = new Vector2(startPos.x, startPos.y + canvasRect.rect.height + 400);
+        swordRect.anchoredPosition = endPosDown;
+        SwordUpEnd = true;
     }
 
 

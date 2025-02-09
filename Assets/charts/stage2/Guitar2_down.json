@@ -1,0 +1,104 @@
+{
+    "bpm": 162.000162000162,
+    "strikerType": 1,
+    "direction": 2,
+    "appearTime": 48.0,
+    "disappearTime": 171.99999999999997,
+    "notes": [
+        {
+            "time": 56.0,
+            "arriveTime": 72.0,
+            "type": 0
+        },
+        {
+            "time": 56.5,
+            "arriveTime": 72.5,
+            "type": 0
+        },
+        {
+            "time": 67.5,
+            "arriveTime": 83.5,
+            "type": 1
+        },
+        {
+            "time": 88.0,
+            "arriveTime": 104.0,
+            "type": 0
+        },
+        {
+            "time": 91.0,
+            "arriveTime": 107.0,
+            "type": 0
+        },
+        {
+            "time": 92.0,
+            "arriveTime": 108.0,
+            "type": 1
+        },
+        {
+            "time": 93.5,
+            "arriveTime": 109.5,
+            "type": 0
+        },
+        {
+            "time": 95.0,
+            "arriveTime": 111.0,
+            "type": 0
+        },
+        {
+            "time": 99.5,
+            "arriveTime": 115.5,
+            "type": 1
+        },
+        {
+            "time": 118.0,
+            "arriveTime": 120.0,
+            "type": 2
+        },
+        {
+            "time": 124.0,
+            "arriveTime": 126.0,
+            "type": 3
+        },
+        {
+            "time": 136.0,
+            "arriveTime": 138.0,
+            "type": 1
+        },
+        {
+            "time": 140.0,
+            "arriveTime": 141.99999999999997,
+            "type": 0
+        },
+        {
+            "time": 140.66666666666666,
+            "arriveTime": 142.70833333333331,
+            "type": 0
+        },
+        {
+            "time": 141.33333333333331,
+            "arriveTime": 143.33333333333331,
+            "type": 0
+        },
+        {
+            "time": 161.99999999999997,
+            "arriveTime": 165.99999999999997,
+            "type": 1
+        },
+        {
+            "time": 166.99999999999997,
+            "arriveTime": 170.99999999999997,
+            "type": 0
+        },
+        {
+            "time": 167.49999999999997,
+            "arriveTime": 171.49999999999997,
+            "type": 0
+        },
+        {
+            "time": 167.99999999999997,
+            "arriveTime": 171.99999999999997,
+            "type": 0
+        }
+    ]
+}

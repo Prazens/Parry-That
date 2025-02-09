@@ -20,4 +20,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Stage1.unity
     guid: 83cc75104c2cdc04a9ffeaa4bed34356
+  - enabled: 1
+    path: Assets/Scenes/Stage2.unity
+    guid: daf8fe433c3d9c147b366b9fb649dc67
+  - enabled: 1
+    path: Assets/Scenes/Beat Master.unity
+    guid: ca95caa7cc56e6844878f4ec40296916
+  - enabled: 1
+    path: Assets/Scenes/Stage3.unity
+    guid: 02f7404c8f4ef894e99c836b6edd8231
   m_configObjects: {}

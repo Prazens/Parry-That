@@ -126,6 +126,11 @@ MonoBehaviour:
   playerManager: {fileID: 0}
   uiManager: {fileID: 0}
   chartData:
+    bpm: 0
+    strikerType: 0
+    direction: 0
+    appearTime: 0
+    disappearTime: 0
     notes: []
   hp: 0
   bpm: 0
@@ -142,8 +147,8 @@ MonoBehaviour:
   audioSource: {fileID: -5035865612886772569}
   prepareSoundNormal: {fileID: 8300000, guid: 217db2784927af74182e3363c58252a5, type: 3}
   prepareSoundStrong: {fileID: 8300000, guid: 121170503d0edaa40ae14d48ba26984c, type: 3}
-  parrySoundNormal: {fileID: 8300000, guid: 08f847cdd130e59449c1803f4f37820a, type: 3}
-  parrySoundStrong: {fileID: 8300000, guid: 38ad0f0ad0999c346bc68de510a990b7, type: 3}
+  parrySoundNormal: {fileID: 8300000, guid: 96972401467906a42b50272645414fee, type: 3}
+  parrySoundStrong: {fileID: 8300000, guid: 20353a13f678ac34f83635b7b2503a29, type: 3}
   moveTime: 0.08
   isMelee: 0
   animeOffset: 0.1

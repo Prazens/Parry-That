@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using System.Xml.Linq;
 
 public class StageManager : MonoBehaviour
 {
@@ -38,7 +39,15 @@ public class StageManager : MonoBehaviour
     private bool button_active = true;
 
     [SerializeField] private TextAsset[] jsonCharts;
+    public float musicOffset;
 
+    // 빅토리 애니메이션 관련
+    [SerializeField] GameObject VictoryAnimatorObj;
+    private Animator VictoryAnimator;
+    private bool AnimationEnable = true;
+    private Image VictoryImage;
+    private SpriteRenderer VictoryRenderer;
+    [SerializeField] AudioSource VictoryAudioSource;
 
     private void Awake()
     {
@@ -66,6 +75,18 @@ public class StageManager : MonoBehaviour
         overlayRect.offsetMax = Vector2.zero;
         overlay.SetActive(false);
 
+        // 엔딩 애니메이터 컴포넌트 가져오기
+        VictoryAnimator = VictoryAnimatorObj.GetComponent<Animator>();
+        VictoryImage = VictoryAnimatorObj.GetComponent<Image>();
+        VictoryRenderer = VictoryAnimatorObj.GetComponent<SpriteRenderer>();
+        VictoryAnimatorObj.SetActive(false);
+
+        RectTransform rtVictory = VictoryAnimatorObj.GetComponent<RectTransform>();
+        rtVictory.anchorMin = Vector2.zero;
+        rtVictory.anchorMax = Vector2.one;
+        rtVictory.offsetMin = Vector2.zero;
+        rtVictory.offsetMax = Vector2.zero;
+
         if (clearPanelPrefab != null && canvasTransform != null)
         {
             // Clear 창 인스턴스 생성
@@ -87,6 +108,15 @@ public class StageManager : MonoBehaviour
         if (countdownText != null)
         {
             countdownText.gameObject.SetActive(false);
+        }
+        if (musicSource != null && musicSource.clip != null)
+        {
+            stageDuration = musicSource.clip.length + musicOffset + 2f;
+            Debug.Log($"Stage duration set to: {stageDuration} seconds");
+        }
+        else
+        {
+            Debug.LogError("Music source or clip is missing!");
         }
     }
     public void FirstStartStage()
@@ -113,12 +143,14 @@ public class StageManager : MonoBehaviour
         musicSource.time = 0f;
         SpawnPlayer();
         // SpawnGuideboxes();
-        for (int i = 0; i < 2; i++)
+        Debug.Log($"StartStage {strikerManager.charts.Count}");
+        strikerManager.charts.Clear();
+        for (int i = 0; i < jsonCharts.Length; i++)
         {
-            strikerManager.charts[i] = JsonReader.ReadJson(jsonCharts[i]);
+            Debug.Log($"StartStage {i}");
+            strikerManager.charts.Add(JsonReader.ReadJson<ChartData>(jsonCharts[i]));
         }
-        strikerManager.SpawnStriker(0,0,1,108,107); 
-        strikerManager.SpawnStriker(1,1,1,110,107);
+        strikerManager.InitStriker();
         isActive = true; // 스테이지 활성화
         scoreManager.Initialize();
         Debug.Log("Stage Started!");
@@ -144,6 +176,7 @@ public class StageManager : MonoBehaviour
         PlayerManager playerManager = playerInstance.GetComponent<PlayerManager>();
         if (playerManager != null)
         {
+            playerManager.musicOffset = musicOffset;
             // StageManager를 PlayerManager에 설정
             playerManager.stageManager = this;
             // GameController의 TouchManager와 ScoreManager에 PlayerManager 설정
@@ -220,10 +253,22 @@ public class StageManager : MonoBehaviour
         if (!isActive) return;
 
         currentTime += Time.deltaTime;
-
+        VictoryImage.sprite = VictoryRenderer.sprite;
         if (currentTime >= stageDuration)
         {
-            EndStage();
+            if (AnimationEnable)
+            {
+                Debug.Log("victory!");
+                VictoryAudioSource.Play();
+                VictoryAnimatorObj.SetActive(true);
+                VictoryAnimator.SetTrigger("Play");
+                AnimationEnable = false;
+            }
+            if (VictoryAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
+            {
+                VictoryAnimatorObj.SetActive(false);
+                EndStage();
+            }
         }
         if (currentTime >= 2d && !musicPlayed)
         {
@@ -286,6 +331,8 @@ public class StageManager : MonoBehaviour
     }
     public void RestartStage()
     {
+        AnimationEnable = true;
+
         Debug.Log("Restarting Stage...");
         Time.timeScale = 1f;
         // 기존 Striker 삭제

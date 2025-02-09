@@ -15,7 +15,7 @@ public class StrikerController : MonoBehaviour
     [SerializeField] public ChartData chartData; // 채보 데이터
     [SerializeField] public int hp; // 스트라이커 HP
     private int initialHp; // 스트라이커 initialHp
-    [SerializeField] public int bpm; // BPM
+    [SerializeField] public float bpm; // BPM
     public Direction location; // 위치 방향
     public int currentNoteIndex = 0; // 현재 채보 인덱스
     [SerializeField] private Animator animator;
@@ -87,6 +87,15 @@ public class StrikerController : MonoBehaviour
     }
     private void Update() // 현재 striker 자체에서 투사체 일정 간격으로 발사
     {
+        if (isMelee)
+        {
+            HandleMeleeMovement();
+        }
+        else
+        {
+            HandleProjectileAttack();
+        }
+        
         // 투사체 발사 타이밍 계산
         if (currentNoteIndex >= chartData.notes.Length) return;
 
@@ -96,14 +105,6 @@ public class StrikerController : MonoBehaviour
         if (currentNoteIndex < chartData.notes.Length && currentTime >= chartData.notes[currentNoteIndex].time * (60f / bpm) + playerManager.musicOffset)
         {
             PrepareForAttack();
-        }
-        if (isMelee)
-        {
-            HandleMeleeMovement();
-        }
-        else
-        {
-            HandleProjectileAttack();
         }
     }
     private void HandleMeleeMovement()
@@ -290,10 +291,10 @@ public class StrikerController : MonoBehaviour
                 targetPosition += Vector3.down * 2f;
                 break;
             case Direction.Left:
-                targetPosition += Vector3.right * 2f;
+                targetPosition += Vector3.left * 2f;
                 break;
             case Direction.Right:
-                targetPosition += Vector3.left * 2f;
+                targetPosition += Vector3.right * 2f;
                 break;
         }
     }
@@ -307,11 +308,6 @@ public class StrikerController : MonoBehaviour
             FireProjectile(prepareQueue.Peek().Item1, prepareQueue.Peek().Item2);
             prepareQueue.Dequeue();
             lastProjectileTime = currentTime;
-        }
-        //마지막 투사체 발사 이후 1.5초가 지나면 공격 상태 해제
-        if (currentTime - lastProjectileTime > 1.5f)
-        {
-            animator.SetBool("isAttacking", false);
         }
     }
     private void PrepareForAttack()
@@ -431,12 +427,9 @@ public class StrikerController : MonoBehaviour
     // 투사체 발사
     private void FireProjectile(float time, int index)
     {
+        Debug.Log("FireProjectile");
         if (index < 0 || index >= projectilePrefabs.Count) return;
         GameObject selectedProjectile = projectilePrefabs[index];
-        if (!animator.GetBool("isAttacking"))
-        {
-            animator.SetBool("isAttacking", true);
-        }
 
         // 투사체 생성
         GameObject projectile = Instantiate(selectedProjectile, transform.position, Quaternion.identity);
@@ -471,6 +464,7 @@ public class StrikerController : MonoBehaviour
             projScript.arriveTime = time;
             projScript.type = index;
         }
+        animator.SetTrigger("Attack");
         // ⭐ 발사 시 느낌표 제거 (좌측부터)
         exclamationRelocation();
     }
@@ -489,7 +483,7 @@ public class StrikerController : MonoBehaviour
         }
     }
 
-    public void Initialize(int _initialHp, int initialBpm, PlayerManager targetPlayer, Direction direction, ChartData chart, int prepabindex) //striker 정보 초기화(spawn될 때 얻어오는 정보보)
+    public void Initialize(int _initialHp, float initialBpm, PlayerManager targetPlayer, Direction direction, ChartData chart, int prepabindex) //striker 정보 초기화(spawn될 때 얻어오는 정보보)
     {
         hp = _initialHp;
         initialHp = _initialHp;
@@ -581,11 +575,11 @@ public class StrikerController : MonoBehaviour
 
             hp -= damage;
             Debug.Log($"{gameObject.name} took {damage} damage! Current HP: {hp}");
-            //animator.SetTrigger("isDamaged");
-            if (hp == 0)
+            if(!isMelee) animator.SetTrigger("isDamaged");
+            if (hp <= 0)
             {
                 if(!isMelee) beCleared();
-                playerManager.hp =+ 1;
+                playerManager.hp += 1;
                 
                 //기타몬 전용 굴러가기 퇴장
                 //original position 도착후 isClear 세팅
@@ -593,7 +587,7 @@ public class StrikerController : MonoBehaviour
             }
         }
     }
-    private void beCleared()
+    public void beCleared()
     {
         animator.SetBool("isClear", true);
         StartCoroutine(DestroyAfterAnimation());
@@ -607,6 +601,7 @@ public class StrikerController : MonoBehaviour
         yield return new WaitForSeconds(exitAnimationTime);
 
         // 오브젝트 삭제
-        Destroy(gameObject);
+        // Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 }

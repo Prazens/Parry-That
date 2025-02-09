@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -21,26 +22,24 @@ public class GameController : MonoBehaviour
         //   Debug.LogError("StageManager is not assigned!");
         //}
 
-        switch (SceneLinkage.StageLV)
-        {
-            case -1:
-                StartStage();   // 임시
-                Debug.Log("튜토리얼 게임시작");
-                break;
-            case 1:
-                StartStage();
-                Debug.Log("게임시작");
-                break;
-            case 2:
-                //StartStage2()
-                break;
-            case 3:
-                //StartStage2()
-                break;
-            default:
-                // Debug.Log($"{SceneLinkage.StageLV}");
-                break;
-        }
+        StartStage();
+        Debug.Log("게임시작");
+        // switch (SceneLinkage.StageLV)
+        // {
+        //     case 1:
+        //         StartStage();
+        //         Debug.Log("게임시작");
+        //         break;
+        //     case 2:
+        //         //StartStage()
+        //         break;
+        //     case 3:
+        //         //StartStage2()
+        //         break;
+        //     default:
+        //         // Debug.Log($"{SceneLinkage.StageLV}");
+        //         break;
+        // }
     }
     public void StartStage()
     {
@@ -112,6 +111,12 @@ public class GameController : MonoBehaviour
                     {
                         OnSwipeUp();
                     }
+
+                    // 아래로 스와이프 감지
+                    if (verticalSwipe < 0 && Mathf.Abs(verticalSwipe) > Mathf.Abs(direction.x))
+                    {
+                        OnSwipeDown();
+                    }
                 }
 
                 isSwiping = false;
@@ -147,6 +152,12 @@ public class GameController : MonoBehaviour
             {
                 OnSwipeUp();
             }
+
+            // 아래로 스와이프 감지
+            if (verticalSwipe < 0 && Mathf.Abs(verticalSwipe) > Mathf.Abs(direction.x))
+            {
+                OnSwipeDown();
+            }
         }
     }
     private void OnSwipeUp()
@@ -163,5 +174,12 @@ public class GameController : MonoBehaviour
             stageManager.RestartStage();
         }
     }
-    
+
+    private void OnSwipeDown()
+    {
+        SceneManager.LoadScene("Main");
+        Time.timeScale = 1f;
+    }
+
+
 }
