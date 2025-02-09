@@ -290,10 +290,10 @@ public class StrikerController : MonoBehaviour
                 targetPosition += Vector3.down * 2f;
                 break;
             case Direction.Left:
-                targetPosition += Vector3.right * 2f;
+                targetPosition += Vector3.left * 2f;
                 break;
             case Direction.Right:
-                targetPosition += Vector3.left * 2f;
+                targetPosition += Vector3.right * 2f;
                 break;
         }
     }
@@ -307,11 +307,6 @@ public class StrikerController : MonoBehaviour
             FireProjectile(prepareQueue.Peek().Item1, prepareQueue.Peek().Item2);
             prepareQueue.Dequeue();
             lastProjectileTime = currentTime;
-        }
-        //마지막 투사체 발사 이후 1.5초가 지나면 공격 상태 해제
-        if (currentTime - lastProjectileTime > 1.5f)
-        {
-            animator.SetBool("isAttacking", false);
         }
     }
     private void PrepareForAttack()
@@ -434,10 +429,6 @@ public class StrikerController : MonoBehaviour
         Debug.Log("FireProjectile");
         if (index < 0 || index >= projectilePrefabs.Count) return;
         GameObject selectedProjectile = projectilePrefabs[index];
-        if (!animator.GetBool("isAttacking"))
-        {
-            animator.SetBool("isAttacking", true);
-        }
 
         // 투사체 생성
         GameObject projectile = Instantiate(selectedProjectile, transform.position, Quaternion.identity);
@@ -472,6 +463,7 @@ public class StrikerController : MonoBehaviour
             projScript.arriveTime = time;
             projScript.type = index;
         }
+        animator.SetTrigger("Attack");
         // ⭐ 발사 시 느낌표 제거 (좌측부터)
         exclamationRelocation();
     }
@@ -582,8 +574,8 @@ public class StrikerController : MonoBehaviour
 
             hp -= damage;
             Debug.Log($"{gameObject.name} took {damage} damage! Current HP: {hp}");
-            //animator.SetTrigger("isDamaged");
-            if (hp == 0)
+            if(!isMelee) animator.SetTrigger("isDamaged");
+            if (hp <= 0)
             {
                 if(!isMelee) beCleared();
                 playerManager.hp += 1;

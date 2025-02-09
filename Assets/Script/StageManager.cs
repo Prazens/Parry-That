@@ -109,6 +109,15 @@ public class StageManager : MonoBehaviour
         {
             countdownText.gameObject.SetActive(false);
         }
+        if (musicSource != null && musicSource.clip != null)
+        {
+            stageDuration = musicSource.clip.length + musicOffset + 2f;
+            Debug.Log($"Stage duration set to: {stageDuration} seconds");
+        }
+        else
+        {
+            Debug.LogError("Music source or clip is missing!");
+        }
     }
     public void FirstStartStage()
     {
