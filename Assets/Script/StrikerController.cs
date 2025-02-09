@@ -128,6 +128,7 @@ public class StrikerController : MonoBehaviour
             // 투사체 저장은 PrepareForAttack에서 미리함
 
             animator.SetInteger("attackType", attackType);
+            bladeAnimator.SetInteger("attackType", attackType);
 
             //공격 애니메이션 작용
             if (attackType != 3)
@@ -143,8 +144,8 @@ public class StrikerController : MonoBehaviour
                     animator.SetInteger("randomSelecter", randomNum);
                     bladeAnimator.SetInteger("randomSelecter", randomNum);
                     animator.SetTrigger("Attack");
+                    bladeAnimator.SetTrigger("bladePlay");
                 }
-                bladeAnimator.SetInteger("attackType", attackType);
             }
             exclamationRelocation();
             prepareQueue.Dequeue(); // 준비된 공격 제거

@@ -79,7 +79,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 10, y: 10}
+  m_Size: {x: 20, y: 19.08}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
@@ -235,6 +235,7 @@ MonoBehaviour:
   hp: 0
   bpm: 0
   location: 0
+  currentNoteIndex: 0
   animator: {fileID: 1619256992334318428}
   bladeAnimator: {fileID: 7491916606276098673}
   hpBarPrefab: {fileID: 8497898252444216346, guid: 89cb566f97c8d124381826ff7e0c4402, type: 3}

@@ -179,6 +179,34 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!1101 &-7709698703376135075
+AnimatorStateTransition:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_Conditions:
+  - m_ConditionMode: 6
+    m_ConditionEvent: attackType
+    m_EventTreshold: 2
+  - m_ConditionMode: 1
+    m_ConditionEvent: isAttacking
+    m_EventTreshold: 0
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: 8633249017239790884}
+  m_Solo: 0
+  m_Mute: 0
+  m_IsExit: 0
+  serializedVersion: 3
+  m_TransitionDuration: 0
+  m_TransitionOffset: 0
+  m_ExitTime: 0
+  m_HasExitTime: 0
+  m_HasFixedDuration: 1
+  m_InterruptionSource: 0
+  m_OrderedInterruption: 1
+  m_CanTransitionToSelf: 1
 --- !u!1102 &-7594147167746438507
 AnimatorState:
   serializedVersion: 6
@@ -675,7 +703,8 @@ AnimatorState:
   m_Name: guitarmon_charge_up
   m_Speed: 1
   m_CycleOffset: 0
-  m_Transitions: []
+  m_Transitions:
+  - {fileID: 1356968336961678667}
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
@@ -717,6 +746,37 @@ AnimatorStateTransition:
   m_TransitionDuration: 0
   m_TransitionOffset: 0
   m_ExitTime: 0.75
+  m_HasExitTime: 0
+  m_HasFixedDuration: 1
+  m_InterruptionSource: 0
+  m_OrderedInterruption: 1
+  m_CanTransitionToSelf: 1
+--- !u!1101 &-3221353636636134371
+AnimatorStateTransition:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_Conditions:
+  - m_ConditionMode: 6
+    m_ConditionEvent: attackType
+    m_EventTreshold: 2
+  - m_ConditionMode: 1
+    m_ConditionEvent: isAttacking
+    m_EventTreshold: 0
+  - m_ConditionMode: 6
+    m_ConditionEvent: direction
+    m_EventTreshold: 4
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: 1775787178752025098}
+  m_Solo: 0
+  m_Mute: 0
+  m_IsExit: 0
+  serializedVersion: 3
+  m_TransitionDuration: 0
+  m_TransitionOffset: 0
+  m_ExitTime: 0
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -975,6 +1035,34 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!1101 &-778605653677454088
+AnimatorStateTransition:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_Conditions:
+  - m_ConditionMode: 6
+    m_ConditionEvent: attackType
+    m_EventTreshold: 2
+  - m_ConditionMode: 1
+    m_ConditionEvent: isAttacking
+    m_EventTreshold: 0
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: -5303021875196459712}
+  m_Solo: 0
+  m_Mute: 0
+  m_IsExit: 0
+  serializedVersion: 3
+  m_TransitionDuration: 0
+  m_TransitionOffset: 0
+  m_ExitTime: 0
+  m_HasExitTime: 0
+  m_HasFixedDuration: 1
+  m_InterruptionSource: 0
+  m_OrderedInterruption: 1
+  m_CanTransitionToSelf: 1
 --- !u!1101 &-54046977302739780
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -1311,6 +1399,37 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!1101 &1356968336961678667
+AnimatorStateTransition:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_Conditions:
+  - m_ConditionMode: 6
+    m_ConditionEvent: attackType
+    m_EventTreshold: 2
+  - m_ConditionMode: 1
+    m_ConditionEvent: isAttacking
+    m_EventTreshold: 0
+  - m_ConditionMode: 6
+    m_ConditionEvent: direction
+    m_EventTreshold: 2
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: 2166199571519596690}
+  m_Solo: 0
+  m_Mute: 0
+  m_IsExit: 0
+  serializedVersion: 3
+  m_TransitionDuration: 0
+  m_TransitionOffset: 0
+  m_ExitTime: 0
+  m_HasExitTime: 0
+  m_HasFixedDuration: 1
+  m_InterruptionSource: 0
+  m_OrderedInterruption: 1
+  m_CanTransitionToSelf: 1
 --- !u!1101 &1465083809698302336
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -1448,7 +1567,8 @@ AnimatorState:
   m_Name: guitarmon_charge_left
   m_Speed: 1
   m_CycleOffset: 0
-  m_Transitions: []
+  m_Transitions:
+  - {fileID: -3221353636636134371}
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
@@ -1894,7 +2014,8 @@ AnimatorState:
   m_Name: guitarmon_charge_right 0
   m_Speed: 1
   m_CycleOffset: 0
-  m_Transitions: []
+  m_Transitions:
+  - {fileID: -778605653677454088}
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
@@ -1927,25 +2048,25 @@ AnimatorStateMachine:
     m_Position: {x: 620, y: 430, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6347803107853958587}
-    m_Position: {x: 680, y: 300, z: 0}
+    m_Position: {x: 40, y: 280, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3699265813150564288}
-    m_Position: {x: -110, y: 330, z: 0}
+    m_Position: {x: 300, y: 130, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5895121523587991634}
     m_Position: {x: 160, y: 200, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6330430026858921465}
-    m_Position: {x: 760, y: 360, z: 0}
+    m_Position: {x: 750, y: 360, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 2166199571519596690}
-    m_Position: {x: 360, y: 350, z: 0}
+    m_Position: {x: 380, y: 290, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -8793462589760623472}
-    m_Position: {x: 720, y: 190, z: 0}
+    m_Position: {x: 590, y: 150, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 8226111906653716894}
-    m_Position: {x: 310, y: -260, z: 0}
+    m_Position: {x: 170, y: -360, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -50541551313362913}
     m_Position: {x: 820, y: -250, z: 0}
@@ -1957,37 +2078,37 @@ AnimatorStateMachine:
     m_Position: {x: 600, y: -260, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 8633249017239790884}
-    m_Position: {x: 450, y: -320, z: 0}
+    m_Position: {x: 480, y: -320, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 4805450681527864014}
     m_Position: {x: 910, y: -320, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -7438201802211155413}
-    m_Position: {x: 220, y: -170, z: 0}
+    m_Position: {x: 210, y: -170, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 2417291561173726202}
-    m_Position: {x: 1170, y: -40, z: 0}
+    m_Position: {x: 1060, y: -20, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1775787178752025098}
-    m_Position: {x: 650, y: 70, z: 0}
+    m_Position: {x: 910, y: 140, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -8505942595893218749}
-    m_Position: {x: 730, y: -20, z: 0}
+    m_Position: {x: 720, y: 100, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5891272665410564918}
-    m_Position: {x: 1070, y: 40, z: 0}
+    m_Position: {x: 640, y: 40, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 5274939033121887486}
     m_Position: {x: 1180, y: 120, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6230917186762505149}
-    m_Position: {x: 1200, y: -170, z: 0}
+    m_Position: {x: 1020, y: -160, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -7088766139846446734}
-    m_Position: {x: 800, y: -80, z: 0}
+    m_Position: {x: 740, y: -50, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 5772626263453856482}
-    m_Position: {x: -290, y: 20, z: 0}
+    m_Position: {x: -230, y: 60, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5303021875196459712}
     m_Position: {x: -30, y: -210, z: 0}
@@ -2002,10 +2123,10 @@ AnimatorStateMachine:
     m_Position: {x: -210, y: -330, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -1502528294244277687}
-    m_Position: {x: -20, y: 40, z: 0}
+    m_Position: {x: -170, y: 160, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 3119688646456158389}
-    m_Position: {x: -60, y: -40, z: 0}
+    m_Position: {x: 30, y: -10, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -1252285812220430240}
     m_Position: {x: -120, y: 430, z: 0}
@@ -2026,10 +2147,10 @@ AnimatorStateMachine:
     m_Position: {x: 960, y: 280, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 8421947315512005713}
-    m_Position: {x: 80, y: -320, z: 0}
+    m_Position: {x: 30, y: -320, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 6537022834449127627}
-    m_Position: {x: 1100, y: -90, z: 0}
+    m_Position: {x: 1100, y: -100, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 5008967991915772103}
     m_Position: {x: -460, y: -20, z: 0}
@@ -2317,7 +2438,8 @@ AnimatorState:
   m_Name: guitarmon_charge_down 0
   m_Speed: 1
   m_CycleOffset: 0
-  m_Transitions: []
+  m_Transitions:
+  - {fileID: -7709698703376135075}
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
