@@ -15,7 +15,7 @@ public class StrikerController : MonoBehaviour
     [SerializeField] public ChartData chartData; // 채보 데이터
     [SerializeField] public int hp; // 스트라이커 HP
     private int initialHp; // 스트라이커 initialHp
-    [SerializeField] public int bpm; // BPM
+    [SerializeField] public float bpm; // BPM
     public Direction location; // 위치 방향
     private int currentNoteIndex = 0; // 현재 채보 인덱스
     [SerializeField] private Animator animator;
@@ -488,7 +488,7 @@ public class StrikerController : MonoBehaviour
         }
     }
 
-    public void Initialize(int _initialHp, int initialBpm, PlayerManager targetPlayer, Direction direction, ChartData chart, int prepabindex) //striker 정보 초기화(spawn될 때 얻어오는 정보보)
+    public void Initialize(int _initialHp, float initialBpm, PlayerManager targetPlayer, Direction direction, ChartData chart, int prepabindex) //striker 정보 초기화(spawn될 때 얻어오는 정보보)
     {
         hp = _initialHp;
         initialHp = _initialHp;

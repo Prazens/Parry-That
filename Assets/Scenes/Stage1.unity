@@ -219,6 +219,8 @@ RectTransform:
   m_Children:
   - {fileID: 822372183}
   - {fileID: 836491252}
+  - {fileID: 1857161483}
+  - {fileID: 617482306}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -608,7 +610,7 @@ GameObject:
   - component: {fileID: 617482308}
   - component: {fileID: 617482307}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: HoldCutGuitarmon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -812,8 +814,10 @@ MonoBehaviour:
   - {fileID: 1888235362120343003, guid: ec9ae111fd0ca0e40b6b632721c2f1da, type: 3}
   - {fileID: 6868093653260204414, guid: 5edb3a50aba096c4890516d92d0baa55, type: 3}
   cutScenes:
-  - {fileID: 847066269}
+  - {fileID: 1857161482}
   - {fileID: 617482305}
+  isStop1: 0
+  isStop2: 0
 --- !u!114 &698621752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1453,8 +1457,9 @@ MonoBehaviour:
   is_over: 0
   countdownText: {fileID: 2121608883}
   jsonCharts:
-  - {fileID: 4900000, guid: a0124470c072fb646a50ec46cb51a3f6, type: 3}
-  - {fileID: 4900000, guid: 47673d4f5ab79264f932a680b45ffe9e, type: 3}
+  - {fileID: 4900000, guid: ef3367817cc0b7a44b72b2057b1506d6, type: 3}
+  - {fileID: 4900000, guid: 5d6f6020eca6741488dc12e670909fd8, type: 3}
+  musicOffset: 0
   VictoryAnimatorObj: {fileID: 836491251}
   VictoryAudioSource: {fileID: 888203099}
   isPaused: 0
@@ -1536,14 +1541,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35c5716c5f2e7d84887798ca32a473fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _strikerList: []
   playerManager: {fileID: 0}
   strikerManager: {fileID: 1860902388}
   parriedProjectileManager: {fileID: 1744429775}
   scoreUI: {fileID: 698621756}
   combo: 0
   score: 0
-  musicOffset: 0
+  musicOffset: 2.15
   lastNonMissJudge: 0
   isHolding: 0
   bpm: 0
@@ -1700,6 +1704,103 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1857161482
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1857161483}
+  - component: {fileID: 1857161486}
+  - component: {fileID: 1857161485}
+  - component: {fileID: 1857161484}
+  m_Layer: 5
+  m_Name: HoldCutPlayer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1857161483
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1857161482}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 224584158}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -1920, y: 3413.3}
+  m_SizeDelta: {x: 2000, y: 1250}
+  m_Pivot: {x: 1, y: 1.0000001}
+--- !u!95 &1857161484
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1857161482}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d6bc42f558796f749a076504129477ae, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1857161485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1857161482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1857161486
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1857161482}
+  m_CullTransparentMesh: 1
 --- !u!1 &1860902387
 GameObject:
   m_ObjectHideFlags: 0
@@ -1737,9 +1838,20 @@ MonoBehaviour:
   - {fileID: 1448434802}
   uiManager: {fileID: 698621751}
   charts:
-  - notes: []
-  - notes: []
+  - bpm: 0
+    strikerType: 0
+    direction: 0
+    appearTime: 0
+    disappearTime: 0
+    notes: []
+  - bpm: 0
+    strikerType: 0
+    direction: 0
+    appearTime: 0
+    disappearTime: 0
+    notes: []
   strikerList: []
+  strikerStatus: 
 --- !u!4 &1860902389
 Transform:
   m_ObjectHideFlags: 0

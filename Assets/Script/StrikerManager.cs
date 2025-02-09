@@ -12,15 +12,59 @@ public class StrikerManager : MonoBehaviour
 
     // 스트라이커 저장해놓을 공간
     public List<GameObject> strikerList = new List<GameObject>();
+    public List<int> strikerStatus = new List<int>();
+
     public void SetPlayer(PlayerManager player)
     {
         playerManager = player;
         Debug.Log("PlayerManager successfully linked to StrikerManager.");
     }
 
-    // Start is called before the first frame update
-    public void SpawnStriker(int positionIndex, int chartIndex, int prepabindex, int hp = 10, int bpm = 120) // striker를 원하는 위치에 spawn, 현재 위쪽과 아래 쪽 두곳으로 spawnpoint 지정해놓음
+    private void Update()
     {
+        float currentTime = StageManager.Instance.currentTime;
+        for (int i = 0; i < charts.Count; i++)
+        {
+            if (currentTime >= charts[i].appearTime * (60f / charts[i].bpm) + playerManager.musicOffset)
+            {
+                if (strikerStatus[i] == 0)
+                {
+                    strikerStatus[i] = 1;
+                    Debug.Log($"SpawnStriker({i})");
+                    SpawnStriker(i);
+                }
+                else if (strikerStatus[i] == 1)
+                {
+                    // disappear
+                    strikerStatus[i] = 2;
+                }
+            }
+        }
+    }
+
+    public void InitStriker()
+    {
+        Debug.Log($"InitStriker {charts.Count}");
+        for (int i = 0; i < charts.Count; i++)
+        {
+            strikerStatus.Add(0);
+            if (charts[i].disappearTime == 0)
+            {
+                strikerStatus[i] = 1;
+                Debug.Log($"SpawnStriker({i})");
+                SpawnStriker(i);
+            }
+        }
+    }
+
+    // Start is called before the first frame update
+    public void SpawnStriker(int chartIndex) // striker를 원하는 위치에 spawn, 현재 위쪽과 아래 쪽 두곳으로 spawnpoint 지정해놓음
+    {
+        int hp = charts[chartIndex].notes.Length;
+        float bpm = charts[chartIndex].bpm;
+        int positionIndex = charts[chartIndex].direction - 1;
+        int prepabindex = charts[chartIndex].strikerType;
+
         // 소환 위치 유효성 검사
         if (positionIndex < 0 || positionIndex >= spawnPositions.Length)
         {
@@ -41,7 +85,7 @@ public class StrikerManager : MonoBehaviour
         
         if (strikerController != null)
         {
-            strikerController.Initialize(hp, bpm, playerManager, (Direction)(positionIndex + 1),charts[chartIndex], prepabindex);
+            strikerController.Initialize(hp, bpm, playerManager, (Direction)(positionIndex + 1), charts[chartIndex], prepabindex);
         }
         else
         {
