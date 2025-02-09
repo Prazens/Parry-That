@@ -20,6 +20,12 @@ public class PlayerManager : MonoBehaviour
     public float musicOffset;
     // public float visualOffset;
 
+    private AudioSource audioSource;
+    [SerializeField] private AudioClip blocked;
+    [SerializeField] private AudioClip hit;
+    [SerializeField] private AudioClip SwingStrong;
+    [SerializeField] private AudioClip SwingWeak;
+
     // public string[] triggers = new string[2] { "playerParryUp", "playerParryDown" };
 
     // Start is called before the first frame update
@@ -48,6 +54,8 @@ public class PlayerManager : MonoBehaviour
         scoreManager.musicOffset = musicOffset;
 
         direcrionDisplayer = transform.GetChild(0);
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     public void Operate(Direction direction, AttackType type)
@@ -123,5 +131,29 @@ public class PlayerManager : MonoBehaviour
         {
             stageManager.GameOver(); // StageManager에 GameOver 호출
         }
+    }
+
+    public void PlayerParrySound(AttackType attackType)  // 헛스윙 사운드
+    {
+        switch(attackType)
+        {
+            case AttackType.Normal:
+                audioSource.PlayOneShot(SwingWeak);
+                break;
+            case AttackType.Strong:
+                audioSource.PlayOneShot(SwingStrong);
+                break;
+            default:
+                break;
+            // 홀드 스타트 실패 시 헛스윙 사운드? -> 일단 구현 X
+        }
+    }
+    public void PlayerBlockedSound()
+    {
+        audioSource.PlayOneShot(blocked);
+    }
+    public void PlayerHitSound()
+    {
+        audioSource.PlayOneShot(hit);
     }
 }

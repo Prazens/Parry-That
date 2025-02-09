@@ -279,6 +279,8 @@ public class ScoreManager : MonoBehaviour
         // 노트가 처리되지 않은 경우
         if (judgeObject == null || judgement == -1)
         {
+            playerManager.PlayerParrySound(tpT);
+            playerManager.Operate(tpD, tpT);
             lastNonMissJudge = 0;
             if (tpT == AttackType.HoldFinishStrong)
             {
@@ -324,6 +326,7 @@ public class ScoreManager : MonoBehaviour
                     Debug.Log(playerManager.hp);
                     UIManager.Instance.ShowDamageOverlayEffect();
                     CameraEffect.CameraShake();
+                    playerManager.PlayerHitSound();
                 }
 
                 break;
@@ -331,6 +334,7 @@ public class ScoreManager : MonoBehaviour
             case 1:  // 늦은 BLOCKED
                 score += 300;
                 combo = 0;
+                playerManager.PlayerBlockedSound();
                 break;
 
             case 2:  // 늦은 PARRIED
@@ -357,6 +361,7 @@ public class ScoreManager : MonoBehaviour
             case 5:  // 빠른 BLOCKED
                 score += 300;
                 combo = 0;
+                playerManager.PlayerBlockedSound();
                 break;
         }
 
