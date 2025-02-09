@@ -384,6 +384,7 @@ public class StageManager : MonoBehaviour
     public void ChangeTime(float time)
     {
         currentTime = time;
+        Debug.LogError($"시간변화: {currentTime}");
     }
     private void UpdatePanelScores(GameObject panelInstance)
     {
@@ -485,5 +486,35 @@ public class StageManager : MonoBehaviour
                 clearStrikers++;
             }
         }
+    }
+
+    public void RestartAudio(float RollBackTime)  // 튜토리얼에서 노래 n초 전으로 되돌리는 용도의 함수
+    {
+        if (musicSource.isPlaying)
+        {
+            Debug.LogError($"롤백 전 재생 시간: {musicSource.time}초");
+            float newTime = Mathf.Max(musicSource.time - RollBackTime, 0); 
+            musicSource.Stop(); 
+            musicSource.time = newTime; 
+            musicSource.Play();
+            Debug.LogError($"롤백 후 재생 시간: {musicSource.time}초");
+        }
+    }
+    public void AudioPause()
+    {
+        if (musicSource.isPlaying)
+        {
+            musicSource.Pause();
+            //Debug.Log("오디오 일시정지됨.");
+        }
+        else
+        {
+            //Debug.LogWarning("오디오가 재생 중이 아닙니다.");
+        }
+        // musicSource.Pause();
+    }
+    public void AudioUnPause()
+    {
+        musicSource.UnPause();
     }
 }

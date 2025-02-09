@@ -17,7 +17,7 @@ public class StrikerController : MonoBehaviour
     private int initialHp; // 스트라이커 initialHp
     [SerializeField] public int bpm; // BPM
     public Direction location; // 위치 방향
-    private int currentNoteIndex = 0; // 현재 채보 인덱스
+    public int currentNoteIndex = 0; // 현재 채보 인덱스
     [SerializeField] private Animator animator;
     [SerializeField] private Animator bladeAnimator = null;
     // 임시로 발사체 저장해놓을 공간

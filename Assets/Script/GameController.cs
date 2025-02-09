@@ -23,6 +23,10 @@ public class GameController : MonoBehaviour
 
         switch (SceneLinkage.StageLV)
         {
+            case -1:
+                StartStage();   // 임시
+                Debug.Log("튜토리얼 게임시작");
+                break;
             case 1:
                 StartStage();
                 Debug.Log("게임시작");
