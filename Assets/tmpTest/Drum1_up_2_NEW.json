@@ -1,0 +1,39 @@
+{
+    "bpm": 120,
+    "strikerType": 0,
+    "direction": 1,
+    "appearTime": 23,
+    "disappearTime": 31,
+    "notes": [
+        {
+            "time": 24,
+            "arriveTime": 28,
+            "type": 0
+        },
+        {
+            "time": 24.5,
+            "arriveTime": 28.5,
+            "type": 1
+        },
+        {
+            "time": 25,
+            "arriveTime": 29,
+            "type": 0
+        },
+        {
+            "time": 25.5,
+            "arriveTime": 29.5,
+            "type": 1
+        },
+        {
+            "time": 26,
+            "arriveTime": 30,
+            "type": 0
+        },
+        {
+            "time": 26.5,
+            "arriveTime": 30.5,
+            "type": 1
+        }
+    ]
+}
