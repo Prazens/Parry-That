@@ -28,6 +28,7 @@ public class Prologue : MonoBehaviour
     }
     public void SkipButtonOn()
     {
+        SceneLinkage.StageLV = -1;
         SceneManager.LoadScene("Tutorial");
     }
 }

@@ -36,8 +36,10 @@ public class StageManager : MonoBehaviour
     public bool is_over = false;
     [SerializeField] private TextMeshProUGUI countdownText; // 카운트다운 표시용 Text UI
     private GameObject overlay; // 검은 필터
+    private bool button_active = true;
 
     [SerializeField] private TextAsset[] jsonCharts;
+    public float musicOffset;
 
     // 빅토리 애니메이션 관련
     [SerializeField] GameObject VictoryAnimatorObj;
@@ -65,6 +67,7 @@ public class StageManager : MonoBehaviour
         overlay.transform.SetParent(canvasTransform, false);
         Image overlayImage = overlay.AddComponent<Image>();
         overlayImage.color = new Color(0f, 0f, 0f, 0.7f);
+        overlayImage.raycastTarget = false;
         RectTransform overlayRect = overlay.GetComponent<RectTransform>();
         overlayRect.anchorMin = Vector2.zero;
         overlayRect.anchorMax = Vector2.one;
@@ -106,6 +109,15 @@ public class StageManager : MonoBehaviour
         {
             countdownText.gameObject.SetActive(false);
         }
+        if (musicSource != null && musicSource.clip != null)
+        {
+            stageDuration = musicSource.clip.length + musicOffset + 2f;
+            Debug.Log($"Stage duration set to: {stageDuration} seconds");
+        }
+        else
+        {
+            Debug.LogError("Music source or clip is missing!");
+        }
     }
     public void FirstStartStage()
     {
@@ -126,16 +138,19 @@ public class StageManager : MonoBehaviour
         clearStrikers = 0;
         is_over = false;
         isPaused = false;
+        button_active = true;
         scoreUI.Initialize_UI();
         musicSource.time = 0f;
         SpawnPlayer();
         // SpawnGuideboxes();
-        for (int i = 0; i < 2; i++)
+        Debug.Log($"StartStage {strikerManager.charts.Count}");
+        strikerManager.charts.Clear();
+        for (int i = 0; i < jsonCharts.Length; i++)
         {
-            strikerManager.charts[i] = JsonReader.ReadJson(jsonCharts[i]);
+            Debug.Log($"StartStage {i}");
+            strikerManager.charts.Add(JsonReader.ReadJson<ChartData>(jsonCharts[i]));
         }
-        strikerManager.SpawnStriker(0,0,1,108,107); 
-        strikerManager.SpawnStriker(1,1,0,110,107);
+        strikerManager.InitStriker();
         isActive = true; // 스테이지 활성화
         scoreManager.Initialize();
         Debug.Log("Stage Started!");
@@ -161,6 +176,7 @@ public class StageManager : MonoBehaviour
         PlayerManager playerManager = playerInstance.GetComponent<PlayerManager>();
         if (playerManager != null)
         {
+            playerManager.musicOffset = musicOffset;
             // StageManager를 PlayerManager에 설정
             playerManager.stageManager = this;
             // GameController의 TouchManager와 ScoreManager에 PlayerManager 설정
@@ -267,6 +283,7 @@ public class StageManager : MonoBehaviour
         Debug.Log("Game Over!");
         isActive = false;
         is_over = true;
+        button_active = false;
 
         // 음악 정지
         if (musicSource != null && musicSource.isPlaying)
@@ -291,6 +308,7 @@ public class StageManager : MonoBehaviour
         currentTime = stageDuration; // 시간 고정
         isActive = false;
         is_over = true;
+        button_active = false;
         // Clear 창 활성화 및 점수 업데이트
         if (clearPanelInstance != null)
         {
@@ -338,6 +356,9 @@ public class StageManager : MonoBehaviour
         if(PausePanelInstance != null) PausePanelInstance.SetActive(false);
         overlay.SetActive(false);
 
+        UIManager.Instance.isStop1 = false;
+        UIManager.Instance.isStop2 = false;
+
         // 새로운 스테이지 시작
         StartStage();
     }
@@ -346,6 +367,7 @@ public class StageManager : MonoBehaviour
     [SerializeField] private GameObject pauseButton;
     public void TogglePause()
     {
+        if(!button_active) return;
         if (isPaused)
         {
             ResumeStage();
@@ -377,6 +399,7 @@ public class StageManager : MonoBehaviour
     public void ResumeStage()
     {
         if (!isPaused) return;
+        button_active = false;
         isPaused = false;
         if(PausePanelInstance != null) PausePanelInstance.SetActive(false);
         overlay.SetActive(false);
@@ -393,6 +416,7 @@ public class StageManager : MonoBehaviour
         }
         countdownText.gameObject.SetActive(false);
         isActive = true;
+        button_active = true;
         Time.timeScale = 1f;
         // 음악 재개
         if (musicSource != null && musicPlayed)
@@ -403,6 +427,11 @@ public class StageManager : MonoBehaviour
         //투사체 이동 재개
 
         Debug.Log("Stage Resumed!");
+    }
+    public void ChangeTime(float time)
+    {
+        currentTime = time;
+        Debug.LogError($"시간변화: {currentTime}");
     }
     private void UpdatePanelScores(GameObject panelInstance)
     {
@@ -504,5 +533,35 @@ public class StageManager : MonoBehaviour
                 clearStrikers++;
             }
         }
+    }
+
+    public void RestartAudio(float RollBackTime)  // 튜토리얼에서 노래 n초 전으로 되돌리는 용도의 함수
+    {
+        if (musicSource.isPlaying)
+        {
+            Debug.LogError($"롤백 전 재생 시간: {musicSource.time}초");
+            float newTime = Mathf.Max(musicSource.time - RollBackTime, 0); 
+            musicSource.Stop(); 
+            musicSource.time = newTime; 
+            musicSource.Play();
+            Debug.LogError($"롤백 후 재생 시간: {musicSource.time}초");
+        }
+    }
+    public void AudioPause()
+    {
+        if (musicSource.isPlaying)
+        {
+            musicSource.Pause();
+            //Debug.Log("오디오 일시정지됨.");
+        }
+        else
+        {
+            //Debug.LogWarning("오디오가 재생 중이 아닙니다.");
+        }
+        // musicSource.Pause();
+    }
+    public void AudioUnPause()
+    {
+        musicSource.UnPause();
     }
 }
