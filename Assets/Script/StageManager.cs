@@ -134,9 +134,12 @@ public class StageManager : MonoBehaviour
         musicSource.time = 0f;
         SpawnPlayer();
         // SpawnGuideboxes();
-        for (int i = 0; i < strikerManager.charts.Count; i++)
+        Debug.Log($"StartStage {strikerManager.charts.Count}");
+        strikerManager.charts.Clear();
+        for (int i = 0; i < jsonCharts.Length; i++)
         {
-            strikerManager.charts[i] = JsonReader.ReadJson<ChartData>(jsonCharts[i]);
+            Debug.Log($"StartStage {i}");
+            strikerManager.charts.Add(JsonReader.ReadJson<ChartData>(jsonCharts[i]));
         }
         strikerManager.InitStriker();
         isActive = true; // 스테이지 활성화

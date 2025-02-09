@@ -61,7 +61,7 @@ public class projectile : MonoBehaviour
         // Lerp를 이용해 투사체 이동 (0.6f 지점까지)
         if (!hasReachedTarget)
         {
-            float fractionOfJourney = (arriveTime * (60f / bpm) + 2f - currentTime) / 0.5f;
+            float fractionOfJourney = (arriveTime * (60f / bpm) + scoreManager.musicOffset - currentTime) / 0.5f;
             transform.position = Vector3.Lerp(targetPosition, startPosition, fractionOfJourney);
 
             if (fractionOfJourney < 0f)

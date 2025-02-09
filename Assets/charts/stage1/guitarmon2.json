@@ -1,6 +1,6 @@
 {
 	"bpm": 150,
-	"strikerType": 1
+	"strikerType": 1,
 	"direction": 2,
 	"appearTime": 100.0,
 	"disappearTime": 193.0,

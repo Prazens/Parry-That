@@ -25,30 +25,30 @@ public class StrikerManager : MonoBehaviour
         float currentTime = StageManager.Instance.currentTime;
         for (int i = 0; i < charts.Count; i++)
         {
-            if (currentTime >= charts[i].appearTime * (60f / charts[i].bpm) + playerManager.musicOffset)
+            if (currentTime >= charts[i].appearTime * (60f / charts[i].bpm) + playerManager.musicOffset &&
+                strikerStatus[i] == 0)
             {
-                if (strikerStatus[i] == 0)
-                {
-                    strikerStatus[i] = 1;
-                    Debug.Log($"SpawnStriker({i})");
-                    SpawnStriker(i);
-                }
-                else if (strikerStatus[i] == 1)
-                {
-                    // disappear
-                    strikerStatus[i] = 2;
-                }
+                strikerStatus[i] = 1;
+                Debug.Log($"SpawnStriker({i})");
+                SpawnStriker(i);
+            }
+            else if (currentTime >= charts[i].disappearTime * (60f / charts[i].bpm) + playerManager.musicOffset &&
+                     strikerStatus[i] == 1)
+            {
+                // disappear
+                strikerStatus[i] = 2;
             }
         }
     }
 
     public void InitStriker()
     {
+        strikerStatus.Clear();
         Debug.Log($"InitStriker {charts.Count}");
         for (int i = 0; i < charts.Count; i++)
         {
             strikerStatus.Add(0);
-            if (charts[i].disappearTime == 0)
+            if (charts[i].appearTime == 0)
             {
                 strikerStatus[i] = 1;
                 Debug.Log($"SpawnStriker({i})");

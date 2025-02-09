@@ -496,7 +496,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: a4d497a7a45300a4780e769fac2d3fc3, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 1ed0075ff4b452744b85edb6f34f1c90, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -1381,37 +1381,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1860902389}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1279664493
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1279664494}
-  m_Layer: 0
-  m_Name: SpawnPoint3
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1279664494
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1279664493}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1860902389}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1448434801
 GameObject:
   m_ObjectHideFlags: 0
@@ -1488,14 +1457,8 @@ MonoBehaviour:
   is_over: 0
   countdownText: {fileID: 2121608883}
   jsonCharts:
-  - {fileID: 4900000, guid: d1088ee9d87a41a47b40f17677faf660, type: 3}
-  - {fileID: 4900000, guid: 28028b87f9dfb3e41ab80efed0a295f4, type: 3}
-  - {fileID: 4900000, guid: 9b00e3037d593024bb2aa5ef2ca58bbb, type: 3}
-  - {fileID: 4900000, guid: 74d8ad3c9ccd2e1468e34633661ca9ef, type: 3}
-  - {fileID: 4900000, guid: d35b18e42bc5a1d479a174c882cc0f5e, type: 3}
-  - {fileID: 4900000, guid: 38eb27002b8c1fe4eb659889e545ce30, type: 3}
-  - {fileID: 4900000, guid: 6e0506a25f42f5449b72b644833da0c8, type: 3}
-  - {fileID: 4900000, guid: 3f03948d9a037ff4bb32bcca83864fbb, type: 3}
+  - {fileID: 4900000, guid: ef3367817cc0b7a44b72b2057b1506d6, type: 3}
+  - {fileID: 4900000, guid: 5d6f6020eca6741488dc12e670909fd8, type: 3}
   musicOffset: 2
   VictoryAnimatorObj: {fileID: 836491251}
   VictoryAudioSource: {fileID: 888203099}
@@ -1515,37 +1478,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1730753257
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1730753258}
-  m_Layer: 0
-  m_Name: SpawnPoint4
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1730753258
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1730753257}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1860902389}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1744429770
 GameObject:
@@ -1904,10 +1836,20 @@ MonoBehaviour:
   spawnPositions:
   - {fileID: 1172636502}
   - {fileID: 1448434802}
-  - {fileID: 1279664494}
-  - {fileID: 1730753258}
   uiManager: {fileID: 698621751}
-  charts: []
+  charts:
+  - bpm: 0
+    strikerType: 0
+    direction: 0
+    appearTime: 0
+    disappearTime: 0
+    notes: []
+  - bpm: 0
+    strikerType: 0
+    direction: 0
+    appearTime: 0
+    disappearTime: 0
+    notes: []
   strikerList: []
   strikerStatus: 
 --- !u!4 &1860902389
@@ -1925,8 +1867,6 @@ Transform:
   m_Children:
   - {fileID: 1172636502}
   - {fileID: 1448434802}
-  - {fileID: 1279664494}
-  - {fileID: 1730753258}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1875516760

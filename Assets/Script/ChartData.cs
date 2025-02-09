@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 [System.Serializable]
-public struct NoteData
+public class NoteData
 {
     public float time; // 발사 시간 (박자 단위)
     public float arriveTime; // 도착 시간 (박자 단위)
