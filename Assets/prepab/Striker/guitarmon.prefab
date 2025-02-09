@@ -231,6 +231,11 @@ MonoBehaviour:
   playerManager: {fileID: 0}
   uiManager: {fileID: 0}
   chartData:
+    bpm: 0
+    strikerType: 0
+    direction: 0
+    appearTime: 0
+    disappearTime: 0
     notes: []
   hp: 0
   bpm: 0

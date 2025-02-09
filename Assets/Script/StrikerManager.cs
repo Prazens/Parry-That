@@ -30,11 +30,12 @@ public class StrikerManager : MonoBehaviour
             {
                 strikerStatus[i] = 1;
                 Debug.Log($"SpawnStriker({i})");
-                SpawnStriker(i);
+                strikerList[i].SetActive(true);
             }
             else if (currentTime >= charts[i].disappearTime * (60f / charts[i].bpm) + playerManager.musicOffset &&
                      strikerStatus[i] == 1)
             {
+                Debug.Log($"beClearedStriker({i})");
                 strikerList[i].GetComponent<StrikerController>().beCleared();
                 strikerStatus[i] = 2;
             }
@@ -52,13 +53,17 @@ public class StrikerManager : MonoBehaviour
             {
                 strikerStatus[i] = 1;
                 Debug.Log($"SpawnStriker({i})");
-                SpawnStriker(i);
+                SpawnStriker(i, true);
+            }
+            else
+            {
+                SpawnStriker(i, false);
             }
         }
     }
 
     // Start is called before the first frame update
-    public void SpawnStriker(int chartIndex) // striker를 원하는 위치에 spawn, 현재 위쪽과 아래 쪽 두곳으로 spawnpoint 지정해놓음
+    private void SpawnStriker(int chartIndex, bool isActivated) // striker를 원하는 위치에 spawn, 현재 위쪽과 아래 쪽 두곳으로 spawnpoint 지정해놓음
     {
         int hp = charts[chartIndex].notes.Length;
         float bpm = charts[chartIndex].bpm;
@@ -91,7 +96,13 @@ public class StrikerManager : MonoBehaviour
         {
             Debug.LogError("Striker prefab is missing StrikerController!");
         }
+
+        if (!isActivated)
+        {
+            striker.SetActive(false);
+        }
     }
+
     public void ClearStrikers()
     {
         foreach (GameObject striker in strikerList)
