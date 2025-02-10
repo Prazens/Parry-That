@@ -62,7 +62,6 @@ public class DatabaseManager : MonoBehaviour
     public void LoadTutorialDone()
     {
         isTutorialDone = (PlayerPrefs.GetInt("TutorialDone") == 1);
-        isTutorialDone = true;  // 일단 튜토리얼 무시한 버전으로 설정
     }
 
 }

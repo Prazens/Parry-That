@@ -31,7 +31,7 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
     [SerializeField] private GameObject BlackOverlayObj;
     private Image BlackOverlay;
 
-    private string[] StageName = { "Beat Master", "Stage2", "Boss Stage", "Stage4" };
+    private string[] StageName = { "The First Beat", "Echoing Strikes", "Beat Master", "Final Encore/BOSS" };
 
     void Start()
     {

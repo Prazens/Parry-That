@@ -132,7 +132,7 @@ public class Stage1CutScene : MonoBehaviour
                 StartCoroutine(FadeOutPanelImage(cutscenePanels[0]));
                 StartCoroutine(FadeOutPanelImage(cutscenePanels[1]));
                 StartCoroutine(FadeOutPanelImage(cutscenePanels[2]));
-                yield return new WaitForSecondsRealtime(fadeDuration);
+                yield return new WaitForSeconds(fadeDuration);
                 StartCoroutine(FadeInPanelImage(cutscenePanels[3]));
                 StartCoroutine(ShowPrologueText(TextSet[3]));
                 currentCutsceneIndex++;
@@ -145,7 +145,7 @@ public class Stage1CutScene : MonoBehaviour
             case 4:
                 StartCoroutine(FadeOutPanelImage(cutscenePanels[3]));
                 StartCoroutine(FadeOutPanelImage(cutscenePanels[4]));
-                yield return new WaitForSecondsRealtime(fadeDuration);
+                yield return new WaitForSeconds(fadeDuration);
                 StartCoroutine(FadeInPanelImage(cutscenePanels[5]));
                 StartCoroutine(ShowPrologueText(TextSet[5]));
                 currentCutsceneIndex++;
@@ -164,7 +164,7 @@ public class Stage1CutScene : MonoBehaviour
                 StartCoroutine(FadeOutPanelImage(cutscenePanels[5]));
                 StartCoroutine(FadeOutPanelImage(cutscenePanels[6]));
                 StartCoroutine(FadeOutPanelImage(cutscenePanels[7]));
-                yield return new WaitForSecondsRealtime(fadeDuration);
+                yield return new WaitForSeconds(fadeDuration);
                 StartCoroutine(FadeInPanelImage(cutscenePanels[8]));
                 StartCoroutine(ShowPrologueText(TextSet[8]));
                 currentCutsceneIndex++;
@@ -182,9 +182,10 @@ public class Stage1CutScene : MonoBehaviour
                 StartCoroutine(ShowPrologueText(TextSet[10]));
                 currentCutsceneIndex++;
                 yield break;
-            case 11:
+            case 10:
                 StartCoroutine(FadeOutPanelImage(cutscenePanels[10]));
                 // 컷씬 끝
+                EndScene();
                 yield break;
         }
 
@@ -203,8 +204,11 @@ public class Stage1CutScene : MonoBehaviour
             isTransitioning = false;
             yield break;
         }
-
+        // 초기 알파값을 0으로 강제 설정
         Color color = panelImg.color;
+        color.a = 0f;
+        panelImg.color = color;
+
         float startAlpha = color.a;
         float endAlpha = 1f;
 
@@ -290,8 +294,12 @@ public class Stage1CutScene : MonoBehaviour
 
             yield return new WaitForSeconds(0.05f);
         }
-        if (currentCutsceneIndex == 1) PrologueText.text = TextSet[0] + TextSet[1];
-        else PrologueText.text = Text;
+        
         isTyping = false;
+    }
+    public void EndScene()
+    {
+        Debug.LogError("엔딩 함수");
+        SceneManager.LoadScene("Stage1");
     }
 }
