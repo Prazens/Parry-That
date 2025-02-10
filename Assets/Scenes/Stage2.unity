@@ -1909,6 +1909,7 @@ MonoBehaviour:
   - {fileID: 1730753258}
   uiManager: {fileID: 698621751}
   charts: []
+  holdExclamationPrefab: {fileID: 2570531951866361977, guid: 9255d8ba8e6bdf14183e532a558b85b3, type: 3}
   strikerList: []
   strikerStatus: 
 --- !u!4 &1860902389

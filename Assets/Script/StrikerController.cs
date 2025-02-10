@@ -36,6 +36,7 @@ public class StrikerController : MonoBehaviour
     [SerializeField] private List<Sprite> exclamationSprites = new List<Sprite>(); 
     private Transform exclamationParent; // 느낌표 표시 위치
     private List<GameObject> prepareExclamation = new List<GameObject>(); // 느낌표 오브젝트 저장
+    public GameObject holdExclamation; // 홀드 느낌표
 
     //준비 효과음
     [SerializeField] private AudioSource audioSource;
@@ -44,6 +45,10 @@ public class StrikerController : MonoBehaviour
     //패링 효과음
     [SerializeField] private AudioClip parrySoundNormal;  // 일반 공격 준비 효과음 (type 0)
     [SerializeField] private AudioClip parrySoundStrong;  // 강한 공격 준비 효과음 (type 1)
+    //패링 효과음
+    [SerializeField] private AudioClip holdingSound;  // 홀드 중
+    [SerializeField] private AudioClip holdingEnd;  // 홀드 끝
+
     // 근접 공격 관련 변수
     private Vector3 originalPosition;
     private Vector3 targetPosition;
@@ -169,6 +174,8 @@ public class StrikerController : MonoBehaviour
         Debug.Log($"ActMeleeHoldStart {judgeableQueue.Peek().arriveBeat} {bpm} {StageManager.Instance.currentTime}");
         bladeAnimator.SetTrigger("bladePlay");
 
+        audioSource.PlayOneShot(holdingSound);
+
         uiManager.CutInDisplay(judgeableQueue.Peek().arriveBeat * (60f / bpm) - StageManager.Instance.currentTime + playerManager.musicOffset);
 
         // StartCoroutine(MeleeHoldStartAnim());
@@ -181,8 +188,13 @@ public class StrikerController : MonoBehaviour
         animator.SetBool("isAttacking", false);
         bladeAnimator.SetTrigger("bladeHoldFinish");
         
+        audioSource.Stop();
+        audioSource.PlayOneShot(holdingEnd);
+        
         transform.GetChild(0).transform.localPosition = Vector3.zero;
         isHolding = false;
+
+        holdExclamation.GetComponent<holdExclamation>().ForceStop();
 
         // 미스났는데도 느낌표 남아있는 거 방지
         while (prepareExclamation.Count > 0)
@@ -397,6 +409,15 @@ public class StrikerController : MonoBehaviour
         }
         int count = prepareQueue.Count; // 현재 준비된 공격 개수
         prepareExclamation.Clear();
+
+        if (type == 2)
+        {
+            holdExclamation.GetComponent<holdExclamation>().Appear(bpm, 1);
+        }
+        else if (type == 3)
+        {
+            holdExclamation.GetComponent<holdExclamation>().Disappear(bpm, 1);
+        }
 
         List<Tuple<float, int>> tempList = new List<Tuple<float, int>>(prepareQueue); // 현재 큐를 리스트로 변환 (순서 유지)
 
