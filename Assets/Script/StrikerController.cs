@@ -45,6 +45,10 @@ public class StrikerController : MonoBehaviour
     //패링 효과음
     [SerializeField] private AudioClip parrySoundNormal;  // 일반 공격 준비 효과음 (type 0)
     [SerializeField] private AudioClip parrySoundStrong;  // 강한 공격 준비 효과음 (type 1)
+    //패링 효과음
+    [SerializeField] private AudioClip holdingSound;  // 홀드 중
+    [SerializeField] private AudioClip holdingEnd;  // 홀드 끝
+
     // 근접 공격 관련 변수
     private Vector3 originalPosition;
     private Vector3 targetPosition;
@@ -170,6 +174,8 @@ public class StrikerController : MonoBehaviour
         Debug.Log($"ActMeleeHoldStart {judgeableQueue.Peek().arriveBeat} {bpm} {StageManager.Instance.currentTime}");
         bladeAnimator.SetTrigger("bladePlay");
 
+        audioSource.PlayOneShot(holdingSound);
+
         uiManager.CutInDisplay(judgeableQueue.Peek().arriveBeat * (60f / bpm) - StageManager.Instance.currentTime + playerManager.musicOffset);
 
         // StartCoroutine(MeleeHoldStartAnim());
@@ -181,6 +187,9 @@ public class StrikerController : MonoBehaviour
         Debug.Log("ActMeleeHoldFinish");
         animator.SetBool("isAttacking", false);
         bladeAnimator.SetTrigger("bladeHoldFinish");
+        
+        audioSource.Stop();
+        audioSource.PlayOneShot(holdingEnd);
         
         transform.GetChild(0).transform.localPosition = Vector3.zero;
         isHolding = false;
