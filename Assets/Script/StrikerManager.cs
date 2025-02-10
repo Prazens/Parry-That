@@ -42,22 +42,46 @@ public class StrikerManager : MonoBehaviour
         }
     }
 
-    public void InitStriker()
+    public void InitStriker(int idx)
     {
-        strikerStatus.Clear();
-        Debug.Log($"InitStriker {charts.Count}");
-        for (int i = 0; i < charts.Count; i++)
+        if (TutorialManager.isTutorial)
         {
-            strikerStatus.Add(0);
-            if (charts[i].appearTime == 0)
+            int[] StrikerNum = { 0, 1, 2, 3, 7, 11, 13 };    // 각 패턴에 나오는 스크라이커 시작 인덱스 // 총 12개
+            strikerStatus.Clear();
+            Debug.Log($"InitStriker {charts.Count}");
+            // 차트 패턴 나오는 순서 맞춰서 넣어야함
+            for (int i = StrikerNum[idx]; i < StrikerNum[idx + 1]; i++)
             {
-                strikerStatus[i] = 1;
-                Debug.Log($"SpawnStriker({i})");
-                SpawnStriker(i, true);
+                strikerStatus.Add(0);
+                if (charts[i].appearTime == 0)
+                {
+                    strikerStatus[i] = 1;
+                    Debug.Log($"SpawnStriker({i})");
+                    SpawnStriker(i, true);
+                }
+                else
+                {
+                    SpawnStriker(i, false);
+                }
             }
-            else
+        }
+        else
+        {
+            strikerStatus.Clear();
+            Debug.Log($"InitStriker {charts.Count}");
+            for (int i = 0; i < charts.Count; i++)
             {
-                SpawnStriker(i, false);
+                strikerStatus.Add(0);
+                if (charts[i].appearTime == 0)
+                {
+                    strikerStatus[i] = 1;
+                    Debug.Log($"SpawnStriker({i})");
+                    SpawnStriker(i, true);
+                }
+                else
+                {
+                    SpawnStriker(i, false);
+                }
             }
         }
     }

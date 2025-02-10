@@ -27,8 +27,8 @@ public class StrikerController : MonoBehaviour
     private Queue<Tuple<float, int>> prepareQueue = new Queue<Tuple<float, int>>(); // (arriveTime, type) 저장
 
     public GameObject hpBarPrefab;
-    private GameObject hpBar;
-    private Transform hpControl;
+    public GameObject hpBar;
+    public Transform hpControl;
 
     //투사체 발사 시의 !관련
     [SerializeField] private GameObject exclamationPrefab; // 공통 느낌표 프리팹

@@ -318,10 +318,11 @@ public class ScoreManager : MonoBehaviour
                 combo = 0;
 
                 // 피격당한 후 죽었을 때
-                if (--playerManager.hp == 0)
+                if (--playerManager.hp == 0 && !TutorialManager.isTutorial)
                 {
                     scoreUI.HideAll();
                     playerManager.GameOver();
+                    Debug.LogError("abc");
                 }
                 // 피격당한 후 죽지 않았을 때
                 else
