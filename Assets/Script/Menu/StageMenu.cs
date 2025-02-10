@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,7 +14,7 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
     [SerializeField] private GameObject[] Stars;
 
     private float elapsedTime = 0f;
-    // ½ºÅ×ÀÌÁö Á¡¼ö
+    // ìŠ¤í…Œì´ì§€ ì ìˆ˜
     DatabaseManager theDatabase;
     [SerializeField] TextMeshProUGUI txtStageName;
     [SerializeField] TextMeshProUGUI txtStageScore;
@@ -60,7 +60,7 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
         Color originalOverlayColor = BlackOverlay.color;
         BlackOverlay.color = new Color (originalOverlayColor.r, originalOverlayColor.g, originalOverlayColor.b, 0f);
 
-        // ½ºÅ×ÀÌÁö¿¡¼­ ³ª¿ÔÀ» ¶§ ÇöÀç ÀÎµ¦½º¸¦ ±× ½ºÅ×ÀÌÁö·Î ¼³Á¤
+        // ìŠ¤í…Œì´ì§€ì—ì„œ ë‚˜ì™”ì„ ë•Œ í˜„ì¬ ì¸ë±ìŠ¤ë¥¼ ê·¸ ìŠ¤í…Œì´ì§€ë¡œ ì„¤ì •
         currentIndex = SceneLinkage.StageLV == 0 ? 0 : SceneLinkage.StageLV - 1;
     }
 
@@ -69,10 +69,10 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
     {
         if (TitleMenu.SwordUpEnd)
         {
-            // CD È¸Àü
+            // CD íšŒì „
             StageImgSet[currentIndex].rectTransform.Rotate(0, 0, 1.7f * Time.deltaTime);  
 
-            // Ä® µÕµÕ ¶°´Ù´Ï´Â ´À³¦
+            // ì¹¼ ë‘¥ë‘¥ ë– ë‹¤ë‹ˆëŠ” ëŠë‚Œ
             elapsedTime += Time.deltaTime;
             float newY = Sword.rectTransform.anchoredPosition.y + Mathf.Sin(elapsedTime) * 0.05f;
             Sword.rectTransform.anchoredPosition = new Vector2(Sword.rectTransform.anchoredPosition.x, newY);
@@ -90,7 +90,7 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
                 idleTime += Time.deltaTime;
             }
 
-            if (idleTime >= 5f) // 5ÃÊ ÀÌ»ó ÀÔ·Â ¾øÀ¸¸é È°¼ºÈ­
+            if (idleTime >= 5f) // 5ì´ˆ ì´ìƒ ì…ë ¥ ì—†ìœ¼ë©´ í™œì„±í™”
             {
                 StageMenuTextObj.SetActive(true);
                 EnableStageMenuText = false;
@@ -101,8 +101,8 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
         {
             if (isFadingIn)
             {
-                // Ã³À½ ÆäÀÌµå ÀÎ (0 ¡æ 1)
-                fadeInTimer += Time.deltaTime / 2f; // 2ÃÊ µ¿¾È ÆäÀÌµå ÀÎ
+                // ì²˜ìŒ í˜ì´ë“œ ì¸ (0 â†’ 1)
+                fadeInTimer += Time.deltaTime / 2f; // 2ì´ˆ ë™ì•ˆ í˜ì´ë“œ ì¸
                 float alpha = Mathf.Clamp01(fadeInTimer);
                 StageMenuText.color = new Color(StageMenuText_originalColor.r, StageMenuText_originalColor.g, StageMenuText_originalColor.b, alpha);
 
@@ -121,7 +121,7 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
         }
 
 
-        // ÀÓ½Ã·Î update¿¡ ±¸Çö
+        // ì„ì‹œë¡œ updateì— êµ¬í˜„
         txtStageScore.text = string.Format("{0:#,##0}", theDatabase.score[currentIndex + 1]);
         txtStageName.text = StageName[currentIndex];
         switch (theDatabase.star[currentIndex + 1])
@@ -151,7 +151,7 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
                 Stars[3].SetActive(true);
                 break;
             default:
-                Debug.Log("Àß¸øµÈ µ¥ÀÌÅÍº£ÀÌ½º Á¤º¸(Star)");
+                Debug.Log("ì˜ëª»ëœ ë°ì´í„°ë² ì´ìŠ¤ ì •ë³´(Star)");
                 break;
         }
     }
@@ -168,7 +168,7 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
         Vector2 startPosition = Sword.rectTransform.anchoredPosition;
         Vector2 targetPosition = new Vector2(startPosition.x, canvasRect.rect.height * 1.5f);
         float elapsedTime = 0f;
-        float duration = 1f; // ¾Ö´Ï¸ŞÀÌ¼Ç Áö¼Ó ½Ã°£
+        float duration = 1f; // ì• ë‹ˆë©”ì´ì…˜ ì§€ì† ì‹œê°„
 
         while (elapsedTime < duration)
         {
@@ -180,28 +180,28 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
             float overlayAlpha = (t > 0.8f) ? 1f : Mathf.Clamp01(t * 1.3f);
             BlackOverlay.color = new Color(0f, 0f, 0f, overlayAlpha);
 
-            yield return null; // ´ÙÀ½ ÇÁ·¹ÀÓ±îÁö ´ë±â
+            yield return null; // ë‹¤ìŒ í”„ë ˆì„ê¹Œì§€ ëŒ€ê¸°
         }
 
         SceneLinkage.StageLV = currentIndex + 1;
         SceneManager.LoadScene("Loading");
     }
 
-    // ¿©±â¼­ºÎÅÍ ÁÂ¿ì ½º¿ÍÀÌÇÁ °ü·Ã ÄÚµå
+    // ì—¬ê¸°ì„œë¶€í„° ì¢Œìš° ìŠ¤ì™€ì´í”„ ê´€ë ¨ ì½”ë“œ
     [Header("Stage Objects")]
-    public List<RectTransform> stageObjects;  
+    public List<RectTransform> stageObjects;
     public static int currentIndex = 0;
 
     public float threshold = 270f;
-    private float swipeSpeed = 0.5f;   // °¨µµ
-    private float transitionTime = 0.3f; // ¾Ö´Ï¸ŞÀÌ¼Ç ½Ã°£
+    private float swipeSpeed = 0.7f;   // ê°ë„
+    private float transitionTime = 0.3f; // ì• ë‹ˆë©”ì´ì…˜ ì‹œê°„
 
     private float screenWidth;
     private bool isDragging = false;
 
-    private float minScale = 0.8f;            // ¾ç¿·ÀÏ ¶§ ÃÖ¼Ò ½ºÄÉÀÏ
-    private float maxScale = 1.0f;            // Áß¾ÓÀÏ ¶§ ÃÖ´ë ½ºÄÉÀÏ
-    private float distanceToFullDark = 600f;  // Áß¾Ó¿¡¼­ ÀÌ¸¸Å­ ¶³¾îÁö¸é ¾îµÓ°Ô
+    private float minScale = 0.8f;            // ì–‘ì˜†ì¼ ë•Œ ìµœì†Œ ìŠ¤ì¼€ì¼
+    private float maxScale = 1.0f;            // ì¤‘ì•™ì¼ ë•Œ ìµœëŒ€ ìŠ¤ì¼€ì¼
+    private float distanceToFullDark = 600f;  // ì¤‘ì•™ì—ì„œ ì´ë§Œí¼ ë–¨ì–´ì§€ë©´ ì–´ë‘¡ê²Œ
     private Color darkColor = new Color(1f, 1f, 1f, 0.5f);
     private Color brightColor = new Color(1f, 1f, 1f, 1f);
 
@@ -209,13 +209,13 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
     {
         screenWidth = Screen.width;
 
-        // ¸ğµç ¿ÀºêÁ§Æ®¸¦ "ÇöÀç ÀÎµ¦½º" ±âÁØÀ¸·Î ÀÚ¸® ¹èÄ¡
+        // ëª¨ë“  ì˜¤ë¸Œì íŠ¸ë¥¼ "í˜„ì¬ ì¸ë±ìŠ¤" ê¸°ì¤€ìœ¼ë¡œ ìë¦¬ ë°°ì¹˜
         UpdateStagePositions();
 
-        // Å©±â/»ö»ó º¸Á¤
+        // í¬ê¸°/ìƒ‰ìƒ ë³´ì •
         UpdateScaleAndColor();
 
-        // "ÇöÀç, ¾ç¿·"¸¸ ÄÑ°í, ³ª¸ÓÁö ²û, ¾ø¾îµµ µÇ´Â ÇÔ¼ö
+        // "í˜„ì¬, ì–‘ì˜†"ë§Œ ì¼œê³ , ë‚˜ë¨¸ì§€ ë”, ì—†ì–´ë„ ë˜ëŠ” í•¨ìˆ˜
         ActivateOnlyRelevantObjects();
     }
 
@@ -254,10 +254,10 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
         isDragging = false;
 
         float centerX = stageObjects[currentIndex].anchoredPosition.x;
-
-        if (Mathf.Abs(centerX) > threshold)
+        float effectiveThreshold = screenWidth * 0.25f; 
+        if (Mathf.Abs(centerX) > effectiveThreshold) 
         {
-            // ¿ŞÂÊ ½º¿ÍÀÌÇÁ(centerX < 0) ¡æ currentIndex + 1
+            // ì™¼ìª½ ìŠ¤ì™€ì´í”„(centerX < 0) â†’ currentIndex + 1
             if (centerX < 0)
             {
                 if (currentIndex < stageObjects.Count - 1)
@@ -265,7 +265,7 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
                     currentIndex++;
                 }
             }
-            // ¿À¸¥ÂÊ ½º¿ÍÀÌÇÁ(centerX > 0) ¡æ currentIndex - 1
+            // ì˜¤ë¥¸ìª½ ìŠ¤ì™€ì´í”„(centerX > 0) â†’ currentIndex - 1
             else
             {
                 if (currentIndex > 0)
@@ -275,10 +275,11 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
             }
         }
 
-        // À§Ä¡ º¸Á¤(ÄÚ·çÆ¾)
+        // ìœ„ì¹˜ ë³´ì •(ì½”ë£¨í‹´)
         StopAllCoroutines();
         StartCoroutine(SmoothMove());
     }
+
 
     private IEnumerator SmoothMove()
     {
@@ -337,19 +338,19 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
             }
             else if (diff == 1)
             {
-                pos = new Vector2(screenWidth, 0);
+                pos = new Vector2(screenWidth * 0.5f, 0); 
             }
             else if (diff == -1)
             {
-                pos = new Vector2(-screenWidth, 0);
+                pos = new Vector2(-screenWidth * 0.5f, 0);
             }
             else if (diff > 1)
             {
-                pos = new Vector2(screenWidth * 2, 0);
+                pos = new Vector2(screenWidth * 0.5f * diff, 0);
             }
             else
             {
-                pos = new Vector2(-screenWidth * 2, 0);
+                pos = new Vector2(-screenWidth * 0.5f * Mathf.Abs(diff), 0);
             }
 
             result[i] = pos;
@@ -357,6 +358,7 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
 
         return result;
     }
+
 
     private void UpdateScaleAndColor()
     {
@@ -368,11 +370,11 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
             float dist = Mathf.Abs(stageObjects[i].anchoredPosition.x);
             float factor = Mathf.Clamp01(dist / distanceToFullDark);
 
-            // ½ºÄÉÀÏ º¸°£
+            // ìŠ¤ì¼€ì¼ ë³´ê°„
             float scaleVal = Mathf.Lerp(maxScale, minScale, factor);
             stageObjects[i].localScale = new Vector3(scaleVal, scaleVal, 1f);
 
-            // ÄÃ·¯ º¸°£ 
+            // ì»¬ëŸ¬ ë³´ê°„ 
             Image img = stageObjects[i].GetComponent<Image>();
             if (img)
             {
@@ -380,7 +382,6 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
             }
         }
     }
-
 
     private void UpdateStagePositions()
     {
@@ -390,5 +391,6 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
             stageObjects[kv.Key].anchoredPosition = kv.Value;
         }
     }
+
 
 }
