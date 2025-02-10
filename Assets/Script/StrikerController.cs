@@ -36,6 +36,7 @@ public class StrikerController : MonoBehaviour
     [SerializeField] private List<Sprite> exclamationSprites = new List<Sprite>(); 
     private Transform exclamationParent; // 느낌표 표시 위치
     private List<GameObject> prepareExclamation = new List<GameObject>(); // 느낌표 오브젝트 저장
+    public GameObject holdExclamation; // 홀드 느낌표
 
     //준비 효과음
     [SerializeField] private AudioSource audioSource;
@@ -183,6 +184,8 @@ public class StrikerController : MonoBehaviour
         
         transform.GetChild(0).transform.localPosition = Vector3.zero;
         isHolding = false;
+
+        holdExclamation.GetComponent<holdExclamation>().ForceStop();
 
         // 미스났는데도 느낌표 남아있는 거 방지
         while (prepareExclamation.Count > 0)
@@ -397,6 +400,17 @@ public class StrikerController : MonoBehaviour
         }
         int count = prepareQueue.Count; // 현재 준비된 공격 개수
         prepareExclamation.Clear();
+
+        if (type == 2)
+        {
+            holdExclamation.GetComponent<holdExclamation>().Appear(bpm, 1);
+            return;
+        }
+        else if (type == 3)
+        {
+            holdExclamation.GetComponent<holdExclamation>().Disappear(bpm, 1);
+            return;
+        }
 
         List<Tuple<float, int>> tempList = new List<Tuple<float, int>>(prepareQueue); // 현재 큐를 리스트로 변환 (순서 유지)
 

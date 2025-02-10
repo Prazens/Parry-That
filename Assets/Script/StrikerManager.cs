@@ -10,6 +10,9 @@ public class StrikerManager : MonoBehaviour
     [SerializeField] private UIManager uiManager;
     public List<ChartData> charts; // 각 스트라이커의 채보 데이터
 
+    [SerializeField] private GameObject holdExclamationPrefab; // 홀드 느낌표 프리팹
+    private GameObject holdExclamation; // 홀드 느낌표
+
     // 스트라이커 저장해놓을 공간
     public List<GameObject> strikerList = new List<GameObject>();
     public List<int> strikerStatus = new List<int>();
@@ -44,6 +47,13 @@ public class StrikerManager : MonoBehaviour
 
     public void InitStriker()
     {
+        if (holdExclamation != null)
+        {
+            Destroy(holdExclamation);
+        }
+        holdExclamation = Instantiate(holdExclamationPrefab);
+        holdExclamation.GetComponent<holdExclamation>().audioSource = GameObject.Find("Audio Source").GetComponent<AudioSource>();
+
         strikerStatus.Clear();
         Debug.Log($"InitStriker {charts.Count}");
         for (int i = 0; i < charts.Count; i++)
@@ -87,6 +97,7 @@ public class StrikerManager : MonoBehaviour
         // 스트라이커 초기화
         StrikerController strikerController = striker.GetComponent<StrikerController>();
         strikerController.uiManager = uiManager;
+        strikerController.holdExclamation = holdExclamation;
         
         if (strikerController != null)
         {

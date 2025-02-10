@@ -189,7 +189,7 @@ public class UIManager : MonoBehaviour
             }
 
             float t = elapsedTime / duration;
-            t = Mathf.Sqrt(Mathf.Sqrt(t)); // Ease out 적용 (t^4)
+            t = Mathf.Sqrt(Mathf.Sqrt(Mathf.Sqrt(t))); // Ease out 적용 (t^-6)
 
             // 위치 이동 (Ease In)
             switch (direction)
