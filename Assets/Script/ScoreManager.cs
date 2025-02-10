@@ -321,6 +321,7 @@ public class ScoreManager : MonoBehaviour
                 if (--playerManager.hp == 0)
                 {
                     scoreUI.HideAll();
+                    playerManager.PlayerHitSound();
                     playerManager.GameOver();
                 }
                 // 피격당한 후 죽지 않았을 때
