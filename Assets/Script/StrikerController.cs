@@ -413,12 +413,10 @@ public class StrikerController : MonoBehaviour
         if (type == 2)
         {
             holdExclamation.GetComponent<holdExclamation>().Appear(bpm, 1);
-            return;
         }
         else if (type == 3)
         {
             holdExclamation.GetComponent<holdExclamation>().Disappear(bpm, 1);
-            return;
         }
 
         List<Tuple<float, int>> tempList = new List<Tuple<float, int>>(prepareQueue); // 현재 큐를 리스트로 변환 (순서 유지)
