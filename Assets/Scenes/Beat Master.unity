@@ -1513,7 +1513,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stageManager: {fileID: 1448475905}
   swipeThreshold: 50
-  isTouchAvailable: 0
+  isTouchAvailable: 1
 --- !u!4 &1744429772
 Transform:
   m_ObjectHideFlags: 0
@@ -1565,7 +1565,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scoreManager: {fileID: 1744429773}
   playerManager: {fileID: 0}
-  isTouchAvailable: 0
+  isTouchAvailable: 1
 --- !u!114 &1744429775
 MonoBehaviour:
   m_ObjectHideFlags: 0
