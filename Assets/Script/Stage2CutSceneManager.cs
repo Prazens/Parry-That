@@ -1,29 +1,30 @@
-ï»¿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-public class Stage1CutScene : MonoBehaviour
+
+public class Stage2CutSceneManager : MonoBehaviour
 {
     [SerializeField] private Image fadeImg;
-    private float fadeDuration = 0.3f; // í˜ì´ë“œ ì‹œê°„
-    [SerializeField] private GameObject[] cutscenePanels; // ì»·ì”¬ 
+    private float fadeDuration = 0.3f; // ÆäÀÌµå ½Ã°£
+    [SerializeField] private GameObject[] cutscenePanels; // ÄÆ¾À 
     private int currentCutsceneIndex = 0;
-    [SerializeField] private Animator cutsceneAnimator; // ì•ŒëŒ ì• ë‹ˆë©”ì´ì…˜
+    [SerializeField] private Animator cutsceneAnimator; // ¾Ë¶÷ ¾Ö´Ï¸ŞÀÌ¼Ç
     [SerializeField] private Canvas mainCanvas;
     [SerializeField] private Font PrologueFont;
 
-    private bool isTransitioning = false;  // í˜„ì¬ í˜ì´ë“œ(ê²€ì€ ë°°ê²½) ì§„í–‰ ì¤‘ì¸ì§€ ì—¬ë¶€
-    private bool isAnimationPlaying = false; // ì• ë‹ˆë©”ì´ì…˜ì´ ì¬ìƒ ì¤‘ì¸ì§€ ì—¬ë¶€
+    private bool isTransitioning = false;  // ÇöÀç ÆäÀÌµå(°ËÀº ¹è°æ) ÁøÇà ÁßÀÎÁö ¿©ºÎ
+    private bool isAnimationPlaying = false; // ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ Àç»ı ÁßÀÎÁö ¿©ºÎ
     private bool isTyping = false;
-    private Coroutine fadeCoroutine = null;  // í˜ì´ë“œ ì½”ë£¨í‹´ ì°¸ì¡°
+    private Coroutine fadeCoroutine = null;  // ÆäÀÌµå ÄÚ·çÆ¾ ÂüÁ¶
 
     private SpriteRenderer sourceSpriteRenderer;
     private Image sourceImage;
     private AudioSource TypingSound;
 
-    string[] TextSet = new string[11];
+    string[] TextSet = new string[12];
     GameObject PrologueTextObj;
     Text PrologueText;
 
@@ -31,21 +32,21 @@ public class Stage1CutScene : MonoBehaviour
 
     private void Start()
     {
-        // í…ìŠ¤íŠ¸ ë‚´ìš©
-        TextSet[0] = "    ";
-        TextSet[1] = "    ";
-        TextSet[2] = "ë¼ì•¼ì˜¤!! ì •ë§ ì˜í•˜ì…¨ìŠµë‹ˆë‹¤!! ì œê°€ ì‚¬ëŒ ë³´ëŠ” ëˆˆì´ ì°¸ìœ¼ë¡œ ì¢‹ì•˜ë˜ ëª¨ì–‘ì…ë‹ˆë‹¤!";
-        TextSet[3] = "ë“£ê³  ê³„ì‹ ê°€ìš”?";
-        TextSet[4] = "ì™€! ê³ ì–‘ì´ë“¤ì´ë‹¤!!! ì–˜ë„¤ ì§„ì§œ ê·€ì—½ë‹¤!";
-        TextSet[5] = "ìš©ì‚¬ë‹˜. ê³ ì–‘ì´ ë†ˆë“¤ì€ í–„ìŠ¤í„°ì˜ ì²œì ì¸ë°..";
-        TextSet[6] = "ë‚´ê°€ ë§ˆì™•ì´ë©´ ì´ ê·€ì—¬ìš´ ì• ë“¤ì„ ê·¸ë ‡ê²Œ ì„±ì˜ì—†ëŠ” ë””ìì¸ìœ¼ë¡œ ë°”ê¾¸ì§„ ì•Šì•˜ì„ ê±°ì•¼. ì´ê²ƒ ë´. ê·€ì—¬ì›Œì„œ ë•Œë¦´ ìˆ˜ê°€ ì—†ì–ì•„!";
-        TextSet[7] = "ìš©ì‚¬ë‹˜!!! ë§ˆì™• ì…ì¥ì´ ë˜ì–´ ë³´ë ¤ í•˜ì§€ ë§ˆì‹­ì‹œì˜¤! ë‹¹ì‹ ì˜ ì‹œí—˜ì„ ë§ì¹œ ë†ˆì…ë‹ˆë‹¤!!!";
-        TextSet[8] = "ì‹œí—˜ì´ì•¼ ë­, ê³µë¶€ë„ ì•ˆ í–ˆì—ˆê³ ... ëŠ¦ì  ì” ê²Œ í•œë‘ ë²ˆë„ ì•„ë‹ˆê³ ...";
-        TextSet[9] = "ê·¸ë†ˆì´ ê³ ì–‘ì´ë“¤ì„ ì˜ì›íˆ ë„¤ëª¨ë¨¸ë¦¬ë¡œ ë°”ê¿” ë†“ì„ ê²ë‹ˆë‹¤!!!!";
-        TextSet[10] = "ë§ˆì™• ì£½ì´ëŸ¬ ê°€ì!!!!!";
+        // ÅØ½ºÆ® ³»¿ë
+        TextSet[0] = "Á¦ ±â¾ïÀÌ ¸Â´Ù¸é ¿©±â°¡ ¸¶¿ÕÀÇ ±Ù°ÅÁöÀÔ´Ï´Ù!";
+        TextSet[1] = "¹ú½á ¿Ô´Ù°í? ¸¶¿ÕÄ¡°í ³Ê¹« Çã¼úÇÑ °Å ¾Æ³Ä?\n\n¸¶¿ÕÀÌ ÇÁ·ÎÁ§Æ®¸¦ ¾ÆÁÖ ÃË¹ÚÇÏ°Ô ÁøÇàÇØ¼­ ±×·¸½À´Ï´Ù. ÇÑ ´ŞÀÌ Á¶±İ ³Ñ¾ú³ª?\r\n";
+        TextSet[2] = "³ª¿Í¶ó ¸¶¿Õ!";
+        TextSet[3] = "..¹¹¾ß. ¿Ö ³Ê³×µé¹Û¿¡ ¾ø¾î?";
+        TextSet[4] = "¸¶¿Õ´ÔÀº ¿ì¸®¸¦ ¹ö¸®°í ÇÇ³­ °¡¼Ì´Ù!!!!!";
+        TextSet[5] = "¾ÈÀüÇÑ °÷¿¡¼­ ´õ¿í ¿Ïº®ÇÑ °èÈ¹À» ¼¼¿ì°í °è½Å´Ù!!!!!";
+        TextSet[6] = "¾Æ¹«·¡µµ ¸¶¿ÕÀÌ ¾ê³×¸¦ ¹æÆĞ·Î µÎ°í µµ¸Á°¬³ª º¾´Ï´Ù. ¾îÂ¾Áö ½±°Ô ³¡³­´Ù Çß¾î.";
+        TextSet[7] = "ÀÚÀÚ, ³×¸ğ¸Ó¸® ¿©·¯ºĞ! ³­ ¿©·¯ºĞÀ» ÇØÄ¡·¯ ¿Â °Ô ¾Æ´Õ´Ï´Ù! º»·¡ÀÇ ±Í¿©¿î ¸ğ½ÀÀ¸·Î µ¹·Á µå¸±°Ô¿ä!";
+        TextSet[8] = "Â§! ¹Ù·Î ÀÌ·± °í¾çÀÌ°¡ ´ç½ÅµéÀÇ º»·¡...\n........";
+        TextSet[9] = "......";
+        TextSet[10] = "Àú³ğµéÀÌ ¿ì¸®¸¦ ÇØÄ¡·¯ ¿Ô´Ù!!!!!!!";
+        TextSet[11] = "....ÀÌ·±.";
 
-
-        // ì”¬ ìœ„ì¹˜ ì¡°ì •
+        // ¾À À§Ä¡ Á¶Á¤
         //CutScenes = GameObject.Find("CutScenes");
         //RectTransform rt = CutScenes.GetComponent<RectTransform>();
         //rt.anchorMin = new Vector2(0.5f, 1f);
@@ -63,7 +64,7 @@ public class Stage1CutScene : MonoBehaviour
         //rt_S2.sizeDelta = new Vector2(Screen.width * 0.8f, Screen.width * 0.8f * 0.686f);
         //rt_S2.anchoredPosition = new Vector2(0, -Screen.width * 0.2f);
 
-        // í…ìŠ¤íŠ¸ì°½ ìƒì„±
+        // ÅØ½ºÆ®Ã¢ »ı¼º
         PrologueTextObj = new GameObject("PrologueText");
         PrologueTextObj.transform.SetParent(mainCanvas.transform, false);
         PrologueText = PrologueTextObj.AddComponent<Text>();
@@ -79,7 +80,7 @@ public class Stage1CutScene : MonoBehaviour
         PrologueText.text = "";
         PrologueTextObj.SetActive(true);
 
-        // ì»´í¬ë„ŒíŠ¸ ê°€ì ¸ì˜¤ê¸°
+        // ÄÄÆ÷³ÍÆ® °¡Á®¿À±â
         TypingSound = GetComponent<AudioSource>();
 
         for (int i = 0; i < cutscenePanels.Length; i++)
@@ -87,23 +88,23 @@ public class Stage1CutScene : MonoBehaviour
             cutscenePanels[i].SetActive(false);
         }
 
-        // ì²˜ìŒ í˜ì´ë“œì¸
+        // Ã³À½ ÆäÀÌµåÀÎ
         currentCutsceneIndex = 0;
         cutscenePanels[currentCutsceneIndex].SetActive(true);
 
         StartCoroutine(FadeInPanelImage(cutscenePanels[0]));
 
-        // ì²« í…ìŠ¤íŠ¸
+        // Ã¹ ÅØ½ºÆ®
         StartCoroutine(ShowPrologueText(TextSet[0]));
     }
 
     private void Update()
     {
-        // ë§ˆìš°ìŠ¤ í´ë¦­(í„°ì¹˜) ê°ì§€
+        // ¸¶¿ì½º Å¬¸¯(ÅÍÄ¡) °¨Áö
         if (Input.GetMouseButtonDown(0) || Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
 
-            // ì¡°ì‘ ê¸ˆì§€ ì¡°ê±´
+            // Á¶ÀÛ ±İÁö Á¶°Ç
             if (isTransitioning) return;
             if (isTyping) return;
 
@@ -116,7 +117,7 @@ public class Stage1CutScene : MonoBehaviour
 
     private IEnumerator GoToNextCutscene()
     {
-        switch(currentCutsceneIndex)
+        switch (currentCutsceneIndex)
         {
             case 0:
                 StartCoroutine(FadeInPanelImage(cutscenePanels[1]));
@@ -124,28 +125,28 @@ public class Stage1CutScene : MonoBehaviour
                 currentCutsceneIndex++;
                 yield break;
             case 1:
+                StartCoroutine(FadeOutPanelImage(cutscenePanels[0]));
+                StartCoroutine(FadeOutPanelImage(cutscenePanels[1]));
+                yield return new WaitForSeconds(fadeDuration);
                 StartCoroutine(FadeInPanelImage(cutscenePanels[2]));
                 StartCoroutine(ShowPrologueText(TextSet[2]));
                 currentCutsceneIndex++;
                 yield break;
             case 2:
-                StartCoroutine(FadeOutPanelImage(cutscenePanels[0]));
-                StartCoroutine(FadeOutPanelImage(cutscenePanels[1]));
-                StartCoroutine(FadeOutPanelImage(cutscenePanels[2]));
-                yield return new WaitForSeconds(fadeDuration);
                 StartCoroutine(FadeInPanelImage(cutscenePanels[3]));
                 StartCoroutine(ShowPrologueText(TextSet[3]));
                 currentCutsceneIndex++;
                 yield break;
             case 3:
+                StartCoroutine(FadeOutPanelImage(cutscenePanels[2]));
+                StartCoroutine(FadeOutPanelImage(cutscenePanels[3]));
+                yield return new WaitForSeconds(fadeDuration);
                 StartCoroutine(FadeInPanelImage(cutscenePanels[4]));
                 StartCoroutine(ShowPrologueText(TextSet[4]));
                 currentCutsceneIndex++;
                 yield break;
             case 4:
-                StartCoroutine(FadeOutPanelImage(cutscenePanels[3]));
-                StartCoroutine(FadeOutPanelImage(cutscenePanels[4]));
-                yield return new WaitForSeconds(fadeDuration);
+                
                 StartCoroutine(FadeInPanelImage(cutscenePanels[5]));
                 StartCoroutine(ShowPrologueText(TextSet[5]));
                 currentCutsceneIndex++;
@@ -156,35 +157,45 @@ public class Stage1CutScene : MonoBehaviour
                 currentCutsceneIndex++;
                 yield break;
             case 6:
+                StartCoroutine(FadeOutPanelImage(cutscenePanels[4]));
+                StartCoroutine(FadeOutPanelImage(cutscenePanels[5]));
+                StartCoroutine(FadeOutPanelImage(cutscenePanels[6]));
+                yield return new WaitForSeconds(fadeDuration);
                 StartCoroutine(FadeInPanelImage(cutscenePanels[7]));
                 StartCoroutine(ShowPrologueText(TextSet[7]));
                 currentCutsceneIndex++;
                 yield break;
             case 7:
-                StartCoroutine(FadeOutPanelImage(cutscenePanels[5]));
-                StartCoroutine(FadeOutPanelImage(cutscenePanels[6]));
-                StartCoroutine(FadeOutPanelImage(cutscenePanels[7]));
-                yield return new WaitForSeconds(fadeDuration);
+                
                 StartCoroutine(FadeInPanelImage(cutscenePanels[8]));
                 StartCoroutine(ShowPrologueText(TextSet[8]));
                 currentCutsceneIndex++;
                 yield break;
             case 8:
+                StartCoroutine(FadeOutPanelImage(cutscenePanels[7]));
+                StartCoroutine(FadeOutPanelImage(cutscenePanels[8]));
+                yield return new WaitForSecondsRealtime(fadeDuration);
                 StartCoroutine(FadeInPanelImage(cutscenePanels[9]));
                 StartCoroutine(ShowPrologueText(TextSet[9]));
                 currentCutsceneIndex++;
                 yield break;
             case 9:
-                StartCoroutine(FadeOutPanelImage(cutscenePanels[8]));
-                StartCoroutine(FadeOutPanelImage(cutscenePanels[9]));
-                yield return new WaitForSecondsRealtime(fadeDuration);
+                
                 StartCoroutine(FadeInPanelImage(cutscenePanels[10]));
                 StartCoroutine(ShowPrologueText(TextSet[10]));
                 currentCutsceneIndex++;
                 yield break;
             case 10:
+                StartCoroutine(FadeInPanelImage(cutscenePanels[11]));
+                StartCoroutine(ShowPrologueText(TextSet[11]));
+                currentCutsceneIndex++;
+                yield break;
+            case 11:
+                StartCoroutine(FadeOutPanelImage(cutscenePanels[9]));
                 StartCoroutine(FadeOutPanelImage(cutscenePanels[10]));
-                // ì»·ì”¬ ë
+                StartCoroutine(FadeOutPanelImage(cutscenePanels[11]));
+                yield return new WaitForSeconds(0.1f);
+                // ÄÆ¾À ³¡
                 EndScene();
                 yield break;
         }
@@ -204,7 +215,7 @@ public class Stage1CutScene : MonoBehaviour
             isTransitioning = false;
             yield break;
         }
-        // ì´ˆê¸° ì•ŒíŒŒê°’ì„ 0ìœ¼ë¡œ ê°•ì œ ì„¤ì •
+        // ÃÊ±â ¾ËÆÄ°ªÀ» 0À¸·Î °­Á¦ ¼³Á¤
         Color color = panelImg.color;
         color.a = 0f;
         panelImg.color = color;
@@ -240,8 +251,8 @@ public class Stage1CutScene : MonoBehaviour
         }
 
         Color color = panelImg.color;
-        float startAlpha = color.a;  
-        float endAlpha = 0f;         
+        float startAlpha = color.a;
+        float endAlpha = 0f;
 
         while (timer < fadeDuration)
         {
@@ -274,7 +285,7 @@ public class Stage1CutScene : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
 
-        // í…ìŠ¤íŠ¸ í•œ ê¸€ìì”© ë‚˜ì˜¤ê²Œ
+        // ÅØ½ºÆ® ÇÑ ±ÛÀÚ¾¿ ³ª¿À°Ô
         int charIndex = 0;
         int TypingSoundDelay = 0;
         while (charIndex < Text.Length)
@@ -294,12 +305,12 @@ public class Stage1CutScene : MonoBehaviour
 
             yield return new WaitForSeconds(0.05f);
         }
-        
+
         isTyping = false;
     }
     public void EndScene()
     {
-        // Debug.LogError("ì—”ë”© í•¨ìˆ˜");
-        SceneManager.LoadScene("Stage1");
+        // Debug.LogError("¿£µù ÇÔ¼ö");
+        SceneManager.LoadScene("Stage2");
     }
 }

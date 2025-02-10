@@ -18,6 +18,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Loading.unity
     guid: 535f8b70ef67ec44db4edcf7c5934632
   - enabled: 1
+    path: Assets/Scenes/tmpScene.unity
+    guid: 401f78b6b1a1f6a499d72b0d3182b4d5
+  - enabled: 1
     path: Assets/Scenes/Stage1.unity
     guid: 83cc75104c2cdc04a9ffeaa4bed34356
   - enabled: 1

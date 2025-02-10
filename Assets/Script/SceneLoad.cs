@@ -26,7 +26,7 @@ public class SceneLoad : MonoBehaviour
                 operation = SceneManager.LoadSceneAsync("tmpScene");
                 break;
             case 2:
-                operation = SceneManager.LoadSceneAsync("Stage2");
+                operation = SceneManager.LoadSceneAsync("tmpScene 2");
                 break;
             case 3:
                 operation = SceneManager.LoadSceneAsync("Beat Master");
