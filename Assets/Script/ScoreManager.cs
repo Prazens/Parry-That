@@ -12,7 +12,7 @@ public class ScoreManager : MonoBehaviour
     public ScoreUI scoreUI;
     public int combo = 0;
     public int score = 0;
-    public float musicOffset;  // 원본은 PlayerManager에 있음
+    public float musicOffset;
 
     public double lastNonMissJudge = 0;
     public bool isHolding = false;
@@ -30,6 +30,12 @@ public class ScoreManager : MonoBehaviour
 
     private StrikerController tempStrikerController = null;
     private Judgeable tempJudgeable;
+
+    private void Start()
+    {
+        musicOffset = PlayerPrefs.GetInt("musicOffset", -1);
+    }
+
     void Update()
     {
         if(!StageManager.isActive) return;
