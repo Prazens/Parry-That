@@ -33,6 +33,8 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
 
     private string[] StageName = { "Beat Master", "Stage2", "Boss Stage", "Stage4" };
 
+    [SerializeField] GameObject SettingCanvas;
+
     void Start()
     {
         RectTransform imgHistoryRect = GameObject.Find("Img_History").GetComponent<RectTransform>();
@@ -62,6 +64,8 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
 
         // 스테이지에서 나왔을 때 현재 인덱스를 그 스테이지로 설정
         currentIndex = SceneLinkage.StageLV == 0 ? 0 : SceneLinkage.StageLV - 1;
+
+        SettingCanvas.GetComponent<Canvas>().sortingOrder = 10;
     }
 
     // Update is called once per frame
@@ -154,6 +158,11 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
                 Debug.Log("잘못된 데이터베이스 정보(Star)");
                 break;
         }
+        if (!SettingPanel.activeSelf && TitleMenu.SwordUpEnd)
+        {
+            SettingIcon.SetActive(true);
+        }
+
     }
 
     public void SelectStage()
@@ -393,6 +402,7 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
 
     private bool settingOn = false;
     [SerializeField] private GameObject SettingPanel;
+    [SerializeField] private GameObject SettingIcon;
     public void Setting()
     {
         settingOn = settingOn ? false : true;
