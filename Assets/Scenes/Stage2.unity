@@ -1634,10 +1634,12 @@ MonoBehaviour:
   - {fileID: 4900000, guid: 1ab0c656d5312f343bbe8fbe3d6364fa, type: 3}
   - {fileID: 4900000, guid: ee8a3a5c16b89b140b251a3d36aa61ad, type: 3}
   - {fileID: 4900000, guid: 978081c7dd2d6694791755125ed5e1d9, type: 3}
+  musicOffset: 0
   VictoryAnimatorObj: {fileID: 836491251}
   VictoryAudioSource: {fileID: 888203099}
   isPaused: 0
   pauseButton: {fileID: 822372182}
+  unpauseButton: {fileID: 21300000, guid: 5c11becbcfffc294db866af1a1c65ea4, type: 3}
 --- !u!4 &1448475906
 Transform:
   m_ObjectHideFlags: 0
