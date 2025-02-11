@@ -22,6 +22,9 @@ public class SceneLoad : MonoBehaviour
         AsyncOperation operation = null;
         switch(SceneLinkage.StageLV)
         {
+            case 0:
+                operation = SceneManager.LoadSceneAsync("Tutorial");
+                break;
             case 1:
                 operation = SceneManager.LoadSceneAsync("tmpScene");
                 break;
