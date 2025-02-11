@@ -33,6 +33,8 @@ public class PrologueManager : MonoBehaviour
 
     private void Start()
     {
+        Application.targetFrameRate = 120;
+
         // 텍스트 내용
         TextSet[0] = "대학생 '소리'는 시험을 앞두고 팔자 좋게 자고 있었습니다.";
         TextSet[1] = " 심지어 꿈까지 꾸고 있네요.";
