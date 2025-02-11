@@ -58,6 +58,7 @@ public class StrikerController : MonoBehaviour
     public bool isMelee; // 근접 공격 여부 확인
     public float animeOffset = 0.02f;
     private float spacing = 0.25f;
+    private float musicOffset;
 
 
     private bool isHolding = false;
@@ -92,6 +93,7 @@ public class StrikerController : MonoBehaviour
 
         // 화면 밖에서 targetPosition으로 이동
         StartCoroutine(MoveToOriginalPosition());
+        musicOffset = PlayerPrefs.GetFloat("musicOffset", -1);
     }
     private void Update() // 현재 striker 자체에서 투사체 일정 간격으로 발사
     {
@@ -110,7 +112,7 @@ public class StrikerController : MonoBehaviour
         // 현재 시간 가져오기
         float currentTime = StageManager.Instance.currentTime;
         // 1️⃣ `prepareTime` 확인 → 준비 상태 활성화 & `arriveTime`과 `type` 저장
-        if (currentNoteIndex < chartData.notes.Length && currentTime >= chartData.notes[currentNoteIndex].time * (60f / bpm) + playerManager.musicOffset)
+        if (currentNoteIndex < chartData.notes.Length && currentTime >= chartData.notes[currentNoteIndex].time * (60f / bpm) + musicOffset)
         {
             PrepareForAttack();
         }
@@ -120,14 +122,14 @@ public class StrikerController : MonoBehaviour
         float currentTime = StageManager.Instance.currentTime;
 
         //공격 이전에 출발
-        if (prepareQueue.Count > 0 && currentTime >= (prepareQueue.Peek().Item1 * (60d / bpm)) + playerManager.musicOffset - animeOffset - moveTime && !isMoved && prepareQueue.Peek().Item2 != 3 && !isMoving)
+        if (prepareQueue.Count > 0 && currentTime >= (prepareQueue.Peek().Item1 * (60d / bpm)) + musicOffset - animeOffset - moveTime && !isMoved && prepareQueue.Peek().Item2 != 3 && !isMoving)
         {
             isMoving = true;
-            StartCoroutine(MeleeGo(prepareQueue.Peek().Item1 * (60f / bpm) + playerManager.musicOffset - animeOffset));
+            StartCoroutine(MeleeGo(prepareQueue.Peek().Item1 * (60f / bpm) + musicOffset - animeOffset));
         }
 
         // 채보 시간에 맞춰 공격
-        if (prepareQueue.Count > 0 && currentTime >= (prepareQueue.Peek().Item1 * (60d / bpm)) + playerManager.musicOffset - animeOffset)
+        if (prepareQueue.Count > 0 && currentTime >= (prepareQueue.Peek().Item1 * (60d / bpm)) + musicOffset - animeOffset)
         {
             int attackType = prepareQueue.Peek().Item2;
             float attackTime = prepareQueue.Peek().Item1;
@@ -178,7 +180,7 @@ public class StrikerController : MonoBehaviour
 
         audioSource.PlayOneShot(holdingSound);
 
-        uiManager.CutInDisplay(judgeableQueue.Peek().arriveBeat * (60f / bpm) - StageManager.Instance.currentTime + playerManager.musicOffset);
+        uiManager.CutInDisplay(judgeableQueue.Peek().arriveBeat * (60f / bpm) - StageManager.Instance.currentTime + musicOffset);
 
         // StartCoroutine(MeleeHoldStartAnim());
         isHolding = true;
@@ -322,7 +324,7 @@ public class StrikerController : MonoBehaviour
     {
         float currentTime = StageManager.Instance.currentTime;
 
-        if (prepareQueue.Count > 0 && currentTime >= (prepareQueue.Peek().Item1 * (60d / bpm)) + playerManager.musicOffset - 0.5f)
+        if (prepareQueue.Count > 0 && currentTime >= (prepareQueue.Peek().Item1 * (60d / bpm)) + musicOffset - 0.5f)
         {
             FireProjectile(prepareQueue.Peek().Item1, prepareQueue.Peek().Item2);
             prepareQueue.Dequeue();

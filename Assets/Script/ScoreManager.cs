@@ -33,7 +33,7 @@ public class ScoreManager : MonoBehaviour
 
     private void Start()
     {
-        musicOffset = PlayerPrefs.GetInt("musicOffset", -1);
+        musicOffset = PlayerPrefs.GetFloat("musicOffset", -1);
     }
 
     void Update()
