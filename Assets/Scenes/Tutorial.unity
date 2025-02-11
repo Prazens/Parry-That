@@ -1830,8 +1830,8 @@ MonoBehaviour:
   - {fileID: 1888235362120343003, guid: ec9ae111fd0ca0e40b6b632721c2f1da, type: 3}
   - {fileID: 6868093653260204414, guid: 5edb3a50aba096c4890516d92d0baa55, type: 3}
   cutScenes:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 403963738}
+  - {fileID: 245702110}
   isStop1: 0
   isStop2: 0
 --- !u!114 &1305503423
@@ -2051,6 +2051,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: eeb5adb6d9207764f82241c56a71ff7e, type: 3}
   - {fileID: 21300000, guid: 687a5fc0406ccb9458d228ddd6d4011b, type: 3}
   daehwaIndex: 0
+  isDaehwa: 1
 --- !u!4 &1355106858
 Transform:
   m_ObjectHideFlags: 0
