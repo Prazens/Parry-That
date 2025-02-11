@@ -26,13 +26,22 @@ public class SceneLoad : MonoBehaviour
                 operation = SceneManager.LoadSceneAsync("Tutorial");
                 break;
             case 1:
-                operation = SceneManager.LoadSceneAsync("tmpScene");
+                if (DatabaseManager.isStage1Done)
+                    operation = SceneManager.LoadSceneAsync("Stage1");
+                else
+                    operation = SceneManager.LoadSceneAsync("tmpScene");
                 break;
             case 2:
-                operation = SceneManager.LoadSceneAsync("tmpScene 2");
+                if (DatabaseManager.isStage2Done)
+                    operation = SceneManager.LoadSceneAsync("Stage2");
+                else
+                    operation = SceneManager.LoadSceneAsync("tmpScene 2");
                 break;
             case 3:
-                operation = SceneManager.LoadSceneAsync("tmpScene 3");
+                if (DatabaseManager.isStage3Done)
+                    operation = SceneManager.LoadSceneAsync("Beat Master");
+                else
+                    operation = SceneManager.LoadSceneAsync("tmpScene 3");
                 break;
             ///
 

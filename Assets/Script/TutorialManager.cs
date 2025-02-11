@@ -345,6 +345,7 @@ public class TutorialManager : MonoBehaviour
         // Main Scene 전환
         SceneLinkage.StageLV = 0;
         DatabaseManager.isTutorialDone = true;
+        isTutorial = false;
         databaseManager.SaveTutorialDone();
         SceneManager.LoadScene("Main");
 
@@ -413,6 +414,7 @@ public class TutorialManager : MonoBehaviour
     {
         SceneLinkage.StageLV = 0;
         DatabaseManager.isTutorialDone = true;
+        isTutorial = false;
         databaseManager.SaveTutorialDone();
         SceneManager.LoadScene("Main");
     }

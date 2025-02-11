@@ -7,6 +7,9 @@ public class DatabaseManager : MonoBehaviour
     public int[] score;
     public int[] star;
     public static bool isTutorialDone;
+    public static bool isStage1Done;
+    public static bool isStage2Done;
+    public static bool isStage3Done;
     private void Awake()
     {
         if (FindObjectsOfType<DatabaseManager>().Length > 1)
@@ -18,7 +21,7 @@ public class DatabaseManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         LoadData();
-        LoadTutorialDone();
+        LoadSceneDone();
     }
     private void Start()
     {
@@ -58,10 +61,25 @@ public class DatabaseManager : MonoBehaviour
     {
         PlayerPrefs.SetInt("TutorialDone", 1);
     }
+    public void SaveStage1Done()
+    {
+        PlayerPrefs.SetInt("Stage1Done", 1);
+    }
+    public void SaveStage2Done()
+    {
+        PlayerPrefs.SetInt("Stage2Done", 1);
+    }
+    public void SaveStage3Done()
+    {
+        PlayerPrefs.SetInt("Stage3Done", 1);
+    }
 
-    public void LoadTutorialDone()
+    public void LoadSceneDone()
     {
         isTutorialDone = (PlayerPrefs.GetInt("TutorialDone") == 1);
+        isStage1Done = (PlayerPrefs.GetInt("Stage1Done") == 1);
+        isStage2Done = (PlayerPrefs.GetInt("Stage2Done") == 1);
+        isStage3Done = (PlayerPrefs.GetInt("Stage3Done") == 1);
     }
 
 }

@@ -30,6 +30,8 @@ public class Stage2CutSceneManager : MonoBehaviour
 
     private GameObject CutScenes;
 
+    private DatabaseManager databaseManager;
+
     private void Start()
     {
         // 텍스트 내용
@@ -82,6 +84,7 @@ public class Stage2CutSceneManager : MonoBehaviour
 
         // 컴포넌트 가져오기
         TypingSound = GetComponent<AudioSource>();
+        databaseManager = GameObject.Find("DatabaseManager").GetComponent<DatabaseManager>();
 
         for (int i = 0; i < cutscenePanels.Length; i++)
         {
@@ -311,6 +314,8 @@ public class Stage2CutSceneManager : MonoBehaviour
     public void EndScene()
     {
         // Debug.LogError("엔딩 함수");
+        databaseManager.SaveStage2Done();
+        DatabaseManager.isStage2Done = true;
         SceneManager.LoadScene("Stage2");
     }
 }
