@@ -178,7 +178,7 @@ public class StrikerController : MonoBehaviour
         Debug.Log($"ActMeleeHoldStart {judgeableQueue.Peek().arriveBeat} {bpm} {StageManager.Instance.currentTime}");
         bladeAnimator.SetTrigger("bladePlay");
 
-        audioSource.PlayOneShot(holdingSound);
+        audioSource.PlayOneShot(holdingSound, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("playerVolume", 1));
 
         uiManager.CutInDisplay(judgeableQueue.Peek().arriveBeat * (60f / bpm) - StageManager.Instance.currentTime + musicOffset);
 
@@ -193,7 +193,7 @@ public class StrikerController : MonoBehaviour
         bladeAnimator.SetTrigger("bladeHoldFinish");
         
         audioSource.Stop();
-        audioSource.PlayOneShot(holdingEnd);
+        audioSource.PlayOneShot(holdingEnd, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("playerVolume", 1));
         
         transform.GetChild(0).transform.localPosition = Vector3.zero;
         isHolding = false;
@@ -370,11 +370,11 @@ public class StrikerController : MonoBehaviour
         {
             if (type == 0 && prepareSoundNormal != null)
             {
-                audioSource.PlayOneShot(prepareSoundNormal);
+                audioSource.PlayOneShot(prepareSoundNormal, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("enemyVolume", 1));
             }
             else if (type == 1 && prepareSoundStrong != null)
             {
-                audioSource.PlayOneShot(prepareSoundStrong);
+                audioSource.PlayOneShot(prepareSoundStrong, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("enemyVolume", 1));
             }
         }
     }
@@ -592,11 +592,11 @@ public class StrikerController : MonoBehaviour
         {
             if (type == AttackType.Normal && parrySoundNormal != null)
             {
-                audioSource.PlayOneShot(parrySoundNormal);
+                audioSource.PlayOneShot(parrySoundNormal, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("playerVolume", 1));
             }
             else if (type == AttackType.Strong && parrySoundStrong != null)
             {
-                audioSource.PlayOneShot(parrySoundStrong);
+                audioSource.PlayOneShot(parrySoundStrong, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("playerVolume", 1));
             }
         }
         if (hp >= 0)

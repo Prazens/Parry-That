@@ -417,11 +417,13 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
             SettingPanel.transform.GetChild(2).GetChild(2).GetComponent<Slider>().value = (PlayerPrefs.GetFloat("musicOffset", 2f) - 2f) * 100;
             SettingPanel.transform.GetChild(3).GetChild(2).GetComponent<Slider>().value = PlayerPrefs.GetFloat("masterVolume", 1f) * 20;
             SettingPanel.transform.GetChild(4).GetChild(2).GetComponent<Slider>().value = PlayerPrefs.GetFloat("bgmVolume", 1f) * 20;
-            SettingPanel.transform.GetChild(5).GetChild(2).GetComponent<Slider>().value = PlayerPrefs.GetFloat("sfxVolume", 1f) * 20;
+            SettingPanel.transform.GetChild(5).GetChild(2).GetComponent<Slider>().value = PlayerPrefs.GetFloat("enemyVolume", 1f) * 20;
+            SettingPanel.transform.GetChild(6).GetChild(2).GetComponent<Slider>().value = PlayerPrefs.GetFloat("playerVolume", 1f) * 20;
             ChangeMusicOffset();
             ChangeMasterVolume();
             ChangeBGMVolume();
-            ChangeSFXVolume();
+            ChangeEnemyVolume();
+            ChangePlayerVolume();
         }
         else
         {
@@ -444,7 +446,8 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
             PlayerPrefs.SetFloat("musicOffset", 2f);
             PlayerPrefs.SetFloat("masterVolume", 1f);
             PlayerPrefs.SetFloat("bgmVolume", 1f);
-            PlayerPrefs.SetFloat("sfxVolume", 1f);
+            PlayerPrefs.SetFloat("enemyVolume", 1f);
+            PlayerPrefs.SetFloat("playerVolume", 1f);
             PlayerPrefs.SetInt("isPPInited", 1);
         }
     }
@@ -473,11 +476,19 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
         SettingPanel.transform.GetChild(4).GetChild(1).GetComponent<TextMeshProUGUI>().text = $"{sliderValue * 5}%";
     }
 
-    public void ChangeSFXVolume()
+    public void ChangeEnemyVolume()
     {
-        Debug.Log("ChangeSFXVolume");
+        Debug.Log("ChangeEnemyVolume");
         int sliderValue = (int)SettingPanel.transform.GetChild(5).GetChild(2).GetComponent<Slider>().value;
-        PlayerPrefs.SetFloat("sfxVolume", sliderValue / 20f);
+        PlayerPrefs.SetFloat("enemyVolume", sliderValue / 20f);
         SettingPanel.transform.GetChild(5).GetChild(1).GetComponent<TextMeshProUGUI>().text = $"{sliderValue * 5}%";
+    }
+
+    public void ChangePlayerVolume()
+    {
+        Debug.Log("ChangePlayerVolume");
+        int sliderValue = (int)SettingPanel.transform.GetChild(6).GetChild(2).GetComponent<Slider>().value;
+        PlayerPrefs.SetFloat("playerVolume", sliderValue / 20f);
+        SettingPanel.transform.GetChild(6).GetChild(1).GetComponent<TextMeshProUGUI>().text = $"{sliderValue * 5}%";
     }
 }

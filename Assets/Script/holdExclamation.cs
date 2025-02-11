@@ -33,11 +33,11 @@ public class holdExclamation : MonoBehaviour
             {
                 if (isAppear)
                 {
-                    audioSource.PlayOneShot(prepareSounds[i]);
+                    audioSource.PlayOneShot(prepareSounds[i], PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("enemyVolume", 1));
                 }
                 else
                 {
-                    audioSource.PlayOneShot(prepareSounds[1 - i]);
+                    audioSource.PlayOneShot(prepareSounds[1 - i], PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("enemyVolume", 1));
                 }
             }
             

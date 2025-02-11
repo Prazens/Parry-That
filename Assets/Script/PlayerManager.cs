@@ -139,10 +139,10 @@ public class PlayerManager : MonoBehaviour
         switch(attackType)
         {
             case AttackType.Normal:
-                audioSource.PlayOneShot(SwingWeak);
+                audioSource.PlayOneShot(SwingWeak, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("playerVolume", 1));
                 break;
             case AttackType.Strong:
-                SwingaudioSource.PlayOneShot(SwingStrong);
+                SwingaudioSource.PlayOneShot(SwingStrong, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("playerVolume", 1));
                 break;
             default:
                 break;
@@ -151,10 +151,10 @@ public class PlayerManager : MonoBehaviour
     }
     public void PlayerBlockedSound()
     {
-        audioSource.PlayOneShot(blocked);
+        audioSource.PlayOneShot(blocked, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("playerVolume", 1));
     }
     public void PlayerHitSound()
     {
-        SmallaudioSource.PlayOneShot(hit);
+        SmallaudioSource.PlayOneShot(hit, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("playerVolume", 1));
     }
 }
