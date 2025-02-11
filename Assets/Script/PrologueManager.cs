@@ -23,6 +23,7 @@ public class PrologueManager : MonoBehaviour
     private SpriteRenderer sourceSpriteRenderer;
     private Image sourceImage;
     private AudioSource TypingSound;
+    [SerializeField] private AudioSource bgm;
 
     string[] TextSet = new string[10];
     GameObject PrologueTextObj;
@@ -180,6 +181,7 @@ public class PrologueManager : MonoBehaviour
     {
         if (currentCutsceneIndex == 8 && cutsceneAnimator != null)
         {
+            // bgm.Stop();
             StartCoroutine(PlayCutsceneAnimation());
         }
 
@@ -330,6 +332,7 @@ public class PrologueManager : MonoBehaviour
         if (currentCutsceneIndex == 0)
         {
             yield return new WaitForSeconds(0.1f);
+            bgm.Play(); 
         }
 
         // 텍스트 한 글자씩 나오게
