@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -10,36 +10,43 @@ public class TutorialManager : MonoBehaviour
 {
     [SerializeField] private DialogueManager dialogueManager;
 
-    [Header("±âº» UIÂüÁ¶")]
+    [Header("ê¸°ë³¸ UIì°¸ì¡°")]
     [SerializeField] private Canvas mainCanvas;
     [SerializeField] private Font DescriptionFont;
     [SerializeField] private StageManager stageManager;
     [SerializeField] private StrikerManager strikerManager;
     // [SerializeField] private StageManager strikerController;
     [SerializeField] private ScoreManager ScoreManager;
+    private PlayerManager playerManager;
 
-    [Header("Ä³¸¯ÅÍ ÀÌ¹ÌÁö")]
+    [Header("ìºë¦­í„° ì´ë¯¸ì§€")]
     [SerializeField] private Sprite[] CharacterSprite;
 
     private List<float> ChartTimeList = new List<float>();
     private List<int> chartIdxList = new List<int>();
 
     DatabaseManager databaseManager;
-    private int daehwaIndex = 0;
+    public int daehwaIndex = 0;
     private bool patternComplete = false;
-    private bool isDaehwa = true;
+    public bool isDaehwa = true;
     public static bool isTutorial = false;
+    private bool isRollBack = false;
+
+    Text GameDescriptionText;
+    public static int[] StrikerNum = { 0, 1, 2, 3, 7, 11, 13 };   // 12ê¹Œì§€ ì¡´ì¬. // ê° íŒ¨í„´ ìŠ¤íŠ¸ë¼ì´ì»¤ ì‹œì‘ ì¸ë±ìŠ¤
+
     private void Awake()
     {
-        // Æ©Åä¸®¾ó ½ÃÀÛ½Ã ¼ÒÈ¯/¼¼ÆÃÇÒ °Íµé
+        // íŠœí† ë¦¬ì–¼ ì‹œì‘ì‹œ ì†Œí™˜/ì„¸íŒ…í•  ê²ƒë“¤
         databaseManager = GameObject.FindObjectOfType<DatabaseManager>();
+        isTutorial = true;
 
-        // °ø°İ ¼³¸í ÅØ½ºÆ® »ı¼º
+        // ê³µê²© ì„¤ëª… í…ìŠ¤íŠ¸ ìƒì„±
         GameObject GameDescription = new GameObject("GameDescription");
         GameDescription.transform.SetParent(mainCanvas.transform, false);
-        Text GameDescriptionText = GameDescription.AddComponent<Text>();
+        GameDescriptionText = GameDescription.AddComponent<Text>();
         GameDescriptionText.font = DescriptionFont;
-        GameDescriptionText.fontSize = 55 * (Screen.width / 1080);
+        GameDescriptionText.fontSize = 65;
         GameDescriptionText.color = Color.white;
         GameDescriptionText.alignment = TextAnchor.MiddleCenter;
         RectTransform NameTextRect = GameDescription.GetComponent<RectTransform>();
@@ -47,246 +54,296 @@ public class TutorialManager : MonoBehaviour
         NameTextRect.anchorMax = new Vector2(0.95f, 0.35f);
         NameTextRect.offsetMin = Vector2.zero;
         NameTextRect.offsetMax = Vector2.zero;
-        GameDescriptionText.text = "[Å¸ÀÌ¹Ö¿¡ ¸ÂÃç ÅÇÀ» ÇÏ¿© °ø°İÀ» ¹Ş¾ÆÄ¡¼¼¿ä!]";
+        GameDescriptionText.text = "ë¦¬ë“¬ì— ë§ì¶° í™”ë©´ì„ íƒ­í•˜ì—¬ ë…¸ë€ìƒ‰ ê³µê²©ì„ íŒ¨ë§í•˜ì„¸ìš”.";
 
         GameDescription.SetActive(true);
 
-        ChartTimeList.AddRange(new float[] { 4f, 12f, 20f, 28f, 36f, 44f, 52f }); // Â÷Æ® ¹İº¹ ½ÃÀÛ ½Ã°£
-        chartIdxList.AddRange(new int[] { 0, 3, 9, 12, 16, 24 }); // °¢ °ÔÀÓÀÇ ½ÃÀÛ Ã¤º¸ ÀÎµ¦½º  // 25°¡ ¸¶Áö¸·
+        ChartTimeList.AddRange(new float[] {4f, 12f, 24f, 36f, 48f, 60f, 72f  }); ; // ì°¨íŠ¸ ë°˜ë³µ ì‹œì‘ ì‹œê°„   // 
+        chartIdxList.AddRange(new int[] { 0, 3, 9, 12, 16, 24, 26 }); // ê° ê²Œì„ì˜ ì‹œì‘ ì±„ë³´ ì¸ë±ìŠ¤  // 25ê°€ ë§ˆì§€ë§‰
     }
     private void Start()
     {
-        StartCoroutine(Daehwa1());  // Ã³À½ ´ëÈ­ ½ÃÀÛ
-        StageManager.isActive = false;  // °ÔÀÓ ºñÈ°¼ºÈ­
+        playerManager = GameObject.Find("Player(Clone)").GetComponent<PlayerManager>();
+        StartCoroutine(Daehwa1());  // ì²˜ìŒ ëŒ€í™” ì‹œì‘
+        // count = 0;
+        StageManager.isActive = false;  // ê²Œì„ ë¹„í™œì„±í™”
     }
-    private int count = 0;   // ÀÓ½Ã Å×½ºÆ®¿ë
+
+    // private int count = 0;   // ì„ì‹œ í…ŒìŠ¤íŠ¸ìš©
     private void Update()
     {
         float currentTime = StageManager.Instance.currentTime;
         // Debug.Log($"{currentTime}");
-        if (daehwaIndex >= ChartTimeList.Count) return; //¸ğµç ´ëÈ­ ³¡³ª¸é ±×³É RETURN
-        if (!isDaehwa)  // ´ëÈ­ ÁßÀÌ ¾Æ´Ñ »óÈ² (°ÔÀÓ Áß)
+        if (daehwaIndex >= ChartTimeList.Count) 
+            return; //ëª¨ë“  ëŒ€í™” ëë‚˜ë©´ ê·¸ëƒ¥ RETURN
+
+        if (!isDaehwa)  // ëŒ€í™” ì¤‘ì´ ì•„ë‹Œ ìƒí™© (ê²Œì„ ì¤‘)
         {
-            if (currentTime >= ChartTimeList[daehwaIndex])   // idx¹øÂ° ´ëÈ­ -> idx¹øÂ° °ÔÀÓ -> idx+1 ¹øÂ° ´ëÈ­
-            {   // ÇÑ ÆĞÅÏ Áö³µÀ» ¶§ ÆĞÅÏ ¼º°øÇß´ÂÁö ÆÇ´Ü
-                // Debug.LogError($"´ëÈ­ÀÎµ¦½º: {daehwaIndex}");
-                checkComplete();
-                // if (!patternComplete)   // ÆĞÅÏ ¼º°ø ¸øÇßÀ» ½Ã
-                if (count < 1)  // ÀÓ½Ã Á¶°Ç: 2¹ø ½ÃÇà ÈÄ ÁøÇà
-                {
-                    Debug.LogError($"if¹® ¾È: {count}");
-                    stageManager.ChangeTime(ChartTimeList[daehwaIndex - 1]);
-                    stageManager.RestartAudio(8f);  // ¸¶Áö¸· °ÔÀÓÀº ½Ã°£ ´Ù¸¥µí. ¼³Á¤ ÇÊ¿ä // ÁØºñ ½Ã°£ + ÆĞÅÏ ½Ã°£ -> ÁØºñ½Ã°£Àº ½Ã°£¸¸ µÇµ¹¸®°í Ã¤º¸ ÀÎµ¦½º ¾È³Ö´Â ¹æ½ÄÀ¸·Î ´ë±â ±¸Çö, ÀÛµ¿ÇÒÁø Àß ¸ğ¸£°ÚÀ½
-                    foreach (GameObject striker in strikerManager.strikerList)
-                    {
-                        StrikerController strikerController = striker.GetComponent<StrikerController>();
-                        strikerController.currentNoteIndex = chartIdxList[daehwaIndex - 1];
-                    }
-                    Debug.LogError($"CURRENT TIME ¼³Á¤: {currentTime}");
-                    count++;  // ÀÓ½Ã Å×½ºÆ®¿ë
-                    return;
-                }
-                Debug.LogError($"¿Àµğ¿À ¸ØÃã: {count}");
+
+            Debug.LogWarning($"ì‹œê°„: {currentTime} :{ChartTimeList[daehwaIndex - 1]} ~ {ChartTimeList[daehwaIndex]}, ëŒ€í™”ì¸ë±ìŠ¤:{daehwaIndex}");
+            if (currentTime >= ChartTimeList[daehwaIndex])   // idx: ê²Œì„ ëë‚œ í›„ì˜ ëª©í‘œ ëŒ€í™” idx
+            {   // í•œ íŒ¨í„´ ì§€ë‚¬ì„ ë•Œ íŒ¨í„´ ì„±ê³µí–ˆëŠ”ì§€ íŒë‹¨
+                // Debug.LogError($"ëŒ€í™”ì¸ë±ìŠ¤: {currentTime} :{daehwaIndex}");
+                // checkComplete1();
+
+
+
+
+                //if (count < 1)  // ì„ì‹œ ì¡°ê±´: 2ë²ˆ ì‹œí–‰ í›„ ì§„í–‰
+                //if (!patternComplete)   // íŒ¨í„´ ì„±ê³µ ëª»í–ˆì„ ì‹œ
+                //{
+                //    // Debug.LogError($"ifë¬¸ ì•ˆ: {count}");
+                //    // Debug.LogError($"ìŠ¤íŠ¸ë¼ì´í¬ í™œì„±í™” ì‹œê°„: {currentTime}");
+                //    // stageManager.ChangeTime(ChartTimeList[daehwaIndex - 1]);
+                //    // stageManager.RestartAudio(ChartTimeList[daehwaIndex] - ChartTimeList[daehwaIndex - 1]);
+                //    /*
+                //    foreach (GameObject striker in strikerManager.strikerList)
+                //    {
+                        
+                //        StrikerController strikerController = striker.GetComponent<StrikerController>();
+                //        strikerController.currentNoteIndex = chartIdxList[daehwaIndex - 1];
+                //        strikerController.hp = strikerManager.charts[daehwaIndex - 1].notes.Length;
+                //        strikerController.hpControl = strikerController.hpBar.transform.GetChild(0);
+                //        strikerController.hpControl.transform.localScale = new Vector3(0, 1, 1);
+                //    }
+                //    */
+                //    // strikerManager.ClearStrikers();
+                //    // strikerManager.InitStriker(daehwaIndex - 1);    // í˜„ì¬ íŒ¨í„´ì˜ ìŠ¤íŠ¸ë¼ì´ì»¤ë“¤ì„ ì¬ìƒì„±
+
+                //    //foreach (GameObject striker in strikerManager.strikerList)
+                //    //{
+                //    //    StrikerController strikerController = striker.GetComponent<StrikerController>();
+                //    //    Debug.LogError($"íŒ¨í„´ ì‹¤íŒ¨, ì¬ìƒì„±: {striker.name} hp: {strikerController.hp}");
+                //    //}
+                //    // Debug.LogError($"CURRENT TIME ì„¤ì •: {currentTime}");
+                //    // count++;  // ì„ì‹œ í…ŒìŠ¤íŠ¸ìš©
+                //    // isRollBack = true;
+                //    return;
+                //}
+                // Debug.LogError($"ì˜¤ë””ì˜¤ ë©ˆì¶¤: {count}, {currentTime}");
+                // strikerManager.ClearStrikers();
+                // strikerManager.InitStriker(daehwaIndex);
                 stageManager.AudioPause();
                 isDaehwa = true;
                 
             }
+            //if (isRollBack)
+            //{
+                
+            //    // Debug.LogError($"{currentTime},{strikerManager.charts[daehwaIndex - 1].appearTime * (60f / strikerManager.charts[daehwaIndex - 1].bpm) + playerManager.musicOffset}");
+            //    if (currentTime >= strikerManager.charts[daehwaIndex - 1].appearTime * (60f / strikerManager.charts[daehwaIndex - 1].bpm) + playerManager.musicOffset)
+            //    {
+            //        // Debug.LogError("ë¡¤ë°±ifë¬¸");
+            //        strikerManager.strikerList[daehwaIndex - 1].SetActive(true);
+            //        isRollBack = false;
+            //    }
+            //}
         }
     }
     private IEnumerator Daehwa1()
     {
         isDaehwa = true;
 
-        string Daehwa1_Text1 = "¾îµğ ÀÖ´À³Ä ¸¶¿Õ!!!";
-        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[9], "¼Ò¸®", Daehwa1_Text1, false));
+        string Daehwa1_Text1 = "ì–´ë”” ìˆëŠëƒ ë§ˆì™•!!!";
+        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[9], "ì†Œë¦¬", Daehwa1_Text1, false));
 
-        string Daehwa1_Text2 = "ÁøÁ¤ÇÏ¼¼¿ä! Áö±İ ¿ë»ç´ÔÀº ÇÑÁÖ¸Ô°Å¸®µµ ¾È µÇ½Ê´Ï´Ù!\n¹«±â¸¦ µå¸± Å×´Ï±î, ¿ì¼± ÀÜÃ¬ÀÌµéÀ» »ó´ë·Î ¿¬½ÀºÎÅÍ ÇÏ½ÃÁÒ!";
-        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "Á¤·É", Daehwa1_Text2, true));
+        string Daehwa1_Text2 = "ì§„ì •í•˜ì„¸ìš”! ì§€ê¸ˆ ìš©ì‚¬ë‹˜ì€ í•œì£¼ë¨¹ê±°ë¦¬ë„ ì•ˆ ë˜ì‹­ë‹ˆë‹¤!\në¬´ê¸°ë¥¼ ë“œë¦´ í…Œë‹ˆê¹Œ, ìš°ì„  ì”ì±™ì´ë“¤ì„ ìƒëŒ€ë¡œ ì—°ìŠµë¶€í„° í•˜ì‹œì£ !";
+        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "ì •ë ¹", Daehwa1_Text2, true));
 
-        string Daehwa1_Text3 = "±×·² ½Ã°£ÀÌ ¾ø¾î! ³» ½ÃÇèÀ» ¸ÁÃÆ´Ù°í!!";
-        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[9], "¼Ò¸®", Daehwa1_Text3, false));
+        string Daehwa1_Text3 = "ê·¸ëŸ´ ì‹œê°„ì´ ì—†ì–´! ë‚´ ì‹œí—˜ì„ ë§ì³¤ë‹¤ê³ !!";
+        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[9], "ì†Œë¦¬", Daehwa1_Text3, false));
 
-        string Daehwa1_Text4 = "Á¦¹ß ÁøÁ¤ÇÏ½Ê½Ã¿À! ¾îÂ÷ÇÇ °øºÎµµ ¾È ÇÏ¼ÌÀİ½À´Ï±î!";
-        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[2], "Á¤·É", Daehwa1_Text4, true));
+        string Daehwa1_Text4 = "ì œë°œ ì§„ì •í•˜ì‹­ì‹œì˜¤! ì–´ì°¨í”¼ ê³µë¶€ë„ ì•ˆ í•˜ì…¨ì–ìŠµë‹ˆê¹Œ!";
+        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[2], "ì •ë ¹", Daehwa1_Text4, true));
 
-        string Daehwa1_Text5 = "(¡¦¸Â±ä ÇÑµ¥ ±âºĞ ³ª»Ú³×.)";
-        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[7], "¼Ò¸®", Daehwa1_Text5, false));
+        string Daehwa1_Text5 = "(â€¦ë§ê¸´ í•œë° ê¸°ë¶„ ë‚˜ì˜ë„¤.)";
+        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[7], "ì†Œë¦¬", Daehwa1_Text5, false));
 
-        string Daehwa1_Text6 = "Àú ³à¼®µéÀº Á¦ Á÷Àå ÈÄ¹è¿´´Âµ¥, ¸¶¿ÕÀÌ Å¸¶ô½ÃÄÑ ¹ö·È½À´Ï´Ù.";
-        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[1], "Á¤·É", Daehwa1_Text6, true));
+        string Daehwa1_Text6 = "ì € ë…€ì„ë“¤ì€ ì œ ì§ì¥ í›„ë°°ì˜€ëŠ”ë°, ë§ˆì™•ì´ íƒ€ë½ì‹œì¼œ ë²„ë ¸ìŠµë‹ˆë‹¤.";
+        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[1], "ì •ë ¹", Daehwa1_Text6, true));
 
-        string Daehwa1_Text7 = "¹°¹üÀÌ ¶ç¿ì´Â ´À³¦Ç¥ÀÇ ¸®µë¿¡ ¸ÂÃç °ø°İÀ» ¹Ş¾ÆÄ¡¼¼¿ä!";
-        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "Á¤·É", Daehwa1_Text7, true));
+        string Daehwa1_Text7 = "ë¬¼ë²”ì´ ë„ìš°ëŠ” ëŠë‚Œí‘œì˜ ë¦¬ë“¬ì— ë§ì¶° ê³µê²©ì„ ë°›ì•„ì¹˜ì„¸ìš”!";
+        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "ì •ë ¹", Daehwa1_Text7, true));
+
+        GameDescriptionText.text = "ë¦¬ë“¬ì— ë§ì¶° í™”ë©´ì„ íƒ­í•˜ì—¬ ë…¸ë€ìƒ‰ ê³µê²©ì„ íŒ¨ë§í•˜ì„¸ìš”.";
 
         isDaehwa = false;
 
-        // Æ©Åä °ÔÀÓ 1
+        // íŠœí†  ê²Œì„ 1
         daehwaIndex += 1;
         StageManager.isActive = true;
         stageManager.AudioUnPause();
-        yield return new WaitUntil(() => isDaehwa);  // ÆĞÅÏ ¼º°øÇÒ ¶§±îÁö ´ë±â
+        yield return new WaitUntil(() => isDaehwa);  // íŒ¨í„´ ì„±ê³µí•  ë•Œê¹Œì§€ ëŒ€ê¸° (isDaehwaê°€ trueê°€ ë˜ë©´ ë‹¤ìŒ ì½”ë“œ ì‹¤í–‰ë¨)
         StageManager.isActive = false;
-        patternComplete = false;
+        // patternComplete = false;
         StartCoroutine(Daehwa2());
     }
 
     private IEnumerator Daehwa2()
     {
-        string Daehwa2_Text1 = "ÀßÇÏ¼Ì½À´Ï´Ù! Á¤È®ÇÑ Å¸ÀÌ¹Ö¿¡ ¹Ş¾ÆÄ¡¸é ÀúµéÀÌ Ä¡À¯°¡ µÉ °Ì´Ï´Ù!";
-        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[1], "Á¤·É", Daehwa2_Text1, true));
+        string Daehwa2_Text1 = "ì˜í•˜ì…¨ìŠµë‹ˆë‹¤! ì •í™•í•œ íƒ€ì´ë°ì— ë°›ì•„ì¹˜ë©´ ì €ë“¤ì´ ì¹˜ìœ ê°€ ë  ê²ë‹ˆë‹¤!";
+        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[1], "ì •ë ¹", Daehwa2_Text1, true));
 
-        string Daehwa2_Text2 = "°ø°İÀ» ¹Ş¾ÆÄ¡¸é À÷³×°¡ ´ÙÄ¡´Â°Å ¾Æ´Ï¾ß?";
-        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[7], "¼Ò¸®", Daehwa2_Text2, false));
+        string Daehwa2_Text2 = "ê³µê²©ì„ ë°›ì•„ì¹˜ë©´ ìŸ¤ë„¤ê°€ ë‹¤ì¹˜ëŠ”ê±° ì•„ë‹ˆì•¼?";
+        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[7], "ì†Œë¦¬", Daehwa2_Text2, false));
 
-        string Daehwa2_Text3 = "Á» ¸Â¾Æ¾ß Á¤½ÅÀ» Â÷¸®Áö ¾ÊÀ»±î¿ä?";
-        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "Á¤·É", Daehwa2_Text3, true));
+        string Daehwa2_Text3 = "ì¢€ ë§ì•„ì•¼ ì •ì‹ ì„ ì°¨ë¦¬ì§€ ì•Šì„ê¹Œìš”?";
+        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "ì •ë ¹", Daehwa2_Text3, true));
 
-        string Daehwa2_Text4 = "±×·±°¡..?";
-        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[6], "¼Ò¸®", Daehwa2_Text4, false));
+        string Daehwa2_Text4 = "ê·¸ëŸ°ê°€..?";
+        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[6], "ì†Œë¦¬", Daehwa2_Text4, false));
 
-        string Daehwa2_Text5 = "¾Æ¹«Æ°, ÀÌÁ¦ ´õ °­ÇÑ °ø°İµµ °°ÀÌ ¿À´Ï ¿ë»ç´ÔºÎÅÍ °ÆÁ¤ÇÏ¼¼¿ä!";
-        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "Á¤·É", Daehwa2_Text5, true));
+        string Daehwa2_Text5 = "ì•„ë¬´íŠ¼, ì´ì œ ë” ê°•í•œ ê³µê²©ë„ ê°™ì´ ì˜¤ë‹ˆ ìš©ì‚¬ë‹˜ë¶€í„° ê±±ì •í•˜ì„¸ìš”!";
+        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "ì •ë ¹", Daehwa2_Text5, true));
+
+        GameDescriptionText.text = "ì ì˜ ë¹¨ê°„ìƒ‰ ê³µê²©ì€ ê°•íŒ¨ë§ìœ¼ë¡œ ë§‰ì•„ë‚´ì•¼í•©ë‹ˆë‹¤.\níƒ­í•œ ìƒíƒœì—ì„œ ì ì ˆí•œ ë°©í–¥ìœ¼ë¡œ ë“œë˜ê·¸í•˜ë©´ ì´ì–´ì„œ ê°•íŒ¨ë§ì„ ì§„í–‰í•  ìˆ˜ ìˆìŠµë‹ˆë‹¤.";
 
         isDaehwa = false;
-        count = 0;
+        // count = 0;
 
-        // Æ©Åä °ÔÀÓ 2 ÇÔ¼ö
+        // íŠœí†  ê²Œì„ 2 í•¨ìˆ˜
         daehwaIndex += 1;
         StageManager.isActive = true;
         stageManager.AudioUnPause();
-        yield return new WaitUntil(() => isDaehwa);  // ÆĞÅÏ ¼º°øÇÒ ¶§±îÁö ´ë±â
+        yield return new WaitUntil(() => isDaehwa);  // íŒ¨í„´ ì„±ê³µí•  ë•Œê¹Œì§€ ëŒ€ê¸°
         StageManager.isActive = false;
-        patternComplete = false;
+        // patternComplete = false;
         StartCoroutine(Daehwa3());
     }
 
     private IEnumerator Daehwa3()
     {
-        string Daehwa3_Text1 = "Àú Ä£±¸µéÀÌ °íÅë¹Ş´Â ¸ğ½ÀÀ» ÁöÄÑºÁ¾ß ÇÏ´Ù´Ï! ¾ó¸¶³ª ¼º½ÇÇÑ ¾ÖµéÀÌ¾ú´Âµ¥!!";
-        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[2], "Á¤·É", Daehwa3_Text1, true));
+        string Daehwa3_Text1 = "ì € ì¹œêµ¬ë“¤ì´ ê³ í†µë°›ëŠ” ëª¨ìŠµì„ ì§€ì¼œë´ì•¼ í•˜ë‹¤ë‹ˆ! ì–¼ë§ˆë‚˜ ì„±ì‹¤í•œ ì• ë“¤ì´ì—ˆëŠ”ë°!!";
+        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[2], "ì •ë ¹", Daehwa3_Text1, true));
 
-        string Daehwa3_Text2 = "°¡²û ÅÁºñ½ÇÀ» »ı¼±À¸·Î ²Ë Ã¤¿ö ³õ´Â °Ç ¸¶À½¿¡ ¾È µé±ä ÇßÁö¸¸!";
-        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[3], "Á¤·É", Daehwa3_Text2, true));
+        string Daehwa3_Text2 = "ê°€ë” íƒ•ë¹„ì‹¤ì„ ìƒì„ ìœ¼ë¡œ ê½‰ ì±„ì›Œ ë†“ëŠ” ê±´ ë§ˆìŒì— ì•ˆ ë“¤ê¸´ í–ˆì§€ë§Œ!";
+        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[3], "ì •ë ¹", Daehwa3_Text2, true));
 
-        string Daehwa3_Text3 = "»ı¼±? ´Ù°°ÀÌ ¸ÔÀ¸¸é ÁÁÀº °Å ¾Æ³Ä?";
-        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[4], "¼Ò¸®", Daehwa3_Text3, false));
+        string Daehwa3_Text3 = "ìƒì„ ? ë‹¤ê°™ì´ ë¨¹ìœ¼ë©´ ì¢‹ì€ ê±° ì•„ëƒ?";
+        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[4], "ì†Œë¦¬", Daehwa3_Text3, false));
 
-        string Daehwa3_Text4 = "°ø°£ÀÌ ¾ø´Ù°í Á¦ ¾Æ¸óµå¸¦ °®´Ù ¹ö·È½À´Ï´Ù!";
-        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[3], "Á¤·É", Daehwa3_Text4, true));
+        string Daehwa3_Text4 = "ê³µê°„ì´ ì—†ë‹¤ê³  ì œ ì•„ëª¬ë“œë¥¼ ê°–ë‹¤ ë²„ë ¸ìŠµë‹ˆë‹¤!";
+        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[3], "ì •ë ¹", Daehwa3_Text4, true));
 
-        string Daehwa3_Text5 = "...Á» ´õ ¶§¸± ¸ÀÀÌ ³ª³×.";
-        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[5], "¼Ò¸®", Daehwa3_Text5, false));
+        string Daehwa3_Text5 = "...ì¢€ ë” ë•Œë¦´ ë§›ì´ ë‚˜ë„¤.";
+        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[5], "ì†Œë¦¬", Daehwa3_Text5, false));
+
+        GameDescriptionText.text = "ì ì ˆí•œ ë°©í–¥ìœ¼ë¡œ ìŠ¤ì™€ì´í”„í•˜ì—¬ ë¹ ë¥´ê²Œ ê°•íŒ¨ë§í•˜ì„¸ìš”.";
 
         isDaehwa = false;
-        count = 0;
+        // count = 0;
 
-        // Æ©Åä °ÔÀÓ 3 ÇÔ¼ö
+        // íŠœí†  ê²Œì„ 3 í•¨ìˆ˜
         daehwaIndex += 1;
         StageManager.isActive = true;
         stageManager.AudioUnPause();
-        yield return new WaitUntil(() => isDaehwa);  // ÆĞÅÏ ¼º°øÇÒ ¶§±îÁö ´ë±â
+        yield return new WaitUntil(() => isDaehwa);  // íŒ¨í„´ ì„±ê³µí•  ë•Œê¹Œì§€ ëŒ€ê¸°
         StageManager.isActive = false;
-        patternComplete = false;
+        // patternComplete = false;
         StartCoroutine(Daehwa4());
     }
 
     private IEnumerator Daehwa4()
     {
-        string Daehwa4_Text1 = "ÈÇ¸¢ÇÏ½Ê´Ï´Ù! Á¦´ë·Î µÎµé°Ü Æ×À¸´Ï ÀÌÁ¦ Àú³ğµéµµ Á» ½¬¾î¾ß ÇÒ °Ì´Ï´Ù.";
-        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "Á¤·É", Daehwa4_Text1, true));
+        string Daehwa4_Text1 = "í›Œë¥­í•˜ì‹­ë‹ˆë‹¤! ì œëŒ€ë¡œ ë‘ë“¤ê²¨ íŒ¼ìœ¼ë‹ˆ ì´ì œ ì €ë†ˆë“¤ë„ ì¢€ ì‰¬ì–´ì•¼ í•  ê²ë‹ˆë‹¤.";
+        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "ì •ë ¹", Daehwa4_Text1, true));
 
-        string Daehwa4_Text2 = "±×·³ ÇØÄ¡¿î °Ç°¡?!";
-        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[4], "¼Ò¸®", Daehwa4_Text2, false));
+        string Daehwa4_Text2 = "ê·¸ëŸ¼ í•´ì¹˜ìš´ ê±´ê°€?!";
+        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[4], "ì†Œë¦¬", Daehwa4_Text2, false));
 
-        string Daehwa4_Text3 = "..¾Æ´¢. ÀÌÁ¦ ±ÙÁ¢ °ø°İÀ» ÇÏ´Â ³ğµéÀÌ ³ª¿Ã °Ì´Ï´Ù.";
-        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[1], "Á¤·É", Daehwa4_Text3, true));
+        string Daehwa4_Text3 = "..ì•„ë‡¨. ì´ì œ ê·¼ì ‘ ê³µê²©ì„ í•˜ëŠ” ë†ˆë“¤ì´ ë‚˜ì˜¬ ê²ë‹ˆë‹¤.";
+        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[1], "ì •ë ¹", Daehwa4_Text3, true));
+
+        GameDescriptionText.text = "ë‹¤ë¥¸ ë°©í–¥ìœ¼ë¡œ ìŠ¤ì™€ì´í”„í•˜ì—¬ ë°©í–¥ì„ ë°”ê¾¸ë©° ê°•íŒ¨ë§í•  ìˆ˜ ìˆìŠµë‹ˆë‹¤.";
 
         isDaehwa = false;
 
-        // Æ©Åä °ÔÀÓ 4 ÇÔ¼ö
+        // íŠœí†  ê²Œì„ 4 í•¨ìˆ˜
         daehwaIndex += 1;
         StageManager.isActive = true;
         stageManager.AudioUnPause();
-        yield return new WaitUntil(() => isDaehwa);  // ÆĞÅÏ ¼º°øÇÒ ¶§±îÁö ´ë±â
+        yield return new WaitUntil(() => isDaehwa);  // íŒ¨í„´ ì„±ê³µí•  ë•Œê¹Œì§€ ëŒ€ê¸°
         StageManager.isActive = false;
-        patternComplete = false;
+        // patternComplete = false;
         StartCoroutine(Daehwa5());
     }
 
     private IEnumerator Daehwa5()
     {
-        string Daehwa5_Text1 = "¾ê³×µé ÁøÂ¥ ¼ºÀÇ¾ø°Ô »ı°å´Ù. ±×Ä¡?";
-        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[4], "¼Ò¸®", Daehwa5_Text1, false));
+        string Daehwa5_Text1 = "ì–˜ë„¤ë“¤ ì§„ì§œ ì„±ì˜ì—†ê²Œ ìƒê²¼ë‹¤. ê·¸ì¹˜?";
+        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[4], "ì†Œë¦¬", Daehwa5_Text1, false));
 
-        string Daehwa5_Text2 = "¼ÖÁ÷È÷ ¸»ÇÏÀÚ¸é, Àúº¸´Ù´Â °øµé¿©¼­ µğÀÚÀÎµÈ °Í °°½À´Ï´Ù.";
-        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[3], "Á¤·É", Daehwa5_Text2, true));
+        string Daehwa5_Text2 = "ì†”ì§íˆ ë§í•˜ìë©´, ì €ë³´ë‹¤ëŠ” ê³µë“¤ì—¬ì„œ ë””ìì¸ëœ ê²ƒ ê°™ìŠµë‹ˆë‹¤.";
+        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[3], "ì •ë ¹", Daehwa5_Text2, true));
 
-        string Daehwa5_Text3 = "..¹Ì¾È.";
-        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[7], "¼Ò¸®", Daehwa5_Text3, false));
+        string Daehwa5_Text3 = "..ë¯¸ì•ˆ.";
+        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[7], "ì†Œë¦¬", Daehwa5_Text3, false));
+
+        GameDescriptionText.text = "í™”ë©´ì„ ê³„ì† ë“œë˜ê·¸ í•˜ë©´ì„œ ì—°ì†ìœ¼ë¡œ ë°©í–¥ì„ ë°”ê¿€ ìˆ˜ ìˆìŠµë‹ˆë‹¤.";
 
         isDaehwa = false;
 
-        // Æ©Åä °ÔÀÓ 5 ÇÔ¼ö
+        // íŠœí†  ê²Œì„ 5 í•¨ìˆ˜
         daehwaIndex += 1;
         StageManager.isActive = true;
         stageManager.AudioUnPause();
-        yield return new WaitUntil(() => isDaehwa);  // ÆĞÅÏ ¼º°øÇÒ ¶§±îÁö ´ë±â
+        yield return new WaitUntil(() => isDaehwa);  // íŒ¨í„´ ì„±ê³µí•  ë•Œê¹Œì§€ ëŒ€ê¸°
         StageManager.isActive = false;
-        patternComplete = false;
+        // patternComplete = false;
         StartCoroutine(Daehwa6());
     }
 
     private IEnumerator Daehwa6()
     {
-        string Daehwa6_Text1 = "±×·±µ¥..¼¼»ó¿¡ ¼Ò¸®°¡ ¾ø¾îÁø °Å ¾Æ´Ï¾ú¾î?\nÀÌ ¸ŞÆ®·Î³ğ ¼Ò¸®¶û ¹Ş¾ÆÄ¥ ¶§ ³ª´Â ¼Ò¸® °°Àº °Ç ´Ù ¹¹¾ß?";
-        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[4], "¼Ò¸®", Daehwa6_Text1, false));
+        string Daehwa6_Text1 = "ê·¸ëŸ°ë°..ì„¸ìƒì— ì†Œë¦¬ê°€ ì—†ì–´ì§„ ê±° ì•„ë‹ˆì—ˆì–´?\nì´ ë©”íŠ¸ë¡œë†ˆ ì†Œë¦¬ë‘ ë°›ì•„ì¹  ë•Œ ë‚˜ëŠ” ì†Œë¦¬ ê°™ì€ ê±´ ë‹¤ ë­ì•¼?";
+        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[4], "ì†Œë¦¬", Daehwa6_Text1, false));
 
-        string Daehwa6_Text2 = "±×°Ç ÀÌ Áö¿ª¿¡ ³²Àº ¸¶Áö¸· ¼Ò¸®ÀÔ´Ï´Ù.\n¿ë»ç´Ô²²¼­ ÀúµéÀ» ÇØ¹æ½ÃÅ°Áö ¸øÇÏ¸é ±×¸¶Àúµµ ³¯¾Æ°¥ °Ì´Ï´Ù!";
-        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[1], "Á¤·É", Daehwa6_Text2, true));
+        string Daehwa6_Text2 = "ê·¸ê±´ ì´ ì§€ì—­ì— ë‚¨ì€ ë§ˆì§€ë§‰ ì†Œë¦¬ì…ë‹ˆë‹¤.\nìš©ì‚¬ë‹˜ê»˜ì„œ ì €ë“¤ì„ í•´ë°©ì‹œí‚¤ì§€ ëª»í•˜ë©´ ê·¸ë§ˆì €ë„ ë‚ ì•„ê°ˆ ê²ë‹ˆë‹¤!";
+        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[1], "ì •ë ¹", Daehwa6_Text2, true));
 
-        string Daehwa4_Text3 = "¼Ò¸®µµ ¾ø´Âµ¥ ¿ì¸® ´ëÈ­´Â ¾î¶»°Ô ÇÏ°í ÀÖ´Â °Çµ¥?";
-        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[8], "¼Ò¸®", Daehwa4_Text3, false));
+        string Daehwa6_Text3 = "ì†Œë¦¬ë„ ì—†ëŠ”ë° ìš°ë¦¬ ëŒ€í™”ëŠ” ì–´ë–»ê²Œ í•˜ê³  ìˆëŠ” ê±´ë°?";
+        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[8], "ì†Œë¦¬", Daehwa6_Text3, false));
 
-        string Daehwa4_Text4 = "±×¾ß ÀÌ°Ç ÅØ½ºÆ®Àİ¾Æ¿ä.°øºÎ ¾È ÇÑ Æ¼ Á» ³»Áö ¸¶¼¼¿ä.";
-        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "Á¤·É", Daehwa4_Text4, true));
+        string Daehwa6_Text4 = "ê·¸ì•¼ ì´ê±´ í…ìŠ¤íŠ¸ì–ì•„ìš”.ê³µë¶€ ì•ˆ í•œ í‹° ì¢€ ë‚´ì§€ ë§ˆì„¸ìš”.";
+        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "ì •ë ¹", Daehwa6_Text4, true));
 
-        string Daehwa4_Text5 = "...";
-        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[7], "¼Ò¸®", Daehwa4_Text5, false));
+        string Daehwa6_Text5 = "...";
+        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[7], "ì†Œë¦¬", Daehwa6_Text5, false));
+
+        GameDescriptionText.text = "ì ì˜ íŒŒë€ìƒ‰ ê³µê²©ì€ ì„¸ë²ˆì§¸ ë¦¬ë“¬ì— ë§ì¶° í™€ë“œí•˜ê³ ,]\n[ë§ˆì§€ë§‰ ìˆœê°„ì— í•´ë‹¹ ë°©í–¥ìœ¼ë¡œ ìŠ¤ì™€ì´í”„í•˜ì—¬ ë§‰ì•„ë‚´ì•¼ í•©ë‹ˆë‹¤.";
 
         isDaehwa = false;
 
-        // Æ©Åä °ÔÀÓ 6 ÇÔ¼ö
+        // íŠœí†  ê²Œì„ 6 í•¨ìˆ˜
         daehwaIndex += 1;
         StageManager.isActive = true;
         stageManager.AudioUnPause();
-        yield return new WaitUntil(() => isDaehwa);  // ÆĞÅÏ ¼º°øÇÒ ¶§±îÁö ´ë±â
+        yield return new WaitUntil(() => isDaehwa);  // íŒ¨í„´ ì„±ê³µí•  ë•Œê¹Œì§€ ëŒ€ê¸°
         StageManager.isActive = false;
-        patternComplete = false;
+        // patternComplete = false;
         StartCoroutine(Daehwa_Final());
     }
 
     private IEnumerator Daehwa_Final()
     {
-        //string Daehwa7_Text1 = "³¢¾ß¿À!! Á¤¸» ÀßÇÏ¼Ì½À´Ï´Ù!! Á¦°¡ »ç¶÷ º¸´Â ´«ÀÌ ÂüÀ¸·Î ÁÁ¾Ò´ø ¸ğ¾çÀÔ´Ï´Ù!";
-        //yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "ÁÖÀÎ°ø", Daehwa7_Text1, false));
+        //if (!DatabaseManager.isTutorialDone)
+        //{
+        //    string Daehwa7_Text1 = "íŠœí† ë¦¬ì–¼ì€ ì„¤ì •ì°½ì—ì„œ ë‹¤ì‹œ ì§„í–‰í•  ìˆ˜ ìˆì–´ìš”. íŠœí† ë¦¬ì–¼ì„ í›Œë¥­íˆ í•´ë‚¸ë‹¤ë©´ ìƒˆë¡œìš´ ì¥ë©´ì„ ë³´ì‹¤ì§€ë„..?";
+        //    yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "ì •ë ¹", Daehwa7_Text1, true));
+        //}
+        //else
+        //{
+                // ì—”ë”© ì• ë‹ˆë©”ì´ì…˜
+        //}
+        string Daehwa7_Text2 = "ì¢‹ì•„ìš”! íŠœí† ë¦¬ì–¼ì€ ì„¤ì •ì°½ì—ì„œ ë‹¤ì‹œ í•´ë³¼ ìˆ˜ ìˆì–´ìš”. ì´ì œ ë§ˆì™•ì„ ì¡ìœ¼ëŸ¬ ë– ë‚˜ìš”!!!!";
+        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "ì •ë ¹", Daehwa7_Text2, true));
 
-        //string Daehwa7_Text2 = "...µè°í °è½Å°¡¿ä?";
-        //yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "ºÎÀÎ°ø", Daehwa7_Text2, false));
-
-        //string Daehwa7_Text3 = "¿Í! °í¾çÀÌµéÀÌ´Ù!!! ¾ê³× ÁøÂ¥ ±Í¿±´Ù!";
-        //yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "ºÎÀÎ°ø", Daehwa7_Text3, false));
-
-        //string Daehwa7_Text2 = "¿ë»ç´Ô. °í¾çÀÌ ³ğµéÀº ÇÜ½ºÅÍÀÇ ÃµÀûÀÎµ¥..";
-        //yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "ºÎÀÎ°ø", Daehwa7_Text2, false));
-
-        //string Daehwa7_Text2 = "...µè°í °è½Å°¡¿ä?";
-        //yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "ºÎÀÎ°ø", Daehwa7_Text2, false));
-        
-        
-        // ¿£µù ¾Ö´Ï¸ŞÀÌ¼Ç
+        Debug.Log("ëŒ€í™” íŒŒì´ë„");
+        // ì—”ë”© ì• ë‹ˆë©”ì´ì…˜
 
 
-        // Main Scene ÀüÈ¯
+        // Main Scene ì „í™˜
+        SceneLinkage.StageLV = 0;
         DatabaseManager.isTutorialDone = true;
         databaseManager.SaveTutorialDone();
         SceneManager.LoadScene("Main");
@@ -294,24 +351,69 @@ public class TutorialManager : MonoBehaviour
         yield break;
     }
 
-    
+    // checkComplete1,2 ì¤‘ì—ì„œ 1ì˜ ë°©ì‹ì„ ìš°ì„ ì ìœ¼ë¡œ êµ¬í˜„. (2ë¡œ êµ¬í˜„ì‹œ ë§ì€ ë²„ê·¸ ì˜ˆìƒ)
 
-    private void checkComplete()
+    // ì¸ë±ìŠ¤ì— í•´ë‹¹í•˜ëŠ” ìŠ¤íŠ¸ë¼ì´ì»¤ë“¤ì„ ìƒì„±í•œ ìƒíƒœì—ì„œ ì‚¬ìš©. ê·¸ ìŠ¤íŠ¸ë¼ì´ì»¤ ì „ë¶€ ì²´ë ¥ì´ 0ì´ ë˜ì—ˆëŠ”ì§€ í™•ì¸í•˜ëŠ” í•¨ìˆ˜
+    private void checkComplete1()
     {
-        //stiker clearÀÌÈÄ stiker destroy°¡ µÇ°Ô ²û ±¸ÇöÇØ¾ßÇÔ
+
         List<GameObject> strikerList_ = strikerManager.strikerList;
-        if (strikerList_.Count == 0) patternComplete = true;
+        bool isClear = true;
 
+        for (int i = 0; i < strikerList_.Count; i++)
+        {
+            GameObject striker = strikerList_[i];
+            StrikerController strikerController = striker.GetComponent<StrikerController>();
 
-        //or hp = 0ÀÎÁö¸¦ È®ÀÎ ÇÏ´Â°Å·Î ¹Ù²ãµµ µÊ
+            Debug.LogError($"CheckComplete: {striker.name} hp: {strikerController.hp}");
 
-        // StrikerController? strikerController = null;
-        // foreach (GameObject striker in strikerList_)
-        // {
-        //     strikerController = striker.GetComponent<StrikerController>();
-        //     if(strikerController.hp != 0) patternComplete = false; 
-        // }
+            if (strikerController.hp != 0)
+            {
+                isClear = false; // í´ë¦¬ì–´ ì¡°ê±´ ë¯¸ë‹¬
+            }
+        }
+        if (isClear) patternComplete = true;    // ëª¨ë“  ìŠ¤íŠ¸ë¼ì´ì»¤ë“¤ì´ ì²´ë ¥ì´ 0ì´ë©´ patternComplete = true
+        Debug.LogError($"{patternComplete}");
+
     }
 
+    // ëª¨ë“  ìŠ¤íŠ¸ë¼ì´ì»¤ë¥¼ ìƒì„±í•œ ìƒíƒœì—ì„œ ì‚¬ìš©. ê·¸ ì¤‘ì—ì„œ íŠ¹ì • ì¸ë±ìŠ¤ì— í•´ë‹¹í•˜ëŠ” ì´ë“¤ì´ ì²´ë ¥ì´ ëª¨ë‘ 0ì´ ë˜ì—ˆëŠ”ì§€ í™•ì¸í•˜ëŠ” í•¨ìˆ˜ -> 
+    private void checkComplete2(int daehwaIndex) { 
 
+        List<GameObject> strikerList_ = strikerManager.strikerList;
+        bool isClear = true;
+
+        int startIndex = StrikerNum[daehwaIndex - 1]; // ì‹œì‘ ì¸ë±ìŠ¤
+        int endIndex = StrikerNum[daehwaIndex];      // ë ì¸ë±ìŠ¤
+
+        for (int i = startIndex; i < endIndex; i++)
+        {
+            if (i >= strikerList_.Count)
+            {
+                Debug.LogError($"ìŠ¤íŠ¸ë¼ì´ì»¤ ì¸ë±ìŠ¤ {i}ê°€ ìœ íš¨í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+                continue;
+            }
+
+            GameObject striker = strikerList_[i];
+            StrikerController strikerController = striker.GetComponent<StrikerController>();
+
+            Debug.LogError($"CheckComplete: {striker.name} hp: {strikerController.hp}");
+
+            if (strikerController.hp != 0)
+            {
+                isClear = false; // í´ë¦¬ì–´ ì¡°ê±´ ë¯¸ë‹¬
+            }
+        }
+        if (isClear) patternComplete = true;
+        Debug.LogError($"{patternComplete}");
+
+    }
+
+    public void SkipOn()
+    {
+        SceneLinkage.StageLV = 0;
+        DatabaseManager.isTutorialDone = true;
+        databaseManager.SaveTutorialDone();
+        SceneManager.LoadScene("Main");
+    }
 }

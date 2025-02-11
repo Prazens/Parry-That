@@ -91,7 +91,7 @@ public class DialogueManager : MonoBehaviour
         NameText.transform.SetParent(dialoguePanel.transform, false);
         Text nameUIText = NameText.AddComponent<Text>();
         nameUIText.font = NameFont;
-        nameUIText.fontSize = 40;
+        nameUIText.fontSize = 75;
         nameUIText.color = Color.yellow;
         nameUIText.alignment = TextAnchor.MiddleLeft;
         RectTransform NameTextRect = NameText.GetComponent<RectTransform>();
@@ -106,7 +106,7 @@ public class DialogueManager : MonoBehaviour
         DialogueText.transform.SetParent(dialoguePanel.transform, false);
         Text dialogueUIText = DialogueText.AddComponent<Text>();
         dialogueUIText.font = DialogueFont;
-        dialogueUIText.fontSize = 36;
+        dialogueUIText.fontSize = 65;
         dialogueUIText.color = Color.white;
         dialogueUIText.alignment = TextAnchor.UpperLeft;
         RectTransform textRect = DialogueText.GetComponent<RectTransform>();

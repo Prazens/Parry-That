@@ -295,6 +295,7 @@ public class ScoreManager : MonoBehaviour
     // 자주 생성하는 것이 성능에 큰 영향을 끼치지는 않는다고 함.
     public void JudgeManage(Judgeable judgeObject, int judgement, bool isPassing = false, Direction tpD = Direction.None, AttackType tpT = AttackType.Normal)
     {
+        Debug.Log($"JudgeManage0 {judgement}");
         
         // 노트가 처리되지 않은 경우
         if (judgeObject == null || judgement == -1)
@@ -320,6 +321,8 @@ public class ScoreManager : MonoBehaviour
 
         // Debug.Log($"JudgeManage {judgeDetails} {(int)judgeObject.noteDirection} {judgement + 1}");
 
+        Debug.Log($"JudgeManage1 {judgeObject.noteDirection} {judgement}");
+        Debug.Log($"JudgeManage2 {judgeDetails[0][1]}");
         judgeDetails[(int)judgeObject.noteDirection][judgement + 1] += 1;
 
         // 특정 Striker 찾기
@@ -337,11 +340,12 @@ public class ScoreManager : MonoBehaviour
                 combo = 0;
 
                 // 피격당한 후 죽었을 때
-                if (--playerManager.hp == 0)
+                if (--playerManager.hp == 0 && !TutorialManager.isTutorial)
                 {
                     scoreUI.HideAll();
                     playerManager.PlayerHitSound();
                     playerManager.GameOver();
+                    Debug.LogError("abc");
                 }
                 // 피격당한 후 죽지 않았을 때
                 else

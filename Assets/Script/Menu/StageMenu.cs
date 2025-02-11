@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -33,6 +33,8 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
 
     private string[] StageName = {"0.Tutorial", "1.The First Beat", "2.Echoing Strikes", "3.Beat Master", "4.Final Encore/BOSS" };
 
+    [SerializeField] GameObject SettingCanvas;
+
     void Start()
     {
         RectTransform imgHistoryRect = GameObject.Find("Img_History").GetComponent<RectTransform>();
@@ -61,7 +63,9 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
         BlackOverlay.color = new Color (originalOverlayColor.r, originalOverlayColor.g, originalOverlayColor.b, 0f);
 
         // 스테이지에서 나왔을 때 현재 인덱스를 그 스테이지로 설정
-        currentIndex = SceneLinkage.StageLV == 0 ? 0 : SceneLinkage.StageLV;
+        currentIndex = SceneLinkage.StageLV;
+
+        SettingCanvas.GetComponent<Canvas>().sortingOrder = 10;
     }
 
     // Update is called once per frame
@@ -122,11 +126,11 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
 
 
         // 임시로 update에 구현
-        txtStageScore.text = string.Format("{0:#,##0}", theDatabase.score[currentIndex + 1]);
+        txtStageScore.text = string.Format("{0:#,##0}", theDatabase.score[currentIndex]);
         txtStageName.text = StageName[currentIndex];
         txtStageName.enableWordWrapping = false;  // 자동 줄 바꿈 해제
         txtStageName.overflowMode = TextOverflowModes.Overflow;  // 글자가 넘쳐도 계속 표시
-        switch (theDatabase.star[currentIndex + 1])
+        switch (theDatabase.star[currentIndex])
         {
             case 0:
                 Stars[0].SetActive(true);
@@ -156,6 +160,11 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
                 Debug.Log("잘못된 데이터베이스 정보(Star)");
                 break;
         }
+        if (!SettingPanel.activeSelf && TitleMenu.SwordUpEnd)
+        {
+            SettingIcon.SetActive(true);
+        }
+
     }
 
     public void SelectStage()
@@ -394,5 +403,25 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
         }
     }
 
+    private bool settingOn = false;
+    [SerializeField] private GameObject SettingPanel;
+    [SerializeField] private GameObject SettingIcon;
+    public void Setting()
+    {
+        settingOn = settingOn ? false : true;
+        if (settingOn)
+        {
+            SettingPanel.SetActive(true);
+        }
+        else
+        {
+            SettingPanel.SetActive(false);
+        }
+    }
 
+    public void goTutorial()
+    {
+        SceneLinkage.StageLV = 0;
+        SceneManager.LoadScene("Tutorial");
+    }
 }

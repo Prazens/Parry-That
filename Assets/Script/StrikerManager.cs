@@ -9,6 +9,7 @@ public class StrikerManager : MonoBehaviour
     private PlayerManager playerManager; // Player 정보 저장
     [SerializeField] private UIManager uiManager;
     public List<ChartData> charts; // 각 스트라이커의 채보 데이터
+    [SerializeField] private TutorialManager tutorialManager;
 
     [SerializeField] private GameObject holdExclamationPrefab; // 홀드 느낌표 프리팹
     private GameObject holdExclamation; // 홀드 느낌표
@@ -24,29 +25,62 @@ public class StrikerManager : MonoBehaviour
         Debug.Log("PlayerManager successfully linked to StrikerManager.");
     }
 
+    //private void Start()
+    //{
+    //    if (TutorialManager.isTutorial)
+    //    {
+    //        tutorialManager = GameObject.Find("TutorialManager").GetComponent<TutorialManager>();
+    //        if (tutorialManager = null) Debug.LogError("튜토리얼 매니저 못찾음");
+    //    }
+
+    //}
     private void Update()
     {
         float currentTime = StageManager.Instance.currentTime;
-        for (int i = 0; i < charts.Count; i++)
+        //if (TutorialManager.isTutorial && !tutorialManager.isDaehwa)
+        //{
+        //    for (int i = 0; i < TutorialManager.StrikerNum[tutorialManager.daehwaIndex] - TutorialManager.StrikerNum[tutorialManager.daehwaIndex - 1]; i++)
+        //    {
+        //        if (currentTime >= charts[i].appearTime * (60f / charts[i].bpm) + playerManager.musicOffset &&
+        //            strikerStatus[i] == 0)
+        //        {
+        //            strikerStatus[i] = 1;
+        //            Debug.Log($"SpawnStriker({i})");
+        //            strikerList[i].SetActive(true);
+        //        }
+        //        else if (currentTime >= charts[i].disappearTime * (60f / charts[i].bpm) + playerManager.musicOffset &&
+        //                 strikerStatus[i] == 1)
+        //        {
+        //            Debug.Log($"beClearedStriker({i})");
+        //            strikerList[i].GetComponent<StrikerController>().beCleared();
+        //            strikerStatus[i] = 2;
+        //        }
+        //    }
+        //}
+        //else if (!TutorialManager.isTutorial)
         {
-            if (currentTime >= charts[i].appearTime * (60f / charts[i].bpm) + playerManager.musicOffset &&
-                strikerStatus[i] == 0)
+            for (int i = 0; i < charts.Count; i++)
             {
-                strikerStatus[i] = 1;
-                Debug.Log($"SpawnStriker({i})");
-                strikerList[i].SetActive(true);
-            }
-            else if (currentTime >= charts[i].disappearTime * (60f / charts[i].bpm) + playerManager.musicOffset &&
-                     strikerStatus[i] == 1)
-            {
-                Debug.Log($"beClearedStriker({i})");
-                strikerList[i].GetComponent<StrikerController>().strikerExit();
-                strikerStatus[i] = 2;
+                if (currentTime >= charts[i].appearTime * (60f / charts[i].bpm) + playerManager.musicOffset &&
+                    strikerStatus[i] == 0)
+                {
+                    strikerStatus[i] = 1;
+                    Debug.Log($"SpawnStriker({i})");
+                    strikerList[i].SetActive(true);
+                }
+                else if (currentTime >= charts[i].disappearTime * (60f / charts[i].bpm) + playerManager.musicOffset &&
+                         strikerStatus[i] == 1)
+                {
+                    Debug.Log($"beClearedStriker({i})");
+                    strikerList[i].GetComponent<StrikerController>().beCleared();
+                    strikerStatus[i] = 2;
+                }
             }
         }
+
     }
 
-    public void InitStriker()
+    public void InitStriker(int idx)
     {
         if (holdExclamation != null)
         {
@@ -70,6 +104,7 @@ public class StrikerManager : MonoBehaviour
             {
                 SpawnStriker(i, false);
             }
+
         }
     }
 

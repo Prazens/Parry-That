@@ -26,8 +26,8 @@ public class StrikerController : MonoBehaviour
     private Queue<Tuple<float, int>> prepareQueue = new Queue<Tuple<float, int>>(); // (arriveTime, type) 저장
 
     public GameObject hpBarPrefab;
-    private GameObject hpBar;
-    private Transform hpControl;
+    public GameObject hpBar;
+    public Transform hpControl;
 
     //투사체 발사 시의 !관련
     [SerializeField] private GameObject exclamationPrefab; // 공통 느낌표 프리팹
@@ -607,7 +607,10 @@ public class StrikerController : MonoBehaviour
             if (hp <= 0)
             {
                 if(!isMelee) beCleared();
-                playerManager.hp += 1;
+                if (playerManager.hp < 10)
+                {
+                    playerManager.hp += 1;
+                }
                 
                 //기타몬 전용 굴러가기 퇴장
                 //original position 도착후 isClear 세팅
