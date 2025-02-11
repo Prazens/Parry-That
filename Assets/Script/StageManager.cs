@@ -352,7 +352,7 @@ public class StageManager : MonoBehaviour
     public void RestartStage()
     {
         AnimationEnable = true;
-
+        pauseButtonImg.sprite = OriginalButtonImg;
         // Debug.Log("Restarting Stage...");
         Time.timeScale = 1f;
         // 기존 Striker 삭제
