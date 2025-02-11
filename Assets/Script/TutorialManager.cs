@@ -310,7 +310,7 @@ public class TutorialManager : MonoBehaviour
         string Daehwa6_Text5 = "...";
         yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[7], "소리", Daehwa6_Text5, false));
 
-        GameDescriptionText.text = "적의 파란색 공격은 세번째 리듬에 맞춰 홀드하고,]\n[마지막 순간에 해당 방향으로 스와이프하여 막아내야 합니다.";
+        GameDescriptionText.text = "적의 파란색 공격은 세번째 리듬에 맞춰 홀드하고,\n마지막 순간에 해당 방향으로 스와이프하여 막아내야 합니다.";
 
         isDaehwa = false;
 
@@ -335,7 +335,7 @@ public class TutorialManager : MonoBehaviour
         //{
                 // 엔딩 애니메이션
         //}
-        string Daehwa7_Text2 = "좋아요! 튜토리얼은 설정창에서 다시 해볼 수 있어요. 이제 마왕을 잡으러 떠나요!!!!";
+        string Daehwa7_Text2 = "좋아요! 이제 마왕을 잡으러 떠나요!!!!";
         yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "정령", Daehwa7_Text2, true));
 
         Debug.Log("대화 파이널");

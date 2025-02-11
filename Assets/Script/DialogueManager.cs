@@ -64,7 +64,7 @@ public class DialogueManager : MonoBehaviour
             characterRect.anchorMax = new Vector2(0f, 0.33f);
             characterRect.pivot = new Vector2(0f, 0f);
             characterRect.anchoredPosition = new Vector2(Screen.width * 0.02f, - Screen.width * 0.12f); 
-            characterRect.sizeDelta = new Vector2(Screen.width * 0.33f * 1.5f, Screen.width * 0.33f * 1.2988f * 1.5f);
+            characterRect.sizeDelta = new Vector2(Screen.width * 0.33f * 1.8f, Screen.width * 0.33f * 1.2988f * 1.8f);
         }
         else
         {
@@ -72,7 +72,7 @@ public class DialogueManager : MonoBehaviour
             characterRect.anchorMax = new Vector2(1f, 0.33f);
             characterRect.pivot = new Vector2(1f, 0f);
             characterRect.anchoredPosition = new Vector2(- Screen.width * 0.02f, - Screen.width * 0.12f);
-            characterRect.sizeDelta = new Vector2(Screen.width * 0.33f * 1.5f, Screen.width * 0.33f * 1.2988f * 1.5f);
+            characterRect.sizeDelta = new Vector2(Screen.width * 0.33f * 1.8f, Screen.width * 0.33f * 1.2988f * 1.8f);
         }
 
         // 대화창 패널
@@ -91,7 +91,7 @@ public class DialogueManager : MonoBehaviour
         NameText.transform.SetParent(dialoguePanel.transform, false);
         Text nameUIText = NameText.AddComponent<Text>();
         nameUIText.font = NameFont;
-        nameUIText.fontSize = 75;
+        nameUIText.fontSize = 100 * (Screen.width / 1080);
         nameUIText.color = Color.yellow;
         nameUIText.alignment = TextAnchor.MiddleLeft;
         RectTransform NameTextRect = NameText.GetComponent<RectTransform>();
@@ -106,7 +106,7 @@ public class DialogueManager : MonoBehaviour
         DialogueText.transform.SetParent(dialoguePanel.transform, false);
         Text dialogueUIText = DialogueText.AddComponent<Text>();
         dialogueUIText.font = DialogueFont;
-        dialogueUIText.fontSize = 65;
+        dialogueUIText.fontSize = 90 * (Screen.width / 1080);
         dialogueUIText.color = Color.white;
         dialogueUIText.alignment = TextAnchor.UpperLeft;
         RectTransform textRect = DialogueText.GetComponent<RectTransform>();
