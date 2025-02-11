@@ -27,6 +27,7 @@ public class StageManager : MonoBehaviour
     [SerializeField] private GameObject pausePanelPrefab; // Pause 창 Prefab
     private GameObject PausePanelInstance;
     [SerializeField] private Transform canvasTransform; // Canvas의 Transform
+    [SerializeField] private Transform canvasPause; // Pause 자리
     [SerializeField] private GameController gameController; // GameController 참조
     [SerializeField] private ScoreManager scoreManager;
     [SerializeField] private AudioSource musicSource; // 음악 재생을 위한 AudioSource
@@ -35,6 +36,7 @@ public class StageManager : MonoBehaviour
     private int clearStrikers = 0;
     public bool is_over = false;
     [SerializeField] private TextMeshProUGUI countdownText; // 카운트다운 표시용 Text UI
+    [SerializeField] private TextMeshProUGUI continueText; // 컨티뉴 표시용 Text UI
     private GameObject overlay; // 검은 필터
     private bool button_active = true;
 
@@ -64,7 +66,7 @@ public class StageManager : MonoBehaviour
     {
         // 검은 필터 오버레이 생성
         overlay = new GameObject("BlackOverlay");
-        overlay.transform.SetParent(canvasTransform, false);
+        overlay.transform.SetParent(canvasPause, false);
         Image overlayImage = overlay.AddComponent<Image>();
         overlayImage.color = new Color(0f, 0f, 0f, 0.7f);
         overlayImage.raycastTarget = false;
@@ -98,16 +100,20 @@ public class StageManager : MonoBehaviour
             gameOverPanelInstance = Instantiate(gameOverPanelPrefab, canvasTransform);
             gameOverPanelInstance.SetActive(false); // 초기 비활성화
         }
-        if (pausePanelPrefab != null && canvasTransform != null)
+        if (pausePanelPrefab != null && canvasPause != null)
         {
             // Clear 창 인스턴스 생성
-            PausePanelInstance = Instantiate(pausePanelPrefab, canvasTransform);
+            PausePanelInstance = Instantiate(pausePanelPrefab, canvasPause);
             PausePanelInstance.SetActive(false);
         }
         // 카운트다운 UI 숨김
         if (countdownText != null)
         {
             countdownText.gameObject.SetActive(false);
+        }
+        if (continueText != null)
+        {
+            continueText.gameObject.SetActive(false);
         }
         if (musicSource != null && musicSource.clip != null)
         {
@@ -404,6 +410,10 @@ public class StageManager : MonoBehaviour
         if(PausePanelInstance != null) PausePanelInstance.SetActive(true);
         UpdatePanelScores(PausePanelInstance);
         overlay.SetActive(true);
+        if (continueText != null)
+        {
+            continueText.gameObject.SetActive(true);
+        }
         Debug.Log("Stage Paused!");
     }
     public void ResumeStage()
@@ -413,6 +423,10 @@ public class StageManager : MonoBehaviour
         isPaused = false;
         if(PausePanelInstance != null) PausePanelInstance.SetActive(false);
         overlay.SetActive(false);
+        if (continueText != null)
+        {
+            continueText.gameObject.SetActive(false);
+        }
         StartCoroutine(ResumeAfterDelay());
     }
     private IEnumerator ResumeAfterDelay()
