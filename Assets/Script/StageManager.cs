@@ -126,6 +126,9 @@ public class StageManager : MonoBehaviour
         {
             // Debug.LogError("Music source or clip is missing!");
         }
+
+        pauseButtonImg = pauseButton.GetComponent<Image>();
+        OriginalButtonImg = pauseButtonImg.sprite;
     }
     public void FirstStartStage()
     {
@@ -382,6 +385,9 @@ public class StageManager : MonoBehaviour
     public bool isPaused = false;
     private float savedMusicTime;
     [SerializeField] private GameObject pauseButton;
+    [SerializeField] private Sprite unpauseButton;
+    private Image pauseButtonImg;
+    private Sprite OriginalButtonImg;
     public void TogglePause()
     {
         if(!button_active) return;
@@ -400,6 +406,7 @@ public class StageManager : MonoBehaviour
         if (isPaused) return;
         isPaused = true;
         isActive = false;
+        pauseButtonImg.sprite = unpauseButton;
         //투사체 멈추기
         Time.timeScale = 0f;
         // 음악 멈춤 및 재생 시간 저장
@@ -411,10 +418,10 @@ public class StageManager : MonoBehaviour
         if(PausePanelInstance != null) PausePanelInstance.SetActive(true);
         UpdatePanelScores(PausePanelInstance);
         overlay.SetActive(true);
-        if (continueText != null)
-        {
-            continueText.gameObject.SetActive(true);
-        }
+        //if (continueText != null)
+        //{
+        //    continueText.gameObject.SetActive(true);
+        //}
         // Debug.Log("Stage Paused!");
     }
     public void ResumeStage()
@@ -422,12 +429,13 @@ public class StageManager : MonoBehaviour
         if (!isPaused) return;
         button_active = false;
         isPaused = false;
-        if(PausePanelInstance != null) PausePanelInstance.SetActive(false);
+        pauseButtonImg.sprite = OriginalButtonImg;
+        if (PausePanelInstance != null) PausePanelInstance.SetActive(false);
         overlay.SetActive(false);
-        if (continueText != null)
-        {
-            continueText.gameObject.SetActive(false);
-        }
+        //if (continueText != null)
+        //{
+        //    continueText.gameObject.SetActive(false);
+        //}
         StartCoroutine(ResumeAfterDelay());
     }
     private IEnumerator ResumeAfterDelay()
