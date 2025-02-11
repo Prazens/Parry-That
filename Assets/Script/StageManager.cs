@@ -523,7 +523,7 @@ public class StageManager : MonoBehaviour
                 }
                 else
                 {
-                    star2.SetActive(false);
+                    star3.SetActive(false);
                 }
             }
 

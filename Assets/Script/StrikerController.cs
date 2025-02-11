@@ -607,7 +607,10 @@ public class StrikerController : MonoBehaviour
             if (hp <= 0)
             {
                 if(!isMelee) beCleared();
-                playerManager.hp += 1;
+                if (playerManager.hp < 10)
+                {
+                    playerManager.hp += 1;
+                }
                 
                 //기타몬 전용 굴러가기 퇴장
                 //original position 도착후 isClear 세팅
