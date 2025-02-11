@@ -32,6 +32,7 @@ public class ScoreManager : MonoBehaviour
     private Judgeable tempJudgeable;
     void Update()
     {
+        if(!StageManager.isActive) return;
         // 각 선두 노트에 대해 늦은 MISS가 발생 가능한지 확인
         foreach (GameObject striker in strikerManager.strikerList)
         {
