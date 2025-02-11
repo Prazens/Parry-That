@@ -108,7 +108,7 @@ public class Stage3CutSceneManager : MonoBehaviour
             if (isTransitioning) return;
             if (isTyping) return;
 
-            Debug.Log($"{currentCutsceneIndex}");
+            // Debug.Log($"{currentCutsceneIndex}");
             StartCoroutine(GoToNextCutscene());
         }
 
@@ -285,7 +285,7 @@ public class Stage3CutSceneManager : MonoBehaviour
     }
     public void EndScene()
     {
-        // Debug.LogError("엔딩 함수");
+        // // Debug.LogError("엔딩 함수");
         databaseManager.SaveStage3Done();
         DatabaseManager.isStage3Done = true;
         SceneManager.LoadScene("Beat Master");

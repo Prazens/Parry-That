@@ -6,33 +6,33 @@
     "disappearTime": 90.0,
     "notes": [
         {
-            "time": 66.0,
-            "arriveTime": 70.0,
+            "time": 66.1,
+            "arriveTime": 70.1,
             "type": 1
         },
         {
-            "time": 67.0,
-            "arriveTime": 71.0,
+            "time": 67.1,
+            "arriveTime": 71.1,
             "type": 0
         },
         {
-            "time": 82.0,
-            "arriveTime": 86.0,
+            "time": 82.1,
+            "arriveTime": 86.1,
             "type": 1
         },
         {
-            "time": 82.5,
-            "arriveTime": 86.5,
+            "time": 82.6,
+            "arriveTime": 86.6,
             "type": 0
         },
         {
-            "time": 83.0,
-            "arriveTime": 87.0,
+            "time": 83.1,
+            "arriveTime": 87.1,
             "type": 0
         },
         {
-            "time": 83.5,
-            "arriveTime": 87.5,
+            "time": 83.6,
+            "arriveTime": 87.6,
             "type": 0
         }
     ]

@@ -6,85 +6,85 @@
     "disappearTime": 171.99999999999997,
     "notes": [
         {
-            "time": 58.0,
-            "arriveTime": 62.0,
+            "time": 58.1,
+            "arriveTime": 62.1,
             "type": 1
         },
         {
-            "time": 59.0,
-            "arriveTime": 63.0,
+            "time": 59.1,
+            "arriveTime": 63.1,
             "type": 0
         },
         {
-            "time": 74.0,
-            "arriveTime": 78.0,
+            "time": 74.1,
+            "arriveTime": 78.1,
             "type": 1
         },
         {
-            "time": 74.5,
-            "arriveTime": 78.5,
+            "time": 74.6,
+            "arriveTime": 78.6,
             "type": 0
         },
         {
-            "time": 75.0,
-            "arriveTime": 79.0,
+            "time": 75.1,
+            "arriveTime": 79.1,
             "type": 0
         },
         {
-            "time": 75.5,
-            "arriveTime": 79.5,
+            "time": 75.6,
+            "arriveTime": 79.6,
             "type": 0
         },
         {
-            "time": 88.0,
-            "arriveTime": 92.0,
+            "time": 88.1,
+            "arriveTime": 92.1,
             "type": 0
         },
         {
-            "time": 89.0,
-            "arriveTime": 93.0,
+            "time": 89.1,
+            "arriveTime": 93.1,
             "type": 0
         },
         {
-            "time": 96.0,
-            "arriveTime": 100.0,
+            "time": 96.1,
+            "arriveTime": 100.1,
             "type": 0
         },
         {
-            "time": 97.0,
-            "arriveTime": 101.0,
+            "time": 97.1,
+            "arriveTime": 101.1,
             "type": 0
         },
 
         {
-            "time": 104.0,
-            "arriveTime": 108.0,
+            "time": 104.1,
+            "arriveTime": 108.1,
             "type": 0
         },
         {
-            "time": 105.0,
-            "arriveTime": 109.0,
+            "time": 105.1,
+            "arriveTime": 109.1,
             "type": 0
         },
 
         {
-            "time": 112.0,
-            "arriveTime": 116.0,
+            "time": 112.1,
+            "arriveTime": 116.1,
             "type": 0
         },
         {
-            "time": 112.5,
-            "arriveTime": 116.5,
+            "time": 112.6,
+            "arriveTime": 116.6,
             "type": 0
         },
         {
-            "time": 113.0,
-            "arriveTime": 117.0,
+            "time": 113.1,
+            "arriveTime": 117.1,
             "type": 0
         },
         {
-            "time": 113.5,
-            "arriveTime": 117.5,
+            "time": 113.6,
+            "arriveTime": 117.6,
             "type": 0
         },
 

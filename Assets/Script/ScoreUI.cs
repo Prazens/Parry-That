@@ -34,7 +34,7 @@ public class ScoreUI : MonoBehaviour
             heartDisplay = Instantiate(heartDisplayPrefab, hpDisplay.transform);
             heartDisplay.transform.localPosition = new Vector3(27 * (i % 5), -27 * (i / 5), 0);
             
-            // Debug.Log($"Heart Display spawn at: {heartDisplay.transform.position}");
+            // // Debug.Log($"Heart Display spawn at: {heartDisplay.transform.position}");
 
             heartDisplays[i] = heartDisplay;
             heartDisplay.GetComponent<Image>().sprite = heartImages[0];

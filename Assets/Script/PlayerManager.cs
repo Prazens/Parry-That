@@ -42,16 +42,16 @@ public class PlayerManager : MonoBehaviour
             scoreManager = gameController.GetComponent<ScoreManager>();
             if (scoreManager != null)
             {
-                Debug.Log("PlayerManager successfully linked with ScoreManager.");
+                // Debug.Log("PlayerManager successfully linked with ScoreManager.");
             }
             else
             {
-                Debug.LogError("ScoreManager script is not attached to GameController!");
+                // Debug.LogError("ScoreManager script is not attached to GameController!");
             }
         }
         else
         {
-            Debug.LogError("GameController not found!");
+            // Debug.LogError("GameController not found!");
         }
 
         direcrionDisplayer = transform.GetChild(0);
@@ -88,7 +88,7 @@ public class PlayerManager : MonoBehaviour
         // 홀드 끝 모션
         else if (type == AttackType.HoldFinishStrong || type == AttackType.HoldStop)
         {
-            Debug.Log($"Animation : {direction}, {type}");
+            // Debug.Log($"Animation : {direction}, {type}");
 
             bladeAnimator.SetTrigger("bladeHoldFinish");
             playerAnimator.SetTrigger("playerHoldFinish");
@@ -109,7 +109,7 @@ public class PlayerManager : MonoBehaviour
             randomNum = UnityEngine.Random.Range(0, 2);
         }
 
-        Debug.Log($"Animation : {direction}, {type}, {randomNum}");
+        // Debug.Log($"Animation : {direction}, {type}, {randomNum}");
 
         playerAnimator.SetInteger("attackType", (int)type);
         playerAnimator.SetInteger("parryDirection", (int)direction);

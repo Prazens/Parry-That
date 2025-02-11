@@ -22,7 +22,7 @@ public class LoadingSceneUI : MonoBehaviour
         rt_txt.anchorMax = new Vector2(0.7f, 0.56f);
 
         txt.fontSize = 55 * (Screen.width / 1080);
-        Debug.Log($"{txt.fontSize}");
+        // Debug.Log($"{txt.fontSize}");
     }
 
 }

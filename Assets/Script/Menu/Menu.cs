@@ -37,7 +37,7 @@ public class Menu : MonoBehaviour
         }
         else
         {
-            Debug.Log("background �� ã��");
+            // Debug.Log("background �� ã��");
         }
         if (background2Image != null)
         {
@@ -45,7 +45,7 @@ public class Menu : MonoBehaviour
         }
         else
         {
-            Debug.Log("background2 �� ã��");
+            // Debug.Log("background2 �� ã��");
         }
     }
 

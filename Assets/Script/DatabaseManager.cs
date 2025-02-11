@@ -48,8 +48,8 @@ public class DatabaseManager : MonoBehaviour
         {
             score[1] = PlayerPrefs.GetInt("Score1");
             star[1] = PlayerPrefs.GetInt("Stage1_Star");
-            Debug.Log($"{score[1]} 점 로드");
-            Debug.Log($"별 {star[1]}개 로드");
+            // Debug.Log($"{score[1]} 점 로드");
+            // Debug.Log($"별 {star[1]}개 로드");
             score[2] = PlayerPrefs.GetInt("Score2");
             star[2] = PlayerPrefs.GetInt("Stage2_Star");
             score[3] = PlayerPrefs.GetInt("Score3");

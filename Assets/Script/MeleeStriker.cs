@@ -145,7 +145,7 @@ public class MeleeStriker : MonoBehaviour
 
         prepareQueue.Enqueue(new Tuple<float, int>(arriveTime, noteType)); // 도착 시간과 타입 저장
         ShowExclamation(noteType); // 느낌표 표시
-        Debug.Log("prepare!");
+        // Debug.Log("prepare!");
 
         // 애니메이션 실행 (느낌표 표시)
         // **애니메이션 실행 (공격 준비)**
@@ -214,7 +214,7 @@ public class MeleeStriker : MonoBehaviour
         initialHp = _initialHp;
         bpm = initialBpm;
         playerManager = targetPlayer;
-        Debug.Log($"{gameObject.name} spawned with HP: {hp}, BPM: {bpm}");
+        // Debug.Log($"{gameObject.name} spawned with HP: {hp}, BPM: {bpm}");
         location = direction;
         chartData = chart; // 채보 데이터 설정
 
@@ -242,7 +242,7 @@ public class MeleeStriker : MonoBehaviour
             hpControl.transform.localScale = new Vector3(1 - ((float)hp / initialHp), 1, 1);
 
             hp -= damage;
-            Debug.Log($"{gameObject.name} took {damage} damage! Current HP: {hp}");
+            // Debug.Log($"{gameObject.name} took {damage} damage! Current HP: {hp}");
             animator.SetTrigger("isDamaged");
             if (hp == 0)
             {

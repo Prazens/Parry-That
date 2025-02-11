@@ -24,7 +24,7 @@ public class ParriedProjectile : MonoBehaviour
     // 임시 테스트용으로 만든 패링된 투사체 움직임
     public IEnumerator ParriedProjectileMovement(Direction moveDirection, Vector3 reachPosition)
     {
-        Debug.Log("패링된 투사체 움직임 시작");
+        // Debug.Log("패링된 투사체 움직임 시작");
         for (int i = 0; i < 12; i++)
         {
             gameObject.transform.position += gameObject.transform.TransformDirection(Vector3.up) / 10;

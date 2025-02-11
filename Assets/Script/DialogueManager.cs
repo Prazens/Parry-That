@@ -29,7 +29,7 @@ public class DialogueManager : MonoBehaviour
             if (Input.GetMouseButtonDown(0) || Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
             {
                 accelerate = true;
-                // Debug.Log("클릭됨");
+                // // Debug.Log("클릭됨");
             }
         }
     }

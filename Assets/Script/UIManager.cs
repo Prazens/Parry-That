@@ -40,7 +40,7 @@ public class UIManager : MonoBehaviour
 
         if (DamageOverlayImage == null)
         {
-            Debug.Log("DamageOverlay 못찾음");
+            // Debug.Log("DamageOverlay 못찾음");
         }
         else
         {
@@ -53,7 +53,7 @@ public class UIManager : MonoBehaviour
     {
         if (isFading) return;
         StartCoroutine(FadeEffect());
-        Debug.Log("함수 호출 완료");
+        // Debug.Log("함수 호출 완료");
     }
 
     private IEnumerator FadeEffect()
@@ -62,7 +62,7 @@ public class UIManager : MonoBehaviour
 
         isFading = true;
 
-        Debug.Log("페이드인 시작");
+        // Debug.Log("페이드인 시작");
         float elapsedTime = 0f;
         while (elapsedTime < fadeDuration * 0.01f)
         {
@@ -73,7 +73,7 @@ public class UIManager : MonoBehaviour
         }
         SetAlpha(maxAlpha);
 
-        Debug.Log("페이드아웃 시작");
+        // Debug.Log("페이드아웃 시작");
         elapsedTime = 0f;
         while (elapsedTime < fadeDuration * 0.99f)
         {

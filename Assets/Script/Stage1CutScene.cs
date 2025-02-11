@@ -110,7 +110,7 @@ public class Stage1CutScene : MonoBehaviour
             if (isTransitioning) return;
             if (isTyping) return;
 
-            Debug.Log($"{currentCutsceneIndex}");
+            // Debug.Log($"{currentCutsceneIndex}");
             StartCoroutine(GoToNextCutscene());
         }
 
@@ -302,7 +302,7 @@ public class Stage1CutScene : MonoBehaviour
     }
     public void EndScene()
     {
-        // Debug.LogError("엔딩 함수");
+        // // Debug.LogError("엔딩 함수");
         databaseManager.SaveStage1Done();
         DatabaseManager.isStage1Done = true;
         SceneManager.LoadScene("Stage1");
