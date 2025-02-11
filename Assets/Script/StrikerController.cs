@@ -67,6 +67,9 @@ public class StrikerController : MonoBehaviour
     private float spawnOffset = 3.0f; // 화면 밖에서 등장하는 거리
     private Vector3 spawnPosition;
 
+    [SerializeField] private ParticleSystem particleSystemGreen;  // 🔹 초록색 파티클 시스템
+
+
     private void Start()
     {
         backtime = 0f;
@@ -640,6 +643,7 @@ public class StrikerController : MonoBehaviour
     {
         animator.SetBool("isClear", true);
         animator.SetTrigger("Cleared");
+        PlayParticleEffect();
         StartCoroutine(DestroyAfterAnimation());
     }
     private IEnumerator DestroyAfterAnimation()
@@ -656,5 +660,13 @@ public class StrikerController : MonoBehaviour
         // 오브젝트 삭제
         // Destroy(gameObject);
         gameObject.SetActive(false);
+    }
+    // 🔹 초록색 파티클 실행 함수
+    private void PlayParticleEffect()
+    {
+        if (particleSystemGreen != null)
+        {
+            particleSystemGreen.Play();
+        }
     }
 }
