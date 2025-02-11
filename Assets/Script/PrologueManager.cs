@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -8,17 +8,17 @@ using UnityEngine.UI;
 public class PrologueManager : MonoBehaviour
 {
     [SerializeField] private Image fadeImg;
-    private float fadeDuration = 0.3f; // ÆäÀÌµå ½Ã°£
-    [SerializeField] private GameObject[] cutscenePanels; // ÄÆ¾À 
+    private float fadeDuration = 0.3f; // í˜ì´ë“œ ì‹œê°„
+    [SerializeField] private GameObject[] cutscenePanels; // ì»·ì”¬ 
     private int currentCutsceneIndex = 0;
-    [SerializeField] private Animator cutsceneAnimator; // ¾Ë¶÷ ¾Ö´Ï¸ŞÀÌ¼Ç
+    [SerializeField] private Animator cutsceneAnimator; // ì•ŒëŒ ì• ë‹ˆë©”ì´ì…˜
     [SerializeField] private Canvas mainCanvas;
     [SerializeField] private Font PrologueFont;
 
-    private bool isTransitioning = false;  // ÇöÀç ÆäÀÌµå(°ËÀº ¹è°æ) ÁøÇà ÁßÀÎÁö ¿©ºÎ
-    private bool isAnimationPlaying = false; // ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ Àç»ı ÁßÀÎÁö ¿©ºÎ
+    private bool isTransitioning = false;  // í˜„ì¬ í˜ì´ë“œ(ê²€ì€ ë°°ê²½) ì§„í–‰ ì¤‘ì¸ì§€ ì—¬ë¶€
+    private bool isAnimationPlaying = false; // ì• ë‹ˆë©”ì´ì…˜ì´ ì¬ìƒ ì¤‘ì¸ì§€ ì—¬ë¶€
     private bool isTyping = false;
-    private Coroutine fadeCoroutine = null;  // ÆäÀÌµå ÄÚ·çÆ¾ ÂüÁ¶
+    private Coroutine fadeCoroutine = null;  // í˜ì´ë“œ ì½”ë£¨í‹´ ì°¸ì¡°
 
     private SpriteRenderer sourceSpriteRenderer;
     private Image sourceImage;
@@ -32,19 +32,19 @@ public class PrologueManager : MonoBehaviour
 
     private void Start()
     {
-        // ÅØ½ºÆ® ³»¿ë
-        TextSet[0] = "´ëÇĞ»ı '¼Ò¸®'´Â ½ÃÇèÀ» ¾ÕµÎ°í ÆÈÀÚ ÁÁ°Ô ÀÚ°í ÀÖ¾ú½À´Ï´Ù.";
-        TextSet[1] = " ½ÉÁö¾î ²Ş±îÁö ²Ù°í ÀÖ³×¿ä.";
-        TextSet[2] = "¿ë»ç '¼Ò¸®'½Ã¿©, ¼¼°è¸¦ ±¸ÇØÁÖ¼Ò¼­!!";
-        TextSet[3] = "¸¶¿ÕÀÌ ¼Ò¸®ÀÇ Á¤·ÉµéÀ» Å¸¶ô½ÃÄÑ ÀÚ±â ºÎÇÏ·Î ¹Ù²Ù°í ÀÖ½À´Ï´Ù!";
-        TextSet[4] = "Áö±İ ¸¶¿ÕÀ» ¸ØÃßÁö ¸øÇÏ¸é ¼¼»ó¿¡ ¼Ò¸®°¡ ¾ø¾îÁ® ¹ö¸± °Ì´Ï´Ù!";
-        TextSet[5] = "\"¹Ì¾ÈÇÑµ¥ ²ŞÀÎ °Å ´Ù Æ¼³­´Ù.\"";
-        TextSet[6] = "'¼Ò¸®'´Â 9½Ã¿¡ ½ÃÇèÀÌ ÀÖ¾úÀ¸¹Ç·Î, ²Ş ²Ü ½Ã°£µûÀ§ ¾ø¾ú½À´Ï´Ù.";
-        TextSet[7] = "±×·¯³ª Â¥ÀÜ\n                                            \n\"¾Æ\"";
-        TextSet[8] = "\"¾Æ´Ï, ¾Ë¶÷ÀÌ ºĞ¸í ¿ï·È¾î¾ßÇß´Âµ¥...?\"\n                                            \n\n\"¾Æ?\"";
-        TextSet[9] = "                          \nÁ×¿©¹ö¸®°Ú´Ù ¸¶¿Õ!!!!";
+        // í…ìŠ¤íŠ¸ ë‚´ìš©
+        TextSet[0] = "ëŒ€í•™ìƒ 'ì†Œë¦¬'ëŠ” ì‹œí—˜ì„ ì•ë‘ê³  íŒ”ì ì¢‹ê²Œ ìê³  ìˆì—ˆìŠµë‹ˆë‹¤.";
+        TextSet[1] = " ì‹¬ì§€ì–´ ê¿ˆê¹Œì§€ ê¾¸ê³  ìˆë„¤ìš”.";
+        TextSet[2] = "ìš©ì‚¬ 'ì†Œë¦¬'ì‹œì—¬, ì„¸ê³„ë¥¼ êµ¬í•´ì£¼ì†Œì„œ!!";
+        TextSet[3] = "ë§ˆì™•ì´ ì†Œë¦¬ì˜ ì •ë ¹ë“¤ì„ íƒ€ë½ì‹œì¼œ ìê¸° ë¶€í•˜ë¡œ ë°”ê¾¸ê³  ìˆìŠµë‹ˆë‹¤!";
+        TextSet[4] = "ì§€ê¸ˆ ë§ˆì™•ì„ ë©ˆì¶”ì§€ ëª»í•˜ë©´ ì„¸ìƒì— ì†Œë¦¬ê°€ ì—†ì–´ì ¸ ë²„ë¦´ ê²ë‹ˆë‹¤!";
+        TextSet[5] = "\"ë¯¸ì•ˆí•œë° ê¿ˆì¸ ê±° ë‹¤ í‹°ë‚œë‹¤.\"";
+        TextSet[6] = "'ì†Œë¦¬'ëŠ” 9ì‹œì— ì‹œí—˜ì´ ìˆì—ˆìœ¼ë¯€ë¡œ, ê¿ˆ ê¿€ ì‹œê°„ë”°ìœ„ ì—†ì—ˆìŠµë‹ˆë‹¤.";
+        TextSet[7] = "ê·¸ëŸ¬ë‚˜ ì§œì”\n                                            \n\"ì•„\"";
+        TextSet[8] = "\"ì•„ë‹ˆ, ì•ŒëŒì´ ë¶„ëª… ìš¸ë ¸ì–´ì•¼í–ˆëŠ”ë°...?\"\n                                            \n\n\"ì•„?\"";
+        TextSet[9] = "                          \nì£½ì—¬ë²„ë¦¬ê² ë‹¤ ë§ˆì™•!!!!";
 
-        // ¾À À§Ä¡ Á¶Á¤
+        // ì”¬ ìœ„ì¹˜ ì¡°ì •
         CutScenes = GameObject.Find("CutScenes");
         RectTransform rt = CutScenes.GetComponent<RectTransform>();
         rt.anchorMin = new Vector2(0.5f, 1f);
@@ -62,7 +62,7 @@ public class PrologueManager : MonoBehaviour
         rt_S2.sizeDelta = new Vector2(Screen.width * 0.8f, Screen.width * 0.8f * 0.686f);
         rt_S2.anchoredPosition = new Vector2(0, -Screen.width * 0.2f);
 
-        // ÅØ½ºÆ®Ã¢ »ı¼º
+        // í…ìŠ¤íŠ¸ì°½ ìƒì„±
         PrologueTextObj = new GameObject("PrologueText");
         PrologueTextObj.transform.SetParent(mainCanvas.transform, false);
         PrologueText = PrologueTextObj.AddComponent<Text>();
@@ -78,7 +78,7 @@ public class PrologueManager : MonoBehaviour
         PrologueText.text = "";
         PrologueTextObj.SetActive(true);
 
-        // ÄÄÆ÷³ÍÆ® °¡Á®¿À±â
+        // ì»´í¬ë„ŒíŠ¸ ê°€ì ¸ì˜¤ê¸°
         sourceSpriteRenderer = cutscenePanels[8].GetComponent<SpriteRenderer>();
         sourceImage = cutscenePanels[8].GetComponent<Image>();
         TypingSound = GetComponent<AudioSource>();
@@ -88,7 +88,7 @@ public class PrologueManager : MonoBehaviour
             cutscenePanels[i].SetActive(false);
         }
 
-        // Ã³À½ ÆäÀÌµåÀÎ
+        // ì²˜ìŒ í˜ì´ë“œì¸
         currentCutsceneIndex = 0;
         cutscenePanels[currentCutsceneIndex].SetActive(true);
 
@@ -98,17 +98,17 @@ public class PrologueManager : MonoBehaviour
 
         StartCoroutine(FadeIn());
 
-        // Ã¹ ÅØ½ºÆ®
+        // ì²« í…ìŠ¤íŠ¸
         StartCoroutine(ShowPrologueText(TextSet[0]));
     }
 
     private void Update()
     {
-        // ¸¶¿ì½º Å¬¸¯(ÅÍÄ¡) °¨Áö
+        // ë§ˆìš°ìŠ¤ í´ë¦­(í„°ì¹˜) ê°ì§€
         if (Input.GetMouseButtonDown(0) || Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
 
-            // Á¶ÀÛ ±İÁö Á¶°Ç
+            // ì¡°ì‘ ê¸ˆì§€ ì¡°ê±´
             if (isAnimationPlaying) return;
             if (isTransitioning) return;
             if (isTyping) return;
@@ -123,7 +123,7 @@ public class PrologueManager : MonoBehaviour
 
     private void GoToNextCutscene()
     {
-        // ¸¶Áö¸· ÄÆ¾À ¿É¼Ç
+        // ë§ˆì§€ë§‰ ì»·ì”¬ ì˜µì…˜
         if (currentCutsceneIndex >= cutscenePanels.Length - 2)
         {
             if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
@@ -198,7 +198,7 @@ public class PrologueManager : MonoBehaviour
         Debug.Log("aaaaa");
         if (cutsceneAnimator == null)
         {
-            Debug.LogError("Animator°¡ ÇÒ´çµÇÁö ¾Ê¾Ò½À´Ï´Ù!");
+            Debug.LogError("Animatorê°€ í• ë‹¹ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤!");
         }
         foreach (var param in cutsceneAnimator.parameters)
         {
@@ -206,7 +206,7 @@ public class PrologueManager : MonoBehaviour
         }
         */
         cutsceneAnimator.SetTrigger("Play");
-        // Debug.Log("Æ®¸®°Å 'Play' È£ÃâµÊ.");
+        // Debug.Log("íŠ¸ë¦¬ê±° 'Play' í˜¸ì¶œë¨.");
 
         // cutsceneAnimator.Play("SceneAnimeNew", 0, 0f);
         yield return new WaitForSeconds(2.7f);
@@ -243,7 +243,7 @@ public class PrologueManager : MonoBehaviour
             yield return null;
         }
 
-        // ÃÖÁ¾ º¸Á¤
+        // ìµœì¢… ë³´ì •
         color.a = endAlpha;
         fadeImg.color = color;
 
@@ -267,20 +267,20 @@ public class PrologueManager : MonoBehaviour
             yield return null;
         }
 
-        // ÃÖÁ¾ º¸Á¤
+        // ìµœì¢… ë³´ì •
         color.a = endAlpha;
         fadeImg.color = color;
 
         isTransitioning = false;
     }
 
-    // ÇöÀç´Â °ËÀº ¿À¹ö·¹ÀÌ¸¦ ÀÌ¿ëÇØ¼­ È­¸éÀ» ÆäÀÌµåÀÎ ÆäÀÌµå¾Æ¿ôÇÏ´Â ¹æ½ÄÀ» »ç¿ëÇÏÁö¸¸
-    // È­¸é ÀüÃ¼¸¦ °¡¸± ÇÊ¿ä°¡ ¾ø´Â ÀÌ»ó ¹Ù·Î ¾Æ·¡ FadeInPanelImage¸¸ ÀÌ¿ëÇØ¼­ ±¸Çö °¡´ÉÇÔ.
-    // ¸ğµç ÄÆ¾À ¾Æ·¡ FadeInPanelImage ÀÌ¿ëÇØ¼­ ¹Ù²Ù´Âµ¥ ÄÚµåÀûÀ¸·Î ¿¹»ÜµíÇÏ³ª ÀÛµ¿¿£ ¹®Á¦ ¾øÀ¸´Ï ³ªÁß¿¡ °³¼±..
+    // í˜„ì¬ëŠ” ê²€ì€ ì˜¤ë²„ë ˆì´ë¥¼ ì´ìš©í•´ì„œ í™”ë©´ì„ í˜ì´ë“œì¸ í˜ì´ë“œì•„ì›ƒí•˜ëŠ” ë°©ì‹ì„ ì‚¬ìš©í•˜ì§€ë§Œ
+    // í™”ë©´ ì „ì²´ë¥¼ ê°€ë¦´ í•„ìš”ê°€ ì—†ëŠ” ì´ìƒ ë°”ë¡œ ì•„ë˜ FadeInPanelImageë§Œ ì´ìš©í•´ì„œ êµ¬í˜„ ê°€ëŠ¥í•¨.
+    // ëª¨ë“  ì»·ì”¬ ì•„ë˜ FadeInPanelImage ì´ìš©í•´ì„œ ë°”ê¾¸ëŠ”ë° ì½”ë“œì ìœ¼ë¡œ ì˜ˆì ë“¯í•˜ë‚˜ ì‘ë™ì—” ë¬¸ì œ ì—†ìœ¼ë‹ˆ ë‚˜ì¤‘ì— ê°œì„ ..
     private IEnumerator FadeInPanelImage(GameObject panel)
     {
         isTransitioning = true;
-        StartCoroutine(ShowPrologueText(TextSet[1])); // 2¹øÂ° ÄÆ¾À¿¡¸¸ »ç¿ëÇÒ°Å¶ó 1·Î ÀÛ¼ºÇÔ
+        StartCoroutine(ShowPrologueText(TextSet[1])); // 2ë²ˆì§¸ ì»·ì”¬ì—ë§Œ ì‚¬ìš©í• ê±°ë¼ 1ë¡œ ì‘ì„±í•¨
 
         float timer = 0f;
         Image panelImg = panel.GetComponent<Image>();
@@ -332,7 +332,7 @@ public class PrologueManager : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
 
-        // ÅØ½ºÆ® ÇÑ ±ÛÀÚ¾¿ ³ª¿À°Ô
+        // í…ìŠ¤íŠ¸ í•œ ê¸€ìì”© ë‚˜ì˜¤ê²Œ
         int charIndex = 0;
         int TypingSoundDelay = 0;
         while (charIndex < Text.Length)

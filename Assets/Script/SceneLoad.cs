@@ -29,7 +29,7 @@ public class SceneLoad : MonoBehaviour
                 operation = SceneManager.LoadSceneAsync("tmpScene 2");
                 break;
             case 3:
-                operation = SceneManager.LoadSceneAsync("Beat Master");
+                operation = SceneManager.LoadSceneAsync("tmpScene 3");
                 break;
             ///
 
