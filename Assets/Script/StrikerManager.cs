@@ -11,6 +11,10 @@ public class StrikerManager : MonoBehaviour
     public List<ChartData> charts; // 각 스트라이커의 채보 데이터
     [SerializeField] private TutorialManager tutorialManager;
 
+    [SerializeField] private GameObject holdExclamationPrefab; // 홀드 느낌표 프리팹
+    private GameObject holdExclamation; // 홀드 느낌표
+    [SerializeField] private AudioClip holdingSound;  // 홀드 중
+
     // 스트라이커 저장해놓을 공간
     public List<GameObject> strikerList = new List<GameObject>();
     public List<int> strikerStatus = new List<int>();
@@ -78,45 +82,29 @@ public class StrikerManager : MonoBehaviour
 
     public void InitStriker(int idx)
     {
-        //if (TutorialManager.isTutorial)
-        //{
-        //    int[] StrikerNum = { 0, 1, 2, 3, 7, 11, 13 };    // 각 패턴에 나오는 스크라이커 시작 인덱스 // 총 12개
-        //    strikerStatus.Clear();
-        //    Debug.Log($"InitStriker {charts.Count}");
-        //    // 차트 패턴 나오는 순서 맞춰서 넣어야함
-        //    for (int i = StrikerNum[idx]; i < StrikerNum[idx + 1]; i++)
-        //    {
-        //        strikerStatus.Add(0);
-        //        if (charts[i].appearTime == 0)
-        //        {
-        //            strikerStatus[i] = 1;
-        //            Debug.Log($"SpawnStriker({i})");
-        //            SpawnStriker(i, true);
-        //        }
-        //        else
-        //        {
-        //            SpawnStriker(i, false);
-        //        }
-        //    }
-        //}
-        //else
+        if (holdExclamation != null)
         {
-            strikerStatus.Clear();
-            Debug.Log($"InitStriker {charts.Count}");
-            for (int i = 0; i < charts.Count; i++)
+            Destroy(holdExclamation);
+        }
+        holdExclamation = Instantiate(holdExclamationPrefab);
+        holdExclamation.GetComponent<holdExclamation>().audioSource = GameObject.Find("Audio Source").GetComponent<AudioSource>();
+
+        strikerStatus.Clear();
+        Debug.Log($"InitStriker {charts.Count}");
+        for (int i = 0; i < charts.Count; i++)
+        {
+            strikerStatus.Add(0);
+            if (charts[i].appearTime == 0)
             {
-                strikerStatus.Add(0);
-                if (charts[i].appearTime == 0)
-                {
-                    strikerStatus[i] = 1;
-                    Debug.Log($"SpawnStriker({i})");
-                    SpawnStriker(i, true);
-                }
-                else
-                {
-                    SpawnStriker(i, false);
-                }
+                strikerStatus[i] = 1;
+                Debug.Log($"SpawnStriker({i})");
+                SpawnStriker(i, true);
             }
+            else
+            {
+                SpawnStriker(i, false);
+            }
+
         }
     }
 
@@ -145,6 +133,8 @@ public class StrikerManager : MonoBehaviour
         // 스트라이커 초기화
         StrikerController strikerController = striker.GetComponent<StrikerController>();
         strikerController.uiManager = uiManager;
+        strikerController.holdExclamation = holdExclamation;
+        strikerController.holdingSound = holdingSound;
         
         if (strikerController != null)
         {

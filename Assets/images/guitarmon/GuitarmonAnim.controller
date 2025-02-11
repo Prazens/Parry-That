@@ -293,6 +293,32 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!1102 &-6753525130157909904
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: guitarmon_cleared
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 7400000, guid: a6ebb09c17e48bc4c945eeae05636af0, type: 2}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!1109 &-6608958694555376658
 AnimatorTransition:
   m_ObjectHideFlags: 1
@@ -332,6 +358,9 @@ AnimatorStateTransition:
     m_EventTreshold: 1
   - m_ConditionMode: 2
     m_ConditionEvent: isAttacking
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: isClear
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -7438201802211155413}
@@ -605,6 +634,9 @@ AnimatorStateTransition:
     m_EventTreshold: 4
   - m_ConditionMode: 2
     m_ConditionEvent: isAttacking
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: isClear
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -7088766139846446734}
@@ -1189,6 +1221,12 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
+  - m_Name: Cleared
+    m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -1637,6 +1675,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 2
     m_ConditionEvent: isAttacking
     m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: isClear
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -5895121523587991634}
   m_Solo: 0
@@ -1873,6 +1914,31 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!1101 &4518741095643119420
+AnimatorStateTransition:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: isClear
+    m_EventTreshold: 0
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: -6753525130157909904}
+  m_Solo: 0
+  m_Mute: 0
+  m_IsExit: 0
+  serializedVersion: 3
+  m_TransitionDuration: 0
+  m_TransitionOffset: 0
+  m_ExitTime: 1
+  m_HasExitTime: 1
+  m_HasFixedDuration: 1
+  m_InterruptionSource: 0
+  m_OrderedInterruption: 1
+  m_CanTransitionToSelf: 1
 --- !u!1101 &4652564841249983916
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -2048,13 +2114,13 @@ AnimatorStateMachine:
     m_Position: {x: 620, y: 430, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6347803107853958587}
-    m_Position: {x: 40, y: 280, z: 0}
+    m_Position: {x: 100, y: 240, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3699265813150564288}
-    m_Position: {x: 300, y: 130, z: 0}
+    m_Position: {x: 440, y: 210, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5895121523587991634}
-    m_Position: {x: 160, y: 200, z: 0}
+    m_Position: {x: 320, y: 160, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6330430026858921465}
     m_Position: {x: 750, y: 360, z: 0}
@@ -2072,7 +2138,7 @@ AnimatorStateMachine:
     m_Position: {x: 820, y: -250, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3197233796763769477}
-    m_Position: {x: 770, y: -190, z: 0}
+    m_Position: {x: 780, y: -190, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -2430448591958821621}
     m_Position: {x: 600, y: -260, z: 0}
@@ -2123,10 +2189,10 @@ AnimatorStateMachine:
     m_Position: {x: -210, y: -330, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -1502528294244277687}
-    m_Position: {x: -170, y: 160, z: 0}
+    m_Position: {x: -210, y: 170, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 3119688646456158389}
-    m_Position: {x: 30, y: -10, z: 0}
+    m_Position: {x: -30, y: -10, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -1252285812220430240}
     m_Position: {x: -120, y: 430, z: 0}
@@ -2141,7 +2207,7 @@ AnimatorStateMachine:
     m_Position: {x: 120, y: 510, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 6092399486915344698}
-    m_Position: {x: 30, y: 130, z: 0}
+    m_Position: {x: 90, y: 130, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -7594147167746438507}
     m_Position: {x: 960, y: 280, z: 0}
@@ -2154,6 +2220,9 @@ AnimatorStateMachine:
   - serializedVersion: 1
     m_State: {fileID: 5008967991915772103}
     m_Position: {x: -460, y: -20, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: -6753525130157909904}
+    m_Position: {x: -170, y: 220, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions:
   - {fileID: 7092545667641446213}
@@ -2241,7 +2310,8 @@ AnimatorState:
   m_Name: guitarmon_clear
   m_Speed: 1
   m_CycleOffset: 0
-  m_Transitions: []
+  m_Transitions:
+  - {fileID: 4518741095643119420}
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
@@ -2327,6 +2397,9 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 1
     m_ConditionEvent: isClear
+    m_EventTreshold: 0
+  - m_ConditionMode: 1
+    m_ConditionEvent: Cleared
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 6092399486915344698}
@@ -2582,6 +2655,9 @@ AnimatorStateTransition:
     m_EventTreshold: 3
   - m_ConditionMode: 2
     m_ConditionEvent: isAttacking
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: isClear
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 3119688646456158389}

@@ -6,23 +6,23 @@
 	"disappearTime": 328.0,
     "notes": [
         {
-            "time": 2.0,
-            "arriveTime": 4.0,
+            "time": 0.0,
+            "arriveTime": 2.0,
             "type": 2
         },
         {
-            "time": 6.0,
-            "arriveTime": 8.0,
+            "time": 4.0,
+            "arriveTime": 6.0,
             "type": 3
         },
         {
-            "time": 10.0,
-            "arriveTime": 12.0,
+            "time": 8.0,
+            "arriveTime": 10.0,
             "type": 2
         },
         {
-            "time": 14.0,
-            "arriveTime": 16.0,
+            "time": 12.0,
+            "arriveTime": 14.0,
             "type": 3
         },
         {

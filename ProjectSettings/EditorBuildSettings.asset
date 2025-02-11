@@ -18,6 +18,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Loading.unity
     guid: 535f8b70ef67ec44db4edcf7c5934632
   - enabled: 1
+    path: Assets/Scenes/tmpScene.unity
+    guid: 401f78b6b1a1f6a499d72b0d3182b4d5
+  - enabled: 1
     path: Assets/Scenes/Stage1.unity
     guid: 83cc75104c2cdc04a9ffeaa4bed34356
   - enabled: 1
@@ -27,6 +30,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Beat Master.unity
     guid: ca95caa7cc56e6844878f4ec40296916
   - enabled: 1
-    path: Assets/Scenes/Stage3.unity
-    guid: 02f7404c8f4ef894e99c836b6edd8231
+    path: Assets/Scenes/tmpScene 2.unity
+    guid: 054515fc431863c46a9caa3fad934ea1
   m_configObjects: {}

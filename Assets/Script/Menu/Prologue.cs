@@ -14,7 +14,9 @@ public class Prologue : MonoBehaviour
             tmp_Background.SetActive(false);    // 임시 구현
             Debug.Log("tmp_Background이 비활성화되었습니다.");
 
-            if (DatabaseManager.isTutorialDone) // 튜토리얼 이미 완료했을 경우
+            // if (DatabaseManager.isTutorialDone) // 튜토리얼 이미 완료했을 경우
+
+            if (false)
             {
                 tmp_Background.SetActive(true);  // 임시 구현
                 Debug.Log("Tutorial 완료됨. Main 씬으로 전환.");
@@ -28,7 +30,7 @@ public class Prologue : MonoBehaviour
     }
     public void SkipButtonOn()
     {
-        SceneLinkage.StageLV = -1;
-        SceneManager.LoadScene("Tutorial");
+        SceneLinkage.StageLV = 0;       // imsi
+        SceneManager.LoadScene("Main");     // imsi
     }
 }

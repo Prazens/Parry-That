@@ -111,7 +111,7 @@ public class StageManager : MonoBehaviour
         }
         if (musicSource != null && musicSource.clip != null)
         {
-            stageDuration = musicSource.clip.length + musicOffset + 2f;
+            stageDuration = musicSource.clip.length + musicOffset + 1f;
             Debug.Log($"Stage duration set to: {stageDuration} seconds");
         }
         else
@@ -290,7 +290,7 @@ public class StageManager : MonoBehaviour
         {
             musicSource.Stop();
         }
-        CalculateStars();
+        // CalculateStars();
 
         // GameOver 창 활성화
         if (gameOverPanelInstance != null)
@@ -300,6 +300,16 @@ public class StageManager : MonoBehaviour
             UpdateStar_Over();
         }
         overlay.SetActive(true);
+
+        // 최고 기록 경신하면 데이터베이스에 업데이트
+        ScoreManager scoreManager = gameController.GetComponent<ScoreManager>();
+        DatabaseManager theDatabase = FindObjectOfType<DatabaseManager>();
+        if (scoreManager.score > theDatabase.score[SceneLinkage.StageLV])
+        {
+            theDatabase.score[SceneLinkage.StageLV] = scoreManager.score;
+            theDatabase.SaveScoreData();
+            Debug.Log($"최고기록 경신: {theDatabase.score[SceneLinkage.StageLV]}");
+        }
     }
     private void EndStage()
     {
@@ -314,7 +324,7 @@ public class StageManager : MonoBehaviour
         {
             clearPanelInstance.SetActive(true); // Clear 창 활성화
         }
-        CalculateStars();
+        // CalculateStars();
         UpdatePanelScores(clearPanelInstance);
         UpdateStar_Clear();
         overlay.SetActive(true);
@@ -484,14 +494,38 @@ public class StageManager : MonoBehaviour
             GameObject star3 = clearPanelInstance.transform.Find("Star3").gameObject;
 
             // 별 활성화/비활성화
-            if (star1 != null) star1.SetActive(true); // 1개 조건
-            if (star2 != null) star2.SetActive(clearStrikers >= 1); // 2개 조건 
-            if (star3 != null) star3.SetActive(clearStrikers >= 2); // 3개 조건 
-
             int currentStars = 0;
-            if (clearStrikers >= 0) currentStars = 1;
-            if (clearStrikers >= 1) currentStars = 2;
-            if (clearStrikers >= 2) currentStars = 3;
+
+            if (star1 != null)
+            {
+                star1.SetActive(true); // 1개 조건
+            }
+
+            if (star2 != null)
+            {
+                if (scoreManager.judgeDetails[0][0] * 30000 * (2 / 3) <= scoreManager.score)
+                {
+                    currentStars = 2;
+                    star2.SetActive(true); // 2개 조건
+                }
+                else
+                {
+                    star2.SetActive(false);
+                }
+            }
+
+            if (star3 != null)
+            {
+                if (scoreManager.judgeDetails[0][1] == 0)
+                {
+                    currentStars = 3;
+                    star3.SetActive(true); // 3개 조건
+                }
+                else
+                {
+                    star3.SetActive(false);
+                }
+            }
 
             // 데이터베이스에 별 개수 저장
             DatabaseManager theDatabase = FindObjectOfType<DatabaseManager>();
@@ -518,8 +552,8 @@ public class StageManager : MonoBehaviour
 
             // 별 활성화/비활성화
             if (star1 != null) star1.SetActive(false); // 1개 조건
-            if (star2 != null) star2.SetActive(clearStrikers >= 1); // 2개 조건 
-            if (star3 != null) star3.SetActive(clearStrikers >= 2); // 3개 조건 
+            if (star2 != null) star2.SetActive(false); // 2개 조건 
+            if (star3 != null) star3.SetActive(false); // 3개 조건 
         }
     }
     private void CalculateStars()

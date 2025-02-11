@@ -41,6 +41,9 @@ public class TitleMenu : MonoBehaviour
 
     void Start()
     {
+
+        Application.targetFrameRate = 120; // 프레임 120 고정
+
         menuPanel = GameObject.Find("Title").GetComponent<RectTransform>();
         nextPanel = GameObject.Find("StageMenu").GetComponent<RectTransform>();
         Sword = GameObject.Find("Img_Sword").GetComponent<Image>();
@@ -97,6 +100,8 @@ public class TitleMenu : MonoBehaviour
         rt_imsi.rectTransform.anchoredPosition = Sword.rectTransform.anchoredPosition;
         if (1 <= StageMenu.currentIndex && StageMenu.currentIndex <= 100) imsi.SetActive(true);
         else imsi.SetActive(false);
+
+        imsi.SetActive(false);  // imsi
     }
 
     private void MouseMove()

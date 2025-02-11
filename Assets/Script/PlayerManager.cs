@@ -25,6 +25,8 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private AudioClip hit;
     [SerializeField] private AudioClip SwingStrong;
     [SerializeField] private AudioClip SwingWeak;
+    [SerializeField] private AudioSource SmallaudioSource;
+    [SerializeField] private AudioSource SwingaudioSource;
 
     // public string[] triggers = new string[2] { "playerParryUp", "playerParryDown" };
 
@@ -141,7 +143,7 @@ public class PlayerManager : MonoBehaviour
                 audioSource.PlayOneShot(SwingWeak);
                 break;
             case AttackType.Strong:
-                audioSource.PlayOneShot(SwingStrong);
+                SwingaudioSource.PlayOneShot(SwingStrong);
                 break;
             default:
                 break;
@@ -154,6 +156,6 @@ public class PlayerManager : MonoBehaviour
     }
     public void PlayerHitSound()
     {
-        audioSource.PlayOneShot(hit);
+        SmallaudioSource.PlayOneShot(hit);
     }
 }

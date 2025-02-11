@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Microsoft.Unity.VisualStudio.Editor;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -36,6 +35,7 @@ public class StrikerController : MonoBehaviour
     [SerializeField] private List<Sprite> exclamationSprites = new List<Sprite>(); 
     private Transform exclamationParent; // 느낌표 표시 위치
     private List<GameObject> prepareExclamation = new List<GameObject>(); // 느낌표 오브젝트 저장
+    public GameObject holdExclamation; // 홀드 느낌표
 
     //준비 효과음
     [SerializeField] private AudioSource audioSource;
@@ -44,6 +44,10 @@ public class StrikerController : MonoBehaviour
     //패링 효과음
     [SerializeField] private AudioClip parrySoundNormal;  // 일반 공격 준비 효과음 (type 0)
     [SerializeField] private AudioClip parrySoundStrong;  // 강한 공격 준비 효과음 (type 1)
+    //패링 효과음
+    [SerializeField] public AudioClip holdingSound;  // 홀드 중
+    [SerializeField] private AudioClip holdingEnd;  // 홀드 끝
+
     // 근접 공격 관련 변수
     private Vector3 originalPosition;
     private Vector3 targetPosition;
@@ -61,6 +65,10 @@ public class StrikerController : MonoBehaviour
     //spawn후 입장장 변수
     private float moveDuration = 1.0f; // 이동 시간
     private float spawnOffset = 3.0f; // 화면 밖에서 등장하는 거리
+    private Vector3 spawnPosition;
+
+    [SerializeField] private ParticleSystem particleSystemGreen;  // 🔹 초록색 파티클 시스템
+
 
     private void Start()
     {
@@ -78,7 +86,7 @@ public class StrikerController : MonoBehaviour
             bladeAnimator.SetInteger("bladeDirection", (int)location);
         }
         // 초기 위치를 화면 밖으로 설정
-        Vector3 spawnPosition = GetSpawnPosition();
+        spawnPosition = GetSpawnPosition();
         // 스트라이커를 화면 밖에서 시작 위치로 이동
         transform.position = spawnPosition;
 
@@ -168,6 +176,8 @@ public class StrikerController : MonoBehaviour
         Debug.Log($"ActMeleeHoldStart {judgeableQueue.Peek().arriveBeat} {bpm} {StageManager.Instance.currentTime}");
         bladeAnimator.SetTrigger("bladePlay");
 
+        audioSource.PlayOneShot(holdingSound);
+
         uiManager.CutInDisplay(judgeableQueue.Peek().arriveBeat * (60f / bpm) - StageManager.Instance.currentTime + playerManager.musicOffset);
 
         // StartCoroutine(MeleeHoldStartAnim());
@@ -180,8 +190,13 @@ public class StrikerController : MonoBehaviour
         animator.SetBool("isAttacking", false);
         bladeAnimator.SetTrigger("bladeHoldFinish");
         
+        audioSource.Stop();
+        audioSource.PlayOneShot(holdingEnd);
+        
         transform.GetChild(0).transform.localPosition = Vector3.zero;
         isHolding = false;
+
+        holdExclamation.GetComponent<holdExclamation>().ForceStop();
 
         // 미스났는데도 느낌표 남아있는 거 방지
         while (prepareExclamation.Count > 0)
@@ -225,7 +240,11 @@ public class StrikerController : MonoBehaviour
     private IEnumerator MeleeGoBack()
     {
         Debug.Log("MeleeGoBack");
-        if(hp == 0) animator.SetBool("hp0", true);
+        if(hp == 0) 
+        {
+            animator.SetBool("hp0", true);
+            moveTime = 0.6f;
+        }
         else animator.SetBool("MovingBack", true);
         Debug.Log(isMoving);
         while (isMoving)
@@ -392,6 +411,15 @@ public class StrikerController : MonoBehaviour
         }
         int count = prepareQueue.Count; // 현재 준비된 공격 개수
         prepareExclamation.Clear();
+
+        if (type == 2)
+        {
+            holdExclamation.GetComponent<holdExclamation>().Appear(bpm, 1);
+        }
+        else if (type == 3)
+        {
+            holdExclamation.GetComponent<holdExclamation>().Disappear(bpm, 1);
+        }
 
         List<Tuple<float, int>> tempList = new List<Tuple<float, int>>(prepareQueue); // 현재 큐를 리스트로 변환 (순서 유지)
 
@@ -579,7 +607,10 @@ public class StrikerController : MonoBehaviour
             if (hp <= 0)
             {
                 if(!isMelee) beCleared();
-                playerManager.hp += 1;
+                if (playerManager.hp < 10)
+                {
+                    playerManager.hp += 1;
+                }
                 
                 //기타몬 전용 굴러가기 퇴장
                 //original position 도착후 isClear 세팅
@@ -587,21 +618,58 @@ public class StrikerController : MonoBehaviour
             }
         }
     }
+    public void strikerExit()
+    {
+        if(hp != 0)
+        {
+            StartCoroutine(ExitToSpawnPosition());
+        }
+    }
+    private IEnumerator ExitToSpawnPosition()
+    {
+        float elapsedTime = 0;
+
+        // 부드러운 이동을 위한 Lerp 적용
+        while (elapsedTime < moveDuration)
+        {
+            transform.position = Vector3.Lerp(transform.position, spawnPosition, elapsedTime / moveDuration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // 최종 위치 고정
+        transform.position = spawnPosition;
+        gameObject.SetActive(false);
+    }
+
     public void beCleared()
     {
         animator.SetBool("isClear", true);
+        animator.SetTrigger("Cleared");
+        PlayParticleEffect();
         StartCoroutine(DestroyAfterAnimation());
     }
     private IEnumerator DestroyAfterAnimation()
     {
-        // 애니메이션 길이 가져오기
-        float exitAnimationTime = animator.GetCurrentAnimatorStateInfo(0).length;
+        // // 애니메이션 길이 가져오기
+        // float exitAnimationTime = animator.GetCurrentAnimatorStateInfo(0).length;
         
-        // 애니메이션 실행 시간만큼 대기
-        yield return new WaitForSeconds(exitAnimationTime);
+        // // 애니메이션 실행 시간만큼 대기
+        // yield return new WaitForSeconds(exitAnimationTime);
+        //기타몬 애니메이션 길이 기준으로 그냥 2.5초 지정해버렸습니다.
+        if(isMelee) yield return new WaitForSeconds(2.5f);
+        else yield return new WaitForSeconds(1f);
 
         // 오브젝트 삭제
         // Destroy(gameObject);
         gameObject.SetActive(false);
+    }
+    // 🔹 초록색 파티클 실행 함수
+    private void PlayParticleEffect()
+    {
+        if (particleSystemGreen != null)
+        {
+            particleSystemGreen.Play();
+        }
     }
 }
