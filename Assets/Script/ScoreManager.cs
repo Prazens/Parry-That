@@ -21,7 +21,7 @@ public class ScoreManager : MonoBehaviour
 
     public int bpm;
     public List<int[]> judgeDetails = new List<int[]>();  // 스트라이커별 판정 정보, index 0은 전체 판정 합
-    // { 총 노트수(미구현), 늦은 MISS, 늦은 GUARD, 늦은 BOUNCE, 완벽한 PARFECT, 빠른 BOUNCE, 빠른 GUARD } 순서
+    // { 총 노트수, 늦은 MISS, 늦은 GUARD, 늦은 BOUNCE, 완벽한 PARFECT, 빠른 BOUNCE, 빠른 GUARD } 순서
 
     // 디버깅용
     private string[] judgeStrings = new string[7]
@@ -86,7 +86,18 @@ public class ScoreManager : MonoBehaviour
         Debug.Log($"strikerManager.charts 의 길이:{strikerManager.charts.Count}");
         for (int i = 0; i < strikerManager.charts.Count + 1; i++)
         {
-            judgeDetails.Add(new int[7] { 0, 0, 0, 0, 0, 0, 0 });
+            if (i == 0)
+            {
+                judgeDetails.Add(new int[7] { 0, 0, 0, 0, 0, 0, 0 });
+                foreach (ChartData chart in strikerManager.charts)
+                {
+                    judgeDetails[0][0] += chart.notes.Length;
+                }
+            }
+            else
+            {
+                judgeDetails.Add(new int[7] { strikerManager.charts[i - 1].notes.Length, 0, 0, 0, 0, 0, 0 });
+            }
         }
 
         return;
@@ -280,7 +291,7 @@ public class ScoreManager : MonoBehaviour
 
     // 혹시 모를 성능 때문에 judgeObject가 null일 때를 대비한 tpD, tpT 매개변수를 만들어뒀는데,
     // GPT는 깡통 (noteDirection과 attackType만 들어있고, 나머지는 null) Judgeable 객체를
-    // 자주 생성하는 것이 성능에 큰 영향을 끼치지는 않는다고 함. 어떤 방법이 더 나을까요
+    // 자주 생성하는 것이 성능에 큰 영향을 끼치지는 않는다고 함.
     public void JudgeManage(Judgeable judgeObject, int judgement, bool isPassing = false, Direction tpD = Direction.None, AttackType tpT = AttackType.Normal)
     {
         
@@ -305,6 +316,9 @@ public class ScoreManager : MonoBehaviour
 
         // index로 한번에 처리
         judgeDetails[0][judgement + 1] += 1;
+
+        // Debug.Log($"JudgeManage {judgeDetails} {(int)judgeObject.noteDirection} {judgement + 1}");
+
         judgeDetails[(int)judgeObject.noteDirection][judgement + 1] += 1;
 
         // 특정 Striker 찾기

@@ -222,7 +222,7 @@ public class TouchManager : MonoBehaviour
 
 
             // 설정된 터치 길이를 넘었을 경우 : 스와이프한 것으로 취급, 판정 실시
-            else if (sumLength > 0.1f && isSwiping)
+            else if (sumLength > 0.25f && isSwiping)
             {
                 // 시작점으로부터 끝점까지의 각도 측정
                 lastPos -= initialPos;
