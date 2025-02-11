@@ -41,7 +41,7 @@ public class StageManager : MonoBehaviour
     private bool button_active = true;
 
     [SerializeField] private TextAsset[] jsonCharts;
-    private float musicOffset;
+    public float musicOffset;
 
     // 빅토리 애니메이션 관련
     [SerializeField] GameObject VictoryAnimatorObj;
