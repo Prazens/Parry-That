@@ -2050,6 +2050,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 8782d35a65465e9418cc6dfc33712165, type: 3}
   - {fileID: 21300000, guid: eeb5adb6d9207764f82241c56a71ff7e, type: 3}
   - {fileID: 21300000, guid: 687a5fc0406ccb9458d228ddd6d4011b, type: 3}
+  daehwaIndex: 0
 --- !u!4 &1355106858
 Transform:
   m_ObjectHideFlags: 0
@@ -2621,6 +2622,7 @@ MonoBehaviour:
     appearTime: 0
     disappearTime: 0
     notes: []
+  tutorialManager: {fileID: 1355106857}
   strikerList: []
   strikerStatus: 
 --- !u!4 &2036327257

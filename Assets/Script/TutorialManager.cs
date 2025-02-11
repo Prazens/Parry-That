@@ -26,13 +26,13 @@ public class TutorialManager : MonoBehaviour
     private List<int> chartIdxList = new List<int>();
 
     DatabaseManager databaseManager;
-    private int daehwaIndex = 0;
+    public int daehwaIndex = 0;
     private bool patternComplete = false;
-    private bool isDaehwa = true;
+    public bool isDaehwa = true;
     public static bool isTutorial = false;
     private bool isRollBack = false;
 
-    int[] StrikerNum = { 0, 1, 2, 3, 7, 11, 13 };   // 12까지 존재. // 각 패턴 스트라이커 시작 인덱스
+    public static int[] StrikerNum = { 0, 1, 2, 3, 7, 11, 13 };   // 12까지 존재. // 각 패턴 스트라이커 시작 인덱스
 
     private void Awake()
     {
@@ -122,11 +122,7 @@ public class TutorialManager : MonoBehaviour
                         strikerController.hpControl.transform.localScale = new Vector3(0, 1, 1);
                     }
                     */
-                    foreach (GameObject striker in strikerManager.strikerList)
-                    {
-                        Destroy(striker);
-                    }
-                    strikerManager.strikerList.Clear();
+                    strikerManager.ClearStrikers();
                     strikerManager.InitStriker(daehwaIndex - 1);    // 현재 패턴의 스트라이커들을 재생성
 
                     foreach (GameObject striker in strikerManager.strikerList)
@@ -140,6 +136,8 @@ public class TutorialManager : MonoBehaviour
                     return;
                 }
                 // Debug.LogError($"오디오 멈춤: {count}, {currentTime}");
+                strikerManager.ClearStrikers();
+                strikerManager.InitStriker(daehwaIndex);
                 stageManager.AudioPause();
                 isDaehwa = true;
                 
