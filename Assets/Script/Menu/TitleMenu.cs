@@ -98,10 +98,11 @@ public class TitleMenu : MonoBehaviour
 
         // �ӽ��ڵ� for imsi
         rt_imsi.rectTransform.anchoredPosition = Sword.rectTransform.anchoredPosition;
-        if (1 <= StageMenu.currentIndex && StageMenu.currentIndex <= 100) imsi.SetActive(true);
-        else imsi.SetActive(false);
+        // if (1 <= StageMenu.currentIndex && StageMenu.currentIndex <= 100) imsi.SetActive(true);
+        // else imsi.SetActive(false);
 
         imsi.SetActive(false);  // imsi
+        if (StageMenu.currentIndex == 4) imsi.SetActive(true);
     }
 
     private void MouseMove()
