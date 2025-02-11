@@ -391,4 +391,24 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
         }
     }
 
+    private bool settingOn = false;
+    [SerializeField] private GameObject SettingPanel;
+    public void Setting()
+    {
+        settingOn = settingOn ? false : true;
+        if (settingOn)
+        {
+            SettingPanel.SetActive(true);
+        }
+        else
+        {
+            SettingPanel.SetActive(false);
+        }
+    }
+
+    public void goTutorial()
+    {
+        SceneLinkage.StageLV = -1;
+        SceneManager.LoadScene("Tutorial");
+    }
 }

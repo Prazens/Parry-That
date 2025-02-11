@@ -409,5 +409,11 @@ public class TutorialManager : MonoBehaviour
 
     }
 
-
+    public void SkipOn()
+    {
+        SceneLinkage.StageLV = 0;
+        DatabaseManager.isTutorialDone = true;
+        databaseManager.SaveTutorialDone();
+        SceneManager.LoadScene("Main");
+    }
 }
