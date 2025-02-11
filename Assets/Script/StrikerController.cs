@@ -45,7 +45,7 @@ public class StrikerController : MonoBehaviour
     [SerializeField] private AudioClip parrySoundNormal;  // 일반 공격 준비 효과음 (type 0)
     [SerializeField] private AudioClip parrySoundStrong;  // 강한 공격 준비 효과음 (type 1)
     //패링 효과음
-    [SerializeField] private AudioClip holdingSound;  // 홀드 중
+    [SerializeField] public AudioClip holdingSound;  // 홀드 중
     [SerializeField] private AudioClip holdingEnd;  // 홀드 끝
 
     // 근접 공격 관련 변수

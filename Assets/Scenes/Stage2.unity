@@ -1582,7 +1582,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stageManager: {fileID: 1448475905}
   swipeThreshold: 50
-  isTouchAvailable: 1
+  isTouchAvailable: 0
 --- !u!4 &1744429772
 Transform:
   m_ObjectHideFlags: 0
@@ -1634,7 +1634,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scoreManager: {fileID: 1744429773}
   playerManager: {fileID: 0}
-  isTouchAvailable: 1
+  isTouchAvailable: 0
 --- !u!114 &1744429775
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1910,6 +1910,7 @@ MonoBehaviour:
   uiManager: {fileID: 698621751}
   charts: []
   holdExclamationPrefab: {fileID: 2570531951866361977, guid: 9255d8ba8e6bdf14183e532a558b85b3, type: 3}
+  holdingSound: {fileID: 8300000, guid: 2fb29fea08f032048b27b9b0132da9f5, type: 3}
   strikerList: []
   strikerStatus: 
 --- !u!4 &1860902389

@@ -12,6 +12,7 @@ public class StrikerManager : MonoBehaviour
 
     [SerializeField] private GameObject holdExclamationPrefab; // 홀드 느낌표 프리팹
     private GameObject holdExclamation; // 홀드 느낌표
+    [SerializeField] private AudioClip holdingSound;  // 홀드 중
 
     // 스트라이커 저장해놓을 공간
     public List<GameObject> strikerList = new List<GameObject>();
@@ -98,6 +99,7 @@ public class StrikerManager : MonoBehaviour
         StrikerController strikerController = striker.GetComponent<StrikerController>();
         strikerController.uiManager = uiManager;
         strikerController.holdExclamation = holdExclamation;
+        strikerController.holdingSound = holdingSound;
         
         if (strikerController != null)
         {
