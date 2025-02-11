@@ -63,7 +63,7 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
         BlackOverlay.color = new Color (originalOverlayColor.r, originalOverlayColor.g, originalOverlayColor.b, 0f);
 
         // 스테이지에서 나왔을 때 현재 인덱스를 그 스테이지로 설정
-        currentIndex = SceneLinkage.StageLV == 0 ? 0 : SceneLinkage.StageLV;
+        currentIndex = SceneLinkage.StageLV;
 
         SettingCanvas.GetComponent<Canvas>().sortingOrder = 10;
     }
@@ -126,11 +126,11 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
 
 
         // 임시로 update에 구현
-        txtStageScore.text = string.Format("{0:#,##0}", theDatabase.score[currentIndex + 1]);
+        txtStageScore.text = string.Format("{0:#,##0}", theDatabase.score[currentIndex]);
         txtStageName.text = StageName[currentIndex];
         txtStageName.enableWordWrapping = false;  // 자동 줄 바꿈 해제
         txtStageName.overflowMode = TextOverflowModes.Overflow;  // 글자가 넘쳐도 계속 표시
-        switch (theDatabase.star[currentIndex + 1])
+        switch (theDatabase.star[currentIndex])
         {
             case 0:
                 Stars[0].SetActive(true);
@@ -421,7 +421,7 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
 
     public void goTutorial()
     {
-        SceneLinkage.StageLV = -1;
+        SceneLinkage.StageLV = 0;
         SceneManager.LoadScene("Tutorial");
     }
 }

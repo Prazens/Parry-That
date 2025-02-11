@@ -314,8 +314,8 @@ public class PrologueManager : MonoBehaviour
         StartCoroutine(FadeIn());
         yield return 0.2f;
 
-        SceneLinkage.StageLV = 0;   // imsi
-        SceneManager.LoadScene("Main"); //imsi
+        SceneLinkage.StageLV = 0;   
+        SceneManager.LoadScene("Tutorial"); 
     }
 
     public IEnumerator ShowPrologueText(string Text)
