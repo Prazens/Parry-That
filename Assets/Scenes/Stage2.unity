@@ -337,7 +337,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_TargetDisplay: 0
 --- !u!224 &224584158
 RectTransform:
@@ -1013,7 +1013,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!224 &698621755
 RectTransform:
@@ -1634,7 +1634,6 @@ MonoBehaviour:
   - {fileID: 4900000, guid: 1ab0c656d5312f343bbe8fbe3d6364fa, type: 3}
   - {fileID: 4900000, guid: ee8a3a5c16b89b140b251a3d36aa61ad, type: 3}
   - {fileID: 4900000, guid: 978081c7dd2d6694791755125ed5e1d9, type: 3}
-  musicOffset: 2
   VictoryAnimatorObj: {fileID: 836491251}
   VictoryAudioSource: {fileID: 888203099}
   isPaused: 0
