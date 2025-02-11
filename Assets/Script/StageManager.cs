@@ -54,7 +54,7 @@ public class StageManager : MonoBehaviour
     private void Awake()
     {
         musicOffset = PlayerPrefs.GetFloat("musicOffset", -1);
-        musicSource.volume = PlayerPrefs.GetFloat("masterVolume", -1);
+        musicSource.volume = PlayerPrefs.GetFloat("masterVolume", 1);
         if (Instance == null)
         {
             Instance = this;
