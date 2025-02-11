@@ -61,18 +61,22 @@ public class ScoreUI : MonoBehaviour
 
     public void DisplayHP(int hpValue, bool isHeal = false)
     {
-        if (!isHeal)
+        if (!TutorialManager.isTutorial) 
         {
-            heartDisplays[hpValue].GetComponent<Image>().sprite = heartImages[1];
-        }
-        else
-        {
-            heartDisplays[hpValue - 1].GetComponent<Image>().sprite = heartImages[0];
-        }
+            if (!isHeal)
+            {
+                heartDisplays[hpValue].GetComponent<Image>().sprite = heartImages[1];
+            }
+            else
+            {
+                heartDisplays[hpValue - 1].GetComponent<Image>().sprite = heartImages[0];
+            }
 
-        StopCoroutine("BounceUp");
-        hpDisplay.transform.position = initialPosition[1];
-        StartCoroutine(BounceUp(hpDisplay));
+            StopCoroutine("BounceUp");
+            hpDisplay.transform.position = initialPosition[1];
+            StartCoroutine(BounceUp(hpDisplay));
+        }
+        
     }
 
     public void DisplayJudge(int judge, Direction direction)

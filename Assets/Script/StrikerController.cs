@@ -26,8 +26,8 @@ public class StrikerController : MonoBehaviour
     private Queue<Tuple<float, int>> prepareQueue = new Queue<Tuple<float, int>>(); // (arriveTime, type) 저장
 
     public GameObject hpBarPrefab;
-    private GameObject hpBar;
-    private Transform hpControl;
+    public GameObject hpBar;
+    public Transform hpControl;
 
     //투사체 발사 시의 !관련
     [SerializeField] private GameObject exclamationPrefab; // 공통 느낌표 프리팹
@@ -45,7 +45,7 @@ public class StrikerController : MonoBehaviour
     [SerializeField] private AudioClip parrySoundNormal;  // 일반 공격 준비 효과음 (type 0)
     [SerializeField] private AudioClip parrySoundStrong;  // 강한 공격 준비 효과음 (type 1)
     //패링 효과음
-    [SerializeField] private AudioClip holdingSound;  // 홀드 중
+    [SerializeField] public AudioClip holdingSound;  // 홀드 중
     [SerializeField] private AudioClip holdingEnd;  // 홀드 끝
 
     // 근접 공격 관련 변수
@@ -66,6 +66,9 @@ public class StrikerController : MonoBehaviour
     private float moveDuration = 1.0f; // 이동 시간
     private float spawnOffset = 3.0f; // 화면 밖에서 등장하는 거리
     private Vector3 spawnPosition;
+
+    [SerializeField] private ParticleSystem particleSystemGreen;  // 🔹 초록색 파티클 시스템
+
 
     private void Start()
     {
@@ -604,7 +607,10 @@ public class StrikerController : MonoBehaviour
             if (hp <= 0)
             {
                 if(!isMelee) beCleared();
-                playerManager.hp += 1;
+                if (playerManager.hp < 10)
+                {
+                    playerManager.hp += 1;
+                }
                 
                 //기타몬 전용 굴러가기 퇴장
                 //original position 도착후 isClear 세팅
@@ -640,6 +646,7 @@ public class StrikerController : MonoBehaviour
     {
         animator.SetBool("isClear", true);
         animator.SetTrigger("Cleared");
+        PlayParticleEffect();
         StartCoroutine(DestroyAfterAnimation());
     }
     private IEnumerator DestroyAfterAnimation()
@@ -656,5 +663,13 @@ public class StrikerController : MonoBehaviour
         // 오브젝트 삭제
         // Destroy(gameObject);
         gameObject.SetActive(false);
+    }
+    // 🔹 초록색 파티클 실행 함수
+    private void PlayParticleEffect()
+    {
+        if (particleSystemGreen != null)
+        {
+            particleSystemGreen.Play();
+        }
     }
 }
