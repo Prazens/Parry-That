@@ -523,8 +523,8 @@ MonoBehaviour:
   - {fileID: 1680499133}
   - {fileID: 1292384821}
   - {fileID: 1316243531}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 876441137}
+  - {fileID: 725633376}
   cutsceneAnimator: {fileID: 0}
   mainCanvas: {fileID: 1862990865}
   PrologueFont: {fileID: 12800000, guid: 7006438c118bb1748b904fe654b08d95, type: 3}
@@ -1062,8 +1062,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Stage2CutSceneManager, Assembly-CSharp
+      - m_Target: {fileID: 933562621}
+        m_TargetAssemblyTypeName: Stage3CutSceneManager, Assembly-CSharp
         m_MethodName: EndScene
         m_Mode: 1
         m_Arguments:
