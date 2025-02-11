@@ -39,7 +39,7 @@ public class StageManager : MonoBehaviour
     private bool button_active = true;
 
     [SerializeField] private TextAsset[] jsonCharts;
-    public float musicOffset;
+    private float musicOffset;
 
     // 빅토리 애니메이션 관련
     [SerializeField] GameObject VictoryAnimatorObj;
@@ -51,6 +51,8 @@ public class StageManager : MonoBehaviour
 
     private void Awake()
     {
+        musicOffset = PlayerPrefs.GetFloat("musicOffset", -1);
+        musicSource.volume = PlayerPrefs.GetFloat("masterVolume", -1);
         if (Instance == null)
         {
             Instance = this;
@@ -176,7 +178,6 @@ public class StageManager : MonoBehaviour
         PlayerManager playerManager = playerInstance.GetComponent<PlayerManager>();
         if (playerManager != null)
         {
-            playerManager.musicOffset = musicOffset;
             // StageManager를 PlayerManager에 설정
             playerManager.stageManager = this;
             // GameController의 TouchManager와 ScoreManager에 PlayerManager 설정

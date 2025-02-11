@@ -16,7 +16,6 @@ public class PlayerManager : MonoBehaviour
 
     private Transform direcrionDisplayer;
 
-    
     public float musicOffset;
     // public float visualOffset;
 
@@ -33,6 +32,7 @@ public class PlayerManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        musicOffset = PlayerPrefs.GetFloat("musicOffset", -1);
         // musicOffset = 2f;  // 판정 오프셋: -일수록 빨리 쳐야 함
         // visualOffset = 0.22f;  // 판정선: -일수록 플레이어에 가까움
 
@@ -53,7 +53,6 @@ public class PlayerManager : MonoBehaviour
         {
             Debug.LogError("GameController not found!");
         }
-        scoreManager.musicOffset = musicOffset;
 
         direcrionDisplayer = transform.GetChild(0);
 
