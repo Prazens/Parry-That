@@ -17,6 +17,7 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private StrikerManager strikerManager;
     // [SerializeField] private StageManager strikerController;
     [SerializeField] private ScoreManager ScoreManager;
+    [SerializeField] private GameObject VictoryAnime;
     private PlayerManager playerManager;
 
     [Header("캐릭터 이미지")]
@@ -31,6 +32,10 @@ public class TutorialManager : MonoBehaviour
     public bool isDaehwa = true;
     public static bool isTutorial = false;
     private bool isRollBack = false;
+
+    private SpriteRenderer spriteRenderer;
+    private Image animeSpriteImg;
+    private Animator animator;
 
     Text GameDescriptionText;
     public static int[] StrikerNum = { 0, 1, 2, 3, 7, 11, 13 };   // 12까지 존재. // 각 패턴 스트라이커 시작 인덱스
@@ -60,6 +65,12 @@ public class TutorialManager : MonoBehaviour
 
         ChartTimeList.AddRange(new float[] {4f, 12f, 24f, 36f, 48f, 60f, 72f  }); ; // 차트 반복 시작 시간   // 
         chartIdxList.AddRange(new int[] { 0, 3, 9, 12, 16, 24, 26 }); // 각 게임의 시작 채보 인덱스  // 25가 마지막
+
+        spriteRenderer = VictoryAnime.GetComponent<SpriteRenderer>();
+        animeSpriteImg = VictoryAnime.GetComponent<Image>();
+        animator = VictoryAnime.GetComponent<Animator>();
+
+        VictoryAnime.SetActive(false);
     }
     private void Start()
     {
@@ -139,6 +150,8 @@ public class TutorialManager : MonoBehaviour
             //    }
             //}
         }
+
+        animeSpriteImg.sprite = spriteRenderer.sprite;
     }
     private IEnumerator Daehwa1()
     {
@@ -326,22 +339,39 @@ public class TutorialManager : MonoBehaviour
 
     private IEnumerator Daehwa_Final()
     {
-        //if (!DatabaseManager.isTutorialDone)
-        //{
-        //    string Daehwa7_Text1 = "튜토리얼은 설정창에서 다시 진행할 수 있어요. 튜토리얼을 훌륭히 해낸다면 새로운 장면을 보실지도..?";
-        //    yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "정령", Daehwa7_Text1, true));
-        //}
-        //else
-        //{
-                // 엔딩 애니메이션
-        //}
-        string Daehwa7_Text2 = "좋아요! 이제 마왕을 잡으러 떠나요!!!!";
-        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "정령", Daehwa7_Text2, true));
+        List<GameObject> strikerList_ = strikerManager.strikerList;
+        bool isClear = true;
 
-        // Debug.Log("대화 파이널");
-        // 엔딩 애니메이션
+        for (int i = 0; i < strikerList_.Count; i++)
+        {
+            GameObject striker = strikerList_[i];
+            StrikerController strikerController = striker.GetComponent<StrikerController>();
+            if (strikerController.hp != 0)
+            {
+                isClear = false; // 클리어 조건 미달
+            }
+        }
+
+        if (isClear)
+        {
+            // 엔딩 애니메이션
+            VictoryAnime.SetActive(true);
+            animator.SetTrigger("Play");
+            yield return new WaitForSecondsRealtime(3f);
 
 
+            string Daehwa7_Text2 = "좋아요! 이제 마왕을 잡으러 떠나요!!!!";
+            yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "정령", Daehwa7_Text2, true));
+        }
+        else
+        {
+            string Daehwa7_Text1 = "튜토리얼은 메뉴에서 다시 진행할 수 있어요. 튜토리얼을 훌륭히 해낸다면 새로운 장면을 보실지도..?";
+            yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "정령", Daehwa7_Text1, true));
+
+            string Daehwa7_Text3 = "이제 마왕을 잡으러 떠나요!!!!";
+            yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "정령", Daehwa7_Text3, true));
+        }
+        
         // Main Scene 전환
         SceneLinkage.StageLV = 0;
         DatabaseManager.isTutorialDone = true;
