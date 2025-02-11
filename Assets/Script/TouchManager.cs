@@ -95,7 +95,7 @@ public class TouchManager : MonoBehaviour
             isTapAndSwipe = true;
             judgeTime = StageManager.Instance.currentTime;
 
-            // Debug.Log("input: 마우스 입력 시작");
+            // // Debug.Log("input: 마우스 입력 시작");
             SendJudge(Direction.None, judgeTime, AttackType.Normal);
             previousDirection = Direction.None;
 
@@ -178,14 +178,14 @@ public class TouchManager : MonoBehaviour
         // 터치 입력이 있을 경우
         if (Input.touchCount > 0)
         {
-            // Debug.Log($"{Input.touchCount} / {isSwiping} / {sumLength}");
+            // // Debug.Log($"{Input.touchCount} / {isSwiping} / {sumLength}");
 
             tempTouchs = Input.GetTouch(0);
 
             // 최초 입력시 : 스와이프 판별 시작
             if (tempTouchs.phase == TouchPhase.Began && !isSwiping)
             {
-                // Debug.Log("Touch on");
+                // // Debug.Log("Touch on");
 
                 // 스와이프 시작점 기록, 스와이프 길이 초기화
                 initialPos = Camera.main.ScreenToWorldPoint(tempTouchs.position);
@@ -296,7 +296,7 @@ public class TouchManager : MonoBehaviour
     {
         if (_judgeDirection.HasValue)
         {
-            Debug.Log($"판정 전송");
+            // Debug.Log($"판정 전송");
 
             scoreManager.judgeQueue.Enqueue(new JudgeFormat((Direction)_judgeDirection, _judgeTime, _type));
         }

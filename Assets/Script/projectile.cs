@@ -34,16 +34,16 @@ public class projectile : MonoBehaviour
             bpm = owner.bpm;
             if (scoreManager != null)
             {
-                Debug.Log("projectile successfully linked with ScoreManager.");
+                // Debug.Log("projectile successfully linked with ScoreManager.");
             }
             else
             {
-                Debug.LogError("ScoreManager script is not attached to GameController!");
+                // Debug.LogError("ScoreManager script is not attached to GameController!");
             }
         }
         else
         {
-            Debug.LogError("GameController not found!");
+            // Debug.LogError("GameController not found!");
         }
         startPosition = transform.position;
         // 목표 위치 설정 (플레이어에서 0.6f 거리)
@@ -78,7 +78,7 @@ public class projectile : MonoBehaviour
 
         // if (currentTime > (arriveTime * 60d / bpm) + scoreManager.musicOffset + 0.12d)
         // {
-        //     // Debug.Log($"{StageManager.Instance.currentTime} - {noteData.arriveTime} = {StageManager.Instance.currentTime - noteData.arriveTime}");
+        //     // // Debug.Log($"{StageManager.Instance.currentTime} - {noteData.arriveTime} = {StageManager.Instance.currentTime - noteData.arriveTime}");
             
         //     scoreManager.JudgeManage(owner.location, 0, (AttackType)type, owner, true);
         // }

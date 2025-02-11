@@ -8,7 +8,7 @@ public class BladeAnimateControl : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         animator.SetInteger("bladeDirection", 0);
-        // Debug.Log("bladeDirection set to 0");
+        // // Debug.Log("bladeDirection set to 0");
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

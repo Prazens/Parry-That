@@ -19,16 +19,16 @@ public class GameController : MonoBehaviour
         //}
         //else
         //{
-        //   Debug.LogError("StageManager is not assigned!");
+        //   // Debug.LogError("StageManager is not assigned!");
         //}
 
         StartStage();
-        Debug.Log("게임시작");
+        // Debug.Log("게임시작");
         // switch (SceneLinkage.StageLV)
         // {
         //     case 1:
         //         StartStage();
-        //         Debug.Log("게임시작");
+        //         // Debug.Log("게임시작");
         //         break;
         //     case 2:
         //         //StartStage()
@@ -37,7 +37,7 @@ public class GameController : MonoBehaviour
         //         //StartStage2()
         //         break;
         //     default:
-        //         // Debug.Log($"{SceneLinkage.StageLV}");
+        //         // // Debug.Log($"{SceneLinkage.StageLV}");
         //         break;
         // }
     }
@@ -49,7 +49,7 @@ public class GameController : MonoBehaviour
         }
         else
         {
-            Debug.LogError("StageManager is not assigned!");
+            // Debug.LogError("StageManager is not assigned!");
         }
     }
     private Vector2 touchStartPosition;
@@ -162,7 +162,7 @@ public class GameController : MonoBehaviour
     }
     private void OnSwipeUp()
     {
-        Debug.Log("Swipe Up Detected");
+        // Debug.Log("Swipe Up Detected");
 
         // 결과창 활성화 상태에서만 RestartStage 호출
         if (stageManager != null && stageManager.is_over)

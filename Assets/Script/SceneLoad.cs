@@ -46,7 +46,7 @@ public class SceneLoad : MonoBehaviour
             ///
 
             default:
-                Debug.Log("스테이지 로드 실패");
+                // Debug.Log("스테이지 로드 실패");
                 break;
         }
         operation.allowSceneActivation = false;

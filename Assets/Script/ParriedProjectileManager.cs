@@ -10,7 +10,7 @@ public class ParriedProjectileManager : MonoBehaviour
 
     public void ParryTusache(Direction targetDirection, int type)
     {
-        Debug.Log("패링된 투사체 함수 호출됨");
+        // Debug.Log("패링된 투사체 함수 호출됨");
 
         GameObject prefabToSpawn = null;
 
@@ -67,7 +67,7 @@ public class ParriedProjectileManager : MonoBehaviour
             }
             else
             {
-                // Debug.LogError("생성된 오브젝트에 Transform이 없음");
+                // // Debug.LogError("생성된 오브젝트에 Transform이 없음");
             }
 
             Animator animator = spawnedObject.GetComponent<Animator>();
@@ -81,12 +81,12 @@ public class ParriedProjectileManager : MonoBehaviour
             }
             else
             {
-                // Debug.LogError("Animator가 없음");
+                // // Debug.LogError("Animator가 없음");
             }
         }
         else
         {
-            // Debug.LogError("프리팹 선택 못함");
+            // // Debug.LogError("프리팹 선택 못함");
         }
     }
 
@@ -101,7 +101,7 @@ public class ParriedProjectileManager : MonoBehaviour
     {
         if (worldObject == null)
         {
-            Debug.LogError("월드 오브젝트가 유효하지 않습니다.");
+            // Debug.LogError("월드 오브젝트가 유효하지 않습니다.");
             return;
         }
         worldObject.transform.position = position;
@@ -118,11 +118,11 @@ public class ParriedProjectileManager : MonoBehaviour
     private void Start()
     {
         parried_tusache = GetComponent<Animator>();
-        if (parried_tusache == null) Debug.Log("애니메이터 컴포넌트 못찾음");
+        if (parried_tusache == null) // Debug.Log("애니메이터 컴포넌트 못찾음");
     }
     public void ParryTusache(Direction targetDirection, int type) // 패링된 탄 애니메이션 시행
     {
-        Debug.Log("패링된 투사체 함수 호출됨");
+        // Debug.Log("패링된 투사체 함수 호출됨");
         if (targetDirection == Direction.Up)
         {
             if (type == 0)
@@ -172,7 +172,7 @@ public class ParriedProjectileManager : MonoBehaviour
         // 패링된 투사체 생성
         tempProjectile = Instantiate(parriedProjectilePrefab);
 
-        Debug.Log("패링된 투사체 생성됨");
+        // Debug.Log("패링된 투사체 생성됨");
 
         tempProjectile.GetComponent<ParriedProjectile>().Initialize_PP(initialPosition, targetDirection, finalPosition);
         

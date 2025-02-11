@@ -175,7 +175,7 @@ public class StrikerController : MonoBehaviour
 
     public void ActMeleeHoldStart()
     {
-        Debug.Log($"ActMeleeHoldStart {judgeableQueue.Peek().arriveBeat} {bpm} {StageManager.Instance.currentTime}");
+        // Debug.Log($"ActMeleeHoldStart {judgeableQueue.Peek().arriveBeat} {bpm} {StageManager.Instance.currentTime}");
         bladeAnimator.SetTrigger("bladePlay");
 
         audioSource.PlayOneShot(holdingSound, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("playerVolume", 1));
@@ -188,7 +188,7 @@ public class StrikerController : MonoBehaviour
 
     public void ActMeleeHoldFinish()
     {
-        Debug.Log("ActMeleeHoldFinish");
+        // Debug.Log("ActMeleeHoldFinish");
         animator.SetBool("isAttacking", false);
         bladeAnimator.SetTrigger("bladeHoldFinish");
         
@@ -217,8 +217,8 @@ public class StrikerController : MonoBehaviour
     private IEnumerator MeleeGo(float targetTime)
     {
         animator.SetBool("MovingGo", true);
-        Debug.Log("melee go 호출");
-        Debug.Log(isMoved);
+        // Debug.Log("melee go 호출");
+        // Debug.Log(isMoved);
         while (!isMoved)
         {
             float currentTime = StageManager.Instance.currentTime;
@@ -230,7 +230,7 @@ public class StrikerController : MonoBehaviour
             {
                 animator.SetBool("MovingGo", false);
                 isMoved = true;
-                Debug.Log("isMove true in melee go");
+                // Debug.Log("isMove true in melee go");
                 isMoving = false;
                 transform.position = targetPosition;
                 yield break;
@@ -241,17 +241,17 @@ public class StrikerController : MonoBehaviour
     
     private IEnumerator MeleeGoBack()
     {
-        Debug.Log("MeleeGoBack");
+        // Debug.Log("MeleeGoBack");
         if(hp == 0) 
         {
             animator.SetBool("hp0", true);
             moveTime = 0.6f;
         }
         else animator.SetBool("MovingBack", true);
-        Debug.Log(isMoving);
+        // Debug.Log(isMoving);
         while (isMoving)
         {
-            Debug.Log("back while문 진입");
+            // Debug.Log("back while문 진입");
             float currentTime = StageManager.Instance.currentTime;
 
             if (backtime == 0f) backtime = currentTime;
@@ -259,7 +259,7 @@ public class StrikerController : MonoBehaviour
             transform.position = Vector3.Lerp(targetPosition, originalPosition, Mathf.Clamp01(fraction));
             if (fraction >= 0.99f)
             {
-                Debug.Log("fraction if문 진입");
+                // Debug.Log("fraction if문 진입");
                 backtime = 0f;
                 transform.position = originalPosition;
                 if(hp == 0)
@@ -269,10 +269,10 @@ public class StrikerController : MonoBehaviour
                 else
                 {
                     animator.SetBool("MovingBack", false);
-                    Debug.Log("moveBack False");
+                    // Debug.Log("moveBack False");
                 }
                 isMoving = false;
-                Debug.Log("isMoving false");
+                // Debug.Log("isMoving false");
             }
             yield return null;
         }
@@ -280,7 +280,7 @@ public class StrikerController : MonoBehaviour
 
     private IEnumerator MeleeHoldStartAnim()
     {
-        Debug.Log("MeleeHoldStartAnim");
+        // Debug.Log("MeleeHoldStartAnim");
         while (isMoved)
         {
             float currentTime = StageManager.Instance.currentTime;
@@ -340,7 +340,7 @@ public class StrikerController : MonoBehaviour
         {
             prepareQueue.Enqueue(new Tuple<float, int>(arriveTime, noteType)); // 도착 시간과 타입 저장
             ShowExclamation(noteType); // 느낌표 표시
-            Debug.Log("prepare!");
+            // Debug.Log("prepare!");
         }
 
         if (isMelee)
@@ -445,7 +445,7 @@ public class StrikerController : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogWarning($"Unknown attack type {noteColor}! Defaulting to first sprite.");
+                    // Debug.LogWarning($"Unknown attack type {noteColor}! Defaulting to first sprite.");
                     exclamationSprite.sprite = exclamationSprites[0]; // 기본값
                 }
             }
@@ -457,7 +457,7 @@ public class StrikerController : MonoBehaviour
     // 투사체 발사
     private void FireProjectile(float time, int index)
     {
-        Debug.Log("FireProjectile");
+        // Debug.Log("FireProjectile");
         if (index < 0 || index >= projectilePrefabs.Count) return;
         GameObject selectedProjectile = projectilePrefabs[index];
 
@@ -483,7 +483,7 @@ public class StrikerController : MonoBehaviour
 
         // 투사체 저장
         judgeableQueue.Enqueue(new Judgeable((AttackType)index, time, location, this, projectile));
-        // Debug.Log($"judgeableQueue의 길이:{judgeableQueue.Count}");
+        // // Debug.Log($"judgeableQueue의 길이:{judgeableQueue.Count}");
 
         // 투사체에 타겟 설정
         projectile projScript = projectile.GetComponent<projectile>();
@@ -519,7 +519,7 @@ public class StrikerController : MonoBehaviour
         initialHp = _initialHp;
         bpm = initialBpm;
         playerManager = targetPlayer;
-        Debug.Log($"{gameObject.name} spawned with HP: {hp}, BPM: {bpm}");
+        // Debug.Log($"{gameObject.name} spawned with HP: {hp}, BPM: {bpm}");
         location = direction;
         chartData = chart; // 채보 데이터 설정
 
@@ -604,7 +604,7 @@ public class StrikerController : MonoBehaviour
             hpControl.transform.localScale = new Vector3(1 - ((float)hp / initialHp), 1, 1);
 
             hp -= damage;
-            Debug.Log($"{gameObject.name} took {damage} damage! Current HP: {hp}");
+            // Debug.Log($"{gameObject.name} took {damage} damage! Current HP: {hp}");
             if(!isMelee) animator.SetTrigger("isDamaged");
             if (hp <= 0)
             {

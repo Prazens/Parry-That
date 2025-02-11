@@ -120,11 +120,11 @@ public class StageManager : MonoBehaviour
         if (musicSource != null && musicSource.clip != null)
         {
             stageDuration = musicSource.clip.length + musicOffset + 1f;
-            Debug.Log($"Stage duration set to: {stageDuration} seconds");
+            // Debug.Log($"Stage duration set to: {stageDuration} seconds");
         }
         else
         {
-            Debug.LogError("Music source or clip is missing!");
+            // Debug.LogError("Music source or clip is missing!");
         }
     }
     public void FirstStartStage()
@@ -132,7 +132,7 @@ public class StageManager : MonoBehaviour
         // GameObject Menu = GameObject.Find("Menu");
         // Menu.SetActive(false);
         GameObject InGameScreen = Resources.FindObjectsOfTypeAll<GameObject>().FirstOrDefault(obj => obj.name == "InGameScreen");
-        // Debug.Log(InGameScreen != null ? "InGameScreen found" : "InGameScreen not found");
+        // // Debug.Log(InGameScreen != null ? "InGameScreen found" : "InGameScreen not found");
         InGameScreen.SetActive(true);
         musicSource.Play(); // 음악 재생
         musicSource.Stop(); 
@@ -151,23 +151,23 @@ public class StageManager : MonoBehaviour
         musicSource.time = 0f;
         SpawnPlayer();
         // SpawnGuideboxes();
-        Debug.Log($"StartStage {strikerManager.charts.Count}");
+        // Debug.Log($"StartStage {strikerManager.charts.Count}");
         strikerManager.charts.Clear();
         for (int i = 0; i < jsonCharts.Length; i++)
         {
-            Debug.Log($"StartStage {i}");
+            // Debug.Log($"StartStage {i}");
             strikerManager.charts.Add(JsonReader.ReadJson<ChartData>(jsonCharts[i]));
         }
         strikerManager.InitStriker(0);
         isActive = true; // 스테이지 활성화
         scoreManager.Initialize();
-        Debug.Log("Stage Started!");
+        // Debug.Log("Stage Started!");
     }
     public void SpawnPlayer()
     {
         if (playerPrefab == null)
         {
-            Debug.LogError("PlayerPrefab is not assigned in StageManager!");
+            // Debug.LogError("PlayerPrefab is not assigned in StageManager!");
             return;
         }
 
@@ -198,7 +198,7 @@ public class StageManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogError("TouchManager script is not attached to GameController!");
+                    // Debug.LogError("TouchManager script is not attached to GameController!");
                 }
 
                 if (scoreManager != null)
@@ -207,30 +207,30 @@ public class StageManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogError("ScoreManager script is not attached to GameController!");
+                    // Debug.LogError("ScoreManager script is not attached to GameController!");
                 }
             }
             else
             {
-                Debug.LogError("GameController is not assigned in StageManager!");
+                // Debug.LogError("GameController is not assigned in StageManager!");
             }
             if (strikerManager != null)
             {
                 strikerManager.SetPlayer(playerManager);
             }
 
-            Debug.Log("PlayerManager successfully linked to TouchManager and ScoreManager.");
+            // Debug.Log("PlayerManager successfully linked to TouchManager and ScoreManager.");
         }
         else
         {
-            Debug.LogError("PlayerPrefab is missing PlayerManager component!");
+            // Debug.LogError("PlayerPrefab is missing PlayerManager component!");
         }
     }
     private void SpawnGuideboxes()
     {
         if (guidebox1Prefab == null || guidebox2Prefab == null)
         {
-            Debug.LogError("Guidebox prefabs are not assigned in StageManager!");
+            // Debug.LogError("Guidebox prefabs are not assigned in StageManager!");
             return;
         }
 
@@ -246,11 +246,11 @@ public class StageManager : MonoBehaviour
 
         // Guidebox1 생성
         guidebox1Instance = Instantiate(guidebox1Prefab, new Vector3(0, 0.6f, 0), Quaternion.identity);
-        Debug.Log("Guidebox1 spawned at (0, 0.6, 0).");
+        // Debug.Log("Guidebox1 spawned at (0, 0.6, 0).");
 
         // Guidebox2 생성
         guidebox2Instance = Instantiate(guidebox2Prefab, new Vector3(0, -0.6f, 0), Quaternion.identity);
-        Debug.Log("Guidebox2 spawned at (0, -0.6, 0).");
+        // Debug.Log("Guidebox2 spawned at (0, -0.6, 0).");
     }
 
 
@@ -265,7 +265,7 @@ public class StageManager : MonoBehaviour
         {
             if (AnimationEnable)
             {
-                Debug.Log("victory!");
+                // Debug.Log("victory!");
                 VictoryAudioSource.Play();
                 VictoryAnimatorObj.SetActive(true);
                 VictoryAnimator.SetTrigger("Play");
@@ -282,12 +282,12 @@ public class StageManager : MonoBehaviour
             //SpawnTransparentProjectile();
             musicSource.Play();
             musicPlayed = true;
-            Debug.Log("Music Start!");
+            // Debug.Log("Music Start!");
         }
     }
     public void GameOver()
     {
-        Debug.Log("Game Over!");
+        // Debug.Log("Game Over!");
         isActive = false;
         is_over = true;
         button_active = false;
@@ -315,12 +315,12 @@ public class StageManager : MonoBehaviour
         {
             theDatabase.score[SceneLinkage.StageLV] = scoreManager.score;
             theDatabase.SaveScoreData();
-            Debug.Log($"최고기록 경신: {theDatabase.score[SceneLinkage.StageLV]}");
+            // Debug.Log($"최고기록 경신: {theDatabase.score[SceneLinkage.StageLV]}");
         }
     }
     private void EndStage()
     {
-        Debug.Log("Stage Complete!");
+        // Debug.Log("Stage Complete!");
         // 스테이지 종료 로직 추가
         currentTime = stageDuration; // 시간 고정
         isActive = false;
@@ -343,14 +343,14 @@ public class StageManager : MonoBehaviour
         {
             theDatabase.score[SceneLinkage.StageLV] = scoreManager.score;
             theDatabase.SaveScoreData();
-            Debug.Log($"최고기록 경신: {theDatabase.score[SceneLinkage.StageLV]}");
+            // Debug.Log($"최고기록 경신: {theDatabase.score[SceneLinkage.StageLV]}");
         }
     }
     public void RestartStage()
     {
         AnimationEnable = true;
 
-        Debug.Log("Restarting Stage...");
+        // Debug.Log("Restarting Stage...");
         Time.timeScale = 1f;
         // 기존 Striker 삭제
         strikerManager.ClearStrikers();
@@ -415,7 +415,7 @@ public class StageManager : MonoBehaviour
         {
             continueText.gameObject.SetActive(true);
         }
-        Debug.Log("Stage Paused!");
+        // Debug.Log("Stage Paused!");
     }
     public void ResumeStage()
     {
@@ -432,7 +432,7 @@ public class StageManager : MonoBehaviour
     }
     private IEnumerator ResumeAfterDelay()
     {
-        Debug.Log("Resuming Stage in 3 seconds...");
+        // Debug.Log("Resuming Stage in 3 seconds...");
         countdownText.gameObject.SetActive(true);
         for (int i = 3; i > 0; i--)
         {
@@ -451,12 +451,12 @@ public class StageManager : MonoBehaviour
         }
         //투사체 이동 재개
 
-        Debug.Log("Stage Resumed!");
+        // Debug.Log("Stage Resumed!");
     }
     public void ChangeTime(float time)
     {
         currentTime = time;
-        Debug.LogError($"시간변화: {currentTime}");
+        // Debug.LogError($"시간변화: {currentTime}");
     }
     private void UpdatePanelScores(GameObject panelInstance)
     {
@@ -491,12 +491,12 @@ public class StageManager : MonoBehaviour
             }
             else
             {
-                Debug.LogError("ScoreManager or judgeDetails is null!");
+                // Debug.LogError("ScoreManager or judgeDetails is null!");
             }
         }
         else
         {
-            Debug.LogError("Panel instance is null!");
+            // Debug.LogError("Panel instance is null!");
         }
     }
     private void UpdateStar_Clear()
@@ -551,7 +551,7 @@ public class StageManager : MonoBehaviour
                 {
                     theDatabase.star[SceneLinkage.StageLV] = currentStars;
                     theDatabase.SaveStarData();
-                    Debug.Log($"별 개수 갱신: 스테이지 {SceneLinkage.StageLV}에 {currentStars}개 달성");
+                    // Debug.Log($"별 개수 갱신: 스테이지 {SceneLinkage.StageLV}에 {currentStars}개 달성");
                 }
             }
         }
@@ -588,12 +588,12 @@ public class StageManager : MonoBehaviour
     {
         if (musicSource.isPlaying)
         {
-            Debug.LogError($"롤백 전 재생 시간: {musicSource.time}초");
+            // Debug.LogError($"롤백 전 재생 시간: {musicSource.time}초");
             float newTime = Mathf.Max(musicSource.time - RollBackTime, 0); 
             musicSource.Stop(); 
             musicSource.time = newTime; 
             musicSource.Play();
-            Debug.LogError($"롤백 후 재생 시간: {musicSource.time}초");
+            // Debug.LogError($"롤백 후 재생 시간: {musicSource.time}초");
         }
     }
     public void AudioPause()
@@ -601,11 +601,11 @@ public class StageManager : MonoBehaviour
         if (musicSource.isPlaying)
         {
             musicSource.Pause();
-            //Debug.Log("오디오 일시정지됨.");
+            //// Debug.Log("오디오 일시정지됨.");
         }
         else
         {
-            //Debug.LogWarning("오디오가 재생 중이 아닙니다.");
+            //// Debug.LogWarning("오디오가 재생 중이 아닙니다.");
         }
         // musicSource.Pause();
     }

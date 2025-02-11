@@ -159,7 +159,7 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
                 Stars[3].SetActive(true);
                 break;
             default:
-                Debug.Log("잘못된 데이터베이스 정보(Star)");
+                // Debug.Log("잘못된 데이터베이스 정보(Star)");
                 break;
         }
         if (!SettingPanel.activeSelf && TitleMenu.SwordUpEnd)
@@ -433,14 +433,14 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
 
     public void goTutorial()
     {
-        Debug.Log("ChangeMasterVolume");
+        // Debug.Log("ChangeMasterVolume");
         SceneLinkage.StageLV = 0;
         SceneManager.LoadScene("Tutorial");
     }
 
     public void PPInit()
     {
-        Debug.Log($"PPInit, {PlayerPrefs.GetInt("isPPInited", -1)}");
+        // Debug.Log($"PPInit, {PlayerPrefs.GetInt("isPPInited", -1)}");
         if (PlayerPrefs.GetInt("isPPInited", 0) != 1)
         {
             PlayerPrefs.SetFloat("musicOffset", 2f);
@@ -454,7 +454,7 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
 
     public void ChangeMusicOffset()
     {
-        Debug.Log("ChangeMusicOffset");
+        // Debug.Log("ChangeMusicOffset");
         int sliderValue = (int)SettingPanel.transform.GetChild(2).GetChild(2).GetComponent<Slider>().value;
         PlayerPrefs.SetFloat("musicOffset", sliderValue / 100f + 2f);
         SettingPanel.transform.GetChild(2).GetChild(1).GetComponent<TextMeshProUGUI>().text = $"{((sliderValue >= 0) ? "+" : "")}{sliderValue}";
@@ -462,7 +462,7 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
 
     public void ChangeMasterVolume()
     {
-        Debug.Log("ChangeMasterVolume");
+        // Debug.Log("ChangeMasterVolume");
         int sliderValue = (int)SettingPanel.transform.GetChild(3).GetChild(2).GetComponent<Slider>().value;
         PlayerPrefs.SetFloat("masterVolume", sliderValue / 20f);
         SettingPanel.transform.GetChild(3).GetChild(1).GetComponent<TextMeshProUGUI>().text = $"{sliderValue * 5}%";
@@ -470,7 +470,7 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
 
     public void ChangeBGMVolume()
     {
-        Debug.Log("ChangeBGMVolume");
+        // Debug.Log("ChangeBGMVolume");
         int sliderValue = (int)SettingPanel.transform.GetChild(4).GetChild(2).GetComponent<Slider>().value;
         PlayerPrefs.SetFloat("bgmVolume", sliderValue / 20f);
         SettingPanel.transform.GetChild(4).GetChild(1).GetComponent<TextMeshProUGUI>().text = $"{sliderValue * 5}%";
@@ -478,7 +478,7 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
 
     public void ChangeEnemyVolume()
     {
-        Debug.Log("ChangeEnemyVolume");
+        // Debug.Log("ChangeEnemyVolume");
         int sliderValue = (int)SettingPanel.transform.GetChild(5).GetChild(2).GetComponent<Slider>().value;
         PlayerPrefs.SetFloat("enemyVolume", sliderValue / 20f);
         SettingPanel.transform.GetChild(5).GetChild(1).GetComponent<TextMeshProUGUI>().text = $"{sliderValue * 5}%";
@@ -486,7 +486,7 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
 
     public void ChangePlayerVolume()
     {
-        Debug.Log("ChangePlayerVolume");
+        // Debug.Log("ChangePlayerVolume");
         int sliderValue = (int)SettingPanel.transform.GetChild(6).GetChild(2).GetComponent<Slider>().value;
         PlayerPrefs.SetFloat("playerVolume", sliderValue / 20f);
         SettingPanel.transform.GetChild(6).GetChild(1).GetComponent<TextMeshProUGUI>().text = $"{sliderValue * 5}%";

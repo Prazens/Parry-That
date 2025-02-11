@@ -114,7 +114,7 @@ public class PrologueManager : MonoBehaviour
             if (isTransitioning) return;
             if (isTyping) return;
 
-            Debug.Log($"{currentCutsceneIndex}");
+            // Debug.Log($"{currentCutsceneIndex}");
             GoToNextCutscene();
         }
 
@@ -197,18 +197,18 @@ public class PrologueManager : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
 
         /*
-        Debug.Log("aaaaa");
+        // Debug.Log("aaaaa");
         if (cutsceneAnimator == null)
         {
-            Debug.LogError("Animator가 할당되지 않았습니다!");
+            // Debug.LogError("Animator가 할당되지 않았습니다!");
         }
         foreach (var param in cutsceneAnimator.parameters)
         {
-            Debug.Log("Animator Parameter: " + param.name + " (" + param.type + ")");
+            // Debug.Log("Animator Parameter: " + param.name + " (" + param.type + ")");
         }
         */
         cutsceneAnimator.SetTrigger("Play");
-        // Debug.Log("트리거 'Play' 호출됨.");
+        // // Debug.Log("트리거 'Play' 호출됨.");
 
         // cutsceneAnimator.Play("SceneAnimeNew", 0, 0f);
         yield return new WaitForSeconds(2.7f);
