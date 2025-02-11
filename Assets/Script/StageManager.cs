@@ -36,6 +36,7 @@ public class StageManager : MonoBehaviour
     private int clearStrikers = 0;
     public bool is_over = false;
     [SerializeField] private TextMeshProUGUI countdownText; // 카운트다운 표시용 Text UI
+    [SerializeField] private TextMeshProUGUI continueText; // 컨티뉴 표시용 Text UI
     private GameObject overlay; // 검은 필터
     private bool button_active = true;
 
@@ -109,6 +110,10 @@ public class StageManager : MonoBehaviour
         if (countdownText != null)
         {
             countdownText.gameObject.SetActive(false);
+        }
+        if (continueText != null)
+        {
+            continueText.gameObject.SetActive(false);
         }
         if (musicSource != null && musicSource.clip != null)
         {
@@ -405,6 +410,10 @@ public class StageManager : MonoBehaviour
         if(PausePanelInstance != null) PausePanelInstance.SetActive(true);
         UpdatePanelScores(PausePanelInstance);
         overlay.SetActive(true);
+        if (continueText != null)
+        {
+            continueText.gameObject.SetActive(true);
+        }
         Debug.Log("Stage Paused!");
     }
     public void ResumeStage()
@@ -414,6 +423,10 @@ public class StageManager : MonoBehaviour
         isPaused = false;
         if(PausePanelInstance != null) PausePanelInstance.SetActive(false);
         overlay.SetActive(false);
+        if (continueText != null)
+        {
+            continueText.gameObject.SetActive(false);
+        }
         StartCoroutine(ResumeAfterDelay());
     }
     private IEnumerator ResumeAfterDelay()
