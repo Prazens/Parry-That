@@ -80,7 +80,7 @@ public class TutorialManager : MonoBehaviour
         if (!isDaehwa)  // 대화 중이 아닌 상황 (게임 중)
         {
 
-            Debug.LogWarning($"시간: {currentTime} :{ChartTimeList[daehwaIndex - 1]} ~ {ChartTimeList[daehwaIndex]}, 대화인덱스:{daehwaIndex}");
+            //Debug.LogWarning($"시간: {currentTime} :{ChartTimeList[daehwaIndex - 1]} ~ {ChartTimeList[daehwaIndex]}, 대화인덱스:{daehwaIndex}");
             if (currentTime >= ChartTimeList[daehwaIndex] + stageManager.musicOffset)   // idx: 게임 끝난 후의 목표 대화 idx
             {   // 한 패턴 지났을 때 패턴 성공했는지 판단
                 // Debug.LogError($"대화인덱스: {currentTime} :{daehwaIndex}");
