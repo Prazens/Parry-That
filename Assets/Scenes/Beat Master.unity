@@ -1457,7 +1457,7 @@ MonoBehaviour:
   is_over: 0
   countdownText: {fileID: 2121608883}
   jsonCharts:
-  - {fileID: 4900000, guid: 4d908ff1f7af32e4babbe6c3bf4cca2f, type: 3}
+  - {fileID: 4900000, guid: ef3367817cc0b7a44b72b2057b1506d6, type: 3}
   - {fileID: 4900000, guid: 5d6f6020eca6741488dc12e670909fd8, type: 3}
   musicOffset: 2
   VictoryAnimatorObj: {fileID: 836491251}

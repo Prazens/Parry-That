@@ -185,25 +185,29 @@ public class ScoreManager : MonoBehaviour
                     {
                         tempJudge = 0;
                     }
-                    else if (timeDiff > 0.09d)
+                    else if (timeDiff > 0.12d)
                     {
                         tempJudge = 1;
                     }
-                    else if (timeDiff > 0.05d)
+                    else if (timeDiff > 0.07d)
                     {
                         tempJudge = 2;
                     }
-                    else if (timeDiff >= -0.05d)
+                    else if (timeDiff >= -0.07d)
                     {
                         tempJudge = 3;
                     }
-                    else if (timeDiff >= -0.09d)
+                    else if (timeDiff >= -0.12d)
                     {
                         tempJudge = 4;
                     }
-                    else if (timeDiff >= -0.12d)
+                    else if (timeDiff >= -0.15d)
                     {
                         tempJudge = 5;
+                    }
+                    else if (timeDiff >= -0.18d)
+                    {
+                        tempJudge = 0;
                     }
 
                     else  // 공노트? 공POOR?
