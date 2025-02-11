@@ -1315,7 +1315,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stageManager: {fileID: 2102237517}
   swipeThreshold: 50
-  isTouchAvailable: 0
+  isTouchAvailable: 1
 --- !u!114 &768575888
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1352,7 +1352,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scoreManager: {fileID: 768575888}
   playerManager: {fileID: 0}
-  isTouchAvailable: 0
+  isTouchAvailable: 1
 --- !u!4 &768575890
 Transform:
   m_ObjectHideFlags: 0
@@ -2943,6 +2943,7 @@ MonoBehaviour:
   - {fileID: 4900000, guid: be12517dee4b1b94b956240caf7cd40d, type: 3}
   - {fileID: 4900000, guid: 27f4a20aeea35df40b44ece730568515, type: 3}
   - {fileID: 4900000, guid: a83f0b64d292d1e449ccd0e4e3e779c2, type: 3}
+  musicOffset: 0
   VictoryAnimatorObj: {fileID: 895895656}
   VictoryAudioSource: {fileID: 163746527}
   isPaused: 0
