@@ -31,7 +31,7 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
     [SerializeField] private GameObject BlackOverlayObj;
     private Image BlackOverlay;
 
-    private string[] StageName = { "The First Beat", "Echoing Strikes", "Beat Master", "Final Encore/BOSS" };
+    private string[] StageName = {"0.Tutorial", "1.The First Beat", "2.Echoing Strikes", "3.Beat Master", "4.Final Encore/BOSS" };
 
     void Start()
     {
@@ -61,7 +61,7 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
         BlackOverlay.color = new Color (originalOverlayColor.r, originalOverlayColor.g, originalOverlayColor.b, 0f);
 
         // 스테이지에서 나왔을 때 현재 인덱스를 그 스테이지로 설정
-        currentIndex = SceneLinkage.StageLV == 0 ? 0 : SceneLinkage.StageLV - 1;
+        currentIndex = SceneLinkage.StageLV == 0 ? 0 : SceneLinkage.StageLV;
     }
 
     // Update is called once per frame
@@ -124,6 +124,8 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
         // 임시로 update에 구현
         txtStageScore.text = string.Format("{0:#,##0}", theDatabase.score[currentIndex + 1]);
         txtStageName.text = StageName[currentIndex];
+        txtStageName.enableWordWrapping = false;  // 자동 줄 바꿈 해제
+        txtStageName.overflowMode = TextOverflowModes.Overflow;  // 글자가 넘쳐도 계속 표시
         switch (theDatabase.star[currentIndex + 1])
         {
             case 0:
@@ -183,7 +185,7 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
             yield return null; // 다음 프레임까지 대기
         }
 
-        SceneLinkage.StageLV = currentIndex + 1;
+        SceneLinkage.StageLV = currentIndex;
         SceneManager.LoadScene("Loading");
     }
 

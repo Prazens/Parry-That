@@ -15,7 +15,7 @@ public class TitleMenu : MonoBehaviour
 
     public RectTransform menuPanel;
     public RectTransform nextPanel;
-    public float slideDuration; // È­¸é ÀüÈ¯ ½Ã°£
+    public float slideDuration; // È­ï¿½ï¿½ ï¿½ï¿½È¯ ï¿½Ã°ï¿½
 
     private Vector2 MenuStartPos;
     private Vector2 StageMenuStartPos;
@@ -27,7 +27,7 @@ public class TitleMenu : MonoBehaviour
 
     private bool GoStageMenu = false;
     public static bool SwordUpEnd = false;
-    public bool MouseControl;   // Inspector Ã¢¿¡¼­ ¼³Á¤
+    public bool MouseControl;   // Inspector Ã¢ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     public static bool TitlePassed = false;
     public bool isPossibleStage = true;
 
@@ -42,7 +42,7 @@ public class TitleMenu : MonoBehaviour
     void Start()
     {
 
-        Application.targetFrameRate = 120; // ÇÁ·¹ÀÓ 120 °íÁ¤
+        Application.targetFrameRate = 120; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 120 ï¿½ï¿½ï¿½ï¿½
 
         menuPanel = GameObject.Find("Title").GetComponent<RectTransform>();
         nextPanel = GameObject.Find("StageMenu").GetComponent<RectTransform>();
@@ -63,7 +63,7 @@ public class TitleMenu : MonoBehaviour
             TitleText_originalColor = TitleText.color;
         }
 
-        if (TitlePassed)  // ½ºÅ×ÀÌÁö¿¡¼­ ³ª¿ÔÀ» ¶§ ½ºÅ×ÀÌÁö ¸Þ´ºÃ¢ »óÅÂ·Î À§Ä¡ ¼³Á¤
+        if (TitlePassed)  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ´ï¿½Ã¢ ï¿½ï¿½ï¿½Â·ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½
         {
             ChangePanelPosition(MenuStartPos, StageMenuStartPos);
             ChangeSwordPosition();
@@ -72,15 +72,15 @@ public class TitleMenu : MonoBehaviour
         Debug.Log($"{TitlePassed}");
     }
 
-    void Update()   // À§·Î ½º¿ÍÀÌÇÁ ÇÏ¸é Å¸ÀÌÆ² È­¸é¿¡¼­ ½ºÅ×ÀÌÁö ¼±ÅÃ È­¸éÀ¸·Î ÀüÈ¯
+    void Update()   // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï¸ï¿½ Å¸ï¿½ï¿½Æ² È­ï¿½é¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
     {
         if (!GoStageMenu || SwordUpEnd)
         {
-            if (MouseControl)   // ¸¶¿ì½º Á¶ÀÛ
+            if (MouseControl)   // ï¿½ï¿½ï¿½ì½º ï¿½ï¿½ï¿½ï¿½
             {
                 MouseMove();
             }
-            else    // ÅÍÄ¡ Á¶ÀÛ
+            else    // ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½
             { 
                 TouchMove();
             }
@@ -92,11 +92,11 @@ public class TitleMenu : MonoBehaviour
             TitleText.color = new Color(TitleText_originalColor.r, TitleText_originalColor.g, TitleText_originalColor.b, alpha);
         }
 
-        // ÇöÀç ÇÃ·¹ÀÌ °¡´ÉÇÑ ½ºÅ×ÀÌÁö Á¦ÇÑ
-        int[] possibleStages = { 0, 1, 2 };
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        int[] possibleStages = { 1, 2, 3 };
         isPossibleStage = possibleStages.Contains(StageMenu.currentIndex);
 
-        // ÀÓ½ÃÄÚµå for imsi
+        // ï¿½Ó½ï¿½ï¿½Úµï¿½ for imsi
         rt_imsi.rectTransform.anchoredPosition = Sword.rectTransform.anchoredPosition;
         if (1 <= StageMenu.currentIndex && StageMenu.currentIndex <= 100) imsi.SetActive(true);
         else imsi.SetActive(false);
@@ -171,7 +171,7 @@ public class TitleMenu : MonoBehaviour
     public void OnSwipeUp()
     {
         TitleTextObj.SetActive(false);
-        if (!TitlePassed)   // Ã³À½ ½ÇÇàÇßÀ» ¶§
+        if (!TitlePassed)   // Ã³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
         {
             StartCoroutine(SlidePanels(MenuStartPos, StageMenuStartPos));
             StartCoroutine(SwordUp());
@@ -267,7 +267,7 @@ public class TitleMenu : MonoBehaviour
     {
         if (isFading) return;
         StartCoroutine(FadeEffect());
-        Debug.Log("ÇÔ¼ö È£Ãâ ¿Ï·á");
+        Debug.Log("ï¿½Ô¼ï¿½ È£ï¿½ï¿½ ï¿½Ï·ï¿½");
     }
 
     private IEnumerator FadeEffect()
@@ -277,7 +277,7 @@ public class TitleMenu : MonoBehaviour
         isFading = true;
 
         float elapsedTime = 0f;
-        Debug.Log("ÆäÀÌµå¾Æ¿ô ½ÃÀÛ");
+        Debug.Log("ï¿½ï¿½ï¿½Ìµï¿½Æ¿ï¿½ ï¿½ï¿½ï¿½ï¿½");
         while (elapsedTime < fadeDuration)
         {
             elapsedTime += Time.deltaTime;
@@ -300,7 +300,7 @@ public class TitleMenu : MonoBehaviour
         }
     }
 
-    // SwordUpEnd = true µÇ¸é Ä®ÀÌ À§¾Æ·¡·Î ¾à°£¾¿ µÕµÕ ¶°´Ù´Ï°í ÀÖ´Â IDLE »óÅÂ·Î
+    // SwordUpEnd = true ï¿½Ç¸ï¿½ Ä®ï¿½ï¿½ ï¿½ï¿½ï¿½Æ·ï¿½ï¿½ï¿½ ï¿½à°£ï¿½ï¿½ ï¿½Õµï¿½ ï¿½ï¿½ï¿½Ù´Ï°ï¿½ ï¿½Ö´ï¿½ IDLE ï¿½ï¿½ï¿½Â·ï¿½
 
     // 
 
