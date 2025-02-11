@@ -50,7 +50,7 @@ public class TouchManager : MonoBehaviour
             }
             else
             {
-                // KeyChecker();  // Legacy
+                //KeyChecker();  // Legacy
                 MouseChecker();  // 터치에 중복
             }
         }
