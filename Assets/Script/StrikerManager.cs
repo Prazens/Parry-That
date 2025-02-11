@@ -72,7 +72,7 @@ public class StrikerManager : MonoBehaviour
                          strikerStatus[i] == 1)
                 {
                     Debug.Log($"beClearedStriker({i})");
-                    strikerList[i].GetComponent<StrikerController>().beCleared();
+                    strikerList[i].GetComponent<StrikerController>().strikerExit();
                     strikerStatus[i] = 2;
                 }
             }

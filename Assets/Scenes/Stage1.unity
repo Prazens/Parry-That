@@ -1724,7 +1724,7 @@ MonoBehaviour:
   musicSource: {fileID: 583584121}
   is_over: 0
   countdownText: {fileID: 2121608883}
-  continueText: {fileID: 2121608883}
+  continueText: {fileID: 1313838114}
   jsonCharts:
   - {fileID: 4900000, guid: d1088ee9d87a41a47b40f17677faf660, type: 3}
   - {fileID: 4900000, guid: 28028b87f9dfb3e41ab80efed0a295f4, type: 3}
@@ -1734,7 +1734,6 @@ MonoBehaviour:
   - {fileID: 4900000, guid: 38eb27002b8c1fe4eb659889e545ce30, type: 3}
   - {fileID: 4900000, guid: 6e0506a25f42f5449b72b644833da0c8, type: 3}
   - {fileID: 4900000, guid: 3f03948d9a037ff4bb32bcca83864fbb, type: 3}
-  musicOffset: 2
   VictoryAnimatorObj: {fileID: 836491251}
   VictoryAudioSource: {fileID: 888203099}
   isPaused: 0
