@@ -38,7 +38,7 @@ public class TutorialManager : MonoBehaviour
     private Animator animator;
 
     Text GameDescriptionText;
-    public static int[] StrikerNum = { 0, 1, 2, 3, 7, 11, 13 };   // 12까지 존재. // 각 패턴 스트라이커 시작 인덱스
+    public static int[] StrikerNum = { 0, 1, 2, 3, 7, 11, 15 };   // 14까지 존재. // 각 패턴 스트라이커 시작 인덱스
 
     private void Awake()
     {
@@ -63,7 +63,7 @@ public class TutorialManager : MonoBehaviour
 
         GameDescription.SetActive(true);
 
-        ChartTimeList.AddRange(new float[] {4f, 12f, 24f, 36f, 48f, 60f, 72f  }); ; // 차트 반복 시작 시간   // 
+        ChartTimeList.AddRange(new float[] {4f, 12f, 24f, 36f, 48f, 60f, 80f  }); ; // 차트 반복 시작 시간   // 
         chartIdxList.AddRange(new int[] { 0, 3, 9, 12, 16, 24, 26 }); // 각 게임의 시작 채보 인덱스  // 25가 마지막
 
         spriteRenderer = VictoryAnime.GetComponent<SpriteRenderer>();

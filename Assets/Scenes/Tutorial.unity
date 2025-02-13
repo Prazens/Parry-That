@@ -3095,6 +3095,8 @@ MonoBehaviour:
   - {fileID: 4900000, guid: be12517dee4b1b94b956240caf7cd40d, type: 3}
   - {fileID: 4900000, guid: 27f4a20aeea35df40b44ece730568515, type: 3}
   - {fileID: 4900000, guid: a83f0b64d292d1e449ccd0e4e3e779c2, type: 3}
+  - {fileID: 4900000, guid: 6bc582568fd557445b276269eefae41e, type: 3}
+  - {fileID: 4900000, guid: a9fc87404a33f2a4b9ccc9f94788a29d, type: 3}
   musicOffset: 0
   VictoryAnimatorObj: {fileID: 895895656}
   VictoryAudioSource: {fileID: 163746527}

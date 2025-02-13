@@ -3,16 +3,11 @@
     "strikerType": 1,
     "direction": 4,
     "appearTime": 104,
-    "disappearTime": 115.5,
+    "disappearTime": 113.5,
     "notes": [
         {
             "time": 105,
             "arriveTime": 113,
-            "type": 1
-        },
-        {
-            "time": 107,
-            "arriveTime": 115,
             "type": 1
         }
     ]
