@@ -601,9 +601,9 @@ public class StrikerController : MonoBehaviour
         }
         if (hp >= 0)
         {
-            hpControl.transform.localScale = new Vector3(1 - ((float)hp / initialHp), 1, 1);
-
             hp -= damage;
+            hpControl.transform.localScale = new Vector3(1 - ((float)hp / initialHp), 1, 1);
+            
             // Debug.Log($"{gameObject.name} took {damage} damage! Current HP: {hp}");
             if(!isMelee) animator.SetTrigger("isDamaged");
             if (hp <= 0)
