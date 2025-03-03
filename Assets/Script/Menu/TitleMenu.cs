@@ -37,6 +37,10 @@ public class TitleMenu : MonoBehaviour
     public TextMeshProUGUI TitleText;
     private Color TitleText_originalColor;
 
+    private AudioSource AudioSource;
+    public AudioClip SwordUpSound;
+    public AudioClip StageSelectSound;
+
     [SerializeField] private StageMenu stageMenu;
 
     void Start()
@@ -50,6 +54,7 @@ public class TitleMenu : MonoBehaviour
         Title = GameObject.Find("Img_Title").GetComponent<Image>();
         imsi = GameObject.Find("imsi");
         rt_imsi = imsi.GetComponent<Image>();
+        AudioSource = GetComponent<AudioSource>();
 
         GameController = GameObject.Find("GameController");
         TitleTextObj = GameObject.Find("TitleText");
@@ -120,13 +125,20 @@ public class TitleMenu : MonoBehaviour
                 if (GoStageMenu & SwordUpEnd & isPossibleStage)
                 {
                     if (Mathf.Abs(startPos.x - endPos.x) >= stageMenu.threshold) return;
-                    else stageMenu.SelectStage();
+                    else
+                    {
+                        AudioSource.clip = StageSelectSound;
+                        AudioSource.Play();
+                        stageMenu.SelectStage();
+                    }
                     // GameController.GetComponent<GameController>().StartStage();
                 }
                 if (!GoStageMenu)
                 {
                     OnSwipeUp();
                     LogoFadeOut();
+                    AudioSource.clip = SwordUpSound;
+                    AudioSource.Play();
                     GoStageMenu = true;
                     TitlePassed = true;
                 }
@@ -154,13 +166,20 @@ public class TitleMenu : MonoBehaviour
                     if (GoStageMenu & SwordUpEnd)
                     {
                         if (Mathf.Abs(startPos.x - endPos.x) >= stageMenu.threshold) return;
-                        else stageMenu.SelectStage();
+                        else
+                        {
+                            AudioSource.clip = StageSelectSound;
+                            AudioSource.Play();
+                            stageMenu.SelectStage();
+                        }
                         // GameController.GetComponent<GameController>().StartStage();
                     }
                     if (!GoStageMenu)
                     {
                         OnSwipeUp();
                         LogoFadeOut();
+                        AudioSource.clip = SwordUpSound;
+                        AudioSource.Play();
                         GoStageMenu = true;
                         TitlePassed = true;
                     }

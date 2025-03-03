@@ -68,7 +68,7 @@ public class Stage3CutSceneManager : MonoBehaviour
         PrologueTextObj.transform.SetParent(mainCanvas.transform, false);
         PrologueText = PrologueTextObj.AddComponent<Text>();
         PrologueText.font = PrologueFont;
-        PrologueText.fontSize = 60 * (Screen.width / 1080);
+        PrologueText.fontSize = 60;
         PrologueText.color = Color.white;
         PrologueText.alignment = TextAnchor.UpperCenter;
         RectTransform textRect = PrologueTextObj.GetComponent<RectTransform>();
@@ -278,7 +278,7 @@ public class Stage3CutSceneManager : MonoBehaviour
 
             TypingSoundDelay++;
 
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(0.03f);
         }
 
         isTyping = false;

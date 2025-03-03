@@ -2699,6 +2699,7 @@ MonoBehaviour:
   DialogueFont: {fileID: 12800000, guid: 7006438c118bb1748b904fe654b08d95, type: 3}
   panelImageSource: {fileID: 21300000, guid: 803194d63284f3d42b0a52479aa6c67a, type: 3}
   triangleObj: {fileID: 1328849331}
+  inGameScreen: {fileID: 1305503425}
 --- !u!4 &1515393734
 Transform:
   m_ObjectHideFlags: 0
@@ -2724,7 +2725,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 03f0f3c1bc2d5f04aa0370154941e3e7, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 267e1e31e070a88498f483667ca27078, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1

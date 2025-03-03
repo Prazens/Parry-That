@@ -178,6 +178,9 @@ public class TutorialManager : MonoBehaviour
         string Daehwa1_Text7 = "물범이 띄우는 느낌표의 리듬에 맞춰 공격을 받아치세요!";
         yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "정령", Daehwa1_Text7, true));
 
+        string Daehwa1_Text8 = "노란색 느낌표가 뜬 공격은 터치만으로 충분히 받아칠 수 있어요!";
+        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[1], "정령", Daehwa1_Text8, true));
+
         GameDescriptionText.text = "리듬에 맞춰 화면을 탭하여 노란색 공격을 패링하세요.";
 
         isDaehwa = false;
@@ -209,7 +212,10 @@ public class TutorialManager : MonoBehaviour
         string Daehwa2_Text5 = "아무튼, 이제 더 강한 공격도 같이 오니 용사님부터 걱정하세요!";
         yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "정령", Daehwa2_Text5, true));
 
-        GameDescriptionText.text = "적의 빨간색 공격은 강패링으로 막아내야합니다.\n탭한 상태에서 적절한 방향으로 드래그하면 이어서 강패링을 진행할 수 있습니다.";
+        string Daehwa2_Text6 = "빨간색 느낌표가 뜬 공격은 그 방향으로 스와이프해서 받아쳐야 해요!";
+        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[1], "정령", Daehwa2_Text6, true));
+
+        GameDescriptionText.text = "적절한 방향으로 스와이프하여 빠르게 강패링하세요.";
 
         isDaehwa = false;
         // count = 0;
@@ -241,7 +247,7 @@ public class TutorialManager : MonoBehaviour
         string Daehwa3_Text5 = "...좀 더 때릴 맛이 나네.";
         yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[5], "소리", Daehwa3_Text5, false));
 
-        GameDescriptionText.text = "적절한 방향으로 스와이프하여 빠르게 강패링하세요.";
+        GameDescriptionText.text = "탭한 상태에서 적절한 방향으로 드래그하면 이어서 강패링을 진행할 수 있습니다.";
 
         isDaehwa = false;
         // count = 0;
@@ -266,6 +272,9 @@ public class TutorialManager : MonoBehaviour
 
         string Daehwa4_Text3 = "..아뇨. 이제 근접 공격을 하는 놈들이 나올 겁니다.";
         yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[1], "정령", Daehwa4_Text3, true));
+
+        string Daehwa4_Text4 = "참고로 말씀드리는데, 방향 전환은 스와이프로만 할 수 있어요. 공격이 날라오는 방향에 맞춰서 스와이프를 딱!!";
+        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "정령", Daehwa4_Text4, true));
 
         GameDescriptionText.text = "다른 방향으로 스와이프하여 방향을 바꾸며 강패링할 수 있습니다.";
 
@@ -323,7 +332,16 @@ public class TutorialManager : MonoBehaviour
         string Daehwa6_Text5 = "...";
         yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[7], "소리", Daehwa6_Text5, false));
 
-        GameDescriptionText.text = "적의 파란색 공격은 세번째 리듬에 맞춰 홀드하고,\n마지막 순간에 해당 방향으로 스와이프하여 막아내야 합니다.";
+        string Daehwa6_Text6 = "어, 저 녀석들 제대로 화났나봐요. 아주 강한 공격이 들어올 것 같아요!!!!";
+        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[2], "정령", Daehwa6_Text6, true));
+
+        string Daehwa6_Text7 = "세 번째 파란 느낌표가 뜰 때 방향에 맞춰서 터치하거나 스와이프한 후 손을 떼지 않고 화면을 꾹 누르고 있어야 해요!!";
+        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "정령", Daehwa6_Text7, true));
+
+        string Daehwa6_Text8 = "그리고 세 번째 느낌표가 사라질 때 해당 방향으로 스와이프까지 잊지 말고 해야 해요!!!!";
+        yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[1], "정령", Daehwa6_Text8, true));
+
+        GameDescriptionText.text = "세번째 리듬에 맞춰 홀드하고,\n마지막 순간에 해당 방향으로 스와이프하여 막아내야 합니다.";
 
         isDaehwa = false;
 
@@ -365,7 +383,7 @@ public class TutorialManager : MonoBehaviour
         }
         else
         {
-            string Daehwa7_Text1 = "튜토리얼은 메뉴에서 다시 진행할 수 있어요. 튜토리얼을 훌륭히 해낸다면 새로운 장면을 보실지도..?";
+            string Daehwa7_Text1 = "튜토리얼은 메뉴에서 다시 진행할 수 있어요.";
             yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "정령", Daehwa7_Text1, true));
 
             string Daehwa7_Text3 = "이제 마왕을 잡으러 떠나요!!!!";

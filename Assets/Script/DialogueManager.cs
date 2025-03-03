@@ -18,9 +18,13 @@ public class DialogueManager : MonoBehaviour
     bool daehwaON = false;
     bool accelerate = false;
 
+    [SerializeField] private Canvas inGameScreen;
+
     private void Start()
     {
         TypingSound = GetComponent<AudioSource>();
+
+        inGameScreen.sortingOrder = 10;
     }
     private void Update()
     {
@@ -63,16 +67,16 @@ public class DialogueManager : MonoBehaviour
             characterRect.anchorMin = new Vector2(0f, 0.33f);
             characterRect.anchorMax = new Vector2(0f, 0.33f);
             characterRect.pivot = new Vector2(0f, 0f);
-            characterRect.anchoredPosition = new Vector2(Screen.width * 0.02f, - Screen.width * 0.12f); 
-            characterRect.sizeDelta = new Vector2(Screen.width * 0.33f * 1.8f, Screen.width * 0.33f * 1.2988f * 1.8f);
+            characterRect.anchoredPosition = new Vector2(Screen.width * 0.02f, - Screen.width * 0.17f); 
+            characterRect.sizeDelta = new Vector2(800, 800 * 1.2988f);
         }
         else
         {
             characterRect.anchorMin = new Vector2(1f, 0.33f);
             characterRect.anchorMax = new Vector2(1f, 0.33f);
             characterRect.pivot = new Vector2(1f, 0f);
-            characterRect.anchoredPosition = new Vector2(- Screen.width * 0.02f, - Screen.width * 0.12f);
-            characterRect.sizeDelta = new Vector2(Screen.width * 0.33f * 1.8f, Screen.width * 0.33f * 1.2988f * 1.8f);
+            characterRect.anchoredPosition = new Vector2(- Screen.width * 0.02f, - Screen.width * 0.17f);
+            characterRect.sizeDelta = new Vector2(800, 800 * 1.2988f);
         }
 
         // 대화창 패널
@@ -91,12 +95,12 @@ public class DialogueManager : MonoBehaviour
         NameText.transform.SetParent(dialoguePanel.transform, false);
         Text nameUIText = NameText.AddComponent<Text>();
         nameUIText.font = NameFont;
-        nameUIText.fontSize = 100 * (Screen.width / 1080);
+        nameUIText.fontSize = 100;
         nameUIText.color = Color.yellow;
         nameUIText.alignment = TextAnchor.MiddleLeft;
         RectTransform NameTextRect = NameText.GetComponent<RectTransform>();
-        NameTextRect.anchorMin = new Vector2(0.05f, 0.8f);
-        NameTextRect.anchorMax = new Vector2(0.95f, 0.9f);
+        NameTextRect.anchorMin = new Vector2(0.05f, 0.75f);
+        NameTextRect.anchorMax = new Vector2(0.95f, 0.95f);
         NameTextRect.offsetMin = Vector2.zero;
         NameTextRect.offsetMax = Vector2.zero;
         nameUIText.text = nameText;
@@ -106,7 +110,7 @@ public class DialogueManager : MonoBehaviour
         DialogueText.transform.SetParent(dialoguePanel.transform, false);
         Text dialogueUIText = DialogueText.AddComponent<Text>();
         dialogueUIText.font = DialogueFont;
-        dialogueUIText.fontSize = 90 * (Screen.width / 1080);
+        dialogueUIText.fontSize = 80;
         dialogueUIText.color = Color.white;
         dialogueUIText.alignment = TextAnchor.UpperLeft;
         RectTransform textRect = DialogueText.GetComponent<RectTransform>();
