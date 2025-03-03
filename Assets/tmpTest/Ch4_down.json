@@ -2,12 +2,12 @@
     "bpm": 120,
     "strikerType": 1,
     "direction": 2,
-    "appearTime": 76,
-    "disappearTime": 85.5,
+    "appearTime": 1000000,
+    "disappearTime": 5000000,
     "notes": [
         {
-            "time": 77,
-            "arriveTime": 85,
+            "time": 2000000,
+            "arriveTime": 3000000,
             "type": 1
         }
     ]

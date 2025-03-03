@@ -3,21 +3,26 @@
     "strikerType": 0,
     "direction": 1,
     "appearTime": 51,
-    "disappearTime": 62.5,
+    "disappearTime": 66.5,
     "notes": [
         {
             "time": 52,
             "arriveTime": 60,
-            "type": 1
-        },
-        {
-            "time": 53,
-            "arriveTime": 61,
-            "type": 1
+            "type": 0
         },
         {
             "time": 54,
             "arriveTime": 62,
+            "type": 1
+        },
+        {
+            "time": 56,
+            "arriveTime": 64,
+            "type": 0
+        },
+        {
+            "time": 58,
+            "arriveTime": 66,
             "type": 1
         }
     ]

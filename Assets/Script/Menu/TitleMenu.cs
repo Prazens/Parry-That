@@ -69,7 +69,7 @@ public class TitleMenu : MonoBehaviour
             ChangeSwordPosition();
             GoStageMenu = true;
         }
-        // Debug.Log($"{TitlePassed}");
+        Debug.Log($"{TitlePassed}");
     }
 
     void Update()   // ���� �������� �ϸ� Ÿ��Ʋ ȭ�鿡�� �������� ���� ȭ������ ��ȯ
@@ -246,7 +246,7 @@ public class TitleMenu : MonoBehaviour
         }
         swordRect.anchoredPosition = endPosDown;
         SwordUpEnd = true;
-        // Debug.Log("SwordUpEnd");
+        Debug.Log("SwordUpEnd");
     }
 
     private void ChangeSwordPosition()
@@ -268,7 +268,7 @@ public class TitleMenu : MonoBehaviour
     {
         if (isFading) return;
         StartCoroutine(FadeEffect());
-        // Debug.Log("�Լ� ȣ�� �Ϸ�");
+        Debug.Log("�Լ� ȣ�� �Ϸ�");
     }
 
     private IEnumerator FadeEffect()
@@ -278,7 +278,7 @@ public class TitleMenu : MonoBehaviour
         isFading = true;
 
         float elapsedTime = 0f;
-        // Debug.Log("���̵�ƿ� ����");
+        Debug.Log("���̵�ƿ� ����");
         while (elapsedTime < fadeDuration)
         {
             elapsedTime += Time.deltaTime;
