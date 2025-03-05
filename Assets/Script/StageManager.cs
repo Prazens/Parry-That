@@ -42,6 +42,7 @@ public class StageManager : MonoBehaviour
 
     [SerializeField] private TextAsset[] jsonCharts;
     public float musicOffset;
+    public float bpm;
 
     // 빅토리 애니메이션 관련
     [SerializeField] GameObject VictoryAnimatorObj;
@@ -50,6 +51,7 @@ public class StageManager : MonoBehaviour
     private Image VictoryImage;
     private SpriteRenderer VictoryRenderer;
     [SerializeField] AudioSource VictoryAudioSource;
+
 
     private void Awake()
     {

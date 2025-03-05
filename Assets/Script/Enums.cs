@@ -21,6 +21,12 @@ public enum AttackType
     HoldStop = 4  // 홀드 끝에서 스와이프하지 않고 그냥 손을 뗐을 경우
 }
 
+public enum StrikerType
+{
+    DRUMMON = 1,
+    GUITARMON = 2
+}
+
 public class DirTool
 {
     static public Vector3 TranstoVec(Direction direction)
