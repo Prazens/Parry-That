@@ -161,13 +161,6 @@ public class StrikerController : MonoBehaviour
             exclamationRelocation();
             prepareQueue.Dequeue(); // 준비된 공격 제거
         }
-        // ** 만약 공격 후 원래 자리로 돌아가지 않는다면 강제 복귀 실행**
-        if (isMoved && !isMoving && prepareQueue.Count == 0)
-        {
-            isMoved = false;
-            isMoving = true;
-            StartCoroutine(MeleeGoBack());
-        }
     }
 
     public void ActMeleeHit()
