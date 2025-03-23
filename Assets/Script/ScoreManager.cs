@@ -279,6 +279,104 @@ public class ScoreManager : MonoBehaviour
                 }
                 else
                 {
+                    if (tempStrikerController.judgeableQueue.Count != 0)
+                    {
+                        _judgeable = tempStrikerController.judgeableQueue.Peek();
+
+                        // 홀드 틀렸을 경우
+                        if (findHoldFinish && _judgeable.attackType == AttackType.HoldFinishStrong
+                            && (tempStrikerController.location != touchDirection || type == AttackType.HoldStop))
+                        {
+                            // Debug.Log("홀드 틀림");
+                            isHolding = false;
+                            tempJudge = 0;
+                            break;
+                        }
+
+                        arriveSec = _judgeable.arriveBeat * 60f / tempStrikerController.bpm;
+
+                        // 시간에 따라 판정
+                        timeDiff = touchTimeSec - arriveSec - musicOffset;
+                        //timeDiff = touchTimeSec - projectileNoteData.arriveTime * (60f / strikerController.bpm) - musicOffset;
+                        // 판정 나누기
+                        // 기획서의 판정 표와 반대 순서임
+                        if (timeDiff > 0.12d)
+                        {
+                            tempJudge = 0;
+                        }
+                        else if (timeDiff > 0.12d)
+                        {
+                            tempJudge = 1;
+                        }
+                        else if (timeDiff > 0.07d)
+                        {
+                            tempJudge = 2;
+                        }
+                        else if (timeDiff >= -0.07d)
+                        {
+                            tempJudge = 3;
+                        }
+                        else if (timeDiff >= -0.12d)
+                        {
+                            tempJudge = 4;
+                        }
+                        else if (timeDiff >= -0.15d)
+                        {
+                            tempJudge = 5;
+                        }
+                        else if (timeDiff >= -0.18d)
+                        {
+                            tempJudge = 0;
+                        }
+
+                        else  // 공노트? 공POOR?
+                        {
+                            tempJudge = -1;
+                        }
+
+                        // 홀드 시작
+                        if (!isHolding && _judgeable.attackType == AttackType.HoldStart)
+                        {
+                            if (tempJudge >= 1)
+                            {
+                                // Debug.Log("홀드 시작");
+                                isHolding = true;
+                                type = AttackType.HoldStart;
+                            }
+
+                            if (tempJudge == 0)
+                            {
+                                // Debug.Log($"판정 수행 : Direction.{direction}, AttackType.{type}, {timeDiff:F3} -> \"{judgeStrings[tempJudge + 1]}\"");
+                                JudgeManage(_judgeable, tempJudge, false, touchDirection, type);
+                                _judgeable = tempStrikerController.judgeableQueue.Peek();
+                                arriveSec = _judgeable.arriveBeat * 60f / tempStrikerController.bpm;
+                                timeDiff = touchTimeSec - arriveSec - musicOffset;
+                            }
+
+                        // 홀드 끝
+                        else if (isHolding && tempJudge != -1)
+                        {
+                            // Debug.Log("홀드 종료");
+                            isHolding = false;
+
+                            // 홀드 끝판정 보정 (너무빡셈)
+                            if (tempJudge != 0)
+                            {
+                                if (tempJudge < 3)
+                                {
+                                    tempJudge++;
+                                }
+                                else if (tempJudge > 3)
+                                {
+                                    tempJudge--;
+                                }
+                            }
+                        }
+                            lastNonMissJudge = touchTimeSec;
+                            break;
+                        }
+                    }
+
                     tempStrikerController = null;
                 }
             }
