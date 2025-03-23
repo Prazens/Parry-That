@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Dependencies.NCalc;
 using UnityEngine;
 
 public class StrikerController : MonoBehaviour
@@ -588,6 +589,7 @@ public class StrikerController : MonoBehaviour
 
     public void TakeDamage(int damage, AttackType type)
     {
+        Debug.LogError("takeDamage 시행됨");
         if (audioSource != null)
         {
             if (type == AttackType.Normal && parrySoundNormal != null)
@@ -661,7 +663,7 @@ public class StrikerController : MonoBehaviour
         //기타몬 애니메이션 길이 기준으로 그냥 2.5초 지정해버렸습니다.
         if(isMelee) yield return new WaitForSeconds(2.5f);
         else yield return new WaitForSeconds(1f);
-
+        Debug.LogError($"{gameObject}: 비활성화중");
         // 오브젝트 삭제
         // Destroy(gameObject);
         gameObject.SetActive(false);

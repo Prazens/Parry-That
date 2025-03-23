@@ -37,27 +37,36 @@ public class StrikerManager : MonoBehaviour
     private void Update()
     {
         float currentTime = StageManager.Instance.currentTime;
-        //if (TutorialManager.isTutorial && !tutorialManager.isDaehwa)
-        //{
-        //    for (int i = 0; i < TutorialManager.StrikerNum[tutorialManager.daehwaIndex] - TutorialManager.StrikerNum[tutorialManager.daehwaIndex - 1]; i++)
-        //    {
-        //        if (currentTime >= charts[i].appearTime * (60f / charts[i].bpm) + playerManager.musicOffset &&
-        //            strikerStatus[i] == 0)
-        //        {
-        //            strikerStatus[i] = 1;
-        //            // Debug.Log($"SpawnStriker({i})");
-        //            strikerList[i].SetActive(true);
-        //        }
-        //        else if (currentTime >= charts[i].disappearTime * (60f / charts[i].bpm) + playerManager.musicOffset &&
-        //                 strikerStatus[i] == 1)
-        //        {
-        //            // Debug.Log($"beClearedStriker({i})");
-        //            strikerList[i].GetComponent<StrikerController>().beCleared();
-        //            strikerStatus[i] = 2;
-        //        }
-        //    }
-        //}
-        //else if (!TutorialManager.isTutorial)
+        if (TutorialManager.isTutorial && !tutorialManager.isDaehwa)
+        {
+            for (int i = 0; i < TutorialManager.StrikerNum[tutorialManager.currentIdx + 1] - TutorialManager.StrikerNum[tutorialManager.currentIdx]; i++)
+            {
+                if (currentTime >= charts[i].appearTime * (60f / charts[i].bpm) + playerManager.musicOffset &&
+                    strikerStatus[i] == 0)
+                {
+                    strikerStatus[i] = 1;
+                    // Debug.Log($"SpawnStriker({i})"); 
+                    strikerList[i].SetActive(true);
+                }
+                else if (currentTime >= charts[i].disappearTime * (60f / charts[i].bpm) + playerManager.musicOffset &&
+                         strikerStatus[i] == 1)
+                {
+                    strikerList[i].GetComponent<StrikerController>().beCleared();
+                    strikerStatus[i] = 2;
+                    // Debug.Log($"beClearedStriker({i})");
+                    //if (tutorialManager.patternComplete)
+                    //{
+                    //    strikerList[i].GetComponent<StrikerController>().beCleared();
+                    //    strikerStatus[i] = 2;
+                    //}
+                    //else
+                    //{
+                    //    strikerStatus[i] = 0;
+                    //}
+                }
+            }
+        }
+        else if (!TutorialManager.isTutorial)
         {
             for (int i = 0; i < charts.Count; i++)
             {
@@ -90,22 +99,44 @@ public class StrikerManager : MonoBehaviour
         holdExclamation.GetComponent<holdExclamation>().audioSource = GameObject.Find("Audio Source").GetComponent<AudioSource>();
 
         strikerStatus.Clear();
-        // Debug.Log($"InitStriker {charts.Count}");
-        for (int i = 0; i < charts.Count; i++)
+        Debug.Log($"InitStriker {charts.Count}");
+        if (TutorialManager.isTutorial)
         {
-            strikerStatus.Add(0);
-            if (charts[i].appearTime == 0)
+            for (int i = 0; i < TutorialManager.StrikerNum[tutorialManager.currentIdx + 1] - TutorialManager.StrikerNum[tutorialManager.currentIdx]; i++)
             {
-                strikerStatus[i] = 1;
-                // Debug.Log($"SpawnStriker({i})");
-                SpawnStriker(i, true);
-            }
-            else
-            {
-                SpawnStriker(i, false);
-            }
+                strikerStatus.Add(0);
+                if (charts[i].appearTime == 0)
+                {
+                    strikerStatus[i] = 1;
+                    // Debug.Log($"SpawnStriker({i})");
+                    SpawnStriker(i, true);
+                }
+                else
+                {
+                    SpawnStriker(i, false);
+                }
 
+            }
         }
+        else
+        {
+            for (int i = 0; i < charts.Count; i++)
+            {
+                strikerStatus.Add(0);
+                if (charts[i].appearTime == 0)
+                {
+                    strikerStatus[i] = 1;
+                    // Debug.Log($"SpawnStriker({i})");
+                    SpawnStriker(i, true);
+                }
+                else
+                {
+                    SpawnStriker(i, false);
+                }
+
+            }
+        }
+        
     }
 
     // Start is called before the first frame update
