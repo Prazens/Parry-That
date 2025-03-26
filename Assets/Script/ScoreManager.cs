@@ -283,6 +283,13 @@ public class ScoreManager : MonoBehaviour
                     {
                         _judgeable = tempStrikerController.judgeableQueue.Peek();
 
+                        if (_judgeable.attackType == AttackType.Strong ||
+                            _judgeable.attackType == AttackType.Normal)
+                        {
+                            tempStrikerController = null;
+                            continue;
+                        }
+
                         // 홀드 틀렸을 경우
                         if (findHoldFinish && _judgeable.attackType == AttackType.HoldFinishStrong
                             && (tempStrikerController.location != touchDirection || type == AttackType.HoldStop))
