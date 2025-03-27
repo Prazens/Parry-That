@@ -108,6 +108,25 @@ public class TitleMenu : MonoBehaviour
 
         imsi.SetActive(false);  // imsi
         if (StageMenu.currentIndex == 4) imsi.SetActive(true);
+
+        //testScene
+        // 마우스 클릭 체크
+        if (Input.GetMouseButtonDown(0))
+        {
+            RegisterClick();
+        }
+
+        // 터치 입력 체크 (모바일)
+        if (Input.touchCount > 0)
+        {
+            foreach (Touch touch in Input.touches)
+            {
+                if (touch.phase == TouchPhase.Began)
+                {
+                    RegisterClick();
+                }
+            }
+        }
     }
 
     private void MouseMove()
@@ -325,6 +344,28 @@ public class TitleMenu : MonoBehaviour
     // 
 
 
+    // testScene
 
+    // 필요한 클릭 수와 시간 창을 설정
+    public int requiredClicks = 5;
+    public float timeWindow = 1f;
 
+    // 클릭 또는 터치가 발생한 시간을 저장할 리스트
+    private List<float> clickTimes = new List<float>();
+
+    void RegisterClick()
+    {
+        float currentTime = Time.time;
+        clickTimes.Add(currentTime);
+
+        // 1초(timeWindow)보다 오래된 클릭 기록은 제거합니다.
+        clickTimes.RemoveAll(time => currentTime - time > timeWindow);
+
+        // 1초 안에 필요한 클릭 수 이상이면 testScene으로 전환합니다.
+        if (clickTimes.Count >= requiredClicks)
+        {
+            Debug.Log("롱노트 테스트맵 이동중...");
+            SceneManager.LoadScene("testScene");
+        }
+    }
 }

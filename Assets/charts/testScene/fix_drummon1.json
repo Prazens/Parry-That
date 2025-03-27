@@ -1,0 +1,89 @@
+{
+	"bpm": 150,
+	"strikerType": 0,
+	"direction": 1,
+	"appearTime": 0,
+	"disappearTime": 100,
+    "notes": [
+        {
+            "time": 10.0,
+            "arriveTime": 18.0,
+            "type": 0
+        },
+        {
+            "time": 11.0,
+            "arriveTime": 19.0,
+            "type": 0
+        },
+        {
+            "time": 26.0,
+            "arriveTime": 34.0,
+            "type": 0
+        },
+        {
+            "time": 27.0,
+            "arriveTime": 35.0,
+            "type": 0
+        },
+        {
+            "time": 36.0,
+            "arriveTime": 44.0,
+            "type": 0
+        },
+        {
+            "time": 40.5,
+            "arriveTime": 48.5,
+            "type": 0
+        },
+        {
+            "time": 42.0,
+            "arriveTime": 50.0,
+            "type": 0
+        },
+        {
+            "time": 43.0,
+            "arriveTime": 51.0,
+            "type": 0
+        },
+        {
+            "time": 52.0,
+            "arriveTime": 60.0,
+            "type": 0
+        },
+        {
+            "time": 56.5,
+            "arriveTime": 64.5,
+            "type": 0
+        },
+        {
+            "time": 58.0,
+            "arriveTime": 66.0,
+            "type": 0
+        },
+        {
+            "time": 59.0,
+            "arriveTime": 67.0,
+            "type": 0
+        },
+        {
+            "time": 72.0,
+            "arriveTime": 80.0,
+            "type": 0
+        },
+        {
+            "time": 75.0,
+            "arriveTime": 83.0,
+            "type": 1
+        },
+        {
+            "time": 88.0,
+            "arriveTime": 96.0,
+            "type": 0
+        },
+        {
+            "time": 91.0,
+            "arriveTime": 99.0,
+            "type": 1
+        }
+    ]
+}
