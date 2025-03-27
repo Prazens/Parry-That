@@ -43,7 +43,7 @@ public class CameraMoving : MonoBehaviour
             Vector3 t_randomRot = t_originEuler + new Vector3(t_rotX, t_rotY, t_rotZ);
             Quaternion t_rot = Quaternion.Euler(t_randomRot);
 
-            while (Quaternion.Angle(transform.rotation, t_rot) > 0.1f)
+            while (Quaternion.Angle(transform.rotation, t_rot) > 0.02f)
             {
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, t_rot, m_force * Time.deltaTime);
                 yield return null;
@@ -51,7 +51,7 @@ public class CameraMoving : MonoBehaviour
         }
 
         // 흔들림 종료 후 초기화
-        while (Quaternion.Angle(transform.rotation, m_originRot) > 0.1f)
+        while (Quaternion.Angle(transform.rotation, m_originRot) > 0.02f)
         {
             transform.rotation = Quaternion.RotateTowards(transform.rotation, m_originRot, m_force * Time.deltaTime);
             yield return null;
