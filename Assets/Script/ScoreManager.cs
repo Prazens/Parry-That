@@ -123,7 +123,7 @@ public class ScoreManager : MonoBehaviour
         }
 
         bool findHoldFinish = false;
-
+        print(isHolding);
         // 홀드 중인데 다른 판정 입력
         // if (type != AttackType.HoldFinish && isHolding)
         if (isHolding)
@@ -161,7 +161,7 @@ public class ScoreManager : MonoBehaviour
         int tempJudge = -1;
 
         playerManager.currentDirection = touchDirection;
-       
+        // Debug.LogWarning(playerManager.currentDirection);
         // 스트라이커마다 탐지
         foreach (GameObject striker in strikerManager.strikerList)
         {
@@ -283,21 +283,10 @@ public class ScoreManager : MonoBehaviour
                     {
                         _judgeable = tempStrikerController.judgeableQueue.Peek();
 
-                        if (_judgeable.attackType == AttackType.Strong ||
-                            _judgeable.attackType == AttackType.Normal)
+                        if (_judgeable.attackType != AttackType.HoldStart)
                         {
                             tempStrikerController = null;
                             continue;
-                        }
-
-                        // 홀드 틀렸을 경우
-                        if (findHoldFinish && _judgeable.attackType == AttackType.HoldFinishStrong
-                            && (tempStrikerController.location != touchDirection || type == AttackType.HoldStop))
-                        {
-                            // Debug.Log("홀드 틀림");
-                            isHolding = false;
-                            tempJudge = 0;
-                            break;
                         }
 
                         arriveSec = _judgeable.arriveBeat * 60f / tempStrikerController.bpm;
@@ -349,8 +338,12 @@ public class ScoreManager : MonoBehaviour
                                 // Debug.Log("홀드 시작");
                                 isHolding = true;
                                 type = AttackType.HoldStart;
+                                playerManager.currentDirection = tempStrikerController.location;
+                                touchDirection = tempStrikerController.location;
+                                //Debug.Log(playerManager.currentDirection);
+                                //print("방향전환");
                             }
-
+                            // print(touchDirection);
                             if (tempJudge == 0)
                             {
                                 // Debug.Log($"판정 수행 : Direction.{direction}, AttackType.{type}, {timeDiff:F3} -> \"{judgeStrings[tempJudge + 1]}\"");
@@ -359,13 +352,13 @@ public class ScoreManager : MonoBehaviour
                                 arriveSec = _judgeable.arriveBeat * 60f / tempStrikerController.bpm;
                                 timeDiff = touchTimeSec - arriveSec - musicOffset;
                             }
-
+                        }
                         // 홀드 끝
                         else if (isHolding && tempJudge != -1)
                         {
                             // Debug.Log("홀드 종료");
                             isHolding = false;
-
+                            
                             // 홀드 끝판정 보정 (너무빡셈)
                             if (tempJudge != 0)
                             {
@@ -385,8 +378,8 @@ public class ScoreManager : MonoBehaviour
                     }
 
                     tempStrikerController = null;
-                }
             }
+      
         }
 
         // 판정 전송
