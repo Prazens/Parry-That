@@ -110,20 +110,38 @@ public class TitleMenu : MonoBehaviour
         if (StageMenu.currentIndex == 4) imsi.SetActive(true);
 
         //testScene
-        // 마우스 클릭 체크
+#if UNITY_EDITOR
+        // 에디터 환경: 마우스 입력으로 스와이프 처리
         if (Input.GetMouseButtonDown(0))
         {
-            RegisterClick();
+            touchStartPos = Input.mousePosition;
         }
+        if (Input.GetMouseButtonUp(0))
+        {
+            Vector2 touchEndPos = Input.mousePosition;
+            Vector2 swipeDelta = touchEndPos - touchStartPos;
+            if (swipeDelta.magnitude >= TswipeThreshold && swipeDelta.y < 0)
+            {
+                RegisterSwipe();
+            }
+        }
+#endif
 
-        // 터치 입력 체크 (모바일)
+        // 모바일 터치 입력 처리
         if (Input.touchCount > 0)
         {
-            foreach (Touch touch in Input.touches)
+            Touch touch = Input.GetTouch(0);
+            if (touch.phase == TouchPhase.Began)
             {
-                if (touch.phase == TouchPhase.Began)
+                touchStartPos = touch.position;
+            }
+            else if (touch.phase == TouchPhase.Ended)
+            {
+                Vector2 touchEndPos = touch.position;
+                Vector2 swipeDelta = touchEndPos - touchStartPos;
+                if (swipeDelta.magnitude >= TswipeThreshold && swipeDelta.y < 0)
                 {
-                    RegisterClick();
+                    RegisterSwipe();
                 }
             }
         }
@@ -347,24 +365,24 @@ public class TitleMenu : MonoBehaviour
     // testScene
 
     // 필요한 클릭 수와 시간 창을 설정
-    public int requiredClicks = 5;
-    public float timeWindow = 1f;
+    public int requiredSwipes = 5; // 아래 방향 스와이프 횟수
+    public float timeWindow = 1f;  // 시간 제한 (초)
+    public float TswipeThreshold = 50f; // 스와이프로 간주할 최소 이동 거리 (픽셀 단위)
 
-    // 클릭 또는 터치가 발생한 시간을 저장할 리스트
-    private List<float> clickTimes = new List<float>();
+    private List<float> swipeTimes = new List<float>(); // 스와이프 발생 시간 저장
+    private Vector2 touchStartPos; // 터치/마우스 시작 위치 기록
 
-    void RegisterClick()
+    void RegisterSwipe()
     {
         float currentTime = Time.time;
-        clickTimes.Add(currentTime);
+        swipeTimes.Add(currentTime);
 
-        // 1초(timeWindow)보다 오래된 클릭 기록은 제거합니다.
-        clickTimes.RemoveAll(time => currentTime - time > timeWindow);
+        // 1초(timeWindow)보다 오래된 스와이프 기록 제거
+        swipeTimes.RemoveAll(time => currentTime - time > timeWindow);
 
-        // 1초 안에 필요한 클릭 수 이상이면 testScene으로 전환합니다.
-        if (clickTimes.Count >= requiredClicks)
+        // 1초 안에 필요한 스와이프 수 이상이면 testScene으로 전환
+        if (swipeTimes.Count >= requiredSwipes)
         {
-            Debug.Log("롱노트 테스트맵 이동중...");
             SceneManager.LoadScene("testScene");
         }
     }
