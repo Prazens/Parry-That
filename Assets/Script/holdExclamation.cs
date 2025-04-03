@@ -9,6 +9,8 @@ public class holdExclamation : MonoBehaviour
     public AudioClip[] prepareSounds;
     // public AudioClip prepareSoundHoldOut;
     private int phase = 0;
+    private Coroutine currentCoroutine = null;
+
 
     void Start()
     {
@@ -20,8 +22,11 @@ public class holdExclamation : MonoBehaviour
 
     public void Appear(float bpm, float intervalBeat)
     {
-        StopCoroutine("Showing");
-        StartCoroutine(Showing(bpm, intervalBeat, true));
+        if (currentCoroutine != null)
+        {
+            StopCoroutine(currentCoroutine);
+        }
+        currentCoroutine = StartCoroutine(Showing(bpm, intervalBeat, true));
     }
 
     private IEnumerator Showing(float bpm, float intervalBeat, bool isAppear)
@@ -48,13 +53,19 @@ public class holdExclamation : MonoBehaviour
 
     public void Disappear(float bpm, float intervalBeat)
     {
-        StopCoroutine("Showing");
-        StartCoroutine(Showing(bpm, intervalBeat, false));
+        if (currentCoroutine != null)
+        {
+            StopCoroutine(currentCoroutine);
+        }
+        currentCoroutine = StartCoroutine(Showing(bpm, intervalBeat, false));
     }
 
     public void ForceStop()
     {
-        StopCoroutine("Showing");
+        if (currentCoroutine != null)
+        {
+            StopCoroutine(currentCoroutine);
+        }
         transform.GetChild(0).gameObject.SetActive(false);
         transform.GetChild(1).gameObject.SetActive(false);
         transform.GetChild(2).gameObject.SetActive(false);

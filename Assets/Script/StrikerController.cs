@@ -196,6 +196,7 @@ public class StrikerController : MonoBehaviour
         audioSource.PlayOneShot(holdingEnd, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("playerVolume", 1));
         
         transform.GetChild(0).transform.localPosition = Vector3.zero;
+        isMoved = false;
         isHolding = false;
 
         holdExclamation.GetComponent<holdExclamation>().ForceStop();
@@ -237,6 +238,7 @@ public class StrikerController : MonoBehaviour
             }
             yield return null;
         }
+        yield break;
     }
     
     private IEnumerator MeleeGoBack()
@@ -255,7 +257,7 @@ public class StrikerController : MonoBehaviour
             float currentTime = StageManager.Instance.currentTime;
 
             if (backtime == 0f) backtime = currentTime;
-            float fraction = (currentTime - backtime) / (moveTime / 3);
+            float fraction = (currentTime - backtime) / (moveTime / 2);
             transform.position = Vector3.Lerp(targetPosition, originalPosition, Mathf.Clamp01(fraction));
             if (fraction >= 0.99f)
             {
@@ -276,6 +278,7 @@ public class StrikerController : MonoBehaviour
             }
             yield return null;
         }
+        yield break;
     }
 
     private IEnumerator MeleeHoldStartAnim()
@@ -297,6 +300,7 @@ public class StrikerController : MonoBehaviour
             }
             yield return null;
         }
+        yield break;
     }
 
     private void SetMeleeTargetPosition()
