@@ -111,7 +111,7 @@ public class StrikerController : MonoBehaviour
 
         // 현재 시간 가져오기
         float currentTime = StageManager.Instance.currentTime;
-        // 1️⃣ `prepareTime` 확인 → 준비 상태 활성화 & `arriveTime`과 `type` 저장
+        // `prepareTime` 확인 → 준비 상태 활성화 & `arriveTime`과 `type` 저장
         if (currentNoteIndex < chartData.notes.Length && currentTime >= chartData.notes[currentNoteIndex].time * (60f / bpm) + musicOffset)
         {
             PrepareForAttack();
@@ -160,12 +160,27 @@ public class StrikerController : MonoBehaviour
             }
             exclamationRelocation();
             prepareQueue.Dequeue(); // 준비된 공격 제거
+            if(attackType != 3 && attackType !=2 && prepareQueue.Count == 0 ) 
+            {
+                StartCoroutine(WaitAndGoBack());
+            }
         }
     }
-
+    private IEnumerator WaitAndGoBack()
+    {
+        //애니메이션 지속 시간을 고려하여 대기 후 실행
+        yield return new WaitForSeconds(0.1f); // 공격 후 0.1초 딜레이
+        
+        if (!isMoving && isMoved) // 중복 실행 방지
+        {
+            isMoved = false;
+            isMoving = true;
+            StartCoroutine(MeleeGoBack());
+        }
+    }
     public void ActMeleeHit()
     {
-        if(prepareQueue.Count == 0) 
+        if(prepareQueue.Count == 0 && isMoved) 
         {
             isMoved = false;
             isMoving = true;
@@ -196,7 +211,6 @@ public class StrikerController : MonoBehaviour
         audioSource.PlayOneShot(holdingEnd, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("playerVolume", 1));
         
         transform.GetChild(0).transform.localPosition = Vector3.zero;
-        isMoved = false;
         isHolding = false;
 
         holdExclamation.GetComponent<holdExclamation>().ForceStop();
@@ -243,17 +257,15 @@ public class StrikerController : MonoBehaviour
     
     private IEnumerator MeleeGoBack()
     {
-        // Debug.Log("MeleeGoBack");
+        Debug.Log("MeleeGoBack");
         if(hp == 0) 
         {
             animator.SetBool("hp0", true);
             moveTime = 0.6f;
         }
         else animator.SetBool("MovingBack", true);
-        // Debug.Log(isMoving);
         while (isMoving)
         {
-            // Debug.Log("back while문 진입");
             float currentTime = StageManager.Instance.currentTime;
 
             if (backtime == 0f) backtime = currentTime;
