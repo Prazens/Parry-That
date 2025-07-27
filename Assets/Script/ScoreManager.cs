@@ -427,7 +427,9 @@ public class ScoreManager : MonoBehaviour
 
         // Debug.Log($"JudgeManage1 {judgeObject.noteDirection} {judgement}");
         // Debug.Log($"JudgeManage2 {judgeDetails[0][1]}");
-        judgeDetails[(int)judgeObject.noteDirection][judgement + 1] += 1;
+
+        if (!TutorialManager.isTutorial) judgeDetails[(int)judgeObject.noteDirection][judgement + 1] += 1;
+        
 
         // 특정 Striker 찾기
         StrikerController targetStriker = judgeObject.strikerController;

@@ -1,0 +1,19 @@
+{
+    "bpm": 120,
+    "strikerType": 1,
+    "direction": 1,
+    "appearTime": 3,
+    "disappearTime": 11,
+    "notes": [
+        {
+            "time": 4,
+            "arriveTime": 6,
+            "type": 2
+        },
+        {
+            "time": 8,
+            "arriveTime": 10,
+            "type": 3
+        }
+    ]
+}

@@ -94,6 +94,8 @@ public class StrikerController : MonoBehaviour
         // 화면 밖에서 targetPosition으로 이동
         StartCoroutine(MoveToOriginalPosition());
         musicOffset = PlayerPrefs.GetFloat("musicOffset", 2);
+
+        playerManager = GameObject.Find("Player(Clone)").GetComponent<PlayerManager>();
     }
     private void Update() // 현재 striker 자체에서 투사체 일정 간격으로 발사
     {

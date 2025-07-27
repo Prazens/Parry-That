@@ -811,7 +811,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 5381ba5496f170d4b88a6e932088ac8b, type: 3}
+  m_audioClip: {fileID: 8300000, guid: a096ae6f41b26364e9ef8318bdb25ed2, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -2289,7 +2289,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 8782d35a65465e9418cc6dfc33712165, type: 3}
   - {fileID: 21300000, guid: eeb5adb6d9207764f82241c56a71ff7e, type: 3}
   - {fileID: 21300000, guid: 687a5fc0406ccb9458d228ddd6d4011b, type: 3}
-  daehwaIndex: 0
   isDaehwa: 1
 --- !u!4 &1355106858
 Transform:
@@ -3083,21 +3082,17 @@ MonoBehaviour:
   countdownText: {fileID: 477627792}
   continueText: {fileID: 1173173430}
   jsonCharts:
-  - {fileID: 4900000, guid: fd6e180e0df83ee40932b7029c22b0ca, type: 3}
-  - {fileID: 4900000, guid: 2d4b999852fe5024bb547d997804cad4, type: 3}
-  - {fileID: 4900000, guid: 7a1c628a74d08dd4dbcbd1352b67dd55, type: 3}
-  - {fileID: 4900000, guid: df8e3c96d17cd7144ad423f77e64ca85, type: 3}
-  - {fileID: 4900000, guid: bf5351222b7a2724492bdadcbfd02e8f, type: 3}
-  - {fileID: 4900000, guid: f0e17937c9e1f5147a3bbcc77978191c, type: 3}
-  - {fileID: 4900000, guid: f58a47a14c23b044da8a41ea36460e3b, type: 3}
-  - {fileID: 4900000, guid: 1364be156eb9ae9489ed7bfd11915142, type: 3}
-  - {fileID: 4900000, guid: 10d2b68c5b276bc43917ec3a6c6acdf4, type: 3}
-  - {fileID: 4900000, guid: ca4a87846821787409dd2df2abc0f94d, type: 3}
-  - {fileID: 4900000, guid: be12517dee4b1b94b956240caf7cd40d, type: 3}
-  - {fileID: 4900000, guid: 27f4a20aeea35df40b44ece730568515, type: 3}
-  - {fileID: 4900000, guid: a83f0b64d292d1e449ccd0e4e3e779c2, type: 3}
-  - {fileID: 4900000, guid: 6bc582568fd557445b276269eefae41e, type: 3}
-  - {fileID: 4900000, guid: a9fc87404a33f2a4b9ccc9f94788a29d, type: 3}
+  - {fileID: 4900000, guid: 13255eec2351d904d8ae0dbbd041dec6, type: 3}
+  - {fileID: 4900000, guid: ea6ff66f54758274d83b11a16879b1fe, type: 3}
+  - {fileID: 4900000, guid: 58bee1354aab5974cb403f5d8452bba4, type: 3}
+  - {fileID: 4900000, guid: c83bc4cf251396d469d0095227676316, type: 3}
+  - {fileID: 4900000, guid: 31ef75c606c7d124097b9767fa4feed5, type: 3}
+  - {fileID: 4900000, guid: 0b9abd610febd37468dc98ef9b066741, type: 3}
+  - {fileID: 4900000, guid: 0695cfceefde36b4790c8f7706cdf8a7, type: 3}
+  - {fileID: 4900000, guid: c74f3ce5890a63441943b197b9bf2d34, type: 3}
+  - {fileID: 4900000, guid: a8b91f2c95772894badff0bf37800ebd, type: 3}
+  - {fileID: 4900000, guid: eae451e6b33a0d240932c0121a3e46bc, type: 3}
+  - {fileID: 4900000, guid: 859572ea3ecfe594b8976b0bf25180a4, type: 3}
   musicOffset: 0
   VictoryAnimatorObj: {fileID: 895895656}
   VictoryAudioSource: {fileID: 163746527}

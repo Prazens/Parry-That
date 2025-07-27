@@ -142,7 +142,7 @@ public class StageManager : MonoBehaviour
         musicSource.time = 0f;
         StartStage();
     }
-    private void StartStage()
+    public void StartStage()
     {
         currentTime = 0f; // 시간 초기화
         musicPlayed = false;
@@ -156,10 +156,66 @@ public class StageManager : MonoBehaviour
         // SpawnGuideboxes();
         // Debug.Log($"StartStage {strikerManager.charts.Count}");
         strikerManager.charts.Clear();
-        for (int i = 0; i < jsonCharts.Length; i++)
+        if (TutorialManager.isTutorial)
         {
-            // Debug.Log($"StartStage {i}");
-            strikerManager.charts.Add(JsonReader.ReadJson<ChartData>(jsonCharts[i]));
+            switch (TutorialManager.phase)
+            {
+                case 0:
+                    for (int i = 0; i < 1; i++)
+                    {
+                        // Debug.Log($"StartStage {i}");
+                        strikerManager.charts.Add(JsonReader.ReadJson<ChartData>(jsonCharts[i]));
+                    }
+                    break;
+
+                case 1:
+                    for (int i = 1; i < 2; i++)
+                    {
+                        // Debug.Log($"StartStage {i}");
+                        strikerManager.charts.Add(JsonReader.ReadJson<ChartData>(jsonCharts[i]));
+                    }
+                    break;
+
+                case 2:
+                    for (int i = 2; i < 3; i++)
+                    {
+                        // Debug.Log($"StartStage {i}");
+                        strikerManager.charts.Add(JsonReader.ReadJson<ChartData>(jsonCharts[i]));
+                    }
+                    break;
+
+                case 3:
+                    for (int i = 3; i < 5; i++)
+                    {
+                        // Debug.Log($"StartStage {i}");
+                        strikerManager.charts.Add(JsonReader.ReadJson<ChartData>(jsonCharts[i]));
+                    }
+                    break;
+
+                case 4:
+                    for (int i = 5; i < 9; i++)
+                    {
+                        // Debug.Log($"StartStage {i}");
+                        strikerManager.charts.Add(JsonReader.ReadJson<ChartData>(jsonCharts[i]));
+                    }
+                    break;
+
+                case 5:
+                    for (int i = 9; i < 11; i++)
+                    {
+                        // Debug.Log($"StartStage {i}");
+                        strikerManager.charts.Add(JsonReader.ReadJson<ChartData>(jsonCharts[i]));
+                    }
+                    break;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < jsonCharts.Length; i++)
+            {
+                // Debug.Log($"StartStage {i}");
+                strikerManager.charts.Add(JsonReader.ReadJson<ChartData>(jsonCharts[i]));
+            }
         }
         strikerManager.InitStriker(0);
         isActive = true; // 스테이지 활성화
@@ -280,12 +336,23 @@ public class StageManager : MonoBehaviour
                 EndStage();
             }
         }
-        if (currentTime >= 2d && !musicPlayed)
+        if (!TutorialManager.isTutorial)
         {
-            //SpawnTransparentProjectile();
-            musicSource.Play();
-            musicPlayed = true;
-            // Debug.Log("Music Start!");
+            if (currentTime >= 2d && !musicPlayed)
+            {
+                //SpawnTransparentProjectile();
+                musicSource.Play();
+                musicPlayed = true;
+                // Debug.Log("Music Start!");
+            }
+        }
+        else
+        {
+            if (!musicPlayed)
+            {
+                musicSource.Play();
+                musicPlayed = true;
+            }
         }
     }
     public void GameOver()
@@ -603,6 +670,11 @@ public class StageManager : MonoBehaviour
             musicSource.Play();
             // Debug.LogError($"롤백 후 재생 시간: {musicSource.time}초");
         }
+    }
+    public void ResetAudio()
+    {
+        musicSource.time = 0f;
+        musicSource.Play();
     }
     public void AudioPause()
     {
