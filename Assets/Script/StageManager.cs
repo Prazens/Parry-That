@@ -317,7 +317,7 @@ public class StageManager : MonoBehaviour
     void Update()
     {
         if (!isActive) return;
-
+        print(currentTime);
         currentTime += Time.deltaTime;
         VictoryImage.sprite = VictoryRenderer.sprite;
         if (currentTime >= stageDuration)

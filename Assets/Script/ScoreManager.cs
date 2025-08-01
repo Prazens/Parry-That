@@ -437,7 +437,7 @@ public class ScoreManager : MonoBehaviour
         // GameObject targetProjectile = targetStriker.projectileQueue.Peek();
 
         CameraMoving CameraEffect = GameObject.Find("Main Camera").GetComponent<CameraMoving>();
-
+        // judgement = 3; // 게임 플레이 구경용 코드 
         // 따로 처리
         switch (judgement)
         {
