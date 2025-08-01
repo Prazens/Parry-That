@@ -76,10 +76,17 @@ public class DatabaseManager : MonoBehaviour
 
     public void LoadSceneDone()
     {
-        isTutorialDone = (PlayerPrefs.GetInt("TutorialDone") == 1);
+        // 시연을 위해 스토리 항상 나오도록 설정
+        isTutorialDone = false;
+        isStage1Done = false;
+        isStage2Done = false;
+        isStage3Done = false;
+
+        // 스토리 1회만 보이게 하려면 아래 코드 사용
+        /*isTutorialDone = (PlayerPrefs.GetInt("TutorialDone") == 1);
         isStage1Done = (PlayerPrefs.GetInt("Stage1Done") == 1);
         isStage2Done = (PlayerPrefs.GetInt("Stage2Done") == 1);
-        isStage3Done = (PlayerPrefs.GetInt("Stage3Done") == 1);
+        isStage3Done = (PlayerPrefs.GetInt("Stage3Done") == 1);*/
     }
 
 }
