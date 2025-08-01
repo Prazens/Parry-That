@@ -14,8 +14,8 @@ public class Prologue : MonoBehaviour
             tmp_Background.SetActive(false);    // 임시 구현
             // Debug.Log("tmp_Background이 비활성화되었습니다.");
 
-
-            if (DatabaseManager.isTutorialDone) // 튜토리얼 이미 완료했을 경우
+            if (false)
+            // if (DatabaseManager.isTutorialDone) // 튜토리얼 이미 완료했을 경우
             {
                 tmp_Background.SetActive(true);  // 임시 구현
                 // Debug.Log("Tutorial 완료됨. Main 씬으로 전환.");
