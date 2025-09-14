@@ -95,7 +95,7 @@ public class StrikerController : MonoBehaviour
         StartCoroutine(MoveToOriginalPosition());
         musicOffset = PlayerPrefs.GetFloat("musicOffset", 2);
 
-        playerManager = GameObject.Find("Player(Clone)").GetComponent<PlayerManager>();
+        playerManager = GameObject.FindWithTag("Player").GetComponent<PlayerManager>();
     }
     private void Update() // 현재 striker 자체에서 투사체 일정 간격으로 발사
     {
@@ -507,6 +507,7 @@ public class StrikerController : MonoBehaviour
         projectile projScript = projectile.GetComponent<projectile>();
         if (projScript != null)
         {
+            if (playerManager == null) playerManager = GameObject.FindWithTag("Player").GetComponent<PlayerManager>();
             projScript.target = playerManager.transform; // 플레이어를 타겟으로 설정
             projScript.owner = this;   // 소유자로 현재 스트라이커 설정
             projScript.arriveTime = time;
