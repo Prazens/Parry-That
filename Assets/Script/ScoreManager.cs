@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class ScoreManager : MonoBehaviour
 {
@@ -16,6 +17,9 @@ public class ScoreManager : MonoBehaviour
 
     public double lastNonMissJudge = 0;
     public bool isHolding = false;
+    public bool isOnStream = false;  // 연타 중인지 확인
+    public int streamCount = -1;  // 연타한 횟수
+    public Judgeable streamJudgeable = null; // 연타 판정용 Judgeable 저장
 
     public Queue<JudgeFormat> judgeQueue = new Queue<JudgeFormat>();
 
@@ -40,6 +44,7 @@ public class ScoreManager : MonoBehaviour
     {
         if(!StageManager.isActive) return;
         // 각 선두 노트에 대해 늦은 MISS가 발생 가능한지 확인
+        // 그리고 stream의 시작/끝 확인
         foreach (GameObject striker in strikerManager.strikerList)
         {
             if (striker != null)
@@ -51,6 +56,55 @@ public class ScoreManager : MonoBehaviour
                     tempJudgeable = tempStrikerController.judgeableQueue.Peek();
 
                     float tempTimeDiff = StageManager.Instance.currentTime - tempJudgeable.arriveBeat * 60f / tempStrikerController.bpm - musicOffset;
+
+                    // 연타 모드 시작
+                    if (tempJudgeable.attackType == AttackType.StreamStart && !isOnStream && tempTimeDiff > -0.01d)
+                    {
+                        isOnStream = true;
+                        streamCount = 0;
+                        streamJudgeable = tempStrikerController.judgeableQueue.Dequeue();
+                        break;
+                    }
+
+                    // 연타 모드 종료
+                    else if (tempJudgeable.attackType == AttackType.StreamFinish)
+                    {
+                        // 연타 시간이 끝났을 경우
+                        if (tempTimeDiff > -0.01d)
+                        {
+                            // 연타 종료
+                            if (streamCount < streamJudgeable.streamCount * 1 / 2)
+                            {
+                                // Debug.Log("연타 횟수 부족으로 MISS 처리");
+                                JudgeManage(streamJudgeable, 0);
+                            }
+                            else if (streamCount < streamJudgeable.streamCount * 3 / 4)
+                            {
+                                JudgeManage(streamJudgeable, 1);
+                            }
+                            else if (streamCount < streamJudgeable.streamCount)
+                            {
+                                JudgeManage(streamJudgeable, 2);
+                            }
+                            else
+                            {
+                                JudgeManage(streamJudgeable, 3);
+                            }
+
+                            isOnStream = false;
+                            streamCount = -1;
+                            streamJudgeable = null;
+                            tempStrikerController.judgeableQueue.Dequeue();
+                            break;
+                        }
+
+                        // 시간 전에 연타 횟수를 이미 다 채웠을 경우
+                        else if (!isOnStream)
+                        {
+                            tempStrikerController.judgeableQueue.Dequeue();
+                        }
+                    }
+
                     if (tempTimeDiff > 0.12d)
                     {
                         if (tempJudgeable.attackType == AttackType.HoldStart)
@@ -115,6 +169,32 @@ public class ScoreManager : MonoBehaviour
     // 맨 앞 거를 꺼내서 비교 후 처리.
     public void Judge(Direction direction, double touchTimeSec, AttackType type)
     {
+
+        if (isOnStream)
+        {
+            if (streamCount != -1)
+            {
+                streamCount++;
+
+                // 연타 횟수를 다 채웠을 경우
+                if (streamCount == streamJudgeable.streamCount)
+                {
+                    // 연타 종료
+                    JudgeManage(streamJudgeable, 3);
+                    isOnStream = false;
+                    streamCount = -1;
+                    streamJudgeable = null;
+                }
+                // JudgeManage(_judgeable, tempJudge, false, touchDirection, type);
+                return;
+            }
+            else
+            {
+                Debug.LogError("stream 중이 아닌 isOnStream");
+                return;
+            }
+        }
+
         // 홀드 중이 아닐 때의 의미없는 홀드정지
         if (type == AttackType.HoldStop && !isHolding)
         {
@@ -505,7 +585,7 @@ public class ScoreManager : MonoBehaviour
             if (judgement != 1 && judgement != 5)
             {
                 // parriedProjectileManager.CreateParriedProjectile(targetProjectile.transform.position, direction);
-                if (parriedProjectileManager != null && !targetStriker.isMelee)
+                if (parriedProjectileManager != null && !targetStriker.isMelee && judgeObject.attackType != AttackType.StreamStart)
                 {
                     if (targetStriker.boss != null)
                         parriedProjectileManager.ParryTusacheBoss((int)judgeObject.attackType, targetStriker.boss.transform);

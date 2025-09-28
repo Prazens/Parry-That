@@ -18,7 +18,9 @@ public enum AttackType
     Strong = 1,
     HoldStart = 2,
     HoldFinishStrong = 3,
-    HoldStop = 4  // 홀드 끝에서 스와이프하지 않고 그냥 손을 뗐을 경우
+    HoldStop = 4,  // 홀드 끝에서 스와이프하지 않고 그냥 손을 뗐을 경우
+    StreamStart = 5,
+    StreamFinish = 6,
 }
 
 public class DirTool
