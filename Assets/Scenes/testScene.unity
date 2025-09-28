@@ -1851,6 +1851,8 @@ MonoBehaviour:
   musicOffset: 0
   lastNonMissJudge: 0
   isHolding: 0
+  isOnStream: 0
+  streamCount: -1
   bpm: 0
 --- !u!114 &1744429774
 MonoBehaviour:
@@ -1890,6 +1892,7 @@ MonoBehaviour:
   - {fileID: 7275745348520807119, guid: 439a5c2dd3e0d144ea2d61fabbeb720d, type: 3}
   - {fileID: 6094729451512931245, guid: 1931b3a4df495e74a9deea580e08cc57, type: 3}
   parriedTusacheParent: {fileID: 1844794991}
+  prefabBoss: []
 --- !u!1 &1801923830
 GameObject:
   m_ObjectHideFlags: 0
@@ -2146,6 +2149,8 @@ MonoBehaviour:
   holdingSound: {fileID: 8300000, guid: c7a8e0bf3f24efd4b8143a12facac75b, type: 3}
   strikerList: []
   strikerStatus: 
+  boss: {fileID: 0}
+  isBossStage: 0
 --- !u!4 &1860902389
 Transform:
   m_ObjectHideFlags: 0
