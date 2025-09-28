@@ -107,86 +107,108 @@ public class ParriedProjectileManager : MonoBehaviour
         worldObject.transform.position = position;
         worldObject.transform.localScale = scale;
     }
+    public GameObject[] prefabBoss; // 0~1 : 약, 2~3 : 강
+
+    public void ParryTusacheBoss(int type, Transform bossRoot)
+    {
+        GameObject prefabToSpawn = null;
+        if (type == 0) prefabToSpawn = prefabBoss[UnityEngine.Random.Range(0, 2)];
+        else prefabToSpawn = prefabBoss[UnityEngine.Random.Range(2, 4)];
+
+        if (prefabToSpawn == null) return;
+
+        GameObject go = Instantiate(prefabToSpawn, parriedTusacheParent);
+        // 화면 공간이 아니라 월드 중심(보스 본체 pivot) 근처로 배치
+        SetWorldPositionAndScale(go, bossRoot.position /*+ 오프셋 가능*/, new Vector3(0.3f, 0.32f, 1));
+
+        var animator = go.GetComponent<Animator>();
+        if (animator != null)
+        {
+            animator.Play(prefabToSpawn.name);
+            StartCoroutine(DestroyAfterAnimation(go, animator.GetCurrentAnimatorStateInfo(0).length));
+        }
+    }
 }
 
-    
 
 
-    /*
-    public Animator parried_tusache;
 
-    private void Start()
+
+/*
+public Animator parried_tusache;
+
+private void Start()
+{
+    parried_tusache = GetComponent<Animator>();
+    if (parried_tusache == null) // Debug.Log("애니메이터 컴포넌트 못찾음");
+}
+public void ParryTusache(Direction targetDirection, int type) // 패링된 탄 애니메이션 시행
+{
+    // Debug.Log("패링된 투사체 함수 호출됨");
+    if (targetDirection == Direction.Up)
     {
-        parried_tusache = GetComponent<Animator>();
-        if (parried_tusache == null) // Debug.Log("애니메이터 컴포넌트 못찾음");
-    }
-    public void ParryTusache(Direction targetDirection, int type) // 패링된 탄 애니메이션 시행
-    {
-        // Debug.Log("패링된 투사체 함수 호출됨");
-        if (targetDirection == Direction.Up)
+        if (type == 0)
         {
-            if (type == 0)
-            {
-                int randomIndex = UnityEngine.Random.Range(0, 2);
-                if (randomIndex == 0) parried_tusache.SetTrigger("up1");
-                else parried_tusache.SetTrigger("up2");
-            }
-            else if (type == 1)
-            {
-                int randomIndex = UnityEngine.Random.Range(0, 2);
-                if (randomIndex == 0) parried_tusache.SetTrigger("up3");
-                else parried_tusache.SetTrigger("up4");
-            }
+            int randomIndex = UnityEngine.Random.Range(0, 2);
+            if (randomIndex == 0) parried_tusache.SetTrigger("up1");
+            else parried_tusache.SetTrigger("up2");
         }
-        else if (targetDirection == Direction.Down)
+        else if (type == 1)
         {
-            if (type == 0)
-            {
-                int randomIndex = UnityEngine.Random.Range(0, 2);
-                if (randomIndex == 0) parried_tusache.SetTrigger("down1");
-                else parried_tusache.SetTrigger("down2");
-            }
-            else if (type == 1)
-            {
-                int randomIndex = UnityEngine.Random.Range(0, 2);
-                if (randomIndex == 0) parried_tusache.SetTrigger("down1");
-                else parried_tusache.SetTrigger("down2");
-            }
-        }
-        
-    }
-
-    */
-
-
-    /*
-    public GameObject parriedProjectilePrefab;
-    public GameObject[] strikerLocations;
-
-    // 패링된 투사체 생성 후 움직임
-    public void CreateParriedProjectile(Vector3 initialPosition, Direction targetDirection)
-    {
-        GameObject tempProjectile;
-        Vector3 finalPosition = strikerLocations[(int)targetDirection - 1].transform.position;
-
-        // 패링된 투사체 생성
-        tempProjectile = Instantiate(parriedProjectilePrefab);
-
-        // Debug.Log("패링된 투사체 생성됨");
-
-        tempProjectile.GetComponent<ParriedProjectile>().Initialize_PP(initialPosition, targetDirection, finalPosition);
-        
-        // 랜덤으로 양 옆중 한 방향으로 발사
-        switch (targetDirection)
-        {
-            case Direction.Up:
-                tempProjectile.transform.rotation = Quaternion.Euler(0, 0, Random.Range(0, 2) == 0 ? 60 : -60);
-                break;
-            
-            case Direction.Down:
-                tempProjectile.transform.rotation = Quaternion.Euler(0, 0, Random.Range(0, 2) == 0 ? 120 : -120);
-                break;
+            int randomIndex = UnityEngine.Random.Range(0, 2);
+            if (randomIndex == 0) parried_tusache.SetTrigger("up3");
+            else parried_tusache.SetTrigger("up4");
         }
     }
-    */
+    else if (targetDirection == Direction.Down)
+    {
+        if (type == 0)
+        {
+            int randomIndex = UnityEngine.Random.Range(0, 2);
+            if (randomIndex == 0) parried_tusache.SetTrigger("down1");
+            else parried_tusache.SetTrigger("down2");
+        }
+        else if (type == 1)
+        {
+            int randomIndex = UnityEngine.Random.Range(0, 2);
+            if (randomIndex == 0) parried_tusache.SetTrigger("down1");
+            else parried_tusache.SetTrigger("down2");
+        }
+    }
+
+}
+
+*/
+
+
+/*
+public GameObject parriedProjectilePrefab;
+public GameObject[] strikerLocations;
+
+// 패링된 투사체 생성 후 움직임
+public void CreateParriedProjectile(Vector3 initialPosition, Direction targetDirection)
+{
+    GameObject tempProjectile;
+    Vector3 finalPosition = strikerLocations[(int)targetDirection - 1].transform.position;
+
+    // 패링된 투사체 생성
+    tempProjectile = Instantiate(parriedProjectilePrefab);
+
+    // Debug.Log("패링된 투사체 생성됨");
+
+    tempProjectile.GetComponent<ParriedProjectile>().Initialize_PP(initialPosition, targetDirection, finalPosition);
+
+    // 랜덤으로 양 옆중 한 방향으로 발사
+    switch (targetDirection)
+    {
+        case Direction.Up:
+            tempProjectile.transform.rotation = Quaternion.Euler(0, 0, Random.Range(0, 2) == 0 ? 60 : -60);
+            break;
+
+        case Direction.Down:
+            tempProjectile.transform.rotation = Quaternion.Euler(0, 0, Random.Range(0, 2) == 0 ? 120 : -120);
+            break;
+    }
+}
+*/
 // }

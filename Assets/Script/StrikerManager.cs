@@ -19,6 +19,10 @@ public class StrikerManager : MonoBehaviour
     public List<GameObject> strikerList = new List<GameObject>();
     public List<int> strikerStatus = new List<int>();
 
+    //보스전 전용
+    [SerializeField] private BossController boss;
+    public bool isBossStage = false;
+
     public void SetPlayer(PlayerManager player)
     {
         playerManager = player;
@@ -139,6 +143,10 @@ public class StrikerManager : MonoBehaviour
         if (strikerController != null)
         {
             strikerController.Initialize(hp, bpm, playerManager, (Direction)(positionIndex + 1), charts[chartIndex], prepabindex);
+            if (isBossStage && boss != null)
+            {
+                boss.RegisterStriker(strikerController);
+            }
         }
         else
         {

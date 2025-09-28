@@ -70,6 +70,9 @@ public class StrikerController : MonoBehaviour
 
     [SerializeField] private ParticleSystem particleSystemGreen;  // 🔹 초록색 파티클 시스템
 
+    public BossController boss;
+    public bool isBossMinion = false;
+
 
     private void Start()
     {
@@ -546,7 +549,8 @@ public class StrikerController : MonoBehaviour
         hpBar.transform.localPosition = Vector3.down * 2f;
         hpControl = hpBar.transform.GetChild(0);
         hpControl.transform.localScale = new Vector3(0, 1, 1);
-        if(prepabindex == 0)
+        if(isBossMinion) hpBar.SetActive(false);
+        if (prepabindex == 0)
         {
             isMelee = false;
         }
@@ -617,6 +621,12 @@ public class StrikerController : MonoBehaviour
             {
                 audioSource.PlayOneShot(parrySoundStrong, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("playerVolume", 1));
             }
+        }
+        if (isBossMinion && boss != null)
+        {
+            // 자기 HP는 깎지 않고 보스에게 전달
+            boss.TakeDamage(damage, type);
+            return;
         }
         if (hp >= 0)
         {
