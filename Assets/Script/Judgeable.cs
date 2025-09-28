@@ -19,9 +19,10 @@ public class Judgeable
     public Direction noteDirection;
     public AttackType attackType;
     public float arriveBeat;
+    public int streamCount = -1; // 몇 번 입력해야 하는지 (stream 판정용)
     // public NoteData noteData;
 
-    public Judgeable(AttackType _attackType, float _arriveBeat, Direction _noteDirection, StrikerController _strikerController, GameObject _judgeableObject = null, Action _onDestroy = null)
+    public Judgeable(AttackType _attackType,float _arriveBeat, Direction _noteDirection, StrikerController _strikerController, GameObject _judgeableObject = null, Action _onDestroy = null)
     {
         noteDirection = _noteDirection;
         judgeableObject = _judgeableObject;
@@ -29,6 +30,11 @@ public class Judgeable
         arriveBeat = _arriveBeat;
         strikerController = _strikerController;
         onDestroy = _onDestroy;
+    }
+
+    public void SetStreamCount(int _count)
+    {
+        streamCount = _count;
     }
 
     public void FinishJudge()

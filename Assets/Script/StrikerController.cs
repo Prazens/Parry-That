@@ -231,6 +231,18 @@ public class StrikerController : MonoBehaviour
         uiManager.CutInDisplay(0, true);
     }
 
+    public void ActStreamFinish()
+    {
+        // 연타 종료 시의 처리, Judgeable의 onDestroy에 저장 후 호출
+        // (streamstart 일 때만, streamend는 그냥 끝 시간 알림용, 별도 판정 처리 없음)
+    }
+
+    private IEnumerator StreamHoldAnim()
+    {
+        // 연타 중의 애니메이션? 표시
+        yield return null;
+    }
+
     private IEnumerator MeleeGo(float targetTime)
     {
         animator.SetBool("MovingGo", true);
