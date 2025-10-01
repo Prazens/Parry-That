@@ -138,7 +138,7 @@ public class TouchManager : MonoBehaviour
                 tempDirection = Direction.Down;
             }
 
-            if (isTapAndSwipe || previousDirection != tempDirection || scoreManager.isHolding)
+            if (isTapAndSwipe || previousDirection != tempDirection)
             {
                 SendJudge(tempDirection, judgeTime, AttackType.Strong);
                 previousDirection = tempDirection;

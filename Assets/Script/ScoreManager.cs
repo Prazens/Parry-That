@@ -192,17 +192,12 @@ public class ScoreManager : MonoBehaviour
         // if (type != AttackType.HoldFinish && isHolding)
         if (isHolding)
         {
-            if (!(type == AttackType.Strong || type == AttackType.HoldStop))
+            if (!(type == AttackType.HoldStop))
             {
-                // Debug.Log("홀드 중에서 스와이프 제외한 다른 판정 무시됨");
+                // Debug.Log("홀드 중에서 스와이프 포함한 다른 판정 무시됨");
                 return;
             }
-            // 홀드 중일 때의 스와이프는 홀드 종료로 판정
-            else if (type == AttackType.Strong)
-            {
-                type = AttackType.HoldFinishStrong;
-                findHoldFinish = true;
-            }
+            // 홀드 중일 때의 스와이프는 홀드 종료로 판정하지 않음
             else if (type == AttackType.HoldStop)
             {
                 findHoldFinish = true;
