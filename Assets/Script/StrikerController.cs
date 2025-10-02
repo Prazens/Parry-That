@@ -638,6 +638,7 @@ public class StrikerController : MonoBehaviour
         {
             // 자기 HP는 깎지 않고 보스에게 전달
             boss.TakeDamage(damage, type);
+            Debug.Log("boss에게 데미지 전달");
             return;
         }
         if (hp >= 0)

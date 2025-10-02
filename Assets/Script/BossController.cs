@@ -1,17 +1,20 @@
-using UnityEngine;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
+using Unity.VisualScripting;
+using UnityEngine;
 
 public class BossController : MonoBehaviour
 {
     [Header("HP")]
-    [SerializeField] private int maxHp = 100;   // ÃÑ ³ëÆ® ¼ö ÇÕÀ¸·Î ÃÊ±âÈ­ °¡´É
+    [SerializeField] private int maxHp = 100;   // ï¿½ï¿½ ï¿½ï¿½Æ® ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­ ï¿½ï¿½ï¿½ï¿½
     [SerializeField] private int hp;
-    [SerializeField] private Transform hpFill;  // »ó´Ü HP¹ÙÀÇ fill Æ®·£½ºÆû(·ÎÄÃ x ½ºÄÉÀÏ 0~1)
+    [SerializeField] private Transform hpFill;  // ï¿½ï¿½ï¿½ HPï¿½ï¿½ï¿½ï¿½ fill Æ®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ x ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 0~1)
 
     [Header("Links")]
-    [SerializeField] private ParriedProjectileManager parryFX; // º¸½º È÷Æ® ÀÌÆåÆ®
-    [SerializeField] private StrikerManager strikerManager;    // ±âÁ¸ ¸Å´ÏÀú
+    [SerializeField] private ParriedProjectileManager parryFX; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½Æ®
+    [SerializeField] private StrikerManager strikerManager;    // ï¿½ï¿½ï¿½ï¿½ ï¿½Å´ï¿½ï¿½ï¿½
     [SerializeField] private StageManager stageManager;
 
     private readonly List<StrikerController> minions = new();
@@ -29,6 +32,15 @@ public class BossController : MonoBehaviour
         hpControl.transform.localScale = new Vector3(0, 1, 1);
     }
 
+    private void Start()
+    {
+        hp = maxHp;
+        hpBar = Instantiate(hpBarPrefab, transform);
+        hpBar.transform.localPosition = Vector3.down * 2f;
+        hpControl = hpBar.transform.GetChild(0);
+        hpControl.transform.localScale = new Vector3(0, 1, 1);
+    } 
+
     public void RegisterStriker(StrikerController sc)
     {
         if (!minions.Contains(sc))
@@ -41,18 +53,14 @@ public class BossController : MonoBehaviour
 
     public void TakeDamage(int dmg, AttackType type)
     {
-        if (hp <= 0) return;
-
+        Debug.Log("boss Damaged");
         hp -= Mathf.Max(1, dmg);
         UpdateHpUI();
 
-        // º¸½º ÇÇ°Ý ÀÌÆåÆ® (¹æÇâ ¹«½Ã)
-        if (parryFX != null) parryFX.ParryTusacheBoss((int)type, transform);
-
-        if (hp <= 0)
-        {
-            OnBossDead();
-        }
+        // if (hp <= 0)
+        // {
+        //     OnBossDead();
+        // }
     }
 
     private void UpdateHpUI()
@@ -62,12 +70,12 @@ public class BossController : MonoBehaviour
 
     private void OnBossDead()
     {
-        // ¸ðµç ½ºÆ®¶óÀÌÄ¿ Á¤¸®(¿¬Ãâ¸¸ ¸ØÃß°í »ç¶óÁö°Ô)
+        // ï¿½ï¿½ï¿½ ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½Ä¿ ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½â¸¸ ï¿½ï¿½ï¿½ß°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
         foreach (var sc in minions)
         {
-            if (sc != null) sc.beCleared(); // ÇÊ¿ä½Ã Àü¿ë º¸½º-»ç¸Á ¿¬Ãâ º°µµ ºÐ±â
+            if (sc != null) sc.beCleared(); // ï¿½Ê¿ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½-ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ð±ï¿½
         }
-        // ½ºÅ×ÀÌÁö Å¬¸®¾î Ã³¸®
-        if (stageManager != null) { /* stageManager ÂÊ Å¬¸®¾î Èå¸§Àº ±âÁ¸´ë·Î ½Ã°£ Á¾·á or Áï½Ã EndStageµµ °¡´É */ }
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½
+        if (stageManager != null) { /* stageManager ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½å¸§ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½ï¿½ or ï¿½ï¿½ï¿½ EndStageï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */ }
     }
 }
