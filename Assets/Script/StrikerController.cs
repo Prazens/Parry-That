@@ -62,6 +62,7 @@ public class StrikerController : MonoBehaviour
 
 
     private bool isHolding = false;
+    private bool isRenta = false;
 
     //spawn후 입장장 변수
     private float moveDuration = 1.0f; // 이동 시간
@@ -364,6 +365,7 @@ public class StrikerController : MonoBehaviour
             lastProjectileTime = currentTime;
         }
     }
+
     private void PrepareForAttack()
     {
         float arriveTime = chartData.notes[currentNoteIndex].arriveTime;
@@ -442,6 +444,7 @@ public class StrikerController : MonoBehaviour
             exclamationParent = newParent.transform;
         }
     }
+
     private void ShowExclamation(int type)
     {
         //** 기존 느낌표 지우고 다시 생성**
@@ -539,9 +542,20 @@ public class StrikerController : MonoBehaviour
     }
 
     // 연타 투사체 발사
-    private void FireRenTusache()
+    private void FireRenTusache(float time)
     {
-        
+        GameObject selectedProjectile = projectilePrefabs[2];
+        GameObject projectile = Instantiate(selectedProjectile, transform.position, Quaternion.identity);
+        renProjectile projScript = projectile.GetComponent<renProjectile>();
+
+        if (playerManager == null) playerManager = GameObject.FindWithTag("Player").GetComponent<PlayerManager>();
+
+        projScript.target = playerManager.transform; // 플레이어를 타겟으로 설정
+        projScript.owner = this;   // 소유자로 현재 스트라이커 설정
+        projScript.type = 5;
+
+        projScript.moveTimeMultiplier = 60f / bpm;
+        projScript.genTimeMultiplier = 60f / bpm;
     }
 
     private void exclamationRelocation()
