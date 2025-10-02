@@ -1,0 +1,234 @@
+{
+    "bpm": 227.99990880003648,
+    "strikerType": 1,
+    "direction": 4,
+    "appearTime": 4.0,
+    "disappearTime": 408.0,
+    "notes": [
+        {
+            "time": 32.5,
+            "arriveTime": 36.5,
+            "type": 1
+        },
+        {
+            "time": 33.5,
+            "arriveTime": 37.5,
+            "type": 1
+        },
+        {
+            "time": 85.5,
+            "arriveTime": 89.5,
+            "type": 1
+        },
+        {
+            "time": 86.0,
+            "arriveTime": 90.0,
+            "type": 0
+        },
+        {
+            "time": 88.0,
+            "arriveTime": 92.0,
+            "type": 0
+        },
+        {
+            "time": 105.0,
+            "arriveTime": 109.0,
+            "type": 1
+        },
+        {
+            "time": 105.5,
+            "arriveTime": 109.5,
+            "type": 0
+        },
+        {
+            "time": 106.0,
+            "arriveTime": 110.0,
+            "type": 0
+        },
+        {
+            "time": 107.0,
+            "arriveTime": 111.0,
+            "type": 0
+        },
+        {
+            "time": 119.5,
+            "arriveTime": 123.5,
+            "type": 1
+        },
+        {
+            "time": 120.5,
+            "arriveTime": 124.5,
+            "type": 0
+        },
+        {
+            "time": 122.5,
+            "arriveTime": 126.5,
+            "type": 1
+        },
+        {
+            "time": 123.0,
+            "arriveTime": 127.0,
+            "type": 0
+        },
+        {
+            "time": 129.5,
+            "arriveTime": 133.5,
+            "type": 1
+        },
+        {
+            "time": 130.0,
+            "arriveTime": 134.0,
+            "type": 0
+        },
+        {
+            "time": 130.5,
+            "arriveTime": 134.5,
+            "type": 0
+        },
+        {
+            "time": 138.0,
+            "arriveTime": 146.0,
+            "type": 1
+        },
+        {
+            "time": 140.0,
+            "arriveTime": 148.0,
+            "type": 0
+        },
+        {
+            "time": 141.0,
+            "arriveTime": 149.0,
+            "type": 0
+        },
+        {
+            "time": 173.0,
+            "arriveTime": 181.0,
+            "type": 1
+        },
+        {
+            "time": 205.5,
+            "arriveTime": 209.5,
+            "type": 1
+        },
+        {
+            "time": 206.0,
+            "arriveTime": 210.0,
+            "type": 0
+        },
+        {
+            "time": 211.5,
+            "arriveTime": 215.5,
+            "type": 1
+        },
+        {
+            "time": 212.0,
+            "arriveTime": 216.0,
+            "type": 0
+        },
+        {
+            "time": 213.0,
+            "arriveTime": 217.0,
+            "type": 0
+        },
+        {
+            "time": 220.0,
+            "arriveTime": 224.0,
+            "type": 1
+        },
+        {
+            "time": 245.5,
+            "arriveTime": 249.5,
+            "type": 1
+        },
+        {
+            "time": 246.0,
+            "arriveTime": 250.0,
+            "type": 0
+        },
+        {
+            "time": 248.0,
+            "arriveTime": 252.0,
+            "type": 0
+        },
+        {
+            "time": 265.0,
+            "arriveTime": 269.0,
+            "type": 1
+        },
+        {
+            "time": 265.5,
+            "arriveTime": 269.5,
+            "type": 0
+        },
+        {
+            "time": 266.0,
+            "arriveTime": 270.0,
+            "type": 0
+        },
+        {
+            "time": 267.0,
+            "arriveTime": 271.0,
+            "type": 0
+        },
+        {
+            "time": 279.5,
+            "arriveTime": 283.5,
+            "type": 1
+        },
+        {
+            "time": 280.5,
+            "arriveTime": 284.5,
+            "type": 0
+        },
+        {
+            "time": 282.5,
+            "arriveTime": 286.5,
+            "type": 1
+        },
+        {
+            "time": 283.0,
+            "arriveTime": 287.0,
+            "type": 0
+        },
+        {
+            "time": 289.5,
+            "arriveTime": 293.5,
+            "type": 1
+        },
+        {
+            "time": 290.0,
+            "arriveTime": 294.0,
+            "type": 0
+        },
+        {
+            "time": 290.5,
+            "arriveTime": 294.5,
+            "type": 0
+        },
+        {
+            "time": 309.5,
+            "arriveTime": 313.5,
+            "type": 1
+        },
+        {
+            "time": 310.0,
+            "arriveTime": 314.0,
+            "type": 0
+        },
+        {
+            "time": 312.0,
+            "arriveTime": 316.0,
+            "type": 0
+        },
+        {
+            "time": 367.0,
+            "arriveTime": 375.0,
+            "type": 1
+        },
+        {
+            "time": 390.0,
+            "arriveTime": 394.0,
+            "type": 1
+        }
+    ]
+}

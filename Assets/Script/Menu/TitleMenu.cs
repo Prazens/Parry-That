@@ -383,7 +383,7 @@ public class TitleMenu : MonoBehaviour
         // 1초 안에 필요한 스와이프 수 이상이면 testScene으로 전환
         if (swipeTimes.Count >= requiredSwipes)
         {
-            SceneManager.LoadScene("testScene");
+            SceneManager.LoadScene("testScene_Boss");
         }
     }
 }
