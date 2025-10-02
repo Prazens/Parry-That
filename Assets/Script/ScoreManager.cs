@@ -243,7 +243,7 @@ public class ScoreManager : MonoBehaviour
                     // }
 
                     // 같은 방향이거나 홀드시작노트거나 홀드종료노트가 아니면 패스
-                    if (tempStrikerController.location == touchDirection
+                    if (tempStrikerController.location != touchDirection
                         && _judgeable.attackType != AttackType.HoldStart
                         && _judgeable.attackType != AttackType.HoldStop)
                     {
@@ -343,13 +343,9 @@ public class ScoreManager : MonoBehaviour
                         // 홀드 끝판정 보정 (너무빡셈)
                         if (tempJudge != 0)
                         {
-                            if (tempJudge < 3)
+                            if (tempJudge <= 5 && tempJudge >= 1)
                             {
-                                tempJudge++;
-                            }
-                            else if (tempJudge > 3)
-                            {
-                                tempJudge--;
+                                tempJudge = 3;
                             }
                         }
                     }
