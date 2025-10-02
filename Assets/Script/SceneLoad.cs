@@ -9,7 +9,7 @@ public class SceneLoad : MonoBehaviour
     public Slider progressbar;
     public TextMeshProUGUI loadtext;
 
-    public float minimumLoadTime = 2.0f; // 최소 로딩 시간
+    public float minimumLoadTime = 1.0f; // 최소 로딩 시간
     private float elapsedTime = 0f; // 경과 시간
 
     private void Start()
@@ -45,6 +45,14 @@ public class SceneLoad : MonoBehaviour
                     operation = SceneManager.LoadSceneAsync("Beat Master");
                 else
                     operation = SceneManager.LoadSceneAsync("tmpScene 3");
+                break;
+
+            case 4:
+                if (false)
+                    // if (DatabaseManager.isStage4Done)
+                    operation = SceneManager.LoadSceneAsync("testScene_Boss");
+                else
+                    operation = SceneManager.LoadSceneAsync("tmpScene 4");
                 break;
             ///
 

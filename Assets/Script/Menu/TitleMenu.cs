@@ -107,7 +107,7 @@ public class TitleMenu : MonoBehaviour
         // else imsi.SetActive(false);
 
         imsi.SetActive(false);  // imsi
-        if (StageMenu.currentIndex == 4) imsi.SetActive(true);
+        // if (StageMenu.currentIndex == 4) imsi.SetActive(true);
 
         //testScene
 #if UNITY_EDITOR
@@ -383,7 +383,7 @@ public class TitleMenu : MonoBehaviour
         // 1초 안에 필요한 스와이프 수 이상이면 testScene으로 전환
         if (swipeTimes.Count >= requiredSwipes)
         {
-            SceneManager.LoadScene("testScene_Boss");
+            SceneManager.LoadScene("EasyBoss");
         }
     }
 }

@@ -10,6 +10,7 @@ public class DatabaseManager : MonoBehaviour
     public static bool isStage1Done;
     public static bool isStage2Done;
     public static bool isStage3Done;
+    public static bool isStage4Done;
     private void Awake()
     {
         if (FindObjectsOfType<DatabaseManager>().Length > 1)
@@ -33,6 +34,7 @@ public class DatabaseManager : MonoBehaviour
         PlayerPrefs.SetInt("Score1", score[1]);
         PlayerPrefs.SetInt("Score2", score[2]);
         PlayerPrefs.SetInt("Score3", score[3]);
+        PlayerPrefs.SetInt("Score4", score[4]);
     }
     public void SaveStarData()
     {
@@ -40,6 +42,7 @@ public class DatabaseManager : MonoBehaviour
         PlayerPrefs.SetInt("Stage1_Star", star[1]);
         PlayerPrefs.SetInt("Stage2_Star", star[2]);
         PlayerPrefs.SetInt("Stage3_Star", star[3]);
+        PlayerPrefs.SetInt("Stage3_Star", star[4]);
     }
 
     public void LoadData()
@@ -54,6 +57,8 @@ public class DatabaseManager : MonoBehaviour
             star[2] = PlayerPrefs.GetInt("Stage2_Star");
             score[3] = PlayerPrefs.GetInt("Score3");
             star[3] = PlayerPrefs.GetInt("Stage3_Star");
+            score[4] = PlayerPrefs.GetInt("Score4");
+            star[4] = PlayerPrefs.GetInt("Stage4_Star");
         }
     }
 
@@ -74,12 +79,18 @@ public class DatabaseManager : MonoBehaviour
         PlayerPrefs.SetInt("Stage3Done", 1);
     }
 
+    public void SaveStage4Done()
+    {
+        PlayerPrefs.SetInt("Stage4Done", 1);
+    }
+
     public void LoadSceneDone()
     {
         isTutorialDone = (PlayerPrefs.GetInt("TutorialDone") == 1);
         isStage1Done = (PlayerPrefs.GetInt("Stage1Done") == 1);
         isStage2Done = (PlayerPrefs.GetInt("Stage2Done") == 1);
         isStage3Done = (PlayerPrefs.GetInt("Stage3Done") == 1);
+        isStage3Done = (PlayerPrefs.GetInt("Stage4Done") == 1);
     }
 
 }
