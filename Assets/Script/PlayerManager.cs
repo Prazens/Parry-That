@@ -86,7 +86,7 @@ public class PlayerManager : MonoBehaviour
         }
 
         // 홀드 끝 모션
-        else if (type == AttackType.HoldFinishStrong || type == AttackType.HoldStop)
+        else if (type == AttackType.HoldStop || type == AttackType.HoldStop)
         {
             // Debug.Log($"Animation : {direction}, {type}");
 

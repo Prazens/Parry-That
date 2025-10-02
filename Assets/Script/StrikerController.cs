@@ -380,8 +380,8 @@ public class StrikerController : MonoBehaviour
         {
             if (noteType == 2)
             {
-                judgeableQueue.Enqueue(new Judgeable((AttackType)noteType, arriveTime, location, this, null, this.ActMeleeHoldStart));
-                judgeableQueue.Enqueue(new Judgeable((AttackType)chartData.notes[currentNoteIndex + 1].type, chartData.notes[currentNoteIndex + 1].arriveTime, location, this, null, this.ActMeleeHoldFinish));
+                judgeableQueue.Enqueue(new Judgeable(AttackType.HoldStart, arriveTime, location, this, null, this.ActMeleeHoldStart));
+                judgeableQueue.Enqueue(new Judgeable(AttackType.HoldStop, chartData.notes[currentNoteIndex + 1].arriveTime, location, this, null, this.ActMeleeHoldFinish));
             }
             else if (noteType != 3)
             {

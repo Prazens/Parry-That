@@ -111,7 +111,7 @@ public class TouchManager : MonoBehaviour
 
             judgeTime = StageManager.Instance.currentTime;
         }
-        
+
         // 설정된 조작 길이를 넘었을 경우 : 스와이프한 것으로 취급, 판정 실시
         else if (sumLength > 40f && isSwiping)
         {
@@ -163,12 +163,19 @@ public class TouchManager : MonoBehaviour
         {
             isSwiping = false;
             SendJudge(Direction.None, judgeTime, AttackType.HoldStop);
+            if (scoreManager.isHolding)
+            {
+                print("HoldStop");
+                scoreManager.isHolding = false;
+            }
         }
 
         // 그냥 뗐을 때
         else if (scoreManager.isHolding && !Input.GetMouseButtonUp(0))
         {
             SendJudge(Direction.None, judgeTime, AttackType.HoldStop);
+            print("HoldStop");
+            scoreManager.isHolding = false;
         }
     }
 
