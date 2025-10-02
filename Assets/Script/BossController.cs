@@ -1,18 +1,21 @@
-using UnityEngine;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
+using Unity.VisualScripting;
+using UnityEngine;
 
 public class BossController : MonoBehaviour
 {
     [Header("HP")]
-    [SerializeField] private int maxHp = 100;   // 총 노트 수 합으로 초기화 가능
+    [SerializeField] private int maxHp = 100;  
     [SerializeField] private int hp;
-    [SerializeField] private Transform hpFill;  // 상단 HP바의 fill 트랜스폼(로컬 x 스케일 0~1)
 
     [Header("Links")]
-    [SerializeField] private ParriedProjectileManager parryFX; // 보스 히트 이펙트
-    [SerializeField] private StrikerManager strikerManager;    // 기존 매니저
+    [SerializeField] private ParriedProjectileManager parryFX;
+    [SerializeField] private StrikerManager strikerManager;   
     [SerializeField] private StageManager stageManager;
+    public Animator bossAnimator;
 
     private readonly List<StrikerController> minions = new();
 
@@ -29,6 +32,15 @@ public class BossController : MonoBehaviour
         hpControl.transform.localScale = new Vector3(0, 1, 1);
     }
 
+    private void Start()
+    {
+        hp = maxHp;
+        hpBar = Instantiate(hpBarPrefab, transform);
+        hpBar.transform.localPosition = Vector3.down * 2f;
+        hpControl = hpBar.transform.GetChild(0);
+        hpControl.transform.localScale = new Vector3(0, 1, 1);
+    }
+
     public void RegisterStriker(StrikerController sc)
     {
         if (!minions.Contains(sc))
@@ -39,19 +51,34 @@ public class BossController : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int dmg, AttackType type)
+    public void TakeDamage(int dmg, AttackType type, Direction dir)
     {
-        if (hp <= 0) return;
-
+        Debug.Log("boss Damaged");
         hp -= Mathf.Max(1, dmg);
         UpdateHpUI();
-
-        // 보스 피격 이펙트 (방향 무시)
-        if (parryFX != null) parryFX.ParryTusacheBoss((int)type, transform);
-
-        if (hp <= 0)
+        if (hp == 0)
         {
             OnBossDead();
+            return;
+        }
+
+        if (bossAnimator != null)
+        {
+            switch (dir)
+            {
+                case Direction.Up:
+                    bossAnimator.SetTrigger("UpHit");
+                    break;
+                case Direction.Down:
+                    bossAnimator.SetTrigger("DownHit");
+                    break;
+                case Direction.Left:
+                    bossAnimator.SetTrigger("LeftHit");
+                    break;
+                case Direction.Right:
+                    bossAnimator.SetTrigger("RightHit");
+                    break;
+            }
         }
     }
 
@@ -60,14 +87,34 @@ public class BossController : MonoBehaviour
         hpControl.transform.localScale = new Vector3(1 - ((float)hp / maxHp), 1, 1);
     }
 
+    public void OnMinionPrepare(Direction dir, int noteType, float arriveTime)
+    {
+        Debug.Log("Boss Prepare Attack");
+        if (bossAnimator != null)
+        {
+            switch (dir)
+            {
+                case Direction.Up:
+                    bossAnimator.SetTrigger("UpAttack");
+                    break;
+                case Direction.Down:
+                    bossAnimator.SetTrigger("DownAttack");
+                    break;
+                case Direction.Left:
+                    bossAnimator.SetTrigger("LeftAttack");
+                    break;
+                case Direction.Right:
+                    bossAnimator.SetTrigger("RightAttack");
+                    break;
+            }
+        }
+    }
+
     private void OnBossDead()
     {
-        // 모든 스트라이커 정리(연출만 멈추고 사라지게)
-        foreach (var sc in minions)
+        if(bossAnimator != null)
         {
-            if (sc != null) sc.beCleared(); // 필요시 전용 보스-사망 연출 별도 분기
+            bossAnimator.SetTrigger("BossDie");
         }
-        // 스테이지 클리어 처리
-        if (stageManager != null) { /* stageManager 쪽 클리어 흐름은 기존대로 시간 종료 or 즉시 EndStage도 가능 */ }
     }
 }
