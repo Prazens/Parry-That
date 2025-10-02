@@ -537,6 +537,13 @@ public class StrikerController : MonoBehaviour
         // ⭐ 발사 시 느낌표 제거 (좌측부터)
         exclamationRelocation();
     }
+
+    // 연타 투사체 발사
+    private void FireRenTusache()
+    {
+        
+    }
+
     private void exclamationRelocation()
     {
         if (prepareExclamation.Count > 0)
@@ -573,6 +580,7 @@ public class StrikerController : MonoBehaviour
         }
         else isMelee = true;
     }
+
     private Vector3 GetSpawnPosition()
     {
         // 기본적으로 targetPosition을 유지
@@ -667,6 +675,7 @@ public class StrikerController : MonoBehaviour
             }
         }
     }
+
     public void strikerExit()
     {
         if (hp != 0)
@@ -674,6 +683,7 @@ public class StrikerController : MonoBehaviour
             StartCoroutine(ExitToSpawnPosition());
         }
     }
+
     private IEnumerator ExitToSpawnPosition()
     {
         float elapsedTime = 0;
@@ -698,6 +708,7 @@ public class StrikerController : MonoBehaviour
         PlayParticleEffect();
         StartCoroutine(DestroyAfterAnimation());
     }
+
     private IEnumerator DestroyAfterAnimation()
     {
         // // 애니메이션 길이 가져오기
@@ -713,6 +724,7 @@ public class StrikerController : MonoBehaviour
         // Destroy(gameObject);
         gameObject.SetActive(false);
     }
+
     // 🔹 초록색 파티클 실행 함수
     private void PlayParticleEffect()
     {
