@@ -1077,7 +1077,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -170.66643, y: -170.66667}
+  m_AnchoredPosition: {x: -170.66638, y: -170.6665}
   m_SizeDelta: {x: 30, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &822372184
@@ -1726,8 +1726,8 @@ MonoBehaviour:
   countdownText: {fileID: 2121608883}
   continueText: {fileID: 1313838114}
   jsonCharts:
-  - {fileID: 4900000, guid: 3f762aeac5213e7479160fffcc53bdc6, type: 3}
-  - {fileID: 4900000, guid: 4d583185ed5d38741bc5dcc9ce54628e, type: 3}
+  - {fileID: 4900000, guid: 57b7fbd051b6a9a47bbfe740aec3776a, type: 3}
+  - {fileID: 4900000, guid: 5166d340fd2a0024e8468f118d58efa2, type: 3}
   - {fileID: 4900000, guid: 785da34b69f76da4e8ee127891abdd58, type: 3}
   - {fileID: 4900000, guid: 40605bb1f1c57e542b2b328f72938367, type: 3}
   musicOffset: 0
@@ -2045,7 +2045,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.29956055}
+  m_AnchoredPosition: {x: 0, y: 0.2998047}
   m_SizeDelta: {x: 2000, y: 1250}
   m_Pivot: {x: 1, y: 1.0000001}
 --- !u!95 &1857161484

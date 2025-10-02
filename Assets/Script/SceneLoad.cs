@@ -9,7 +9,7 @@ public class SceneLoad : MonoBehaviour
     public Slider progressbar;
     public TextMeshProUGUI loadtext;
 
-    public float minimumLoadTime = 1.0f; // 최소 로딩 시간
+    public float minimumLoadTime = 0.5f; // 최소 로딩 시간
     private float elapsedTime = 0f; // 경과 시간
 
     private void Start()

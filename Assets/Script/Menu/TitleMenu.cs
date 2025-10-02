@@ -98,7 +98,7 @@ public class TitleMenu : MonoBehaviour
         }
 
         // ���� �÷��� ������ �������� ����
-        int[] possibleStages = { 0, 1, 2, 3 };
+        int[] possibleStages = { 0, 1, 2, 3, 4 };
         isPossibleStage = possibleStages.Contains(StageMenu.currentIndex);
 
         // �ӽ��ڵ� for imsi

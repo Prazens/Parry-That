@@ -877,7 +877,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -104756283, guid: fb0eea5c517fda246adc51ce3acc85ee, type: 3}
+  m_Sprite: {fileID: 1962064494, guid: ed3483661c31f9141a8c8959b711a340, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3051,6 +3051,9 @@ MonoBehaviour:
   StageSelectSound: {fileID: 8300000, guid: 59222657a7011ed4881b310ab98f9e8b, type: 3}
   stageMenu: {fileID: 81914506}
   fadeDuration: 1
+  requiredSwipes: 5
+  timeWindow: 1
+  TswipeThreshold: 50
 --- !u!82 &690911169
 AudioSource:
   m_ObjectHideFlags: 0

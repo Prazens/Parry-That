@@ -1,0 +1,199 @@
+{
+    "bpm": 227.99990880003648,
+    "strikerType": 1,
+    "direction": 2,
+    "appearTime": 4.0,
+    "disappearTime": 408.0,
+    "notes": [
+        {
+            "time": 12.0,
+            "arriveTime": 20.0,
+            "type": 1
+        },
+        {
+            "time": 24.0,
+            "arriveTime": 28.0,
+            "type": 0
+        },
+        {
+            "time": 25.0,
+            "arriveTime": 29.0,
+            "type": 1
+        },
+        {
+            "time": 40.0,
+            "arriveTime": 48.0,
+            "type": 0
+        },
+        {
+            "time": 41.0,
+            "arriveTime": 49.0,
+            "type": 1
+        },
+        {
+            "time": 79.5,
+            "arriveTime": 83.5,
+            "type": 1
+        },
+        {
+            "time": 91.0,
+            "arriveTime": 95.0,
+            "type": 0
+        },
+        {
+            "time": 97.5,
+            "arriveTime": 101.5,
+            "type": 1
+        },
+        {
+            "time": 98.5,
+            "arriveTime": 102.5,
+            "type": 0
+        },
+        {
+            "time": 112.5,
+            "arriveTime": 116.5,
+            "type": 1
+        },
+        {
+            "time": 114.0,
+            "arriveTime": 118.0,
+            "type": 0
+        },
+        {
+            "time": 142.0,
+            "arriveTime": 150.0,
+            "type": 1
+        },
+        {
+            "time": 157.0,
+            "arriveTime": 165.0,
+            "type": 1
+        },
+        {
+            "time": 158.0,
+            "arriveTime": 166.0,
+            "type": 0
+        },
+        {
+            "time": 193.0,
+            "arriveTime": 204.0,
+            "type": 0
+        },
+        {
+            "time": 194.0,
+            "arriveTime": 229.0,
+            "type": 0
+        },
+        {
+            "time": 197.0,
+            "arriveTime": 229.5,
+            "type": 1
+        },
+        {
+            "time": 198.0,
+            "arriveTime": 231.0,
+            "type": 1
+        },
+        {
+            "time": 200.0,
+            "arriveTime": 243.5,
+            "type": 0
+        },
+        {
+            "time": 225.0,
+            "arriveTime": 255.0,
+            "type": 1
+        },
+        {
+            "time": 225.5,
+            "arriveTime": 261.5,
+            "type": 0
+        },
+        {
+            "time": 227.0,
+            "arriveTime": 262.5,
+            "type": 0
+        },
+        {
+            "time": 239.5,
+            "arriveTime": 275.0,
+            "type": 1
+        },
+        {
+            "time": 251.0,
+            "arriveTime": 307.5,
+            "type": 0
+        },
+        {
+            "time": 257.5,
+            "arriveTime": 319.0,
+            "type": 1
+        },
+        {
+            "time": 258.5,
+            "arriveTime": 325.5,
+            "type": 0
+        },
+        {
+            "time": 271.0,
+            "arriveTime": 326.5,
+            "type": 1
+        },
+        {
+            "time": 303.5,
+            "arriveTime": 342.0,
+            "type": 1
+        },
+        {
+            "time": 315.0,
+            "arriveTime": 357.0,
+            "type": 0
+        },
+        {
+            "time": 321.5,
+            "arriveTime": 358.0,
+            "type": 1
+        },
+        {
+            "time": 322.5,
+            "arriveTime": -1,
+            "type": 0
+        },
+        {
+            "time": 334.0,
+            "arriveTime": -1,
+            "type": 1
+        },
+        {
+            "time": 349.0,
+            "arriveTime": -1,
+            "type": 1
+        },
+        {
+            "time": 350.0,
+            "arriveTime": -1,
+            "type": 0
+        },
+        {
+            "time": 385.0,
+            "arriveTime": -1,
+            "type": 0
+        },
+        {
+            "time": 386.0,
+            "arriveTime": -1,
+            "type": 0
+        },
+        {
+            "time": 389.0,
+            "arriveTime": -1,
+            "type": 1
+        },
+        {
+            "time": 390.0,
+            "arriveTime": -1,
+            "type": 1
+        }
+    ]
+}
