@@ -167,9 +167,15 @@ public class ScoreManager : MonoBehaviour
 
         if (isOnStream)
         {
+            if (type == AttackType.HoldStop)
+            {
+                return;
+            }
             if (streamCount != -1)
             {
                 streamCount++;
+                print($"{streamCount} 연타");
+                JudgeManage(null, 6, false, Direction.None, type);
                 return;
             }
             else
@@ -259,7 +265,7 @@ public class ScoreManager : MonoBehaviour
                         }
                         print(_judgeable.attackType);
                     }
-                    
+
 
                     arriveSec = _judgeable.arriveBeat * 60f / tempStrikerController.bpm;
 
@@ -356,7 +362,7 @@ public class ScoreManager : MonoBehaviour
                 }
                 tempStrikerController = null;
             }
-      
+
         }
 
         // 판정 전송
@@ -377,13 +383,23 @@ public class ScoreManager : MonoBehaviour
     public void JudgeManage(Judgeable judgeObject, int judgement, bool isPassing = false, Direction tpD = Direction.None, AttackType tpT = AttackType.Normal)
     {
         // Debug.Log($"JudgeManage0 {judgement}");
-        
+
         // 노트가 처리되지 않은 경우
         if (judgeObject == null || judgement == -1)
         {
             lastNonMissJudge = 0;
             if (tpT == AttackType.HoldStop)
             {
+                return;
+            }
+
+            // 연타 중
+            if (isOnStream && judgement == 6)
+            {
+                score += 100;
+                combo = 1;
+                playerManager.Operate((Direction)UnityEngine.Random.Range(1, 5), tpT);
+                playerManager.PlayerParrySound(tpT);
                 return;
             }
             playerManager.Operate(tpD, tpT);
@@ -473,6 +489,7 @@ public class ScoreManager : MonoBehaviour
                 combo = 0;
                 playerManager.PlayerBlockedSound();
                 break;
+
         }
 
         if (judgement != 0)
