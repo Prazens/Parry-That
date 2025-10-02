@@ -56,6 +56,11 @@ public class BossController : MonoBehaviour
         Debug.Log("boss Damaged");
         hp -= Mathf.Max(1, dmg);
         UpdateHpUI();
+        if (hp == 0)
+        {
+            OnBossDead();
+            return;
+        }
 
         if (bossAnimator != null)
         {
@@ -74,11 +79,6 @@ public class BossController : MonoBehaviour
                     bossAnimator.SetTrigger("RightHit");
                     break;
             }
-        }
-
-        if (hp <= 0)
-        {
-            OnBossDead();
         }
     }
 
@@ -112,6 +112,9 @@ public class BossController : MonoBehaviour
 
     private void OnBossDead()
     {
-
+        if(bossAnimator != null)
+        {
+            bossAnimator.SetTrigger("BossDie");
+        }
     }
 }
