@@ -22,7 +22,7 @@ public class StrikerController : MonoBehaviour
     // 임시로 발사체 저장해놓을 공간
     private float lastProjectileTime = 0f; // 마지막 투사체 발사 시간
 
-    [SerializeField] public Queue<Judgeable> judgeableQueue = new Queue<Judgeable>{};
+    [SerializeField] public Queue<Judgeable> judgeableQueue = new Queue<Judgeable> { };
     private Queue<Tuple<float, int>> prepareQueue = new Queue<Tuple<float, int>>(); // (arriveTime, type) 저장
 
     public GameObject hpBarPrefab;
@@ -32,7 +32,7 @@ public class StrikerController : MonoBehaviour
     //투사체 발사 시의 !관련
     [SerializeField] private GameObject exclamationPrefab; // 공통 느낌표 프리팹
     // 🔹 `List<Sprite>`로 변경 (느낌표 타입별 이미지 저장)
-    [SerializeField] private List<Sprite> exclamationSprites = new List<Sprite>(); 
+    [SerializeField] private List<Sprite> exclamationSprites = new List<Sprite>();
     private Transform exclamationParent; // 느낌표 표시 위치
     private List<GameObject> prepareExclamation = new List<GameObject>(); // 느낌표 오브젝트 저장
     public GameObject holdExclamation; // 홀드 느낌표
@@ -83,7 +83,7 @@ public class StrikerController : MonoBehaviour
         {
             SetMeleeTargetPosition();
         }
-        
+
         animator.SetInteger("direction", (int)location);
         if (bladeAnimator != null)
         {
@@ -110,7 +110,7 @@ public class StrikerController : MonoBehaviour
         {
             HandleProjectileAttack();
         }
-        
+
         // 투사체 발사 타이밍 계산
         if (currentNoteIndex >= chartData.notes.Length) return;
 
@@ -165,7 +165,7 @@ public class StrikerController : MonoBehaviour
             }
             exclamationRelocation();
             prepareQueue.Dequeue(); // 준비된 공격 제거
-            if(attackType != 3 && attackType !=2 && prepareQueue.Count == 0 ) 
+            if (attackType != 3 && attackType != 2 && prepareQueue.Count == 0)
             {
                 StartCoroutine(WaitAndGoBack());
             }
@@ -175,7 +175,7 @@ public class StrikerController : MonoBehaviour
     {
         //애니메이션 지속 시간을 고려하여 대기 후 실행
         yield return new WaitForSeconds(0.1f); // 공격 후 0.1초 딜레이
-        
+
         if (!isMoving && isMoved) // 중복 실행 방지
         {
             isMoved = false;
@@ -185,7 +185,7 @@ public class StrikerController : MonoBehaviour
     }
     public void ActMeleeHit()
     {
-        if(prepareQueue.Count == 0 && isMoved) 
+        if (prepareQueue.Count == 0 && isMoved)
         {
             isMoved = false;
             isMoving = true;
@@ -211,10 +211,10 @@ public class StrikerController : MonoBehaviour
         // Debug.Log("ActMeleeHoldFinish");
         animator.SetBool("isAttacking", false);
         bladeAnimator.SetTrigger("bladeHoldFinish");
-        
+
         audioSource.Stop();
         audioSource.PlayOneShot(holdingEnd, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("playerVolume", 1));
-        
+
         transform.GetChild(0).transform.localPosition = Vector3.zero;
         isHolding = false;
 
@@ -271,11 +271,11 @@ public class StrikerController : MonoBehaviour
         }
         yield break;
     }
-    
+
     private IEnumerator MeleeGoBack()
     {
         Debug.Log("MeleeGoBack");
-        if(hp == 0) 
+        if (hp == 0)
         {
             animator.SetBool("hp0", true);
             moveTime = 0.6f;
@@ -293,7 +293,7 @@ public class StrikerController : MonoBehaviour
                 // Debug.Log("fraction if문 진입");
                 backtime = 0f;
                 transform.position = originalPosition;
-                if(hp == 0)
+                if (hp == 0)
                 {
                     beCleared();
                 }
@@ -376,6 +376,11 @@ public class StrikerController : MonoBehaviour
             // Debug.Log("prepare!");
         }
 
+        if (isBossMinion && boss != null)
+        {
+            boss.OnMinionPrepare(location, noteType, arriveTime);
+        }
+
         if (isMelee)
         {
             if (noteType == 2)
@@ -411,7 +416,7 @@ public class StrikerController : MonoBehaviour
             }
         }
     }
-    
+
     // 느낌표 생성 관련 함수
     private void SetupExclamationParent()
     {
@@ -461,7 +466,7 @@ public class StrikerController : MonoBehaviour
 
         for (int i = 0; i < count; i++)
         {
-            Vector3 exclamationPosition = new Vector3( (i+1) * spacing, 0, 0); //(i - (count - 1) / 2f) 
+            Vector3 exclamationPosition = new Vector3((i + 1) * spacing, 0, 0); //(i - (count - 1) / 2f) 
             GameObject newExclamation = Instantiate(exclamationPrefab, exclamationParent);
             newExclamation.transform.localPosition = exclamationPosition; // **🔹 `exclamationParent` 기준 정렬**
 
@@ -542,7 +547,7 @@ public class StrikerController : MonoBehaviour
             // 남은 느낌표 위치 재배치
             for (int i = 0; i < count; i++)
             {
-                prepareExclamation[i].transform.localPosition = new Vector3((i +1) * spacing, 0, 0);
+                prepareExclamation[i].transform.localPosition = new Vector3((i + 1) * spacing, 0, 0);
             }
         }
     }
@@ -561,7 +566,7 @@ public class StrikerController : MonoBehaviour
         hpBar.transform.localPosition = Vector3.down * 2f;
         hpControl = hpBar.transform.GetChild(0);
         hpControl.transform.localScale = new Vector3(0, 1, 1);
-        if(isBossMinion) hpBar.SetActive(false);
+        if (isBossMinion) hpBar.SetActive(false);
         if (prepabindex == 0)
         {
             isMelee = false;
@@ -571,7 +576,7 @@ public class StrikerController : MonoBehaviour
     private Vector3 GetSpawnPosition()
     {
         // 기본적으로 targetPosition을 유지
-        Vector3 spawnPosition =  originalPosition;
+        Vector3 spawnPosition = originalPosition;
 
         // 화면 밖에서 등장하는 위치 설정
         switch (location)
@@ -637,24 +642,25 @@ public class StrikerController : MonoBehaviour
         if (isBossMinion && boss != null)
         {
             // 자기 HP는 깎지 않고 보스에게 전달
-            boss.TakeDamage(damage, type);
+            boss.TakeDamage(damage, type, location);
+            Debug.Log("boss에게 데미지 전달");
             return;
         }
         if (hp >= 0)
         {
             hp -= damage;
             hpControl.transform.localScale = new Vector3(1 - ((float)hp / initialHp), 1, 1);
-            
+
             // Debug.Log($"{gameObject.name} took {damage} damage! Current HP: {hp}");
-            if(!isMelee) animator.SetTrigger("isDamaged");
+            if (!isMelee) animator.SetTrigger("isDamaged");
             if (hp <= 0)
             {
-                if(!isMelee) beCleared();
+                if (!isMelee) beCleared();
                 if (playerManager.hp < 10)
                 {
                     playerManager.hp += 1;
                 }
-                
+
                 //기타몬 전용 굴러가기 퇴장
                 //original position 도착후 isClear 세팅
                 //이후 투명해지는 animation 진행
@@ -663,7 +669,7 @@ public class StrikerController : MonoBehaviour
     }
     public void strikerExit()
     {
-        if(hp != 0)
+        if (hp != 0)
         {
             StartCoroutine(ExitToSpawnPosition());
         }
@@ -688,7 +694,7 @@ public class StrikerController : MonoBehaviour
     public void beCleared()
     {
         animator.SetBool("isClear", true);
-        if(isMelee) animator.SetTrigger("Cleared");
+        if (isMelee) animator.SetTrigger("Cleared");
         PlayParticleEffect();
         StartCoroutine(DestroyAfterAnimation());
     }
@@ -696,11 +702,11 @@ public class StrikerController : MonoBehaviour
     {
         // // 애니메이션 길이 가져오기
         // float exitAnimationTime = animator.GetCurrentAnimatorStateInfo(0).length;
-        
+
         // // 애니메이션 실행 시간만큼 대기
         // yield return new WaitForSeconds(exitAnimationTime);
         //기타몬 애니메이션 길이 기준으로 그냥 2.5초 지정해버렸습니다.
-        if(isMelee) yield return new WaitForSeconds(2.5f);
+        if (isMelee) yield return new WaitForSeconds(2.5f);
         else yield return new WaitForSeconds(1f);
 
         // 오브젝트 삭제
