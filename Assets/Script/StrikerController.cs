@@ -237,10 +237,32 @@ public class StrikerController : MonoBehaviour
         uiManager.CutInDisplay(0, true);
     }
 
-    public void ActStreamFinish()
+    public void ActStreamStart()
+    {
+        if (audioSource != null && holdingSound != null)
+            audioSource.PlayOneShot(holdingSound, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("playerVolume", 1));
+
+        isRenta = true;
+        FireRenTusache();
+    }
+
+    private void ActStreamFinish()
     {
         // 연타 종료 시의 처리, Judgeable의 onDestroy에 저장 후 호출
         // (streamstart 일 때만, streamend는 그냥 끝 시간 알림용, 별도 판정 처리 없음)
+        audioSource.Stop();
+        if (audioSource != null && holdingEnd != null)
+            audioSource.PlayOneShot(holdingEnd, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("playerVolume", 1));
+
+        isRenta = false;
+
+        holdExclamation?.GetComponent<holdExclamation>()?.ForceStop();
+        while (prepareExclamation.Count > 0)
+        {
+            Destroy(prepareExclamation[0]);
+            prepareExclamation.RemoveAt(0);
+        }
+        if (prepareQueue.Count != 0) prepareQueue.Dequeue();
     }
 
     private IEnumerator StreamHoldAnim()
@@ -363,7 +385,7 @@ public class StrikerController : MonoBehaviour
         if (prepareQueue.Count > 0 && currentTime >= (prepareQueue.Peek().Item1 * (60d / bpm)) + musicOffset - 0.5f)
         {
             var (t, idx) = prepareQueue.Peek();
-            if(idx == 2 || idx ==3)
+            if(idx == 2 || idx == 3)
             {
                 prepareQueue.Dequeue();     // 큐 소비
                 exclamationRelocation();    // 느낌표 한 칸 제거
@@ -415,7 +437,7 @@ public class StrikerController : MonoBehaviour
         float arriveTime = chartData.notes[currentNoteIndex].arriveTime;
         int noteType = chartData.notes[currentNoteIndex].type; // 노트 타입 저장
 
-        if (noteType != 3 || isHolding)
+        if ((noteType != 3 && noteType != 5) || isHolding || isRenta)
         {
             prepareQueue.Enqueue(new Tuple<float, int>(arriveTime, noteType)); // 도착 시간과 타입 저장
             ShowExclamation(noteType); // 느낌표 표시
@@ -445,6 +467,11 @@ public class StrikerController : MonoBehaviour
             {
                 judgeableQueue.Enqueue(new Judgeable(AttackType.HoldStart, arriveTime, location, this, null, this.ActRangeHoldStart));
                 judgeableQueue.Enqueue(new Judgeable(AttackType.HoldStop, chartData.notes[currentNoteIndex + 1].arriveTime, location, this, null, this.ActRangeHoldFinish));
+            }
+            else if (noteType == 5)
+            {
+                judgeableQueue.Enqueue(new Judgeable(AttackType.StreamStart, arriveTime, location, this, null, this.ActStreamStart));
+                judgeableQueue.Enqueue(new Judgeable(AttackType.StreamFinish, chartData.notes[currentNoteIndex + 1].arriveTime, location, this, null, this.ActStreamFinish));
             }
         }
 
@@ -507,11 +534,11 @@ public class StrikerController : MonoBehaviour
         int count = prepareQueue.Count; // 현재 준비된 공격 개수
         prepareExclamation.Clear();
 
-        if (type == 2)
+        if (type == 2 || type == 5)
         {
             holdExclamation.GetComponent<holdExclamation>().Appear(bpm, 1);
         }
-        else if (type == 3)
+        else if (type == 3 || type == 6)
         {
             holdExclamation.GetComponent<holdExclamation>().Disappear(bpm, 1);
         }
@@ -605,7 +632,7 @@ public class StrikerController : MonoBehaviour
     }
 
     // 연타 투사체 발사
-    private void FireRenTusache(float time)
+    private void FireRenTusache()
     {
         GameObject selectedProjectile = projectilePrefabs[2];
         GameObject projectile = Instantiate(selectedProjectile, transform.position, Quaternion.identity);
