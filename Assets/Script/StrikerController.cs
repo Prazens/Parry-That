@@ -416,6 +416,10 @@ public class StrikerController : MonoBehaviour
     {
         if (audioSource != null && holdingSound != null)
             audioSource.PlayOneShot(holdingSound, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("playerVolume", 1));
+        if(holdSpriteAnimator != null)
+        {
+            holdSpriteAnimator.SetTrigger("holdStart");
+        }
 
         uiManager.CutInDisplay(judgeableQueue.Peek().arriveBeat * (60f / bpm) - StageManager.Instance.currentTime + musicOffset);
 
@@ -428,6 +432,11 @@ public class StrikerController : MonoBehaviour
         audioSource.Stop();
         if (audioSource != null && holdingEnd != null)
             audioSource.PlayOneShot(holdingEnd, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("playerVolume", 1));
+
+        if (holdSpriteAnimator != null)
+        {
+            holdSpriteAnimator.SetTrigger("holdFinish");
+        }
 
         isHolding = false;
 
