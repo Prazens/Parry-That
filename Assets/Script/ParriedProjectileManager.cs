@@ -20,13 +20,13 @@ public class ParriedProjectileManager : MonoBehaviour
             if (type == 0) // 약공격
             {
                 int randomIndex = UnityEngine.Random.Range(0, 2);
-                if(randomIndex > 0) randomIndex = fixRandom - 1;
+                if(fixRandom > 0) randomIndex = fixRandom - 1;
                 prefabToSpawn = prefabUp[randomIndex];
             }
             else if (type == 1) // 강공격
             {
                 int randomIndex = UnityEngine.Random.Range(2, 4);
-                if (randomIndex > 0) randomIndex = fixRandom + 1;
+                if (fixRandom > 0) randomIndex = fixRandom + 1;
                 prefabToSpawn = prefabUp[randomIndex];
             }
         }
@@ -35,13 +35,13 @@ public class ParriedProjectileManager : MonoBehaviour
             if (type == 0) // 약공격
             {
                 int randomIndex = UnityEngine.Random.Range(0, 2);
-                if (randomIndex > 0) randomIndex = fixRandom - 1;
+                if (fixRandom > 0) randomIndex = fixRandom - 1;
                 prefabToSpawn = prefabDown[randomIndex];
             }
             else if (type == 1) // 강공격
             {
                 int randomIndex = UnityEngine.Random.Range(2, 4);
-                if (randomIndex > 0) randomIndex = fixRandom + 1;
+                if (fixRandom > 0) randomIndex = fixRandom + 1;
                 prefabToSpawn = prefabDown[randomIndex];
             }
         }
