@@ -1749,8 +1749,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Stage3CutSceneManager, Assembly-CSharp
+      - m_Target: {fileID: 933562621}
+        m_TargetAssemblyTypeName: Stage4CutSceneManager, Assembly-CSharp
         m_MethodName: EndScene
         m_Mode: 1
         m_Arguments:
