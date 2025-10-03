@@ -147,7 +147,12 @@ public class StrikerManager : MonoBehaviour
                 boss.RegisterStriker(strikerController);
                 boss.Initialize(hp);
             }
-            strikerController.Initialize(hp, bpm, playerManager, (Direction)(positionIndex + 1), charts[chartIndex], prepabindex);
+            int isMelee = 0;
+            if(prepabindex == 1) // 원거리 스트라이커면 PlayerManager 정보 넘겨주기
+            {
+                isMelee = 1;
+            }
+            strikerController.Initialize(hp, bpm, playerManager, (Direction)(positionIndex + 1), charts[chartIndex], isMelee);
         }
         else
         {

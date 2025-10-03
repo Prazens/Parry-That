@@ -552,7 +552,7 @@ public class StrikerController : MonoBehaviour
     {
         // Debug.Log("FireProjectile");
         if (index < 0 || index >= projectilePrefabs.Count) return;
-        if (index == 2 || index == 3) return;
+        if (index != 0 && index != 1) return;
         GameObject selectedProjectile = projectilePrefabs[index];
 
         Vector3 projectilePos = transform.position;
