@@ -1832,8 +1832,8 @@ MonoBehaviour:
   countdownText: {fileID: 2121608883}
   continueText: {fileID: 1313838114}
   jsonCharts:
-  - {fileID: 4900000, guid: 57b7fbd051b6a9a47bbfe740aec3776a, type: 3}
-  - {fileID: 4900000, guid: 5166d340fd2a0024e8468f118d58efa2, type: 3}
+  - {fileID: 4900000, guid: 854c466d7288d7a4fa4ce28af911e17d, type: 3}
+  - {fileID: 4900000, guid: 110db19d10b43954ab0c8385f1ee391c, type: 3}
   - {fileID: 4900000, guid: 785da34b69f76da4e8ee127891abdd58, type: 3}
   - {fileID: 4900000, guid: 40605bb1f1c57e542b2b328f72938367, type: 3}
   musicOffset: 0
