@@ -2372,6 +2372,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   strikerPrefabs:
   - {fileID: 2602888780548359756, guid: 4f9ef16d30cd7f9449a8fb6ee08991e9, type: 3}
+  - {fileID: 8735992909591658843, guid: d20adaf2a206c3c4fa934f5aba011c76, type: 3}
   - {fileID: 3366392363427253120, guid: ca118a5abd416034f8223e0fd31a9210, type: 3}
   spawnPositions:
   - {fileID: 1172636502}

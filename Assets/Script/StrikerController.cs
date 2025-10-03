@@ -271,6 +271,19 @@ public class StrikerController : MonoBehaviour
         yield return null;
     }
 
+    private int CalcStreamCountForThisSegment(int startIdx)
+    {
+        float startBeat = chartData.notes[startIdx].arriveTime;
+        int finishIdx = startIdx + 1;
+        float finishBeat = (finishIdx < chartData.notes.Length)
+            ? chartData.notes[finishIdx].arriveTime
+            : startBeat;
+
+        float beats = Mathf.Max(0f, finishBeat - startBeat);
+        int hitsPerBeat = 4; // 기획값으로 설정
+        return Mathf.Max(1, Mathf.RoundToInt(beats * hitsPerBeat));
+    }
+
     private IEnumerator MeleeGo(float targetTime)
     {
         animator.SetBool("MovingGo", true);
@@ -470,7 +483,9 @@ public class StrikerController : MonoBehaviour
             }
             else if (noteType == 5)
             {
-                judgeableQueue.Enqueue(new Judgeable(AttackType.StreamStart, arriveTime, location, this, null, this.ActStreamStart));
+                var j = new Judgeable(AttackType.StreamStart, arriveTime, location, this, null, this.ActStreamStart);
+                j.SetStreamCount(CalcStreamCountForThisSegment(currentNoteIndex));
+                judgeableQueue.Enqueue(j);
                 judgeableQueue.Enqueue(new Judgeable(AttackType.StreamFinish, chartData.notes[currentNoteIndex + 1].arriveTime, location, this, null, this.ActStreamFinish));
             }
         }
