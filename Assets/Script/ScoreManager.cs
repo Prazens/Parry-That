@@ -502,7 +502,18 @@ public class ScoreManager : MonoBehaviour
                 if (parriedProjectileManager != null && !targetStriker.isMelee && judgeObject.attackType != AttackType.StreamStart)
                 {
                     if (targetStriker.boss != null)
-                        parriedProjectileManager.ParryTusache(Direction.Up, (int)judgeObject.attackType);
+                    {
+                        int fixRandom = 0;
+                        if (judgeObject.noteDirection == Direction.Up || judgeObject.noteDirection == Direction.Right)
+                        {
+                            fixRandom = 1;
+                        }
+                        else
+                        {
+                            fixRandom = 2;
+                        }
+                        parriedProjectileManager.ParryTusache(Direction.Up, (int)judgeObject.attackType, fixRandom);
+                    }
                     else
                         parriedProjectileManager.ParryTusache(judgeObject.noteDirection, (int)judgeObject.attackType);
                 }

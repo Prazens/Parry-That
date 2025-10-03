@@ -8,7 +8,7 @@ public class ParriedProjectileManager : MonoBehaviour
     public GameObject[] prefabDown; 
     public Transform parriedTusacheParent; 
 
-    public void ParryTusache(Direction targetDirection, int type)
+    public void ParryTusache(Direction targetDirection, int type, int fixRandom = 0)
     {
         // Debug.Log("패링된 투사체 함수 호출됨");
 
@@ -20,11 +20,13 @@ public class ParriedProjectileManager : MonoBehaviour
             if (type == 0) // 약공격
             {
                 int randomIndex = UnityEngine.Random.Range(0, 2);
+                if(randomIndex > 0) randomIndex = fixRandom - 1;
                 prefabToSpawn = prefabUp[randomIndex];
             }
             else if (type == 1) // 강공격
             {
                 int randomIndex = UnityEngine.Random.Range(2, 4);
+                if (randomIndex > 0) randomIndex = fixRandom + 1;
                 prefabToSpawn = prefabUp[randomIndex];
             }
         }
@@ -33,11 +35,13 @@ public class ParriedProjectileManager : MonoBehaviour
             if (type == 0) // 약공격
             {
                 int randomIndex = UnityEngine.Random.Range(0, 2);
+                if (randomIndex > 0) randomIndex = fixRandom - 1;
                 prefabToSpawn = prefabDown[randomIndex];
             }
             else if (type == 1) // 강공격
             {
                 int randomIndex = UnityEngine.Random.Range(2, 4);
+                if (randomIndex > 0) randomIndex = fixRandom + 1;
                 prefabToSpawn = prefabDown[randomIndex];
             }
         }
