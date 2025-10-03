@@ -124,6 +124,7 @@ MonoBehaviour:
   projectilePrefabs:
   - {fileID: 9160765054753558952, guid: 4b1fc64b6f20804459cae34d57b7e7a0, type: 3}
   - {fileID: 7152690855388890206, guid: 873bca72101daef41a84215eae8c8992, type: 3}
+  - {fileID: 9160765054753558952, guid: 4d418e43ac4d856449a0c82c1acd24c6, type: 3}
   playerManager: {fileID: 0}
   uiManager: {fileID: 0}
   chartData:

@@ -29,13 +29,22 @@ public class BossController : MonoBehaviour
         hp = maxHp;
     }
 
-    private void Start()
+    public void clearHp()
     {
-        hp = maxHp;
+        hp = 0;
+        maxHp = 0;
+        hpControl.transform.localScale = new Vector3(0, 1, 1);
+    }
+    private void Awake()
+    {
         hpBar = Instantiate(hpBarPrefab, transform);
         hpBar.transform.localPosition = Vector3.down * 2f;
         hpControl = hpBar.transform.GetChild(0);
         hpControl.transform.localScale = new Vector3(0, 1, 1);
+    }
+    private void Start()
+    {
+        hp = maxHp;
     }
 
     public void RegisterStriker(StrikerController sc)

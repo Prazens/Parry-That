@@ -51,6 +51,8 @@ public class StageManager : MonoBehaviour
     private SpriteRenderer VictoryRenderer;
     [SerializeField] AudioSource VictoryAudioSource;
 
+    [SerializeField] private BossController boss;
+
     private void Awake()
     {
         musicOffset = PlayerPrefs.GetFloat("musicOffset", 2);
@@ -152,6 +154,10 @@ public class StageManager : MonoBehaviour
         button_active = true;
         scoreUI.Initialize_UI();
         musicSource.time = 0f;
+        if(boss != null)
+        {
+            boss.clearHp();
+        }
         SpawnPlayer();
         // SpawnGuideboxes();
         // Debug.Log($"StartStage {strikerManager.charts.Count}");
