@@ -24,7 +24,7 @@ public class EndCutSceneManager : MonoBehaviour
     private Image sourceImage;
     private AudioSource TypingSound;
 
-    string[] TextSet = new string[17];
+    string[] TextSet = new string[18];
     GameObject PrologueTextObj;
     Text PrologueText;
 
@@ -42,16 +42,17 @@ public class EndCutSceneManager : MonoBehaviour
         TextSet[4] = "그...그래.";
         TextSet[5] = "나는 네가 소리를 없애서 알람을 못 들었기 때문에 시험을 망쳤단 말이다!";
         TextSet[6] = "!!";
-        TextSet[7] = "그렇다고 내가 '세상의 모든 시험을 없애버린다' 같은 극단적인 망상을 하진 않았어! \n 왜냐면 난 너 같은 정신 나간 쫌생이가 아니기 때문이지!";
-        TextSet[8] = "...내가 죽을 죄를 지었어. 어떻게 속죄해야 할까?";
-        TextSet[9] = "속죄라... 방법이 하나 있긴 하지.";
-        TextSet[10] = "넌 소리를 없애는 죄를 지었으니, 소리로 갚아야겠지?";
-        TextSet[11] = "그게 무슨 소리야?";
-        TextSet[12] = "아이돌 가수를 해라!!!!!!!!!";
-        TextSet[13] = "예???????????";
-        TextSet[14] = "그렇게 소리는 마왕을 아이돌로 만들고 자신은 프로듀서가 되어 떼돈을 벌었습니다!";
-        TextSet[15] = "역시 시험 따위 안 본다고 인생이 망하는 법은 없는 거로군요.";
-        TextSet[16] = "                             ";
+        TextSet[7] = "그렇다고 내가 세상 모든 시험을 없애겠다는 극단적인 망상을 하진 않았어!";
+        TextSet[8] = "난 너 같은 정신 나간 쫌생이가 아니거든!";
+        TextSet[9] = "...내가 죽을 죄를 지었어. 어떻게 속죄해야 할까?";
+        TextSet[10] = "속죄라... 방법이 하나 있긴 하지.";
+        TextSet[11] = "넌 소리를 없애는 죄를 지었으니, 소리로 갚아야겠지?";
+        TextSet[12] = "그게 무슨 소리야?";
+        TextSet[13] = "아이돌 가수를 해라!!!!!!!!!";
+        TextSet[14] = "예???????????";
+        TextSet[15] = "그렇게 소리는 마왕을 아이돌로 만들고 자신은 프로듀서가 되어 떼돈을 벌었습니다!";
+        TextSet[16] = "역시 시험 따위 안 본다고 인생이 망하는 법은 없는 거로군요.";
+        TextSet[17] = "                             ";
 
         // 씬 위치 조정
         //CutScenes = GameObject.Find("CutScenes");
@@ -173,61 +174,66 @@ public class EndCutSceneManager : MonoBehaviour
                 currentCutsceneIndex++;
                 yield break;
             case 7:
-                StartCoroutine(FadeInPanelImage(cutscenePanels[8]));
                 StartCoroutine(ShowPrologueText(TextSet[8]));
                 currentCutsceneIndex++;
                 yield break;
             case 8:
-                StartCoroutine(FadeInPanelImage(cutscenePanels[9]));
+                StartCoroutine(FadeInPanelImage(cutscenePanels[8]));
                 StartCoroutine(ShowPrologueText(TextSet[9]));
                 currentCutsceneIndex++;
                 yield break;
             case 9:
+                StartCoroutine(FadeInPanelImage(cutscenePanels[9]));
+                StartCoroutine(ShowPrologueText(TextSet[10]));
+                currentCutsceneIndex++;
+                yield break;
+            case 10:
                 StartCoroutine(FadeOutPanelImage(cutscenePanels[7]));
                 StartCoroutine(FadeOutPanelImage(cutscenePanels[8]));
                 StartCoroutine(FadeOutPanelImage(cutscenePanels[9]));
                 yield return new WaitForSeconds(fadeDuration);
                 StartCoroutine(FadeInPanelImage(cutscenePanels[10]));
-                StartCoroutine(ShowPrologueText(TextSet[10]));
-                currentCutsceneIndex++;
-                yield break;
-            case 10:
-                StartCoroutine(FadeInPanelImage(cutscenePanels[11]));
                 StartCoroutine(ShowPrologueText(TextSet[11]));
                 currentCutsceneIndex++;
                 yield break;
             case 11:
-                StartCoroutine(FadeInPanelImage(cutscenePanels[12]));
+                StartCoroutine(FadeInPanelImage(cutscenePanels[11]));
                 StartCoroutine(ShowPrologueText(TextSet[12]));
                 currentCutsceneIndex++;
                 yield break;
             case 12:
-                StartCoroutine(FadeInPanelImage(cutscenePanels[13]));
+                StartCoroutine(FadeInPanelImage(cutscenePanels[12]));
                 StartCoroutine(ShowPrologueText(TextSet[13]));
                 currentCutsceneIndex++;
                 yield break;
             case 13:
+                StartCoroutine(FadeInPanelImage(cutscenePanels[13]));
+                StartCoroutine(ShowPrologueText(TextSet[14]));
+                currentCutsceneIndex++;
+                yield break;
+            case 14:
                 StartCoroutine(FadeOutPanelImage(cutscenePanels[10]));
                 StartCoroutine(FadeOutPanelImage(cutscenePanels[11]));
                 StartCoroutine(FadeOutPanelImage(cutscenePanels[12]));
                 StartCoroutine(FadeOutPanelImage(cutscenePanels[13]));
                 yield return new WaitForSeconds(fadeDuration);
                 StartCoroutine(FadeInPanelImage(cutscenePanels[14]));
-                StartCoroutine(ShowPrologueText(TextSet[14]));
-                currentCutsceneIndex++;
-                yield break;
-            case 14:
                 StartCoroutine(ShowPrologueText(TextSet[15]));
                 currentCutsceneIndex++;
                 yield break;
             case 15:
+                StartCoroutine(ShowPrologueText(TextSet[16]));
+                currentCutsceneIndex++;
+                yield break;
+            case 16:
                 StartCoroutine(FadeOutPanelImage(cutscenePanels[14]));
                 yield return new WaitForSeconds(fadeDuration);
                 fadeDuration = 2f;
                 StartCoroutine(FadeInPanelImage(cutscenePanels[15]));
+                StartCoroutine(ShowPrologueText(TextSet[17]));
                 currentCutsceneIndex++;
                 yield break;
-            case 16:
+            case 17:
                 StartCoroutine(FadeOutPanelImage(cutscenePanels[15]));
                 yield return new WaitForSeconds(0.1f);
                 // 컷씬 끝
