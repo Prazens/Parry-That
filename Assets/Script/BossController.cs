@@ -8,7 +8,7 @@ using UnityEngine;
 public class BossController : MonoBehaviour
 {
     [Header("HP")]
-    [SerializeField] private int maxHp = 100;  
+    [SerializeField] private int maxHp = 0;  
     [SerializeField] private int hp;
 
     [Header("Links")]
@@ -25,11 +25,8 @@ public class BossController : MonoBehaviour
 
     public void Initialize(int _hp)
     {
-        hp = maxHp = _hp;
-        hpBar = Instantiate(hpBarPrefab, transform);
-        hpBar.transform.localPosition = Vector3.down * 2f;
-        hpControl = hpBar.transform.GetChild(0);
-        hpControl.transform.localScale = new Vector3(0, 1, 1);
+        maxHp += _hp;
+        hp = maxHp;
     }
 
     private void Start()

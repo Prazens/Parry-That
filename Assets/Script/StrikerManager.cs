@@ -142,11 +142,12 @@ public class StrikerManager : MonoBehaviour
         
         if (strikerController != null)
         {
-            strikerController.Initialize(hp, bpm, playerManager, (Direction)(positionIndex + 1), charts[chartIndex], prepabindex);
             if (isBossStage && boss != null)
             {
                 boss.RegisterStriker(strikerController);
+                boss.Initialize(hp);
             }
+            strikerController.Initialize(hp, bpm, playerManager, (Direction)(positionIndex + 1), charts[chartIndex], prepabindex);
         }
         else
         {

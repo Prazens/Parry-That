@@ -18,6 +18,8 @@ public class StrikerController : MonoBehaviour
     public Direction location; // 위치 방향
     public int currentNoteIndex = 0; // 현재 채보 인덱스
     [SerializeField] private Animator animator;
+
+    [SerializeField] private Animator holdSpriteAnimator = null;
     [SerializeField] private Animator bladeAnimator = null;
     // 임시로 발사체 저장해놓을 공간
     private float lastProjectileTime = 0f; // 마지막 투사체 발사 시간
@@ -360,11 +362,53 @@ public class StrikerController : MonoBehaviour
 
         if (prepareQueue.Count > 0 && currentTime >= (prepareQueue.Peek().Item1 * (60d / bpm)) + musicOffset - 0.5f)
         {
-            FireProjectile(prepareQueue.Peek().Item1, prepareQueue.Peek().Item2);
+            var (t, idx) = prepareQueue.Peek();
+            if(idx == 2 || idx ==3)
+            {
+                prepareQueue.Dequeue();     // 큐 소비
+                exclamationRelocation();    // 느낌표 한 칸 제거
+                lastProjectileTime = currentTime;
+                return;
+            }
+            FireProjectile(t, idx);
             prepareQueue.Dequeue();
             lastProjectileTime = currentTime;
         }
     }
+
+    // StrikerController.cs
+    private void ActRangeHoldStart()
+    {
+        if (audioSource != null && holdingSound != null)
+            audioSource.PlayOneShot(holdingSound, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("playerVolume", 1));
+
+        uiManager.CutInDisplay(judgeableQueue.Peek().arriveBeat * (60f / bpm) - StageManager.Instance.currentTime + musicOffset);
+
+        isHolding = true;
+    }
+
+    private void ActRangeHoldFinish()
+    {
+        // 홀드 종료 연출
+        audioSource.Stop();
+        if (audioSource != null && holdingEnd != null)
+            audioSource.PlayOneShot(holdingEnd, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("playerVolume", 1));
+
+        isHolding = false;
+
+        // 느낌표/큐 정리(근접과 동일 컨벤션)
+        holdExclamation?.GetComponent<holdExclamation>()?.ForceStop();
+        while (prepareExclamation.Count > 0)
+        {
+            Destroy(prepareExclamation[0]);
+            prepareExclamation.RemoveAt(0);
+        }
+        if (prepareQueue.Count != 0) prepareQueue.Dequeue();
+
+        // 컷인 제거
+        uiManager?.CutInDisplay(0, true);
+    }
+
 
     private void PrepareForAttack()
     {
@@ -395,10 +439,18 @@ public class StrikerController : MonoBehaviour
                 judgeableQueue.Enqueue(new Judgeable((AttackType)noteType, arriveTime, location, this, null, this.ActMeleeHit));
             }
         }
+        else
+        {
+            if (noteType == 2)
+            {
+                judgeableQueue.Enqueue(new Judgeable(AttackType.HoldStart, arriveTime, location, this, null, this.ActRangeHoldStart));
+                judgeableQueue.Enqueue(new Judgeable(AttackType.HoldStop, chartData.notes[currentNoteIndex + 1].arriveTime, location, this, null, this.ActRangeHoldFinish));
+            }
+        }
 
         // 애니메이션 실행 (느낌표 표시)
-        // **애니메이션 실행 (공격 준비)**
-        //animator.SetTrigger("isPrepare");
+        // **애니메 준비)**
+        //animator.SetTrigger("isPrepar이션 실행 (공격e");
         // **🔹 효과음 재생 (일반 / 강한 공격에 따라 다름)**
         PlayPrepareSound(noteType);
 
@@ -500,10 +552,21 @@ public class StrikerController : MonoBehaviour
     {
         // Debug.Log("FireProjectile");
         if (index < 0 || index >= projectilePrefabs.Count) return;
+        if (index == 2 || index == 3) return;
         GameObject selectedProjectile = projectilePrefabs[index];
 
+        Vector3 projectilePos = transform.position;
+        switch(location)
+        {
+            case Direction.Left:
+                projectilePos += new Vector3(-2f, 0, 0);
+                break;
+            case Direction.Right:
+                projectilePos += new Vector3(2f, 0, 0);
+                break;
+        }
         // 투사체 생성
-        GameObject projectile = Instantiate(selectedProjectile, transform.position, Quaternion.identity);
+        GameObject projectile = Instantiate(selectedProjectile, projectilePos, Quaternion.identity);
         switch (location)
         {
             case Direction.Up:
@@ -513,10 +576,10 @@ public class StrikerController : MonoBehaviour
                 projectile.transform.rotation = Quaternion.Euler(0, 0, 180);
                 break;
             case Direction.Left:
-                projectile.transform.rotation = Quaternion.Euler(0, 0, 270);
+                projectile.transform.rotation = Quaternion.Euler(0, 0, 90);
                 break;
             case Direction.Right:
-                projectile.transform.rotation = Quaternion.Euler(0, 0, 90);
+                projectile.transform.rotation = Quaternion.Euler(0, 0, 270);
                 break;
             default:
                 break;
