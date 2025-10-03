@@ -315,10 +315,10 @@ public class TutorialManager : MonoBehaviour
         string Daehwa6_Text7 = "세 번째 파란 느낌표가 나타날 때 터치한 후 손을 떼지 않고 화면을 꾹 누르고 있어야 해요!!";
         yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "정령", Daehwa6_Text7, true));
 
-        string Daehwa6_Text8 = "그리고 세 번째 느낌표가 사라질 때 적 방향으로 스와이프까지 잊지 말고 해야 해요!!!!";
+        string Daehwa6_Text8 = "그리고 세 번째 느낌표가 사라질 때 손을 떼면 돼요!!!!";
         yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[1], "정령", Daehwa6_Text8, true));
 
-        GameDescriptionText.text = "세 번째 느낌표가 나타나는 타이밍에 꾹 누르고 홀드합니다.\n 세 번째 느낌표가 사라지는 타이밍에 적이 있는 방향으로 스와이프하여 막을 수 있습니다.";
+        GameDescriptionText.text = "세 번째 느낌표가 나타나는 타이밍에 꾹 누르고 홀드합니다.\n 세 번째 느낌표가 사라지는 타이밍에 손을 떼서 막을 수 있습니다.";
 
         isDaehwa = false;
 
