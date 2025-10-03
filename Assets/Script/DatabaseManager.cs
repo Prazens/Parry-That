@@ -11,6 +11,8 @@ public class DatabaseManager : MonoBehaviour
     public static bool isStage2Done;
     public static bool isStage3Done;
     public static bool isStage4Done;
+    public static bool isStage5Done;
+    public static bool isStage6Done;
     private void Awake()
     {
         if (FindObjectsOfType<DatabaseManager>().Length > 1)
@@ -35,6 +37,8 @@ public class DatabaseManager : MonoBehaviour
         PlayerPrefs.SetInt("Score2", score[2]);
         PlayerPrefs.SetInt("Score3", score[3]);
         PlayerPrefs.SetInt("Score4", score[4]);
+        PlayerPrefs.SetInt("Score5", score[5]);
+        PlayerPrefs.SetInt("Score6", score[6]);
     }
     public void SaveStarData()
     {
@@ -43,6 +47,8 @@ public class DatabaseManager : MonoBehaviour
         PlayerPrefs.SetInt("Stage2_Star", star[2]);
         PlayerPrefs.SetInt("Stage3_Star", star[3]);
         PlayerPrefs.SetInt("Stage3_Star", star[4]);
+        PlayerPrefs.SetInt("Stage3_Star", star[5]);
+        PlayerPrefs.SetInt("Stage3_Star", star[6]);
     }
 
     public void LoadData()
@@ -59,6 +65,10 @@ public class DatabaseManager : MonoBehaviour
             star[3] = PlayerPrefs.GetInt("Stage3_Star");
             score[4] = PlayerPrefs.GetInt("Score4");
             star[4] = PlayerPrefs.GetInt("Stage4_Star");
+            score[5] = PlayerPrefs.GetInt("Score5");
+            star[5] = PlayerPrefs.GetInt("Stage5_Star");
+            score[6] = PlayerPrefs.GetInt("Score6");
+            star[6] = PlayerPrefs.GetInt("Stage6_Star");
         }
     }
 
@@ -84,13 +94,25 @@ public class DatabaseManager : MonoBehaviour
         PlayerPrefs.SetInt("Stage4Done", 1);
     }
 
+    public void SaveStage5Done()
+    {
+        PlayerPrefs.SetInt("Stage5Done", 1);
+    }
+
+    public void SaveStage6Done()
+    {
+        PlayerPrefs.SetInt("Stage4Done", 1);
+    }
+
     public void LoadSceneDone()
     {
         isTutorialDone = (PlayerPrefs.GetInt("TutorialDone") == 1);
         isStage1Done = (PlayerPrefs.GetInt("Stage1Done") == 1);
         isStage2Done = (PlayerPrefs.GetInt("Stage2Done") == 1);
         isStage3Done = (PlayerPrefs.GetInt("Stage3Done") == 1);
-        isStage3Done = (PlayerPrefs.GetInt("Stage4Done") == 1);
+        isStage4Done = (PlayerPrefs.GetInt("Stage4Done") == 1);
+        isStage5Done = (PlayerPrefs.GetInt("Stage4Done") == 1);
+        isStage6Done = (PlayerPrefs.GetInt("Stage4Done") == 1);
     }
 
 }

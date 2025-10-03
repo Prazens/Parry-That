@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class Stage4CutSceneManager : MonoBehaviour
+public class EndCutSceneManager : MonoBehaviour
 {
     [SerializeField] private Image fadeImg;
     private float fadeDuration = 0.3f; // 페이드 시간
@@ -24,7 +24,7 @@ public class Stage4CutSceneManager : MonoBehaviour
     private Image sourceImage;
     private AudioSource TypingSound;
 
-    string[] TextSet = new string[19];
+    string[] TextSet = new string[17];
     GameObject PrologueTextObj;
     Text PrologueText;
 
@@ -35,25 +35,23 @@ public class Stage4CutSceneManager : MonoBehaviour
     private void Start()
     {
         // 텍스트 내용
-        TextSet[0] = "용사님. 이 물범들 생각보다 너무 강한 것 같지 않나요?";
-        TextSet[1] = "확실히 심상치가 않아. 밸런스 조정을 실패했나?";
-        TextSet[2] = "잠깐만요, 용사님! 물범들이 누군가에게 조종당하고 있는 것 같습니다!";
-        TextSet[3] = "(콰아아아아아아아아)";
-        TextSet[4] = "마왕이다!!";
-        TextSet[5] = "마왕이다!!!";
-        TextSet[6] = "좀 조용히 놀라 줄래?";
-        TextSet[7] = "왜 소리를 없앴나!!";
-        TextSet[8] = "물어보길 기다리고 있었다! 설명해 주마.";
-        TextSet[9] = "나는 원래 고시생으로서 열심히 시험 준비를 하고 있던 선량한 사람이었다.";
-        TextSet[10] = "하지만 세상에는 불필요한 소음을 내는 사람들이 너무 많았고..";
-        TextSet[11] = "그 사람들의 방해 때문에 나는 몇 번이고 탈락만을 반복했지.";
-        TextSet[12] = "그때 결심했다. 세상에 소음이 더는 들리지 않게 하겠다고!";
-        TextSet[13] = "간절히 바란 끝에 드디어 내가 바라는 힘을 얻";
-        TextSet[14] = "기습스매쉬!!!\n(시@밤쾅)";
-        TextSet[15] = "철푸덕";
-        TextSet[16] = "좋아. 틀림없이 해치웠어!";
-        TextSet[17] = "(기습당한 분노로 각성)\n널 죽여버리겠다!!";
-        TextSet[18] = "...이게 아닌데. \n (중얼)용사를 잘못 골랐나...";
+        TextSet[0] = "마왕이 쓰러졌다! 용사님 굉장하십니다!";
+        TextSet[1] = "또 큰소리쳐 봐라 마왕! (쿨럭) 누가 누굴 죽인다고?!";
+        TextSet[2] = "나한테 왜 이래! 소리 좀 없앤다는 게 그렇게 큰일이야??";
+        TextSet[3] = "너. 소리 때문에 시험을 망쳤다고 그랬지?";
+        TextSet[4] = "그...그래.";
+        TextSet[5] = "나는 네가 소리를 없애서 알람을 못 들었기 때문에 시험을 망쳤단 말이다!";
+        TextSet[6] = "!!";
+        TextSet[7] = "그렇다고 내가 '세상의 모든 시험을 없애버린다' 같은 극단적인 망상을 하진 않았어! \n 왜냐면 난 너 같은 정신 나간 쫌생이가 아니기 때문이지!";
+        TextSet[8] = "...내가 죽을 죄를 지었어. 어떻게 속죄해야 할까?";
+        TextSet[9] = "속죄라... 방법이 하나 있긴 하지.";
+        TextSet[10] = "넌 소리를 없애는 죄를 지었으니, 소리로 갚아야겠지?";
+        TextSet[11] = "그게 무슨 소리야?";
+        TextSet[12] = "아이돌 가수를 해라!!!!!!!!!";
+        TextSet[13] = "예???????????";
+        TextSet[14] = "그렇게 소리는 마왕을 아이돌로 만들고 자신은 프로듀서가 되어 떼돈을 벌었습니다!";
+        TextSet[15] = "역시 시험 따위 안 본다고 인생이 망하는 법은 없는 거로군요.";
+        TextSet[16] = "                             ";
 
         // 씬 위치 조정
         //CutScenes = GameObject.Find("CutScenes");
@@ -180,14 +178,15 @@ public class Stage4CutSceneManager : MonoBehaviour
                 currentCutsceneIndex++;
                 yield break;
             case 8:
-                StartCoroutine(FadeOutPanelImage(cutscenePanels[7]));
-                StartCoroutine(FadeOutPanelImage(cutscenePanels[8]));
-                yield return new WaitForSeconds(fadeDuration);
                 StartCoroutine(FadeInPanelImage(cutscenePanels[9]));
                 StartCoroutine(ShowPrologueText(TextSet[9]));
                 currentCutsceneIndex++;
                 yield break;
             case 9:
+                StartCoroutine(FadeOutPanelImage(cutscenePanels[7]));
+                StartCoroutine(FadeOutPanelImage(cutscenePanels[8]));
+                StartCoroutine(FadeOutPanelImage(cutscenePanels[9]));
+                yield return new WaitForSeconds(fadeDuration);
                 StartCoroutine(FadeInPanelImage(cutscenePanels[10]));
                 StartCoroutine(ShowPrologueText(TextSet[10]));
                 currentCutsceneIndex++;
@@ -203,48 +202,33 @@ public class Stage4CutSceneManager : MonoBehaviour
                 currentCutsceneIndex++;
                 yield break;
             case 12:
-                StartCoroutine(FadeOutPanelImage(cutscenePanels[9]));
-                StartCoroutine(FadeOutPanelImage(cutscenePanels[10]));
-                StartCoroutine(FadeOutPanelImage(cutscenePanels[11]));
-                StartCoroutine(FadeOutPanelImage(cutscenePanels[12]));
-                yield return new WaitForSeconds(fadeDuration);
                 StartCoroutine(FadeInPanelImage(cutscenePanels[13]));
                 StartCoroutine(ShowPrologueText(TextSet[13]));
                 currentCutsceneIndex++;
                 yield break;
             case 13:
+                StartCoroutine(FadeOutPanelImage(cutscenePanels[10]));
+                StartCoroutine(FadeOutPanelImage(cutscenePanels[11]));
+                StartCoroutine(FadeOutPanelImage(cutscenePanels[12]));
+                StartCoroutine(FadeOutPanelImage(cutscenePanels[13]));
+                yield return new WaitForSeconds(fadeDuration);
                 StartCoroutine(FadeInPanelImage(cutscenePanels[14]));
                 StartCoroutine(ShowPrologueText(TextSet[14]));
                 currentCutsceneIndex++;
                 yield break;
             case 14:
-                StartCoroutine(FadeOutPanelImage(cutscenePanels[13]));
-                StartCoroutine(FadeOutPanelImage(cutscenePanels[14]));
-                yield return new WaitForSeconds(fadeDuration);
-                StartCoroutine(FadeInPanelImage(cutscenePanels[15]));
                 StartCoroutine(ShowPrologueText(TextSet[15]));
                 currentCutsceneIndex++;
                 yield break;
             case 15:
-                StartCoroutine(FadeInPanelImage(cutscenePanels[16]));
-                StartCoroutine(ShowPrologueText(TextSet[16]));
+                StartCoroutine(FadeOutPanelImage(cutscenePanels[14]));
+                yield return new WaitForSeconds(fadeDuration);
+                fadeDuration = 2f;
+                StartCoroutine(FadeInPanelImage(cutscenePanels[15]));
                 currentCutsceneIndex++;
                 yield break;
             case 16:
-                StartCoroutine(FadeInPanelImage(cutscenePanels[17]));
-                StartCoroutine(ShowPrologueText(TextSet[17]));
-                currentCutsceneIndex++;
-                yield break;
-            case 17:
-                StartCoroutine(FadeInPanelImage(cutscenePanels[18]));
-                StartCoroutine(ShowPrologueText(TextSet[18]));
-                currentCutsceneIndex++;
-                yield break;
-            case 18:
                 StartCoroutine(FadeOutPanelImage(cutscenePanels[15]));
-                StartCoroutine(FadeOutPanelImage(cutscenePanels[16]));
-                StartCoroutine(FadeOutPanelImage(cutscenePanels[17]));
-                StartCoroutine(FadeOutPanelImage(cutscenePanels[18]));
                 yield return new WaitForSeconds(0.1f);
                 // 컷씬 끝
                 EndScene();
@@ -362,9 +346,6 @@ public class Stage4CutSceneManager : MonoBehaviour
     }
     public void EndScene()
     {
-        // // Debug.LogError("엔딩 함수");
-        databaseManager.SaveStage4Done();
-        DatabaseManager.isStage4Done = true;
-        SceneManager.LoadScene("Stage4");
+        SceneManager.LoadScene("Main");
     }
 }

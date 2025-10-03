@@ -31,7 +31,7 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
     [SerializeField] private GameObject BlackOverlayObj;
     private Image BlackOverlay;
 
-    private string[] StageName = {"0.Tutorial", "1.The First Beat", "2.Echoing Strikes", "3.Beat Master", "4.Final Encore/BOSS" };
+    private string[] StageName = {"0.Tutorial", "1.The First Beat", "2.Echoing Strikes", "3.Beat Master", "4.Final Encore (Easy)", "5.Final Encore (Hard)", "Epilogue"};
 
     [SerializeField] private GameObject SettingCanvas;
     [SerializeField] private GameObject SettingBackGround;
@@ -155,6 +155,18 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
                 Stars[3].SetActive(false);
                 break;
             case 3:
+                Stars[0].SetActive(false);
+                Stars[1].SetActive(false);
+                Stars[2].SetActive(false);
+                Stars[3].SetActive(true);
+                break;
+            case 4:
+                Stars[0].SetActive(false);
+                Stars[1].SetActive(false);
+                Stars[2].SetActive(false);
+                Stars[3].SetActive(true);
+                break;
+            case 5:
                 Stars[0].SetActive(false);
                 Stars[1].SetActive(false);
                 Stars[2].SetActive(false);

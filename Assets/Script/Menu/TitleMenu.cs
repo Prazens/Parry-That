@@ -98,7 +98,7 @@ public class TitleMenu : MonoBehaviour
         }
 
         // ���� �÷��� ������ �������� ����
-        int[] possibleStages = { 0, 1, 2, 3, 4 };
+        int[] possibleStages = { 0, 1, 2, 3, 4, 6 };
         isPossibleStage = possibleStages.Contains(StageMenu.currentIndex);
 
         // �ӽ��ڵ� for imsi
@@ -107,7 +107,7 @@ public class TitleMenu : MonoBehaviour
         // else imsi.SetActive(false);
 
         imsi.SetActive(false);  // imsi
-        // if (StageMenu.currentIndex == 4) imsi.SetActive(true);
+        if (!isPossibleStage) imsi.SetActive(true);
 
         //testScene
 #if UNITY_EDITOR
