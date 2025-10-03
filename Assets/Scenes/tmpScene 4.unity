@@ -987,7 +987,7 @@ GameObject:
   - component: {fileID: 933562620}
   - component: {fileID: 933562621}
   m_Layer: 0
-  m_Name: Stage3CutSceneManager
+  m_Name: Stage4CutSceneManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1117,10 +1117,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeImg: {fileID: 0}
-  cutscenePanels: []
+  cutscenePanels:
+  - {fileID: 1466164947}
+  - {fileID: 993646575}
+  - {fileID: 1680499133}
+  - {fileID: 1292384821}
+  - {fileID: 1316243531}
+  - {fileID: 876441137}
+  - {fileID: 692260442}
+  - {fileID: 725633376}
+  - {fileID: 488885144}
+  - {fileID: 290253144}
+  - {fileID: 378781360}
+  - {fileID: 692298468}
+  - {fileID: 1484428074}
+  - {fileID: 779433399}
+  - {fileID: 1658562186}
+  - {fileID: 505277107}
+  - {fileID: 988381721}
+  - {fileID: 491402507}
+  - {fileID: 1817320735}
   cutsceneAnimator: {fileID: 0}
-  mainCanvas: {fileID: 0}
-  PrologueFont: {fileID: 0}
+  mainCanvas: {fileID: 1862990865}
+  PrologueFont: {fileID: 12800000, guid: 7006438c118bb1748b904fe654b08d95, type: 3}
 --- !u!1 &988381721
 GameObject:
   m_ObjectHideFlags: 0
