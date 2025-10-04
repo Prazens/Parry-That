@@ -362,9 +362,19 @@ public class Stage4CutSceneManager : MonoBehaviour
     }
     public void EndScene()
     {
-        // // Debug.LogError("엔딩 함수");
-        databaseManager.SaveStage4Done();
-        DatabaseManager.isStage4Done = true;
-        SceneManager.LoadScene("Stage4");
+        if (SceneLinkage.StageLV == 4) {
+            // // Debug.LogError("엔딩 함수");
+            databaseManager.SaveStage4Done();
+            DatabaseManager.isStage4Done = true;
+            SceneManager.LoadScene("Stage4");
+        }
+        else if (SceneLinkage.StageLV == 5)
+        {
+            // // Debug.LogError("엔딩 함수");
+            databaseManager.SaveStage5Done();
+            DatabaseManager.isStage5Done = true;
+            SceneManager.LoadScene("Stage5");
+        }
+        
     }
 }

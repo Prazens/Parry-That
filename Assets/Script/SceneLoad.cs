@@ -60,7 +60,7 @@ public class SceneLoad : MonoBehaviour
                     // if (DatabaseManager.isStage4Done)
                     operation = SceneManager.LoadSceneAsync("testScene_Boss");
                 else
-                    operation = SceneManager.LoadSceneAsync("tmpScene 5");
+                    operation = SceneManager.LoadSceneAsync("tmpScene 4");
                 break;
 
             case 6:

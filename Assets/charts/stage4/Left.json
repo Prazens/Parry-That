@@ -1,6 +1,6 @@
 {
     "bpm": 227.99990880003648,
-    "strikerType": 1,
+    "strikerType": 2,
     "direction": 3,
     "appearTime": 4.0,
     "disappearTime": 408.0,
@@ -88,11 +88,6 @@
         {
             "time": 171.5,
             "arriveTime": 179.5,
-            "type": 0
-        },
-        {
-            "time": 172.0,
-            "arriveTime": 180.0,
             "type": 0
         },
         {
@@ -189,11 +184,6 @@
             "time": 309.0,
             "arriveTime": 313.0,
             "type": 0
-        },
-        {
-            "time": 365.0,
-            "arriveTime": 373.0,
-            "type": 1
         },
         {
             "time": 388.0,
