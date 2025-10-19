@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class StrikerController : MonoBehaviour
 {
@@ -560,11 +561,22 @@ public class StrikerController : MonoBehaviour
 
         if (type == 2 || type == 5)
         {
-            holdExclamation.GetComponent<holdExclamation>().Appear(bpm, 1);
+            if (SceneManager.GetActiveScene().name == "Stage4" ||
+                SceneManager.GetActiveScene().name == "Stage5" ||
+                SceneManager.GetActiveScene().name == "BossHoldTest")
+                holdExclamation.GetComponent<holdExclamation>().Appear(bpm, 2);
+            else
+                holdExclamation.GetComponent<holdExclamation>().Appear(bpm, 1);
         }
         else if (type == 3 || type == 6)
         {
-            holdExclamation.GetComponent<holdExclamation>().Disappear(bpm, 1);
+            if (SceneManager.GetActiveScene().name == "Stage4" ||
+                SceneManager.GetActiveScene().name == "Stage5" ||
+                SceneManager.GetActiveScene().name == "BossHoldTest")
+                holdExclamation.GetComponent<holdExclamation>().Disappear(bpm, 2);
+            else
+                holdExclamation.GetComponent<holdExclamation>().Disappear(bpm, 1);
+
         }
 
         List<Tuple<float, int>> tempList = new List<Tuple<float, int>>(prepareQueue); // 현재 큐를 리스트로 변환 (순서 유지)
