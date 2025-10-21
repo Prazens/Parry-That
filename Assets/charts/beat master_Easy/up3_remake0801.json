@@ -1,0 +1,274 @@
+{
+	"bpm": 107,
+	"strikerType": 0,
+	"direction": 1,
+	"appearTime": 95,
+	"disappearTime": 193.0,
+    "notes": [
+        {
+            "time": 96.0,
+            "arriveTime": 100.0,
+            "type": 0
+        },
+        {
+            "time": 104.0,
+            "arriveTime": 108.0,
+            "type": 0
+        },
+        {
+            "time": 106.0,
+            "arriveTime": 110.0,
+            "type": 0
+        },
+        {
+            "time": 112.0,
+            "arriveTime": 116.0,
+            "type": 0
+        },
+        {
+            "time": 114.0,
+            "arriveTime": 118.0,
+            "type": 0
+        },
+        {
+            "time": 120.0,
+            "arriveTime": 124.0,
+            "type": 0
+        },
+        {
+            "time": 122.0,
+            "arriveTime": 126.0,
+            "type": 0
+        },
+        {
+            "time": 129.0,
+            "arriveTime": 133.0,
+            "type": 1
+        },
+        {
+            "time": 130.5,
+            "arriveTime": 134.5,
+            "type": 0
+        },
+        {
+            "time": 131.0,
+            "arriveTime": 135.0,
+            "type": 1
+        },
+        {
+            "time": 131.5,
+            "arriveTime": 135.5,
+            "type": 0
+        },
+        {
+            "time": 137.0,
+            "arriveTime": 141.0,
+            "type": 1
+        },
+        {
+            "time": 138.5,
+            "arriveTime": 142.5,
+            "type": 0
+        },
+        {
+            "time": 139.0,
+            "arriveTime": 143.0,
+            "type": 1
+        },
+        {
+            "time": 139.5,
+            "arriveTime": 143.5,
+            "type": 0
+        },
+        {
+            "time": 144.5,
+            "arriveTime": 148.5,
+            "type": 0
+        },
+        {
+            "time": 145.0,
+            "arriveTime": 149.0,
+            "type": 0
+        },
+        {
+            "time": 145.5,
+            "arriveTime": 149.5,
+            "type": 0
+        },
+        {
+            "time": 145.75,
+            "arriveTime": 149.75,
+            "type": 0
+        },
+        {
+            "time": 146.25,
+            "arriveTime": 150.25,
+            "type": 0
+        },
+        {
+            "time": 146.75,
+            "arriveTime": 150.75,
+            "type": 0
+        },
+        {
+            "time": 147.25,
+            "arriveTime": 151.25,
+            "type": 0
+        },
+        {
+            "time": 147.5,
+            "arriveTime": 151.5,
+            "type": 0
+        },
+        {
+            "time": 152.5,
+            "arriveTime": 156.5,
+            "type": 0
+        },
+        {
+            "time": 153.0,
+            "arriveTime": 157.0,
+            "type": 1
+        },
+        {
+            "time": 153.5,
+            "arriveTime": 157.5,
+            "type": 0
+        },
+        {
+            "time": 153.75,
+            "arriveTime": 157.75,
+            "type": 0
+        },
+        {
+            "time": 154.25,
+            "arriveTime": 158.25,
+            "type": 0
+        },
+        {
+            "time": 154.75,
+            "arriveTime": 158.75,
+            "type": 0
+        },
+        {
+            "time": 155.25,
+            "arriveTime": 159.25,
+            "type": 0
+        },
+        {
+            "time": 155.5,
+            "arriveTime": 159.5,
+            "type": 0
+        },
+        {
+            "time": 155.75,
+            "arriveTime": 159.75,
+            "type": 0
+        },
+        {
+            "time": 160.0,
+            "arriveTime": 164.0,
+            "type": 0
+        },
+        {
+            "time": 161.0,
+            "arriveTime": 165.0,
+            "type": 1
+        },
+        {
+            "time": 162.0,
+            "arriveTime": 166.0,
+            "type": 1
+        },
+        {
+            "time": 163.0,
+            "arriveTime": 167.0,
+            "type": 0
+        },
+        {
+            "time": 168.0,
+            "arriveTime": 172.0,
+            "type": 0
+        },
+        {
+            "time": 169.0,
+            "arriveTime": 173.0,
+            "type": 1
+        },
+        {
+            "time": 170.0,
+            "arriveTime": 174.0,
+            "type": 0
+        },
+        {
+            "time": 170.5,
+            "arriveTime": 174.5,
+            "type": 1
+        },
+        {
+            "time": 171.0,
+            "arriveTime": 175.0,
+            "type": 0
+        },
+        {
+            "time": 171.5,
+            "arriveTime": 175.5,
+            "type": 1
+        },
+        {
+            "time": 176.0,
+            "arriveTime": 180.0,
+            "type": 0
+        },
+        {
+            "time": 177.0,
+            "arriveTime": 181.0,
+            "type": 1
+        },
+        {
+            "time": 178.0,
+            "arriveTime": 182.0,
+            "type": 1
+        },
+        {
+            "time": 179.0,
+            "arriveTime": 183.0,
+            "type": 0
+        },
+        {
+            "time": 184.0,
+            "arriveTime": 188.0,
+            "type": 0
+        },
+        {
+            "time": 185.0,
+            "arriveTime": 189.0,
+            "type": 1
+        },
+        {
+            "time": 186.0,
+            "arriveTime": 190.0,
+            "type": 0
+        },
+        {
+            "time": 186.5,
+            "arriveTime": 190.5,
+            "type": 1
+        },
+        {
+            "time": 187.0,
+            "arriveTime": 191.0,
+            "type": 0
+        },
+        {
+            "time": 187.5,
+            "arriveTime": 191.5,
+            "type": 1
+        },
+        {
+            "time": 188.0,
+            "arriveTime": 192.0,
+            "type": 1
+        }
+    ]
+}
