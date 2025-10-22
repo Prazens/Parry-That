@@ -469,6 +469,8 @@ MonoBehaviour:
   SettingCanvas: {fileID: 660115598}
   SettingBackGround: {fileID: 350659347}
   modeChageButton: {fileID: 2053746808}
+  normalButton: {fileID: 21300000, guid: 3f3a19a1a726142459721365fb4a8c23, type: 3}
+  hardButton: {fileID: 21300000, guid: 3324b948c8f16bc42b07216bc309321d, type: 3}
   stageObjects:
   - {fileID: 709145433}
   - {fileID: 1413199336}
@@ -1959,7 +1961,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Normal
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0183cc4ee0faa374e943ec1aeec58fdc, type: 2}
   m_sharedMaterial: {fileID: -2635853294392560576, guid: 0183cc4ee0faa374e943ec1aeec58fdc, type: 2}
@@ -7198,10 +7200,10 @@ RectTransform:
   - {fileID: 500342974}
   m_Father: {fileID: 660115602}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 400, y: -70}
-  m_SizeDelta: {x: 300, y: 100}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 500, y: 750}
+  m_SizeDelta: {x: 300, y: 300}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &2053746810
 MonoBehaviour:
@@ -7279,7 +7281,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: e25db63da7a84644988e0768dac4b790, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3f3a19a1a726142459721365fb4a8c23, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

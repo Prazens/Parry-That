@@ -31,12 +31,14 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
     [SerializeField] private GameObject BlackOverlayObj;
     private Image BlackOverlay;
 
-    private string[] StageName = {"0.Tutorial", "1.The First Beat", "2.Echoing Strikes", "3.Beat Master", "4.Final Encore (Easy)", "5.Final Encore (Hard)", "Epilogue"};
+    private string[] StageName = {"Tutorial", "1.The First Beat", "2.Echoing Strikes", "3.Beat Master", "4.Final Encore (Easy)", "5.Final Encore (Hard)", "Epilogue"};
 
     [SerializeField] private GameObject SettingCanvas;
     [SerializeField] private GameObject SettingBackGround;
     [SerializeField] private GameObject modeChageButton;
     private bool modeChgButtonAble = false;
+    [SerializeField] private Sprite normalButton;
+    [SerializeField] private Sprite hardButton;
 
     void Start()
     {
@@ -472,19 +474,21 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
 
             if (btn != null)
             {
-                TMP_Text text = btn.GetComponentInChildren<TMP_Text>();
+                // TMP_Text text = btn.GetComponentInChildren<TMP_Text>();
 
                 if (SceneLinkage.isEasy)
                 {
-                    text.text = "Hard";
+                    // text.text = "Hard";
                     SceneLinkage.isEasy = false;
                     // 하드 효과들
+                    clickedObj.GetComponent<Image>().sprite = hardButton;
                 }
                 else
                 {
-                    text.text = "Normal";
+                    // text.text = "Normal";
                     SceneLinkage.isEasy = true;
                     // 이지 효과들
+                    clickedObj.GetComponent<Image>().sprite = normalButton;
                 }
             }
         }
