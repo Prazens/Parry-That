@@ -305,6 +305,8 @@ public class Stage1CutScene : MonoBehaviour
         // // Debug.LogError("엔딩 함수");
         databaseManager.SaveStage1Done();
         DatabaseManager.isStage1Done = true;
-        SceneManager.LoadScene("Stage1");
+        if (SceneLinkage.StageLV == 1) SceneManager.LoadScene("Stage1");
+        else if (SceneLinkage.StageLV == 7) SceneManager.LoadScene("Stage1Easy");
+        else Debug.LogError("SceneLinkage StageLV잘못됨");
     }
 }

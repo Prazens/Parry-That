@@ -5,6 +5,7 @@ using UnityEngine;
 public class SceneLinkage : MonoBehaviour
 {
     public static int StageLV = 0;
+    public static bool isEasy = true;
 
     private void Awake()
     {

@@ -288,6 +288,9 @@ public class Stage3CutSceneManager : MonoBehaviour
         // // Debug.LogError("엔딩 함수");
         databaseManager.SaveStage3Done();
         DatabaseManager.isStage3Done = true;
-        SceneManager.LoadScene("Beat Master");
+        if (SceneLinkage.StageLV == 3) SceneManager.LoadScene("Beat Master");
+        else if (SceneLinkage.StageLV == 9) SceneManager.LoadScene("Beat Master Easy");
+        else Debug.LogError("SceneLinkage StageLV잘못됨");
+        
     }
 }

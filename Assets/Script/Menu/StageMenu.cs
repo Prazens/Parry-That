@@ -35,6 +35,8 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
 
     [SerializeField] private GameObject SettingCanvas;
     [SerializeField] private GameObject SettingBackGround;
+    [SerializeField] private GameObject modeChageButton;
+    private bool modeChgButtonAble = false;
 
     void Start()
     {
@@ -64,7 +66,7 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
         BlackOverlay.color = new Color (originalOverlayColor.r, originalOverlayColor.g, originalOverlayColor.b, 0f);
 
         // 스테이지에서 나왔을 때 현재 인덱스를 그 스테이지로 설정
-        currentIndex = SceneLinkage.StageLV;
+        currentIndex = SceneLinkage.StageLV > 6 ? SceneLinkage.StageLV - 6 : SceneLinkage.StageLV;
 
         SettingCanvas.GetComponent<Canvas>().sortingOrder = 10;
         SettingBackGround.SetActive(false);
@@ -128,13 +130,25 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
             }
         }
 
+        if (currentIndex == 1 || currentIndex == 2 || currentIndex == 3)
+        {
+            SceneLinkage.StageLV = SceneLinkage.isEasy ? currentIndex + 6 : currentIndex;
+            if (modeChgButtonAble) modeChageButton.SetActive(true);
+        }
+        else
+        {
+            SceneLinkage.StageLV = currentIndex;
+            if (modeChgButtonAble) modeChageButton.SetActive(false);
+        }
+            
 
         // 임시로 update에 구현
-        txtStageScore.text = string.Format("{0:#,##0}", theDatabase.score[currentIndex]);
+        txtStageScore.text = string.Format("{0:#,##0}", theDatabase.score[SceneLinkage.StageLV]);
+        if (currentIndex == 0 || currentIndex == 6) txtStageScore.text = "";
         txtStageName.text = StageName[currentIndex];
         txtStageName.enableWordWrapping = false;  // 자동 줄 바꿈 해제
         txtStageName.overflowMode = TextOverflowModes.Overflow;  // 글자가 넘쳐도 계속 표시
-        switch (theDatabase.star[currentIndex])
+        switch (theDatabase.star[SceneLinkage.StageLV])
         {
             case 0:
                 Stars[0].SetActive(true);
@@ -179,6 +193,7 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
         if (!SettingPanel.activeSelf && TitleMenu.SwordUpEnd)
         {
             SettingIcon.SetActive(true);
+            modeChgButtonAble = true;
         }
 
     }
@@ -210,7 +225,7 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
             yield return null; // 다음 프레임까지 대기
         }
 
-        SceneLinkage.StageLV = currentIndex;
+        
         SceneManager.LoadScene("Loading");
     }
 
@@ -445,6 +460,36 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
             SettingBackGround.SetActive(false);
             SettingPanel.SetActive(false);
         }
+    }
+
+    public void ModeChage()
+    {
+        GameObject clickedObj = EventSystem.current.currentSelectedGameObject;
+
+        if (clickedObj != null)
+        {
+            Button btn = clickedObj.GetComponent<Button>();
+
+            if (btn != null)
+            {
+                TMP_Text text = btn.GetComponentInChildren<TMP_Text>();
+
+                if (SceneLinkage.isEasy)
+                {
+                    text.text = "Hard";
+                    SceneLinkage.isEasy = false;
+                    // 하드 효과들
+                }
+                else
+                {
+                    text.text = "Normal";
+                    SceneLinkage.isEasy = true;
+                    // 이지 효과들
+                }
+            }
+        }
+                
+
     }
 
     public void goTutorial()
