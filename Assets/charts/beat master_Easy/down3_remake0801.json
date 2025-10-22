@@ -36,11 +36,6 @@
             "type": 1
         },
         {
-            "time": 126.5,
-            "arriveTime": 130.5,
-            "type": 0
-        },
-        {
             "time": 127.0,
             "arriveTime": 131.0,
             "type": 1
@@ -54,11 +49,6 @@
             "time": 133.0,
             "arriveTime": 137.0,
             "type": 1
-        },
-        {
-            "time": 134.5,
-            "arriveTime": 138.5,
-            "type": 0
         },
         {
             "time": 135.0,
@@ -86,26 +76,6 @@
             "type": 0
         },
         {
-            "time": 142.25,
-            "arriveTime": 146.25,
-            "type": 0
-        },
-        {
-            "time": 142.75,
-            "arriveTime": 146.75,
-            "type": 0
-        },
-        {
-            "time": 143.25,
-            "arriveTime": 147.25,
-            "type": 0
-        },
-        {
-            "time": 143.5,
-            "arriveTime": 147.5,
-            "type": 0
-        },
-        {
             "time": 148.5,
             "arriveTime": 152.5,
             "type": 0
@@ -126,34 +96,9 @@
             "type": 0
         },
         {
-            "time": 150.25,
-            "arriveTime": 154.25,
-            "type": 0
-        },
-        {
-            "time": 150.75,
-            "arriveTime": 154.75,
-            "type": 0
-        },
-        {
-            "time": 151.25,
-            "arriveTime": 155.25,
-            "type": 0
-        },
-        {
-            "time": 151.5,
-            "arriveTime": 155.5,
-            "type": 1
-        },
-        {
             "time": 156.0,
             "arriveTime": 160.0,
             "type": 1
-        },
-        {
-            "time": 157.0,
-            "arriveTime": 161.0,
-            "type": 0
         },
         {
             "time": 158.0,
@@ -178,7 +123,7 @@
         {
             "time": 166.0,
             "arriveTime": 170.0,
-            "type": 1
+            "type": 0
         },
         {
             "time": 167.0,
@@ -191,11 +136,6 @@
             "type": 1
         },
         {
-            "time": 173.0,
-            "arriveTime": 177.0,
-            "type": 0
-        },
-        {
             "time": 174.0,
             "arriveTime": 178.0,
             "type": 0
@@ -203,7 +143,7 @@
         {
             "time": 175.0,
             "arriveTime": 179.0,
-            "type": 1
+            "type": 0
         },
         {
             "time": 180.0,
@@ -218,7 +158,7 @@
         {
             "time": 182.0,
             "arriveTime": 186.0,
-            "type": 1
+            "type": 0
         },
         {
             "time": 183.0,

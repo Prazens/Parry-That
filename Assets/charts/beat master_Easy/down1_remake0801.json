@@ -36,11 +36,6 @@
             "type": 1
         },
         {
-            "time": 49.5,
-            "arriveTime": 53.5,
-            "type": 0
-        },
-        {
             "time": 50.0,
             "arriveTime": 54.0,
             "type": 0
@@ -56,11 +51,6 @@
             "type": 0
         },
         {
-            "time": 56.75,
-            "arriveTime": 60.75,
-            "type": 0
-        },
-        {
             "time": 57.0,
             "arriveTime": 61.0,
             "type": 1
@@ -73,7 +63,7 @@
         {
             "time": 58.0,
             "arriveTime": 62.0,
-            "type": 1
+            "type": 0
         },
         {
             "time": 59.0,

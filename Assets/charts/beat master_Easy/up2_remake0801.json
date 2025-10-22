@@ -26,26 +26,6 @@
             "type": 0
         },
         {
-            "time": 66.25,
-            "arriveTime": 70.25,
-            "type": 0
-        },
-        {
-            "time": 66.75,
-            "arriveTime": 70.75,
-            "type": 0
-        },
-        {
-            "time": 67.25,
-            "arriveTime": 71.25,
-            "type": 0
-        },
-        {
-            "time": 67.5,
-            "arriveTime": 71.5,
-            "type": 0
-        },
-        {
             "time": 72.5,
             "arriveTime": 76.5,
             "type": 0
@@ -63,26 +43,6 @@
         {
             "time": 73.75,
             "arriveTime": 77.75,
-            "type": 0
-        },
-        {
-            "time": 74.25,
-            "arriveTime": 78.25,
-            "type": 0
-        },
-        {
-            "time": 74.75,
-            "arriveTime": 78.75,
-            "type": 0
-        },
-        {
-            "time": 75.25,
-            "arriveTime": 79.25,
-            "type": 0
-        },
-        {
-            "time": 75.5,
-            "arriveTime": 79.5,
             "type": 0
         }
     ]

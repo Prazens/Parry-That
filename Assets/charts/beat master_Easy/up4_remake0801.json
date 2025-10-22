@@ -46,34 +46,14 @@
             "type": 1
         },
         {
-            "time": 224.0,
-            "arriveTime": 228.0,
-            "type": 0
-        },
-        {
             "time": 225.0,
             "arriveTime": 229.0,
             "type": 1
         },
         {
-            "time": 226.0,
-            "arriveTime": 230.0,
-            "type": 0
-        },
-        {
             "time": 227.0,
             "arriveTime": 231.0,
             "type": 1
-        },
-        {
-            "time": 227.5,
-            "arriveTime": 231.5,
-            "type": 0
-        },
-        {
-            "time": 232.5,
-            "arriveTime": 236.5,
-            "type": 0
         },
         {
             "time": 233.0,
@@ -89,11 +69,6 @@
             "time": 235.0,
             "arriveTime": 239.0,
             "type": 1
-        },
-        {
-            "time": 235.5,
-            "arriveTime": 239.5,
-            "type": 0
         },
         {
             "time": 240.5,
@@ -113,31 +88,6 @@
         {
             "time": 241.75,
             "arriveTime": 245.75,
-            "type": 0
-        },
-        {
-            "time": 242.25,
-            "arriveTime": 246.25,
-            "type": 0
-        },
-        {
-            "time": 242.75,
-            "arriveTime": 246.75,
-            "type": 0
-        },
-        {
-            "time": 243.0,
-            "arriveTime": 247.0,
-            "type": 1
-        },
-        {
-            "time": 243.25,
-            "arriveTime": 247.25,
-            "type": 0
-        },
-        {
-            "time": 243.5,
-            "arriveTime": 247.5,
             "type": 0
         },
         {
@@ -171,16 +121,6 @@
             "type": 1
         },
         {
-            "time": 258.25,
-            "arriveTime": 262.25,
-            "type": 0
-        },
-        {
-            "time": 259.5,
-            "arriveTime": 263.5,
-            "type": 1
-        },
-        {
             "time": 264.5,
             "arriveTime": 268.5,
             "type": 0
@@ -188,16 +128,6 @@
         {
             "time": 265.75,
             "arriveTime": 269.75,
-            "type": 1
-        },
-        {
-            "time": 266.25,
-            "arriveTime": 270.25,
-            "type": 0
-        },
-        {
-            "time": 267.5,
-            "arriveTime": 271.5,
             "type": 1
         },
         {
@@ -211,16 +141,6 @@
             "type": 1
         },
         {
-            "time": 274.25,
-            "arriveTime": 278.25,
-            "type": 0
-        },
-        {
-            "time": 275.5,
-            "arriveTime": 279.5,
-            "type": 1
-        },
-        {
             "time": 280.5,
             "arriveTime": 284.5,
             "type": 0
@@ -231,23 +151,8 @@
             "type": 1
         },
         {
-            "time": 282.25,
-            "arriveTime": 286.25,
-            "type": 0
-        },
-        {
-            "time": 283.5,
-            "arriveTime": 287.5,
-            "type": 1
-        },
-        {
             "time": 285.5,
             "arriveTime": 289.5,
-            "type": 1
-        },
-        {
-            "time": 286.0,
-            "arriveTime": 290.0,
             "type": 1
         },
         {
@@ -266,16 +171,6 @@
             "type": 1
         },
         {
-            "time": 291.5,
-            "arriveTime": 295.5,
-            "type": 0
-        },
-        {
-            "time": 293.5,
-            "arriveTime": 297.5,
-            "type": 1
-        },
-        {
             "time": 294.0,
             "arriveTime": 298.0,
             "type": 1
@@ -283,11 +178,6 @@
         {
             "time": 295.0,
             "arriveTime": 299.0,
-            "type": 0
-        },
-        {
-            "time": 295.5,
-            "arriveTime": 299.5,
             "type": 0
         },
         {
@@ -323,37 +213,7 @@
         {
             "time": 314.25,
             "arriveTime": 318.25,
-            "type": 0
-        },
-        {
-            "time": 314.5,
-            "arriveTime": 318.5,
-            "type": 0
-        },
-        {
-            "time": 314.75,
-            "arriveTime": 318.75,
-            "type": 0
-        },
-        {
-            "time": 315.0,
-            "arriveTime": 319.0,
-            "type": 0
-        },
-        {
-            "time": 315.25,
-            "arriveTime": 319.25,
-            "type": 0
-        },
-        {
-            "time": 315.5,
-            "arriveTime": 319.5,
-            "type": 0
-        },
-        {
-            "time": 315.75,
-            "arriveTime": 319.75,
-            "type": 0
+            "type": 1
         }
     ]
 }
