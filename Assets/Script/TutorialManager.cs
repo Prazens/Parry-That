@@ -224,7 +224,7 @@ public class TutorialManager : MonoBehaviour
         string Daehwa3_Text5 = "...좀 더 때릴 맛이 나네.";
         yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[5], "소리", Daehwa3_Text5, false));
 
-        GameDescriptionText.text = "탭한 상태에서 원하는 방향으로 드래그하여 강패링을 할 수도 있습니다.";
+        GameDescriptionText.text = "탭한 상태에서 원하는 방향으로 스와이프하여 강패링을 할 수도 있습니다.";
 
         isDaehwa = false;
         // count = 0;
