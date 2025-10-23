@@ -39,7 +39,7 @@ public class TutorialManager : MonoBehaviour
     private Animator animator;
 
     Text GameDescriptionText;
-    public static int[] StrikerNum = { 0, 1, 2, 3, 7, 11, 15 };   // 14까지 존재. // 각 패턴 스트라이커 시작 인덱스
+    // public static int[] StrikerNum = { 0, 1, 2, 3, 7, 11, 15 };   // 14까지 존재. // 각 패턴 스트라이커 시작 인덱스
 
     private void Awake()
     {
@@ -61,7 +61,7 @@ public class TutorialManager : MonoBehaviour
         NameTextRect.anchorMax = new Vector2(0.95f, 0.35f);
         NameTextRect.offsetMin = Vector2.zero;
         NameTextRect.offsetMax = Vector2.zero;
-        GameDescriptionText.text = "리듬에 맞춰 화면을 탭하여 노란색 공격을 패링하세요.";
+        GameDescriptionText.text = "노란색 느낌표가 뜨는 박자를 따라 화면을 터치하세요.";
 
         GameDescription.SetActive(true);
 
@@ -152,13 +152,13 @@ public class TutorialManager : MonoBehaviour
         string Daehwa1_Text6 = "저 녀석들은 제 직장 후배였는데, 마왕이 타락시켜 버렸습니다.";
         yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[1], "정령", Daehwa1_Text6, true));
 
-        string Daehwa1_Text7 = "물범이 띄우는 느낌표의 리듬에 맞춰 공격을 받아치세요!";
+        string Daehwa1_Text7 = "물범이 띄우는 느낌표의 리듬을 따라서 공격을 받아치세요!";
         yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "정령", Daehwa1_Text7, true));
 
         string Daehwa1_Text8 = "노란색 느낌표가 뜬 공격은 터치만으로 충분히 받아칠 수 있어요!";
         yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[1], "정령", Daehwa1_Text8, true));
 
-        GameDescriptionText.text = "리듬에 맞춰 화면을 탭하여 노란색 공격을 패링하세요.";
+        GameDescriptionText.text = "노란색 느낌표가 뜨는 박자를 따라 화면을 터치하세요.";
 
         isDaehwa = false;
         StageManager.isActive = true;
@@ -192,7 +192,7 @@ public class TutorialManager : MonoBehaviour
         string Daehwa2_Text6 = "빨간색 느낌표가 뜬 공격은 그 방향으로 스와이프해서 받아쳐야 해요!";
         yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[1], "정령", Daehwa2_Text6, true));
 
-        GameDescriptionText.text = "적절한 방향으로 스와이프하여 빠르게 강패링하세요.";
+        GameDescriptionText.text = "빨간색 느낌표가 뜨는 박자를 따라 공격이 오는 방향으로 스와이프하세요.";
 
         isDaehwa = false;
         // count = 0;
@@ -224,7 +224,7 @@ public class TutorialManager : MonoBehaviour
         string Daehwa3_Text5 = "...좀 더 때릴 맛이 나네.";
         yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[5], "소리", Daehwa3_Text5, false));
 
-        GameDescriptionText.text = "탭한 상태에서 적절한 방향으로 드래그하면 이어서 강패링을 진행할 수 있습니다.";
+        GameDescriptionText.text = "탭한 상태에서 원하는 방향으로 드래그하여 강패링을 할 수도 있습니다.";
 
         isDaehwa = false;
         // count = 0;
@@ -278,7 +278,7 @@ public class TutorialManager : MonoBehaviour
         string Daehwa5_Text3 = "..미안.";
         yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[7], "소리", Daehwa5_Text3, false));
 
-        GameDescriptionText.text = "화면을 계속 드래그 하면서 연속으로 방향을 바꿀 수 있습니다.";
+        GameDescriptionText.text = "강패링(스와이프)으로 방향전환이 가능합니다.";
 
         isDaehwa = false;
 
@@ -312,10 +312,10 @@ public class TutorialManager : MonoBehaviour
         string Daehwa6_Text6 = "어, 저 녀석들 제대로 화났나봐요. 아주 강한 공격이 들어올 것 같아요!!!!";
         yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[2], "정령", Daehwa6_Text6, true));
 
-        string Daehwa6_Text7 = "세 번째 파란 느낌표가 나타날 때 터치한 후 손을 떼지 않고 화면을 꾹 누르고 있어야 해요!!";
+        string Daehwa6_Text7 = "세 번째 파란 느낌표가 나타나는 타이밍에 터치한 후 손을 떼지 않고 화면을 꾹 누르고 있어야 해요!!";
         yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "정령", Daehwa6_Text7, true));
 
-        string Daehwa6_Text8 = "그리고 세 번째 느낌표가 사라질 때 손을 떼면 돼요!!!!";
+        string Daehwa6_Text8 = "그리고 세 번째 느낌표가 사라지는 타이밍에 손을 떼면 돼요!!!!";
         yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[1], "정령", Daehwa6_Text8, true));
 
         GameDescriptionText.text = "세 번째 느낌표가 나타나는 타이밍에 꾹 누르고 홀드합니다.\n 세 번째 느낌표가 사라지는 타이밍에 손을 떼서 막을 수 있습니다.";
@@ -375,12 +375,7 @@ public class TutorialManager : MonoBehaviour
         string Daehwa7_Text2 = "좋아요! 이제 마왕을 잡으러 떠나요!!!!";
         yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "정령", Daehwa7_Text2, true));
 
-        // Main Scene 전환
-        SceneLinkage.StageLV = 0;
-        DatabaseManager.isTutorialDone = true;
-        isTutorial = false;
-        databaseManager.SaveTutorialDone();
-        SceneManager.LoadScene("Main");
+        SkipOn();
 
         yield break;
     }
@@ -412,7 +407,7 @@ public class TutorialManager : MonoBehaviour
     }
 
     // 모든 스트라이커를 생성한 상태에서 사용. 그 중에서 특정 인덱스에 해당하는 이들이 체력이 모두 0이 되었는지 확인하는 함수 -> 
-    private void checkComplete2(int daehwaIndex) { 
+    /*private void checkComplete2(int daehwaIndex) { 
 
         List<GameObject> strikerList_ = strikerManager.strikerList;
         bool isClear = true;
@@ -441,13 +436,15 @@ public class TutorialManager : MonoBehaviour
         if (isClear) patternComplete = true;
         // Debug.LogError($"{patternComplete}");
 
-    }
+    }*/
 
     public void SkipOn()
     {
         SceneLinkage.StageLV = 0;
         DatabaseManager.isTutorialDone = true;
         isTutorial = false;
+        phase = 0;
+        daehwaIndex = 0;
         databaseManager.SaveTutorialDone();
         SceneManager.LoadScene("Main");
     }

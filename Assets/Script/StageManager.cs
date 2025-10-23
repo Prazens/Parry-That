@@ -200,7 +200,7 @@ public class StageManager : MonoBehaviour
                     break;
 
                 case 4:
-                    for (int i = 5; i < 9; i++)
+                    for (int i = 5; i < 7; i++)
                     {
                         // Debug.Log($"StartStage {i}");
                         strikerManager.charts.Add(JsonReader.ReadJson<ChartData>(jsonCharts[i]));
@@ -208,7 +208,7 @@ public class StageManager : MonoBehaviour
                     break;
 
                 case 5:
-                    for (int i = 9; i < 11; i++)
+                    for (int i = 7; i < 9; i++)
                     {
                         // Debug.Log($"StartStage {i}");
                         strikerManager.charts.Add(JsonReader.ReadJson<ChartData>(jsonCharts[i]));
