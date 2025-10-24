@@ -234,7 +234,7 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
     // 여기서부터 좌우 스와이프 관련 코드
     [Header("Stage Objects")]
     public List<RectTransform> stageObjects;
-    public static int currentIndex = 0;
+    public static int currentIndex = 1;
 
     public float threshold = 270f;
     private float swipeSpeed = 0.7f;   // 감도

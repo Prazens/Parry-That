@@ -440,7 +440,9 @@ public class TutorialManager : MonoBehaviour
 
     public void SkipOn()
     {
-        SceneLinkage.StageLV = 0;
+        if (TitleMenu.TitlePassed) SceneLinkage.StageLV = 0;
+        else SceneLinkage.StageLV = 1;
+
         DatabaseManager.isTutorialDone = true;
         isTutorial = false;
         phase = 0;
