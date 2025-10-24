@@ -1738,10 +1738,10 @@ MonoBehaviour:
   countdownText: {fileID: 2121608883}
   continueText: {fileID: 1313838114}
   jsonCharts:
-  - {fileID: 4900000, guid: 45ef53f6945d74c4287dda9983006a1d, type: 3}
-  - {fileID: 4900000, guid: 9e5e97bed6fbc4446b5da7dbf558e49d, type: 3}
-  - {fileID: 4900000, guid: 988b9d901f25ee34db28397c95f67f50, type: 3}
-  - {fileID: 4900000, guid: 4a457f7dabdf2bd439e856e06094c56c, type: 3}
+  - {fileID: 4900000, guid: fe09d23f00c9e92409f3d35d4b6c3452, type: 3}
+  - {fileID: 4900000, guid: 0ed17e9abdc10b34694ddd3a7c6be4a2, type: 3}
+  - {fileID: 4900000, guid: a743263a1e6035e4b8d9290eb2b8e596, type: 3}
+  - {fileID: 4900000, guid: 8b272855aa90aca4b98f704e6716137f, type: 3}
   musicOffset: 0
   VictoryAnimatorObj: {fileID: 836491251}
   VictoryAudioSource: {fileID: 888203099}
