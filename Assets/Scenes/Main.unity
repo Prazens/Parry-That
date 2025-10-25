@@ -471,6 +471,7 @@ MonoBehaviour:
   modeChageButton: {fileID: 2053746808}
   normalButton: {fileID: 21300000, guid: 3f3a19a1a726142459721365fb4a8c23, type: 3}
   hardButton: {fileID: 21300000, guid: 3324b948c8f16bc42b07216bc309321d, type: 3}
+  modeButtonObj: {fileID: 2053746808}
   stageObjects:
   - {fileID: 709145433}
   - {fileID: 1413199336}

@@ -36,9 +36,11 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
     [SerializeField] private GameObject SettingCanvas;
     [SerializeField] private GameObject SettingBackGround;
     [SerializeField] private GameObject modeChageButton;
-    private bool modeChgButtonAble = false;
+    private static bool modeChgButtonAble = false;
+    private static bool modeChgButtonEnable = false;
     [SerializeField] private Sprite normalButton;
     [SerializeField] private Sprite hardButton;
+    [SerializeField] private GameObject modeButtonObj;
 
     void Start()
     {
@@ -69,6 +71,17 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
 
         // 스테이지에서 나왔을 때 현재 인덱스를 그 스테이지로 설정
         currentIndex = SceneLinkage.StageLV > 6 ? SceneLinkage.StageLV - 6 : SceneLinkage.StageLV;
+        if(TitleMenu.TitlePassed)
+        {
+            if (SceneLinkage.isEasy)
+            {
+                modeButtonObj.GetComponent<Image>().sprite = normalButton;
+            }
+            else
+            {
+                modeButtonObj.GetComponent<Image>().sprite = hardButton;
+            }
+        }
 
         SettingCanvas.GetComponent<Canvas>().sortingOrder = 10;
         SettingBackGround.SetActive(false);
@@ -195,7 +208,11 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
         if (!SettingPanel.activeSelf && TitleMenu.SwordUpEnd)
         {
             SettingIcon.SetActive(true);
-            modeChgButtonAble = true;
+            if (!modeChgButtonEnable)
+            {
+                modeChgButtonEnable = true;
+                modeChgButtonAble = true;
+            }
         }
 
     }
@@ -466,32 +483,26 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
 
     public void ModeChage()
     {
-        GameObject clickedObj = EventSystem.current.currentSelectedGameObject;
+     Button btn = modeButtonObj.GetComponent<Button>();
 
-        if (clickedObj != null)
+        if (btn != null)
         {
-            Button btn = clickedObj.GetComponent<Button>();
-
-            if (btn != null)
+            if (SceneLinkage.isEasy)
             {
-                // TMP_Text text = btn.GetComponentInChildren<TMP_Text>();
-
-                if (SceneLinkage.isEasy)
-                {
-                    // text.text = "Hard";
-                    SceneLinkage.isEasy = false;
-                    // 하드 효과들
-                    clickedObj.GetComponent<Image>().sprite = hardButton;
-                }
-                else
-                {
-                    // text.text = "Normal";
-                    SceneLinkage.isEasy = true;
-                    // 이지 효과들
-                    clickedObj.GetComponent<Image>().sprite = normalButton;
-                }
+                // text.text = "Hard";
+                SceneLinkage.isEasy = false;
+                // 하드 효과들
+                modeButtonObj.GetComponent<Image>().sprite = hardButton;
+            }
+            else
+            {
+                // text.text = "Normal";
+                SceneLinkage.isEasy = true;
+                // 이지 효과들
+                modeButtonObj.GetComponent<Image>().sprite = normalButton;
             }
         }
+
                 
 
     }
