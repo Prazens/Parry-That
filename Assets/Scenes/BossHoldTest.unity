@@ -2086,7 +2086,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 433c0a2019a444b419afb3a3387931a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 100
+  maxHp: 0
   hp: 0
   parryFX: {fileID: 1744429775}
   strikerManager: {fileID: 1860902388}
