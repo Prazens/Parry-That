@@ -154,6 +154,7 @@ public class Stage3CutSceneManager : MonoBehaviour
                 currentCutsceneIndex++;
                 yield break;
             case 6:
+                StartCoroutine(FadeInPanelImage(cutscenePanels[6]));
                 StartCoroutine(ShowPrologueText(TextSet[7]));
                 currentCutsceneIndex++;
                 yield break;
@@ -161,13 +162,14 @@ public class Stage3CutSceneManager : MonoBehaviour
                 StartCoroutine(FadeOutPanelImage(cutscenePanels[3]));
                 StartCoroutine(FadeOutPanelImage(cutscenePanels[4]));
                 StartCoroutine(FadeOutPanelImage(cutscenePanels[5]));
+                StartCoroutine(FadeOutPanelImage(cutscenePanels[6]));
                 yield return new WaitForSeconds(fadeDuration);
-                StartCoroutine(FadeInPanelImage(cutscenePanels[6]));
+                StartCoroutine(FadeInPanelImage(cutscenePanels[7]));
                 StartCoroutine(ShowPrologueText(TextSet[8]));
                 currentCutsceneIndex++;
                 yield break;
             case 8:
-                StartCoroutine(FadeOutPanelImage(cutscenePanels[6]));
+                StartCoroutine(FadeOutPanelImage(cutscenePanels[7]));
                 yield return new WaitForSeconds(0.1f);
                 // 컷씬 끝
                 EndScene();

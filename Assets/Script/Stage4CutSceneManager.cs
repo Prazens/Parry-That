@@ -49,7 +49,7 @@ public class Stage4CutSceneManager : MonoBehaviour
         TextSet[11] = "그 사람들의 방해 때문에 나는 몇 번이고 탈락만을 반복했지.";
         TextSet[12] = "그때 결심했다. 세상에 소음이 더는 들리지 않게 하겠다고!";
         TextSet[13] = "간절히 바란 끝에 드디어 내가 바라는 힘을 얻";
-        TextSet[14] = "기습스매쉬!!!\n(시@밤쾅)";
+        TextSet[14] = "기습스매쉬!!!";
         TextSet[15] = "철푸덕";
         TextSet[16] = "좋아. 틀림없이 해치웠어!";
         TextSet[17] = "(기습당한 분노로 각성)\n널 죽여버리겠다!!";
