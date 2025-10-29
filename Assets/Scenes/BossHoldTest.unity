@@ -1742,7 +1742,7 @@ MonoBehaviour:
   musicOffset: 0
   VictoryAnimatorObj: {fileID: 836491251}
   VictoryAudioSource: {fileID: 888203099}
-  boss: {fileID: 0}
+  boss: {fileID: 1806799164}
   isPaused: 0
   pauseButton: {fileID: 822372182}
   unpauseButton: {fileID: 21300000, guid: 5c11becbcfffc294db866af1a1c65ea4, type: 3}

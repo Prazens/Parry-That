@@ -151,6 +151,31 @@
             "type": 1
         },
         {
+            "time": 320.0,
+            "arriveTime": 324.0,
+            "type": 0
+        },
+        {
+            "time": 323.0,
+            "arriveTime": 327.0,
+            "type": 1
+        },
+        {
+            "time": 352.0,
+            "arriveTime": 356.0,
+            "type": 1
+        },
+        {
+            "time": 352.5,
+            "arriveTime": 356.5,
+            "type": 0
+        },
+        {
+            "time": 353.0,
+            "arriveTime": 357.0,
+            "type": 0
+        },
+        {
             "time": 372.0,
             "arriveTime": 376.0,
             "type": 2

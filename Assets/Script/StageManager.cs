@@ -154,7 +154,7 @@ public class StageManager : MonoBehaviour
         button_active = true;
         scoreUI.Initialize_UI();
         musicSource.time = 0f;
-        if(boss != null)
+        if (boss != null)
         {
             boss.clearHp();
         }
