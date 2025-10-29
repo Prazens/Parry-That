@@ -159,7 +159,7 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
 
         // 임시로 update에 구현
         txtStageScore.text = string.Format("{0:#,##0}", theDatabase.score[SceneLinkage.StageLV]);
-        if (currentIndex == 0 || currentIndex == 6) txtStageScore.text = "";
+        
         txtStageName.text = StageName[currentIndex];
         txtStageName.enableWordWrapping = false;  // 자동 줄 바꿈 해제
         txtStageName.overflowMode = TextOverflowModes.Overflow;  // 글자가 넘쳐도 계속 표시
@@ -204,6 +204,14 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
             default:
                 // Debug.Log("잘못된 데이터베이스 정보(Star)");
                 break;
+        }
+        if (currentIndex == 0 || currentIndex == 6)
+        {
+            txtStageScore.text = "";
+            Stars[0].SetActive(false);
+            Stars[1].SetActive(false);
+            Stars[2].SetActive(false);
+            Stars[3].SetActive(false);
         }
         if (!SettingPanel.activeSelf && TitleMenu.SwordUpEnd)
         {
