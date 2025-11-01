@@ -21,11 +21,6 @@
             "type": 0
         },
         {
-            "time": 203.5,
-            "arriveTime": 211.5,
-            "type": 0
-        },
-        {
             "time": 212.0,
             "arriveTime": 220.0,
             "type": 0
@@ -38,11 +33,6 @@
         {
             "time": 218.5,
             "arriveTime": 226.5,
-            "type": 0
-        },
-        {
-            "time": 219.5,
-            "arriveTime": 227.5,
             "type": 0
         },
         {
@@ -63,7 +53,7 @@
         {
             "time": 251.0,
             "arriveTime": 259.0,
-            "type": 1
+            "type": 0
         }
     ]
 }
