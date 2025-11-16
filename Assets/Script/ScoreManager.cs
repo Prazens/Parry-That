@@ -100,7 +100,7 @@ public class ScoreManager : MonoBehaviour
                         }
                     }
 
-                    if (tempTimeDiff > 0.12d)
+                    if (tempTimeDiff > 0.2d)
                     {
                         if (tempJudgeable.attackType == AttackType.HoldStart)
                         {
@@ -281,11 +281,11 @@ public class ScoreManager : MonoBehaviour
                     }
                     // 판정 나누기
                     // 기획서의 판정 표와 반대 순서임
-                    else if (timeDiff > 0.12d)
+                    else if (timeDiff > 0.2d)
                     {
                         tempJudge = 0;
                     }
-                    else if (timeDiff > 0.12d)
+                    else if (timeDiff > 0.14d)
                     {
                         tempJudge = 1;
                     }
@@ -297,15 +297,15 @@ public class ScoreManager : MonoBehaviour
                     {
                         tempJudge = 3;
                     }
-                    else if (timeDiff >= -0.12d)
+                    else if (timeDiff >= -0.14d)
                     {
                         tempJudge = 4;
                     }
-                    else if (timeDiff >= -0.15d)
+                    else if (timeDiff >= -0.2d)
                     {
                         tempJudge = 5;
                     }
-                    else if (timeDiff >= -0.18d)
+                    else if (timeDiff >= -0.22d)
                     {
                         tempJudge = 0;
                     }
