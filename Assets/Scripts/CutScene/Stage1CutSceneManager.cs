@@ -4,8 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-
-public class PrologueManager : MonoBehaviour
+public class Stage1CutSceneManager : MonoBehaviour
 {
     [SerializeField] private Image fadeImg;
     private float fadeDuration = 0.3f; // 페이드 시간
@@ -18,37 +17,37 @@ public class PrologueManager : MonoBehaviour
     private bool isTransitioning = false;  // 현재 페이드(검은 배경) 진행 중인지 여부
     private bool isAnimationPlaying = false; // 애니메이션이 재생 중인지 여부
     private bool isTyping = false;
-    private bool isMusicPlaying = false;
     private Coroutine fadeCoroutine = null;  // 페이드 코루틴 참조
 
     private SpriteRenderer sourceSpriteRenderer;
     private Image sourceImage;
     private AudioSource TypingSound;
-    [SerializeField] private AudioSource bgm;
 
-    string[] TextSet = new string[10];
+    string[] TextSet = new string[11];
     GameObject PrologueTextObj;
     Text PrologueText;
 
     private GameObject CutScenes;
 
+    private DatabaseManager databaseManager;
+
     private void Start()
     {
-        Application.targetFrameRate = 120;
-
         // 텍스트 내용
-        TextSet[0] = "대학생 '소리'는 시험을 앞두고 팔자 좋게 자고 있었습니다.";
-        TextSet[1] = " 심지어 꿈까지 꾸고 있네요.";
-        TextSet[2] = "용사 '소리'시여, 세계를 구해주소서!!";
-        TextSet[3] = "마왕이 소리의 정령들을 타락시켜 자기 부하로 바꾸고 있습니다!";
-        TextSet[4] = "지금 마왕을 멈추지 못하면 세상에 소리가 없어져 버릴 겁니다!";
-        TextSet[5] = "\"미안한데 꿈인 거 다 티난다.\"";
-        TextSet[6] = "'소리'는 9시에 시험이 있었으므로, 꿈 꿀 시간따위 없었습니다.";
-        TextSet[7] = "그러나 짜잔\n                                     \n\"아\"";
-        TextSet[8] = "\"아니, 알람이 분명 울렸어야했는데...?\"\n                                     \n\n\"아?\"";
-        TextSet[9] = "죽여버리겠다 마왕!!!!";
+        TextSet[0] = "    ";
+        TextSet[1] = "    ";
+        TextSet[2] = "끼야오!! 정말 잘하셨습니다!! 제가 사람 보는 눈이 참으로 좋았던 모양입니다!";
+        TextSet[3] = "듣고 계신가요?";
+        TextSet[4] = "와! 고양이들이다!!! 얘네 진짜 귀엽다!";
+        TextSet[5] = "용사님. 고양이 놈들은 햄스터의 천적인데..";
+        TextSet[6] = "내가 마왕이면 이 귀여운 애들을 그렇게 성의없는 디자인으로 바꾸진 않았을 거야. 이것 봐. 귀여워서 때릴 수가 없잖아!";
+        TextSet[7] = "용사님!!! 마왕 입장이 되어 보려 하지 마십시오! 당신의 시험을 망친 놈입니다!!!";
+        TextSet[8] = "시험이야 뭐, 공부도 안 했었고... 늦잠 잔 게 한두 번도 아니고...";
+        TextSet[9] = "그놈이 고양이들을 영원히 네모머리로 바꿔 놓을 겁니다!!!!";
+        TextSet[10] = "마왕 죽이러 가자!!!!!";
 
-        //// 씬 위치 조정
+
+        // 씬 위치 조정
         //CutScenes = GameObject.Find("CutScenes");
         //RectTransform rt = CutScenes.GetComponent<RectTransform>();
         //rt.anchorMin = new Vector2(0.5f, 1f);
@@ -83,9 +82,8 @@ public class PrologueManager : MonoBehaviour
         PrologueTextObj.SetActive(true);
 
         // 컴포넌트 가져오기
-        sourceSpriteRenderer = cutscenePanels[8].GetComponent<SpriteRenderer>();
-        sourceImage = cutscenePanels[8].GetComponent<Image>();
         TypingSound = GetComponent<AudioSource>();
+        databaseManager = GameObject.Find("DatabaseManager").GetComponent<DatabaseManager>();
 
         for (int i = 0; i < cutscenePanels.Length; i++)
         {
@@ -109,7 +107,6 @@ public class PrologueManager : MonoBehaviour
         {
 
             // 조작 금지 조건
-            if (isAnimationPlaying) return;
             if (isTransitioning) return;
             if (isTyping) return;
 
@@ -117,15 +114,12 @@ public class PrologueManager : MonoBehaviour
             StartCoroutine(GoToNextCutscene());
         }
 
-        sourceImage.sprite = sourceSpriteRenderer.sprite;
-
-
     }
 
 
     private IEnumerator GoToNextCutscene()
     {
-        switch (currentCutsceneIndex)
+        switch(currentCutsceneIndex)
         {
             case 0:
                 StartCoroutine(FadeInPanelImage(cutscenePanels[1]));
@@ -133,14 +127,13 @@ public class PrologueManager : MonoBehaviour
                 currentCutsceneIndex++;
                 yield break;
             case 1:
-                StartCoroutine(FadeOutPanelImage(cutscenePanels[0]));
-                StartCoroutine(FadeOutPanelImage(cutscenePanels[1]));
-                yield return new WaitForSeconds(fadeDuration);
                 StartCoroutine(FadeInPanelImage(cutscenePanels[2]));
                 StartCoroutine(ShowPrologueText(TextSet[2]));
                 currentCutsceneIndex++;
                 yield break;
             case 2:
+                StartCoroutine(FadeOutPanelImage(cutscenePanels[0]));
+                StartCoroutine(FadeOutPanelImage(cutscenePanels[1]));
                 StartCoroutine(FadeOutPanelImage(cutscenePanels[2]));
                 yield return new WaitForSeconds(fadeDuration);
                 StartCoroutine(FadeInPanelImage(cutscenePanels[3]));
@@ -148,13 +141,12 @@ public class PrologueManager : MonoBehaviour
                 currentCutsceneIndex++;
                 yield break;
             case 3:
-                StartCoroutine(FadeOutPanelImage(cutscenePanels[3]));
-                yield return new WaitForSeconds(fadeDuration);
                 StartCoroutine(FadeInPanelImage(cutscenePanels[4]));
                 StartCoroutine(ShowPrologueText(TextSet[4]));
                 currentCutsceneIndex++;
                 yield break;
             case 4:
+                StartCoroutine(FadeOutPanelImage(cutscenePanels[3]));
                 StartCoroutine(FadeOutPanelImage(cutscenePanels[4]));
                 yield return new WaitForSeconds(fadeDuration);
                 StartCoroutine(FadeInPanelImage(cutscenePanels[5]));
@@ -162,83 +154,45 @@ public class PrologueManager : MonoBehaviour
                 currentCutsceneIndex++;
                 yield break;
             case 5:
-                StartCoroutine(FadeOutPanelImage(cutscenePanels[5]));
-                yield return new WaitForSeconds(fadeDuration);
                 StartCoroutine(FadeInPanelImage(cutscenePanels[6]));
                 StartCoroutine(ShowPrologueText(TextSet[6]));
                 currentCutsceneIndex++;
                 yield break;
             case 6:
-                StartCoroutine(FadeOutPanelImage(cutscenePanels[6]));
-                yield return new WaitForSeconds(fadeDuration);
                 StartCoroutine(FadeInPanelImage(cutscenePanels[7]));
                 StartCoroutine(ShowPrologueText(TextSet[7]));
                 currentCutsceneIndex++;
                 yield break;
             case 7:
+                StartCoroutine(FadeOutPanelImage(cutscenePanels[5]));
+                StartCoroutine(FadeOutPanelImage(cutscenePanels[6]));
                 StartCoroutine(FadeOutPanelImage(cutscenePanels[7]));
                 yield return new WaitForSeconds(fadeDuration);
                 StartCoroutine(FadeInPanelImage(cutscenePanels[8]));
                 StartCoroutine(ShowPrologueText(TextSet[8]));
-                StartCoroutine(PlayCutsceneAnimation());
                 currentCutsceneIndex++;
                 yield break;
             case 8:
-                StartCoroutine(FadeOutPanelImage(cutscenePanels[8]));
-                yield return new WaitForSeconds(fadeDuration);
                 StartCoroutine(FadeInPanelImage(cutscenePanels[9]));
-                StartCoroutine(PlayCutsceneAnimation2());
-                yield return new WaitForSeconds(1.4f);
+                StartCoroutine(ShowPrologueText(TextSet[9]));
                 currentCutsceneIndex++;
                 yield break;
             case 9:
-                // 컷씬 끝
-                prologueEnd();
+                StartCoroutine(FadeOutPanelImage(cutscenePanels[8]));
+                StartCoroutine(FadeOutPanelImage(cutscenePanels[9]));
+                yield return new WaitForSecondsRealtime(fadeDuration);
+                StartCoroutine(FadeInPanelImage(cutscenePanels[10]));
+                StartCoroutine(ShowPrologueText(TextSet[10]));
+                currentCutsceneIndex++;
                 yield break;
-
-        }
-    }
-
-
-    private void CheckCutsceneAnimation()
-    {
-        if (currentCutsceneIndex == 8 && cutsceneAnimator != null)
-        {
-            // bgm.Stop();
-            StartCoroutine(PlayCutsceneAnimation());
+            case 10:
+                StartCoroutine(FadeOutPanelImage(cutscenePanels[10]));
+                // 컷씬 끝
+                EndScene();
+                yield break;
         }
 
-        if (currentCutsceneIndex == 9)
-        {
-            StartCoroutine(PlayCutsceneAnimation2());
-        }
-    }
 
-    private IEnumerator PlayCutsceneAnimation()
-    {
-        isAnimationPlaying = true;
-        yield return new WaitForSeconds(0.3f);
-
-        cutsceneAnimator.SetTrigger("Play");
-
-        // cutsceneAnimator.Play("SceneAnimeNew", 0, 0f);
-        yield return new WaitForSeconds(2f);
-
-        isAnimationPlaying = false;
-    }
-
-    private IEnumerator PlayCutsceneAnimation2()
-    {
-        isAnimationPlaying = true;
-        yield return new WaitForSeconds(0.7f);
-
-        Image currentImg = cutscenePanels[9].GetComponent<Image>();
-        Image nextImg = cutscenePanels[10].GetComponent<Image>();
-        currentImg.sprite = nextImg.sprite;
-
-        StartCoroutine(ShowPrologueText(TextSet[9]));
-
-        isAnimationPlaying = false;
     }
 
     private IEnumerator FadeInPanelImage(GameObject panel)
@@ -289,8 +243,8 @@ public class PrologueManager : MonoBehaviour
         }
 
         Color color = panelImg.color;
-        float startAlpha = color.a;
-        float endAlpha = 0f;
+        float startAlpha = color.a;  
+        float endAlpha = 0f;         
 
         while (timer < fadeDuration)
         {
@@ -307,11 +261,6 @@ public class PrologueManager : MonoBehaviour
         panel.SetActive(false);
     }
 
-    private void prologueEnd()
-    {
-        SceneLinkage.StageLV = 0;   
-        SceneManager.LoadScene("Tutorial"); 
-    }
 
     public IEnumerator ShowPrologueText(string Text)
     {
@@ -320,14 +269,12 @@ public class PrologueManager : MonoBehaviour
 
     private IEnumerator ShowPrologueTextCoroutine(string Text)
     {
-        if (currentCutsceneIndex != 0) PrologueText.text = "";
+        PrologueText.text = "";
         isTyping = true;
 
-        if (currentCutsceneIndex == 0 && !isMusicPlaying)
+        if (currentCutsceneIndex == 0)
         {
             yield return new WaitForSeconds(0.1f);
-            bgm.Play();
-            isMusicPlaying = true;
         }
 
         // 텍스트 한 글자씩 나오게
@@ -345,13 +292,21 @@ public class PrologueManager : MonoBehaviour
                     TypingSoundDelay = 0;
                 }
             }
-            
+
             TypingSoundDelay++;
 
             yield return new WaitForSeconds(0.03f);
         }
-        if (currentCutsceneIndex == 1) PrologueText.text = TextSet[0] + TextSet[1];
-        else PrologueText.text = Text;
+        
         isTyping = false;
+    }
+    public void EndScene()
+    {
+        // // Debug.LogError("엔딩 함수");
+        databaseManager.SaveStage1Done();
+        DatabaseManager.isStage1Done = true;
+        if (SceneLinkage.StageLV == 1) SceneManager.LoadScene("Stage1");
+        else if (SceneLinkage.StageLV == 7) SceneManager.LoadScene("Stage1Easy");
+        else Debug.LogError("SceneLinkage StageLV잘못됨");
     }
 }
