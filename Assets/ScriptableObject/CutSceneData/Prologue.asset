@@ -28,6 +28,106 @@ MonoBehaviour:
   - "\"\uC544\uB2C8, \uC54C\uB78C\uC774 \uBD84\uBA85 \uC6B8\uB838\uC5B4\uC57C\uD588\uB294\uB370...?\"\n                                    
     \n\n\"\uC544?\""
   - "\uC8FD\uC5EC\uBC84\uB9AC\uACA0\uB2E4 \uB9C8\uC655!!!!"
+  panels:
+  - type: 0
+    anchorMin: {x: 0.5, y: 1}
+    anchorMax: {x: 0.5, y: 1}
+    pivot: {x: 0.5, y: 0.5}
+    anchoredPosition: {x: 0, y: -350}
+    size: {x: 1800, y: 1261}
+    scale: {x: 0.56, y: 0.56, z: 1}
+    sprite: {fileID: 21300000, guid: 9586115a4c62b884495fbf9b4edc2a0f, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0.5, y: 0}
+    anchorMax: {x: 0.5, y: 0}
+    pivot: {x: 0.5, y: 0.5}
+    anchoredPosition: {x: 0, y: 280}
+    size: {x: 1800, y: 1236}
+    scale: {x: 0.56, y: 0.56, z: 1}
+    sprite: {fileID: 21300000, guid: 90f0e8ad14e1cd7489d6838ae1410f7a, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0, y: 0}
+    anchorMax: {x: 1, y: 1}
+    pivot: {x: 0.5, y: 0.5}
+    anchoredPosition: {x: 0, y: 0}
+    size: {x: 0, y: 0}
+    scale: {x: 1, y: 1, z: 1}
+    sprite: {fileID: 21300000, guid: af88363ad7b26af40aed6069c2fc7d07, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0, y: 0}
+    anchorMax: {x: 1, y: 1}
+    pivot: {x: 0.5, y: 0.5}
+    anchoredPosition: {x: 0, y: 0}
+    size: {x: 0, y: 0}
+    scale: {x: 1, y: 1, z: 1}
+    sprite: {fileID: 21300000, guid: b172a4a99f288b442870ccc9bf2f01c5, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0, y: 0}
+    anchorMax: {x: 1, y: 1}
+    pivot: {x: 0.5, y: 0.5}
+    anchoredPosition: {x: 0, y: 0}
+    size: {x: 0, y: 0}
+    scale: {x: 1, y: 1, z: 1}
+    sprite: {fileID: 21300000, guid: c3fa47b1130ff5743bc31fd251153120, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0, y: 0}
+    anchorMax: {x: 1, y: 1}
+    pivot: {x: 0.5, y: 0.5}
+    anchoredPosition: {x: 0, y: 0}
+    size: {x: 0, y: 0}
+    scale: {x: 1, y: 1, z: 1}
+    sprite: {fileID: 21300000, guid: efd0f13c32a0f754ab4d5c4d93886e18, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0, y: 0}
+    anchorMax: {x: 1, y: 1}
+    pivot: {x: 0.5, y: 0.5}
+    anchoredPosition: {x: 0, y: 0}
+    size: {x: 0, y: 0}
+    scale: {x: 1, y: 1, z: 1}
+    sprite: {fileID: 21300000, guid: 2c80e1e86689b184584854f93f716fb0, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0, y: 0}
+    anchorMax: {x: 1, y: 1}
+    pivot: {x: 0.5, y: 0.5}
+    anchoredPosition: {x: 0, y: 0}
+    size: {x: 0, y: 0}
+    scale: {x: 1, y: 1, z: 1}
+    sprite: {fileID: 21300000, guid: e2fbc56a0347c1d4aa8aadc10f990f3d, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 1
+    anchorMin: {x: 0, y: 0}
+    anchorMax: {x: 1, y: 1}
+    pivot: {x: 0.5, y: 0.5}
+    anchoredPosition: {x: 0, y: 0}
+    size: {x: 0, y: 0}
+    scale: {x: 1, y: 1, z: 1}
+    sprite: {fileID: 21300000, guid: b5220e0e64fb8724aa300dc51a7eb829, type: 3}
+    animatorcontroller: {fileID: 9100000, guid: 5370820d7548ec0478493f2e8f46bab1, type: 2}
+  - type: 0
+    anchorMin: {x: 0, y: 0}
+    anchorMax: {x: 1, y: 1}
+    pivot: {x: 0.5, y: 0.5}
+    anchoredPosition: {x: 0, y: 0}
+    size: {x: 0, y: 0}
+    scale: {x: 1, y: 1, z: 1}
+    sprite: {fileID: 21300000, guid: e0fe8238d689dcc4d93ad59719f661a5, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0, y: 0}
+    anchorMax: {x: 1, y: 1}
+    pivot: {x: 0.5, y: 0.5}
+    anchoredPosition: {x: 0, y: 0}
+    size: {x: 0, y: 0}
+    scale: {x: 1, y: 1, z: 1}
+    sprite: {fileID: 21300000, guid: 1fe6a90b94723fc45bea99f992745ed8, type: 3}
+    animatorcontroller: {fileID: 0}
   clickSteps:
   - actions:
     - actionType: 2
@@ -54,7 +154,7 @@ MonoBehaviour:
       animatorTrigger: 
     - actionType: 3
       panelIndex: 1
-      waitseconds: 0.3
+      waitseconds: 0
       animatorTrigger: 
     - actionType: 2
       panelIndex: 2
@@ -68,19 +168,19 @@ MonoBehaviour:
     - actionType: 3
       panelIndex: 2
       waitseconds: 0
-      animatorTrigger: 0.3
+      animatorTrigger: 
     - actionType: 2
       panelIndex: 3
       waitseconds: 0
-      animatorTrigger: 0
+      animatorTrigger: 
     - actionType: 5
       panelIndex: 0
       waitseconds: 0
-      animatorTrigger: 0
+      animatorTrigger: 
   - actions:
     - actionType: 3
       panelIndex: 3
-      waitseconds: 0.3
+      waitseconds: 0
       animatorTrigger: 
     - actionType: 2
       panelIndex: 4
@@ -93,7 +193,7 @@ MonoBehaviour:
   - actions:
     - actionType: 3
       panelIndex: 4
-      waitseconds: 0.3
+      waitseconds: 0
       animatorTrigger: 
     - actionType: 2
       panelIndex: 5
@@ -106,7 +206,7 @@ MonoBehaviour:
   - actions:
     - actionType: 3
       panelIndex: 5
-      waitseconds: 0.3
+      waitseconds: 0
       animatorTrigger: 
     - actionType: 2
       panelIndex: 6
@@ -119,7 +219,7 @@ MonoBehaviour:
   - actions:
     - actionType: 3
       panelIndex: 6
-      waitseconds: 0.3
+      waitseconds: 0
       animatorTrigger: 
     - actionType: 2
       panelIndex: 7
@@ -132,7 +232,7 @@ MonoBehaviour:
   - actions:
     - actionType: 3
       panelIndex: 7
-      waitseconds: 0.3
+      waitseconds: 0
       animatorTrigger: 
     - actionType: 2
       panelIndex: 8
@@ -143,13 +243,13 @@ MonoBehaviour:
       waitseconds: 0
       animatorTrigger: 
     - actionType: 6
-      panelIndex: 0
+      panelIndex: 8
       waitseconds: 2
       animatorTrigger: Play
   - actions:
     - actionType: 3
       panelIndex: 8
-      waitseconds: 0.3
+      waitseconds: 0
       animatorTrigger: 
     - actionType: 2
       panelIndex: 9

@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Prologue.unity
+    path: Assets/Scenes/Archive/CutScene/Prologue.unity
     guid: 4614aa11965e63c439d6acdb0fa0489a
   - enabled: 1
     path: Assets/Scenes/Tutorial.unity
@@ -18,7 +18,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Loading.unity
     guid: 535f8b70ef67ec44db4edcf7c5934632
   - enabled: 1
-    path: Assets/Scenes/StageCutScene/tmpScene.unity
+    path: Assets/Scenes/Archive/CutScene/tmpScene.unity
     guid: 401f78b6b1a1f6a499d72b0d3182b4d5
   - enabled: 1
     path: Assets/Scenes/StageScene/Stage1.unity
@@ -36,16 +36,16 @@ EditorBuildSettings:
     path: Assets/Scenes/StageScene/Stage5.unity
     guid: d1a0bae3df62bf648a9d7642b429a024
   - enabled: 1
-    path: Assets/Scenes/StageCutScene/tmpScene 2.unity
+    path: Assets/Scenes/Archive/CutScene/tmpScene 2.unity
     guid: 054515fc431863c46a9caa3fad934ea1
   - enabled: 1
-    path: Assets/Scenes/StageCutScene/tmpScene 3.unity
+    path: Assets/Scenes/Archive/CutScene/tmpScene 3.unity
     guid: ab1dfbfdad695514a8d23c2f2718c3dd
   - enabled: 1
-    path: Assets/Scenes/StageCutScene/tmpScene 4.unity
+    path: Assets/Scenes/Archive/CutScene/tmpScene 4.unity
     guid: 23bd145699bbbff4b918effa81b01379
   - enabled: 1
-    path: Assets/Scenes/EndScene.unity
+    path: Assets/Scenes/Archive/CutScene/EndScene.unity
     guid: a95936a5c48f0774b9e473225c1792b0
   - enabled: 1
     path: Assets/Scenes/StageScene/testScene.unity
