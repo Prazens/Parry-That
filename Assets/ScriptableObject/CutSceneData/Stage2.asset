@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Stage2
   m_EditorClassIdentifier: Assembly-CSharp::CutsceneData
   textSet: []
+  panels: []
   clickSteps: []
-  cutsceneType: 0
+  cutsceneType: 2

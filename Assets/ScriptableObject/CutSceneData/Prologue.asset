@@ -154,7 +154,7 @@ MonoBehaviour:
       animatorTrigger: 
     - actionType: 3
       panelIndex: 1
-      waitseconds: 0
+      waitseconds: 0.3
       animatorTrigger: 
     - actionType: 2
       panelIndex: 2
@@ -167,7 +167,7 @@ MonoBehaviour:
   - actions:
     - actionType: 3
       panelIndex: 2
-      waitseconds: 0
+      waitseconds: 0.3
       animatorTrigger: 
     - actionType: 2
       panelIndex: 3
@@ -180,7 +180,7 @@ MonoBehaviour:
   - actions:
     - actionType: 3
       panelIndex: 3
-      waitseconds: 0
+      waitseconds: 0.3
       animatorTrigger: 
     - actionType: 2
       panelIndex: 4
@@ -193,7 +193,7 @@ MonoBehaviour:
   - actions:
     - actionType: 3
       panelIndex: 4
-      waitseconds: 0
+      waitseconds: 0.3
       animatorTrigger: 
     - actionType: 2
       panelIndex: 5
@@ -206,7 +206,7 @@ MonoBehaviour:
   - actions:
     - actionType: 3
       panelIndex: 5
-      waitseconds: 0
+      waitseconds: 0.3
       animatorTrigger: 
     - actionType: 2
       panelIndex: 6
@@ -219,7 +219,7 @@ MonoBehaviour:
   - actions:
     - actionType: 3
       panelIndex: 6
-      waitseconds: 0
+      waitseconds: 0.3
       animatorTrigger: 
     - actionType: 2
       panelIndex: 7
@@ -232,7 +232,7 @@ MonoBehaviour:
   - actions:
     - actionType: 3
       panelIndex: 7
-      waitseconds: 0
+      waitseconds: 0.3
       animatorTrigger: 
     - actionType: 2
       panelIndex: 8
@@ -249,7 +249,7 @@ MonoBehaviour:
   - actions:
     - actionType: 3
       panelIndex: 8
-      waitseconds: 0
+      waitseconds: 0.3
       animatorTrigger: 
     - actionType: 2
       panelIndex: 9

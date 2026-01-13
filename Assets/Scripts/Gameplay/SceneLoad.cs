@@ -9,8 +9,8 @@ public class SceneLoad : MonoBehaviour
     public Slider progressbar;
     public TextMeshProUGUI loadtext;
 
-    public float minimumLoadTime = 0.5f; // ÃÖ¼Ò ·Îµù ½Ã°£
-    private float elapsedTime = 0f; // °æ°ú ½Ã°£
+    public float minimumLoadTime = 0.5f; // ï¿½Ö¼ï¿½ ï¿½Îµï¿½ ï¿½Ã°ï¿½
+    private float elapsedTime = 0f; // ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½
 
     private void Start()
     {
@@ -19,7 +19,18 @@ public class SceneLoad : MonoBehaviour
 
     IEnumerator LoadScene()
     {
-        AsyncOperation operation = null;
+        AsyncOperation operation;
+        //ì¶”í›„ í´ë¦¬ì–´ ì™„ë£Œ ì‹œ ì»·ì”¬ì´ ìž¬ìƒë˜ì§€ ì•Šê²Œ í•´ì•¼ í•  ìˆ˜ë„?
+        if (SceneLinkage.StageLV == 0)
+        {
+            operation = SceneManager.LoadSceneAsync("Tutorial");
+        }
+        else
+        {
+            operation = SceneManager.LoadSceneAsync("CutScene");
+        }
+
+    /*
         switch(SceneLinkage.StageLV)
         {
             case 0:
@@ -95,11 +106,13 @@ public class SceneLoad : MonoBehaviour
                     operation = SceneManager.LoadSceneAsync("tmpScene 3");
                 break;
             ///
+        
 
             default:
-                // Debug.Log("½ºÅ×ÀÌÁö ·Îµå ½ÇÆÐ");
+                // Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ ï¿½ï¿½ï¿½ï¿½");
                 break;
         }
+    */
         operation.allowSceneActivation = false;
 
         while (!operation.isDone)
@@ -109,7 +122,7 @@ public class SceneLoad : MonoBehaviour
             progressbar.value = Mathf.Lerp(progressbar.value, targetProgress, Time.deltaTime * 5f);
             loadtext.text = $"{(progressbar.value * 100):F0}%";
 
-            // ·Îµù ¿Ï·á Á¶°Ç
+            // ï¿½Îµï¿½ ï¿½Ï·ï¿½ ï¿½ï¿½ï¿½ï¿½
             if (progressbar.value >= 0.999f && targetProgress >= 1f)
             {
                 loadtext.text = "Done!";

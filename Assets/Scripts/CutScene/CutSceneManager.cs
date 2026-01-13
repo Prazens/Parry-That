@@ -9,6 +9,7 @@ using UnityEngine.UI;
 //summary: CutSceneData SO로부터 받은 데이터를 바탕으로 컷씬을 진행해주는 코드
 public class CutSceneManager : MonoBehaviour
 {
+    [SerializeField] private CutSceneData[] datas;
     [SerializeField] private CutSceneData data;
 
     [SerializeField] private Canvas mainCanvas;
@@ -36,6 +37,8 @@ public class CutSceneManager : MonoBehaviour
     {
         typingSound = GetComponent<AudioSource>();
         databaseManager = FindObjectOfType<DatabaseManager>();
+
+        data = datas[SceneLinkage.StageLV];     
 
         CreateTextUI();
         CreatePanelsFromSO();
@@ -65,7 +68,7 @@ public class CutSceneManager : MonoBehaviour
 
         StartCoroutine(ExecuteClickStep(currentIndex));
     }
-
+    
     //클릭 시 나오는 액션들 (액션+대기시간)
     private IEnumerator ExecuteClickStep(int index)
     {
@@ -77,26 +80,34 @@ public class CutSceneManager : MonoBehaviour
             {
                 //패널 보이기
                 case CutSceneActionType.ShowPanel:
+                    isTransitioning = true;
                     SetPanelActive(action.panelIndex, true);
                     yield return new WaitForSeconds(action.waitseconds);
+                    isTransitioning = false;
                     break;
                     
                 //패널 숨기기
                 case CutSceneActionType.HidePanel:
+                    isTransitioning = true;
                     SetPanelActive(action.panelIndex, false);
                     yield return new WaitForSeconds(action.waitseconds);
+                    isTransitioning = false;
                     break;
 
                 //패널 페이드인
                 case CutSceneActionType.FadeIn:
+                    isTransitioning = true;
                     StartCoroutine(FadePanel(action.panelIndex, true));
                     yield return new WaitForSeconds(action.waitseconds);
+                    isTransitioning = false;
                     break;
 
-                //패널 페이드아웃(주의: 모든 페이드아웃은 실행 후 0.3초의 대기시간이 있음)
+                //패널 페이드아웃
                 case CutSceneActionType.FadeOut:
+                    isTransitioning = true;
                     StartCoroutine(FadePanel(action.panelIndex, false));
                     yield return new WaitForSeconds(action.waitseconds);
+                    isTransitioning = false;
                     break;
 
                 //이전 대사 지운 후 다음 대사 출력
@@ -189,8 +200,6 @@ public class CutSceneManager : MonoBehaviour
     {
         if (!IsValidPanel(index)) yield break;
 
-        isTransitioning = true;
-
         var image = spawnedPanels[index].GetComponent<Image>();
         if (image == null)
         {
@@ -216,14 +225,11 @@ public class CutSceneManager : MonoBehaviour
             yield return null;
         }
 
-        //페이드아웃인 경우 비활성화 및 0.3초 대기
+        //페이드아웃인 경우 비활성화
         if (!fadeIn) 
         {
             spawnedPanels[index].SetActive(false);
-            yield return new WaitForSeconds(fadeDuration);
         }
-
-        isTransitioning = false;
     }
 
     private void TriggerAnimator(int index, string trigger)
@@ -270,21 +276,51 @@ public class CutSceneManager : MonoBehaviour
             typingSoundDelay++;
             yield return new WaitForSeconds(typingDelay);
         }
+
         isTyping = false;
     }
 
 
     // ===================== 기타 =====================
 
-    private void EndCutScene()
+    public void EndCutScene()
     {
-        if (data.cutsceneType == CutSceneType.Prologue)
+        switch (SceneLinkage.StageLV)
         {
-            SceneLinkage.StageLV = 0;
-            SceneManager.LoadScene("Tutorial");
+            case 0: 
+                SceneManager.LoadScene("Tutorial");
+                break;
+            case 1: 
+                SceneManager.LoadScene("Stage1");
+                break;
+            case 2: 
+                SceneManager.LoadScene("Stage2");
+                break;
+            case 3: 
+                SceneManager.LoadScene("Beat Master");
+                break;
+            case 4:
+                SceneManager.LoadScene("Stage4");
+                break;
+            case 5:
+                SceneManager.LoadScene("Stage5");
+                break;
+            case 6:
+                SceneManager.LoadScene("Main");
+                break;
+            case 7:
+                SceneManager.LoadScene("Stage1Easy");
+                break;
+            case 8:
+                SceneManager.LoadScene("Stage2Easy");
+                break;
+            case 9:
+                SceneManager.LoadScene("Beat Master Easy");
+                break;
+            default:
+                Debug.LogError("존재하지 않는 스테이지");
+                break;
         }
-
-        //Todo: 추후 수정 필요
     }
 
     //텍스트 UI 오브젝트 생성

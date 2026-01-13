@@ -27,17 +27,6 @@ public class CutSceneAction
     public string animatorTrigger; //애니메이터 전용
 }
 
-//컷씬의 종류
-public enum CutSceneType
-{
-    Prologue,
-    Stage1,
-    Stage2,
-    Stage3,
-    Stage4or5,
-    Ending
-}
-
 //패널 타입(단순 스프라이트 or 애니메이터 포함)
 public enum CutScenePanelType
 {
@@ -84,7 +73,6 @@ public class CutSceneData : ScriptableObject
     public List<CutSceneClickStep> clickSteps = new List<CutSceneClickStep>();
     
     //컷씬의 챕터(프롤로그, stage1,2...)
-    public CutSceneType cutsceneType;
 }
 
 //클릭 시 진행될 액션 리스트
