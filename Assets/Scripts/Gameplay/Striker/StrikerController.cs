@@ -1,13 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class StrikerController : MonoBehaviour
 {
+    [Header("Striker Components")]
+    [SerializeField] private StrikerAnim anim;
+    [SerializeField] private StrikerSound sound;
+
     // striker 자체에 들어가는 script
     [SerializeField] private List<GameObject> projectilePrefabs; // 투사체 프리팹
     public PlayerManager playerManager; // Player 정보 저장
@@ -88,11 +90,8 @@ public class StrikerController : MonoBehaviour
             SetMeleeTargetPosition();
         }
 
-        animator.SetInteger("direction", (int)location);
-        if (bladeAnimator != null)
-        {
-            bladeAnimator.SetInteger("bladeDirection", (int)location);
-        }
+        anim.SetDirection((int)location);
+
         // 초기 위치를 화면 밖으로 설정
         spawnPosition = GetSpawnPosition();
         // 스트라이커를 화면 밖에서 시작 위치로 이동
@@ -147,8 +146,7 @@ public class StrikerController : MonoBehaviour
             //근접 전용의 scoreManager의 judge를 이용해야함. projectile과 구분해서 애니메이션도 다르게 되어야한다.
             // 투사체 저장은 PrepareForAttack에서 미리함
 
-            animator.SetInteger("attackType", attackType);
-            bladeAnimator.SetInteger("attackType", attackType);
+            anim.SetAttackType(attackType);
 
             //공격 애니메이션 작용
             if (attackType != 3)
@@ -202,7 +200,7 @@ public class StrikerController : MonoBehaviour
         // Debug.Log($"ActMeleeHoldStart {judgeableQueue.Peek().arriveBeat} {bpm} {StageManager.Instance.currentTime}");
         bladeAnimator.SetTrigger("bladePlay");
 
-        audioSource.PlayOneShot(holdingSound, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("playerVolume", 1));
+        sound.PlayHoldStart();
 
         uiManager.CutInDisplay(judgeableQueue.Peek().arriveBeat * (60f / bpm) - StageManager.Instance.currentTime + musicOffset);
 
@@ -216,8 +214,7 @@ public class StrikerController : MonoBehaviour
         animator.SetBool("isAttacking", false);
         bladeAnimator.SetTrigger("bladeHoldFinish");
 
-        audioSource.Stop();
-        audioSource.PlayOneShot(holdingEnd, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("playerVolume", 1));
+        sound.PlayHoldEnd();
 
         transform.GetChild(0).transform.localPosition = Vector3.zero;
         isHolding = false;
@@ -240,8 +237,7 @@ public class StrikerController : MonoBehaviour
 
     public void ActStreamStart()
     {
-        if (audioSource != null && holdingSound != null)
-            audioSource.PlayOneShot(holdingSound, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("playerVolume", 1));
+        sound.PlayHoldStart();
 
         isRenta = true;
         FireRenTusache();
@@ -251,10 +247,8 @@ public class StrikerController : MonoBehaviour
     {
         // 연타 종료 시의 처리, Judgeable의 onDestroy에 저장 후 호출
         // (streamstart 일 때만, streamend는 그냥 끝 시간 알림용, 별도 판정 처리 없음)
-        audioSource.Stop();
-        if (audioSource != null && holdingEnd != null)
-            audioSource.PlayOneShot(holdingEnd, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("playerVolume", 1));
-
+        sound.PlayHoldEnd();
+        
         isRenta = false;
 
         holdExclamation?.GetComponent<holdExclamation>()?.ForceStop();
