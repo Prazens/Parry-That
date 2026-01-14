@@ -22,7 +22,7 @@ public enum CutSceneActionType
 public class CutSceneAction
 {
     public CutSceneActionType actionType; //액션 종류
-    public int panelIndex; //조작 혹은 애니메이션을 진행할 패널의 인덱스
+    public int index; //출력할 대사, 혹은 조작할 컷신 패널의 인덱스
     public float waitseconds = 0; //액션 후 대기시간
     public string animatorTrigger; //애니메이터 전용
 }
@@ -71,8 +71,11 @@ public class CutSceneData : ScriptableObject
 
     //클릭 시 나올 다음 액션(예: 다음 대사 출력, 다음 컷씬 페이드인)
     public List<CutSceneClickStep> clickSteps = new List<CutSceneClickStep>();
-    
-    //컷씬의 챕터(프롤로그, stage1,2...)
+
+    [Header("BGM")]
+    public AudioClip bgm;
+    public bool loopBgm = true;
+    public float bgmVolume = 1f;
 }
 
 //클릭 시 진행될 액션 리스트

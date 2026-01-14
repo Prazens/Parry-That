@@ -22,10 +22,12 @@ public class CutSceneManager : MonoBehaviour
     [SerializeField] private float typingDelay = 0.03f;
 
     private Text cutSceneText;
-    private int currentIndex;
-    private bool isTransitioning;
-    private bool isTyping;
-    private bool isAnimationPlaying;
+    private int currentIndex; //컷씬이 진행된 횟수를 나타내는 인덱스
+
+    private bool isTyping; //대사가 나오는 중인지 확인하는 변수
+
+    private bool isStepRunning; //클릭 후 나올 모든 액션이 끝났는지 확인하는 변수
+
 
     private AudioSource typingSound;
     private DatabaseManager databaseManager;
@@ -33,15 +35,19 @@ public class CutSceneManager : MonoBehaviour
     //SO 기반으로 생성된 컷씬들
     private readonly List<GameObject> spawnedPanels = new();
 
+    //컴포넌트 연결 및 컷씬 데이터 설정
     private void Start()
     {
         typingSound = GetComponent<AudioSource>();
         databaseManager = FindObjectOfType<DatabaseManager>();
 
-        data = datas[SceneLinkage.StageLV];     
+        //if문을 통해 특정 컷씬 테스트 시에는 직접 연결해서 볼 수 있음.
+        //대신 최종본에서는 data칸이 none이어야 함.
+        if (data == null) data = datas[SceneLinkage.StageLV];     
 
         CreateTextUI();
         CreatePanelsFromSO();
+        PlayBGM();
 
         currentIndex = 0;
 
@@ -56,8 +62,8 @@ public class CutSceneManager : MonoBehaviour
         //클릭 입력 확인
         if (!(Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began))) return;
         //입력 무시 조건
-        if (isAnimationPlaying || isTransitioning || isTyping) return;
-
+        if (isStepRunning || isTyping) return;
+        
         currentIndex++;
 
         if (data == null || currentIndex >= data.clickSteps.Count)
@@ -72,6 +78,8 @@ public class CutSceneManager : MonoBehaviour
     //클릭 시 나오는 액션들 (액션+대기시간)
     private IEnumerator ExecuteClickStep(int index)
     {
+        isStepRunning = true;
+
         var step = data.clickSteps[index];
 
         foreach (var action in step.actions)
@@ -80,59 +88,53 @@ public class CutSceneManager : MonoBehaviour
             {
                 //패널 보이기
                 case CutSceneActionType.ShowPanel:
-                    isTransitioning = true;
-                    SetPanelActive(action.panelIndex, true);
+                    SetPanelActive(action.index, true);
                     yield return new WaitForSeconds(action.waitseconds);
-                    isTransitioning = false;
                     break;
                     
                 //패널 숨기기
                 case CutSceneActionType.HidePanel:
-                    isTransitioning = true;
-                    SetPanelActive(action.panelIndex, false);
+                    SetPanelActive(action.index, false);
                     yield return new WaitForSeconds(action.waitseconds);
-                    isTransitioning = false;
                     break;
 
                 //패널 페이드인
                 case CutSceneActionType.FadeIn:
-                    isTransitioning = true;
-                    StartCoroutine(FadePanel(action.panelIndex, true));
+                    StartCoroutine(FadePanel(action.index, true));
                     yield return new WaitForSeconds(action.waitseconds);
-                    isTransitioning = false;
                     break;
 
                 //패널 페이드아웃
                 case CutSceneActionType.FadeOut:
-                    isTransitioning = true;
-                    StartCoroutine(FadePanel(action.panelIndex, false));
+                    StartCoroutine(FadePanel(action.index, false));
                     yield return new WaitForSeconds(action.waitseconds);
-                    isTransitioning = false;
                     break;
 
                 //이전 대사 지운 후 다음 대사 출력
                 case CutSceneActionType.ShowTextReset:
-                    StartCoroutine(TypeText(data.textSet[currentIndex], true));
+                    StartCoroutine(TypeText(data.textSet[action.index], true));
                     yield return new WaitForSeconds(action.waitseconds);
                     break;
 
                 //이전 대사에 붙여서 다음 대사 출력
                 case CutSceneActionType.ShowTextAppend:
-                    StartCoroutine(TypeText(data.textSet[currentIndex], false));
+                    StartCoroutine(TypeText(data.textSet[action.index], false));
                     yield return new WaitForSeconds(action.waitseconds);
                     break;
 
                 //애니메이터 트리거(대기시간을 애니메이션 시간으로 활용 가능)
                 case CutSceneActionType.TriggerAnimator:
-                    isAnimationPlaying = true;
-                    TriggerAnimator(action.panelIndex, action.animatorTrigger);
+                    TriggerAnimator(action.index, action.animatorTrigger);
                     yield return new WaitForSeconds(action.waitseconds);
-                    isAnimationPlaying = false;
                     break;
             }
         }
+
+        yield return new WaitForSeconds(0.3f);
+        isStepRunning = false;
     }
 
+    //SO 데이터를 바탕으로 스프라이트 및 애니메이터를 가진 패널 오브젝트 생성
     private void CreatePanelsFromSO()
     {
         if (data == null || data.panels == null) return;
@@ -190,12 +192,25 @@ public class CutSceneManager : MonoBehaviour
         }
     }
 
+    private void PlayBGM()
+    {
+        if (data == null || data.bgm == null)
+            return;
+
+        bgm.clip = data.bgm;
+        bgm.loop = data.loopBgm;
+        bgm.volume = data.bgmVolume;
+        bgm.Play();
+    }
+
+    //패널 활성화 및 비활성화
     private void SetPanelActive(int index, bool active)
     {
         if (!IsValidPanel(index)) return;
         spawnedPanels[index].SetActive(active);
     }
 
+    //패널 페이드인 및 페이드아웃
     private IEnumerator FadePanel(int index, bool fadeIn)
     {
         if (!IsValidPanel(index)) yield break;
@@ -232,6 +247,7 @@ public class CutSceneManager : MonoBehaviour
         }
     }
 
+    //애니메이터 트리거
     private void TriggerAnimator(int index, string trigger)
     {
         if (!IsValidPanel(index)) return;
@@ -249,13 +265,12 @@ public class CutSceneManager : MonoBehaviour
     private bool IsValidPanel(int index)
         => index >= 0 && index < spawnedPanels.Count;
 
-    // ===================== 텍스트 =====================
-
+    //텍스트 출력
     private IEnumerator TypeText(string text, bool reset)
     {
-        if (reset) cutSceneText.text = "";
-
         isTyping = true;
+
+        if (reset) cutSceneText.text = "";
 
         int typingSoundDelay = 0;
 
@@ -280,9 +295,7 @@ public class CutSceneManager : MonoBehaviour
         isTyping = false;
     }
 
-
-    // ===================== 기타 =====================
-
+    //컷씬 종료 시 씬 불러옴
     public void EndCutScene()
     {
         switch (SceneLinkage.StageLV)

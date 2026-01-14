@@ -131,140 +131,142 @@ MonoBehaviour:
   clickSteps:
   - actions:
     - actionType: 2
-      panelIndex: 0
+      index: 0
       waitseconds: 0
       animatorTrigger: 
     - actionType: 5
-      panelIndex: 0
+      index: 0
       waitseconds: 0
       animatorTrigger: 
   - actions:
     - actionType: 2
-      panelIndex: 1
+      index: 1
       waitseconds: 0
       animatorTrigger: 
     - actionType: 4
-      panelIndex: 0
+      index: 1
       waitseconds: 0
       animatorTrigger: 
   - actions:
     - actionType: 3
-      panelIndex: 0
+      index: 0
       waitseconds: 0
       animatorTrigger: 
     - actionType: 3
-      panelIndex: 1
+      index: 1
       waitseconds: 0.3
       animatorTrigger: 
     - actionType: 2
-      panelIndex: 2
+      index: 2
       waitseconds: 0
       animatorTrigger: 
     - actionType: 5
-      panelIndex: 0
+      index: 2
       waitseconds: 0
       animatorTrigger: 
   - actions:
     - actionType: 3
-      panelIndex: 2
+      index: 2
       waitseconds: 0.3
       animatorTrigger: 
     - actionType: 2
-      panelIndex: 3
+      index: 3
       waitseconds: 0
       animatorTrigger: 
     - actionType: 5
-      panelIndex: 0
+      index: 3
       waitseconds: 0
       animatorTrigger: 
   - actions:
     - actionType: 3
-      panelIndex: 3
+      index: 3
       waitseconds: 0.3
       animatorTrigger: 
     - actionType: 2
-      panelIndex: 4
+      index: 4
       waitseconds: 0
       animatorTrigger: 
     - actionType: 5
-      panelIndex: 0
+      index: 4
       waitseconds: 0
       animatorTrigger: 
   - actions:
     - actionType: 3
-      panelIndex: 4
+      index: 4
       waitseconds: 0.3
       animatorTrigger: 
     - actionType: 2
-      panelIndex: 5
+      index: 5
       waitseconds: 0
       animatorTrigger: 
     - actionType: 5
-      panelIndex: 0
+      index: 5
       waitseconds: 0
       animatorTrigger: 
   - actions:
     - actionType: 3
-      panelIndex: 5
+      index: 5
       waitseconds: 0.3
       animatorTrigger: 
     - actionType: 2
-      panelIndex: 6
+      index: 6
       waitseconds: 0
       animatorTrigger: 
     - actionType: 5
-      panelIndex: 0
+      index: 6
       waitseconds: 0
       animatorTrigger: 
   - actions:
     - actionType: 3
-      panelIndex: 6
+      index: 6
       waitseconds: 0.3
       animatorTrigger: 
     - actionType: 2
-      panelIndex: 7
+      index: 7
       waitseconds: 0
       animatorTrigger: 
     - actionType: 5
-      panelIndex: 0
+      index: 7
       waitseconds: 0
       animatorTrigger: 
   - actions:
     - actionType: 3
-      panelIndex: 7
+      index: 7
       waitseconds: 0.3
       animatorTrigger: 
     - actionType: 2
-      panelIndex: 8
+      index: 8
       waitseconds: 0
       animatorTrigger: 
     - actionType: 5
-      panelIndex: 0
+      index: 8
       waitseconds: 0
       animatorTrigger: 
     - actionType: 6
-      panelIndex: 8
+      index: 8
       waitseconds: 2
       animatorTrigger: Play
   - actions:
     - actionType: 3
-      panelIndex: 8
+      index: 8
       waitseconds: 0.3
       animatorTrigger: 
     - actionType: 2
-      panelIndex: 9
+      index: 9
       waitseconds: 0.7
       animatorTrigger: 
     - actionType: 1
-      panelIndex: 9
+      index: 9
       waitseconds: 0
       animatorTrigger: 
     - actionType: 0
-      panelIndex: 10
+      index: 10
       waitseconds: 0
       animatorTrigger: 
     - actionType: 5
-      panelIndex: 0
+      index: 9
       waitseconds: 1.4
       animatorTrigger: 
-  cutsceneType: 0
+  bgm: {fileID: 8300000, guid: d63eee0d6f4446e469e91f3bd1213ae1, type: 3}
+  loopBgm: 1
+  bgmVolume: 1
