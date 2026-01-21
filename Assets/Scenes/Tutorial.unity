@@ -323,6 +323,62 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 24364144}
   m_CullTransparentMesh: 1
+--- !u!1 &25638218
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 25638219}
+  - component: {fileID: 25638220}
+  m_Layer: 0
+  m_Name: StageFlowManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &25638219
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 25638218}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2102237518}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &25638220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 25638218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce49b020a3386cb46aedeb3355096f67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stageDuration: 60
+  is_over: 0
+  strikerManager: {fileID: 2036327256}
+  boss: {fileID: 0}
+  stageSpawnManager: {fileID: 700077782}
+  stageChartLoader: {fileID: 461089627}
+  stageAudioManager: {fileID: 2139028259}
+  staticUIManager: {fileID: 1385202995}
+  dynamicUIManager: {fileID: 1305503427}
+  stageResultManager: {fileID: 1365014001}
+  judgeSystem: {fileID: 768575891}
+  isPaused: 0
 --- !u!1 &94105586
 GameObject:
   m_ObjectHideFlags: 0
@@ -1039,6 +1095,61 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &461089625
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 461089626}
+  - component: {fileID: 461089627}
+  m_Layer: 0
+  m_Name: StageChartLoader
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &461089626
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 461089625}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2102237518}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &461089627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 461089625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6255d1aab6b63c743977cdd490902764, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  strikerManager: {fileID: 2036327256}
+  jsonCharts:
+  - {fileID: 4900000, guid: 13255eec2351d904d8ae0dbbd041dec6, type: 3}
+  - {fileID: 4900000, guid: ea6ff66f54758274d83b11a16879b1fe, type: 3}
+  - {fileID: 4900000, guid: 58bee1354aab5974cb403f5d8452bba4, type: 3}
+  - {fileID: 4900000, guid: c83bc4cf251396d469d0095227676316, type: 3}
+  - {fileID: 4900000, guid: 31ef75c606c7d124097b9767fa4feed5, type: 3}
+  - {fileID: 4900000, guid: 58d544d58ce398348b597a573f48bdac, type: 3}
+  - {fileID: 4900000, guid: 074c9d99c12923c4e9cf8e5bee7f5db0, type: 3}
+  - {fileID: 4900000, guid: eae451e6b33a0d240932c0121a3e46bc, type: 3}
+  - {fileID: 4900000, guid: 859572ea3ecfe594b8976b0bf25180a4, type: 3}
 --- !u!1 &477627791
 GameObject:
   m_ObjectHideFlags: 0
@@ -1257,6 +1368,56 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &700077780
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 700077781}
+  - component: {fileID: 700077782}
+  m_Layer: 0
+  m_Name: StageSpawnManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &700077781
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 700077780}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2102237518}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &700077782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 700077780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a232d84f94c88654bbab917834ca52b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerPrefab: {fileID: 81057595683241048, guid: 733ec4c417fd1fd4ab586fc37f0ec928, type: 3}
+  guideboxTopPrefab: {fileID: 3149530777327924349, guid: 09d6a69991e86e749b821e66d021ce5f, type: 3}
+  guideboxBottomPrefab: {fileID: 6017190040333457750, guid: a2fef0f9cd027cc449b1acd741e7b9d8, type: 3}
+  strikerManager: {fileID: 2036327256}
+  gameController: {fileID: 768575887}
+  judgeSystem: {fileID: 768575891}
 --- !u!1 &768575885
 GameObject:
   m_ObjectHideFlags: 0
@@ -1267,9 +1428,9 @@ GameObject:
   m_Component:
   - component: {fileID: 768575890}
   - component: {fileID: 768575889}
-  - component: {fileID: 768575888}
   - component: {fileID: 768575887}
   - component: {fileID: 768575886}
+  - component: {fileID: 768575891}
   m_Layer: 0
   m_Name: GameController
   m_TagString: GameController
@@ -1313,33 +1474,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e874a380c9fe9bf47b80be6f4fbceaae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stageManager: {fileID: 2102237517}
+  stageFlowManager: {fileID: 25638220}
   swipeThreshold: 50
   isTouchAvailable: 1
---- !u!114 &768575888
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 768575885}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35c5716c5f2e7d84887798ca32a473fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerManager: {fileID: 0}
-  strikerManager: {fileID: 2036327256}
-  parriedProjectileManager: {fileID: 768575886}
-  scoreUI: {fileID: 1305503421}
-  combo: 0
-  score: 0
-  musicOffset: 0
-  lastNonMissJudge: 0
-  isHolding: 0
-  isOnStream: 0
-  streamCount: -1
-  bpm: 0
 --- !u!114 &768575889
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1352,7 +1489,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3082823d33283f44e99ae53bb95d973f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoreManager: {fileID: 768575888}
+  judgeSystem: {fileID: 768575891}
   playerManager: {fileID: 0}
   isTouchAvailable: 1
 --- !u!4 &768575890
@@ -1370,6 +1507,30 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &768575891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 768575885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9555fafddeca25b41bc8fd1975993c30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerManager: {fileID: 0}
+  strikerManager: {fileID: 2036327256}
+  parriedProjectileManager: {fileID: 768575886}
+  dynamicUIManager: {fileID: 1305503427}
+  stageAudioManager: {fileID: 2139028259}
+  combo: 0
+  score: 0
+  lastNonMissJudge: 0
+  isHolding: 0
+  isOnStream: 0
+  streamCount: -1
+  bpm: 0
 --- !u!1 &783409969
 GameObject:
   m_ObjectHideFlags: 0
@@ -1483,7 +1644,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2102237517}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: StageManager, Assembly-CSharp
         m_MethodName: TogglePause
         m_Mode: 1
@@ -1998,8 +2159,7 @@ GameObject:
   - component: {fileID: 1305503425}
   - component: {fileID: 1305503424}
   - component: {fileID: 1305503423}
-  - component: {fileID: 1305503422}
-  - component: {fileID: 1305503421}
+  - component: {fileID: 1305503427}
   m_Layer: 5
   m_Name: InGameScreen
   m_TagString: Untagged
@@ -2007,70 +2167,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1305503421
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1305503420}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06e42f233afae534e941aa9451c0d396, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scoreDisplay: {fileID: 94105586}
-  judgeDisplayPrefab: {fileID: 2130270614330469501, guid: 5a8cce8052826fa4e9b56476920ccb06, type: 3}
-  judgeImages:
-  - {fileID: 21300000, guid: 7af589f9b7dfa2d4899cd7ddeb8db6b6, type: 3}
-  - {fileID: 21300000, guid: 3fe6a08bc38661f4bae0c04752eea299, type: 3}
-  - {fileID: 21300000, guid: 0f13aedbf5e0dc44baac999c81c616f0, type: 3}
-  - {fileID: 21300000, guid: 9809d0fd211e62840b8f27bd2b15d720, type: 3}
-  hpDisplay: {fileID: 2105176439}
-  heartDisplays:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  heartDisplayPrefab: {fileID: 1537217229450048876, guid: 4080737e22fc6034193ee0918fd7a686, type: 3}
-  heartImages:
-  - {fileID: 21300000, guid: f377121ee696aa6408ce39257ed6480e, type: 3}
-  - {fileID: 21300000, guid: 6e1d2050ea606314cae8284fe477ed8b, type: 3}
-  scoreManager: {fileID: 0}
---- !u!114 &1305503422
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1305503420}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f41eb24cf576fa44f8aa989a446f2b3b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DamageOverlayImage: {fileID: 1483378749}
-  fadeDuration: 0.4
-  maxAlpha: 0.05
-  ParticleParried:
-  - {fileID: 9128950236090559336, guid: c37d4ec3d9a51bf43be48a9312c9dfe7, type: 3}
-  - {fileID: 8383254907930360100, guid: 944995aeeb008244490b9a29d913633a, type: 3}
-  - {fileID: 3159418058163683536, guid: 314e3c6c1a7bde241b122269806b1446, type: 3}
-  ParticlePerfect:
-  - {fileID: 9029442871752451990, guid: 143294d3b002d2d4ca3f2452f1d6fc1b, type: 3}
-  - {fileID: 1888235362120343003, guid: ec9ae111fd0ca0e40b6b632721c2f1da, type: 3}
-  - {fileID: 6868093653260204414, guid: 5edb3a50aba096c4890516d92d0baa55, type: 3}
-  cutScenes:
-  - {fileID: 403963738}
-  - {fileID: 245702110}
-  isStop1: 0
-  isStop2: 0
 --- !u!114 &1305503423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2160,6 +2256,57 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1305503427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1305503420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85b6987df95275d449eb3fec360a26bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scoreDisplay: {fileID: 94105586}
+  judgeDisplayPrefab: {fileID: 2130270614330469501, guid: 5a8cce8052826fa4e9b56476920ccb06, type: 3}
+  judgeImages:
+  - {fileID: 21300000, guid: 7af589f9b7dfa2d4899cd7ddeb8db6b6, type: 3}
+  - {fileID: 21300000, guid: 3fe6a08bc38661f4bae0c04752eea299, type: 3}
+  - {fileID: 21300000, guid: 0f13aedbf5e0dc44baac999c81c616f0, type: 3}
+  - {fileID: 21300000, guid: 9809d0fd211e62840b8f27bd2b15d720, type: 3}
+  hpDisplay: {fileID: 2105176439}
+  heartDisplays:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  heartDisplayPrefab: {fileID: 1537217229450048876, guid: 4080737e22fc6034193ee0918fd7a686, type: 3}
+  heartImages:
+  - {fileID: 21300000, guid: f377121ee696aa6408ce39257ed6480e, type: 3}
+  - {fileID: 21300000, guid: 6e1d2050ea606314cae8284fe477ed8b, type: 3}
+  DamageOverlayImage: {fileID: 1483378749}
+  fadeDuration: 0.4
+  maxAlpha: 0.05
+  ParticleParried:
+  - {fileID: 9128950236090559336, guid: c37d4ec3d9a51bf43be48a9312c9dfe7, type: 3}
+  - {fileID: 8383254907930360100, guid: 944995aeeb008244490b9a29d913633a, type: 3}
+  - {fileID: 3159418058163683536, guid: 314e3c6c1a7bde241b122269806b1446, type: 3}
+  ParticlePerfect:
+  - {fileID: 9029442871752451990, guid: 143294d3b002d2d4ca3f2452f1d6fc1b, type: 3}
+  - {fileID: 1888235362120343003, guid: ec9ae111fd0ca0e40b6b632721c2f1da, type: 3}
+  - {fileID: 6868093653260204414, guid: 5edb3a50aba096c4890516d92d0baa55, type: 3}
+  cutScenes:
+  - {fileID: 403963738}
+  - {fileID: 245702110}
+  isStop1: 0
+  isStop2: 0
 --- !u!1 &1328849331
 GameObject:
   m_ObjectHideFlags: 0
@@ -2276,9 +2423,10 @@ MonoBehaviour:
   dialogueManager: {fileID: 1515393733}
   mainCanvas: {fileID: 1394439260}
   DescriptionFont: {fileID: 12800000, guid: 7006438c118bb1748b904fe654b08d95, type: 3}
-  stageManager: {fileID: 2102237517}
+  stageFlowManager: {fileID: 25638220}
+  stageAudioManager: {fileID: 2139028259}
   strikerManager: {fileID: 2036327256}
-  ScoreManager: {fileID: 768575888}
+  judgeSystem: {fileID: 768575891}
   VictoryAnime: {fileID: 1635102681}
   CharacterSprite:
   - {fileID: 21300000, guid: a5961eac7d81bcd4dad7b4c7cf4966ef, type: 3}
@@ -2307,6 +2455,110 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1365013999
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1365014000}
+  - component: {fileID: 1365014001}
+  m_Layer: 0
+  m_Name: StageResultManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1365014000
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1365013999}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2102237518}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1365014001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1365013999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b07b535876477c4a828d146569f96ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameController: {fileID: 768575887}
+  judgeSystem: {fileID: 768575891}
+--- !u!1 &1385202993
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1385202994}
+  - component: {fileID: 1385202995}
+  m_Layer: 0
+  m_Name: StaticUIManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1385202994
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1385202993}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2102237518}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1385202995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1385202993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7656547c75aaac740937ee31b6215488, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvasRoot: {fileID: 1394439256}
+  canvasPause: {fileID: 176193419}
+  overlayPrefab: {fileID: 1483378748}
+  clearPanelPrefab: {fileID: 2877070203629870375, guid: fe93a9c4b01229640af6942344c83aac, type: 3}
+  gameOverPanelPrefab: {fileID: 1725435030895975194, guid: 3d6074ed7aa58f54fb4d1eefc5f47b91, type: 3}
+  pausePanelPrefab: {fileID: 7210466680494033712, guid: fd5af501b22535c44a673905e065de25, type: 3}
+  pauseButtonObject: {fileID: 849816421}
+  unpauseButtonSprite: {fileID: 21300000, guid: 5c11becbcfffc294db866af1a1c65ea4, type: 3}
+  continueText: {fileID: 1173173430}
+  countdownText: {fileID: 477627792}
+  victoryAnimatorObject: {fileID: 895895656}
+  victoryAudioSource: {fileID: 163746527}
+  starObjects: []
+  stageResultManager: {fileID: 1365014001}
 --- !u!1 &1394439255
 GameObject:
   m_ObjectHideFlags: 0
@@ -2999,7 +3251,7 @@ MonoBehaviour:
   - {fileID: 1293562708}
   - {fileID: 1055898947}
   - {fileID: 783409970}
-  uiManager: {fileID: 1305503422}
+  dynamicUIManager: {fileID: 1305503427}
   charts:
   - bpm: 0
     strikerType: 0
@@ -3048,7 +3300,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2102237518}
-  - component: {fileID: 2102237517}
   m_Layer: 0
   m_Name: StageManager
   m_TagString: Untagged
@@ -3056,52 +3307,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2102237517
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2102237516}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f13933ebdc71de45b6d6e5b448374b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  stageDuration: 60
-  strikerManager: {fileID: 2036327256}
-  scoreUI: {fileID: 1305503421}
-  playerPrefab: {fileID: 81057595683241048, guid: 733ec4c417fd1fd4ab586fc37f0ec928, type: 3}
-  guidebox1Prefab: {fileID: 3149530777327924349, guid: 09d6a69991e86e749b821e66d021ce5f, type: 3}
-  guidebox2Prefab: {fileID: 6017190040333457750, guid: a2fef0f9cd027cc449b1acd741e7b9d8, type: 3}
-  clearPanelPrefab: {fileID: 2877070203629870375, guid: fe93a9c4b01229640af6942344c83aac, type: 3}
-  gameOverPanelPrefab: {fileID: 1725435030895975194, guid: 3d6074ed7aa58f54fb4d1eefc5f47b91, type: 3}
-  pausePanelPrefab: {fileID: 7210466680494033712, guid: fd5af501b22535c44a673905e065de25, type: 3}
-  canvasTransform: {fileID: 1394439256}
-  canvasPause: {fileID: 176193419}
-  gameController: {fileID: 768575887}
-  scoreManager: {fileID: 768575888}
-  musicSource: {fileID: 253056967}
-  is_over: 0
-  countdownText: {fileID: 477627792}
-  continueText: {fileID: 1173173430}
-  jsonCharts:
-  - {fileID: 4900000, guid: 13255eec2351d904d8ae0dbbd041dec6, type: 3}
-  - {fileID: 4900000, guid: ea6ff66f54758274d83b11a16879b1fe, type: 3}
-  - {fileID: 4900000, guid: 58bee1354aab5974cb403f5d8452bba4, type: 3}
-  - {fileID: 4900000, guid: c83bc4cf251396d469d0095227676316, type: 3}
-  - {fileID: 4900000, guid: 31ef75c606c7d124097b9767fa4feed5, type: 3}
-  - {fileID: 4900000, guid: 58d544d58ce398348b597a573f48bdac, type: 3}
-  - {fileID: 4900000, guid: 074c9d99c12923c4e9cf8e5bee7f5db0, type: 3}
-  - {fileID: 4900000, guid: eae451e6b33a0d240932c0121a3e46bc, type: 3}
-  - {fileID: 4900000, guid: 859572ea3ecfe594b8976b0bf25180a4, type: 3}
-  musicOffset: 0
-  VictoryAnimatorObj: {fileID: 895895656}
-  VictoryAudioSource: {fileID: 163746527}
-  boss: {fileID: 0}
-  isPaused: 0
-  pauseButton: {fileID: 849816421}
-  unpauseButton: {fileID: 0}
 --- !u!4 &2102237518
 Transform:
   m_ObjectHideFlags: 0
@@ -3114,7 +3319,13 @@ Transform:
   m_LocalPosition: {x: -1.6519778, y: -0.28072387, z: -0.049213845}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 700077781}
+  - {fileID: 461089626}
+  - {fileID: 25638219}
+  - {fileID: 2139028258}
+  - {fileID: 1385202994}
+  - {fileID: 1365014000}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2105176439
@@ -3161,6 +3372,53 @@ RectTransform:
   m_AnchoredPosition: {x: 7.5, y: -15}
   m_SizeDelta: {x: 150, y: 90}
   m_Pivot: {x: 0.0000000036507828, y: 1.0000004}
+--- !u!1 &2139028257
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2139028258}
+  - component: {fileID: 2139028259}
+  m_Layer: 0
+  m_Name: StageAudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2139028258
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2139028257}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2102237518}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2139028259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2139028257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f15cbe00b294984cbe19714bdb5800c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicSource: {fileID: 253056967}
+  musicOffset: 0
+  musicPlayed: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

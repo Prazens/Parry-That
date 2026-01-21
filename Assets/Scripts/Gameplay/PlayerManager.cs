@@ -6,10 +6,14 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    public ScoreManager scoreManager;
+    // ScoreManager -> JudgeSystem
+    public JudgeSystem judgeSystem;
+
     public int hp;
     public Direction currentDirection = Direction.Up;  // 쉴드 방향
-    public StageManager stageManager; // StageManager 참조
+
+    // StageManager -> StageFlowManager
+    public StageFlowManager stageFlowManager;
 
     public Animator playerAnimator;
     public Animator bladeAnimator;
@@ -27,31 +31,19 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private AudioSource SmallaudioSource;
     [SerializeField] private AudioSource SwingaudioSource;
 
-    // public string[] triggers = new string[2] { "playerParryUp", "playerParryDown" };
-
-    // Start is called before the first frame update
     void Start()
     {
         musicOffset = PlayerPrefs.GetFloat("musicOffset", 2);
-        // musicOffset = 2f;  // 판정 오프셋: -일수록 빨리 쳐야 함
-        // visualOffset = 0.22f;  // 판정선: -일수록 플레이어에 가까움
 
         GameController gameController = FindObjectOfType<GameController>();
         if (gameController != null)
         {
-            scoreManager = gameController.GetComponent<ScoreManager>();
-            if (scoreManager != null)
-            {
-                // Debug.Log("PlayerManager successfully linked with ScoreManager.");
-            }
-            else
-            {
-                // Debug.LogError("ScoreManager script is not attached to GameController!");
-            }
+            judgeSystem = gameController.GetComponent<JudgeSystem>();
         }
-        else
+
+        if (stageFlowManager == null)
         {
-            // Debug.LogError("GameController not found!");
+            stageFlowManager = FindObjectOfType<StageFlowManager>();
         }
 
         direcrionDisplayer = transform.GetChild(0);
@@ -84,15 +76,12 @@ public class PlayerManager : MonoBehaviour
         {
             transform.GetChild(2).transform.position = DirTool.TranstoVec(direction) * 0.8f;
         }
-
         // 홀드 끝 모션
         else if (type == AttackType.HoldStop || type == AttackType.HoldStop)
         {
-            // Debug.Log($"Animation : {direction}, {type}");
-
             bladeAnimator.SetTrigger("bladeHoldFinish");
             playerAnimator.SetTrigger("playerHoldFinish");
-            
+
             transform.GetChild(2).transform.position = Vector3.zero;
             return;
         }
@@ -109,8 +98,6 @@ public class PlayerManager : MonoBehaviour
             randomNum = UnityEngine.Random.Range(0, 2);
         }
 
-        // Debug.Log($"Animation : {direction}, {type}, {randomNum}");
-
         playerAnimator.SetInteger("attackType", (int)type);
         playerAnimator.SetInteger("parryDirection", (int)direction);
 
@@ -125,18 +112,18 @@ public class PlayerManager : MonoBehaviour
 
         return;
     }
-    
+
     public void GameOver()
     {
-        if (stageManager != null)
+        if (stageFlowManager != null)
         {
-            stageManager.GameOver(); // StageManager에 GameOver 호출
+            stageFlowManager.GameOver();
         }
     }
 
     public void PlayerParrySound(AttackType attackType)  // 헛스윙 사운드
     {
-        switch(attackType)
+        switch (attackType)
         {
             case AttackType.Normal:
                 audioSource.PlayOneShot(SwingWeak, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("playerVolume", 1));
@@ -146,13 +133,14 @@ public class PlayerManager : MonoBehaviour
                 break;
             default:
                 break;
-            // 홀드 스타트 실패 시 헛스윙 사운드? -> 일단 구현 X
         }
     }
+
     public void PlayerBlockedSound()
     {
         audioSource.PlayOneShot(blocked, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("playerVolume", 1));
     }
+
     public void PlayerHitSound()
     {
         SmallaudioSource.PlayOneShot(hit, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("playerVolume", 1));

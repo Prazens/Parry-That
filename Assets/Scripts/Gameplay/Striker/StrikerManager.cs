@@ -7,7 +7,7 @@ public class StrikerManager : MonoBehaviour
     [SerializeField] private List<GameObject> strikerPrefabs;
     public Transform[] spawnPositions;
     private PlayerManager playerManager; // Player 정보 저장
-    [SerializeField] private UIManager uiManager;
+    [SerializeField] private DynamicUIManager dynamicUIManager;
     public List<ChartData> charts; // 각 스트라이커의 채보 데이터
     [SerializeField] private TutorialManager tutorialManager;
 
@@ -40,7 +40,7 @@ public class StrikerManager : MonoBehaviour
     //}
     private void Update()
     {
-        float currentTime = StageManager.Instance.currentTime;
+        float currentTime = StageFlowManager.Instance.currentTime;
         //if (TutorialManager.isTutorial && !tutorialManager.isDaehwa)
         //{
         //    for (int i = 0; i < TutorialManager.StrikerNum[tutorialManager.daehwaIndex] - TutorialManager.StrikerNum[tutorialManager.daehwaIndex - 1]; i++)
@@ -136,7 +136,7 @@ public class StrikerManager : MonoBehaviour
 
         // 스트라이커 초기화
         StrikerController strikerController = striker.GetComponent<StrikerController>();
-        strikerController.uiManager = uiManager;
+        strikerController.dynamicUIManager = dynamicUIManager;
         strikerController.holdExclamation = holdExclamation;
         strikerController.holdingSound = holdingSound;
         
@@ -182,5 +182,11 @@ public class StrikerManager : MonoBehaviour
         }
 
         strikerList.Clear(); // 리스트 초기화
+
+        var remains = FindObjectsOfType<StrikerController>();
+        foreach (var remain in remains)
+        {
+            Destroy(remain.gameObject);
+        }   
     }
 }
