@@ -22,7 +22,7 @@ public class StrikerManager : MonoBehaviour
     public List<GameObject> strikerList = new List<GameObject>();
     public List<int> strikerStatus = new List<int>();
 
-    private BossController bossController;
+    public BossController bossController;
 
     public void SetPlayer(PlayerManager player)
     {
@@ -40,14 +40,14 @@ public class StrikerManager : MonoBehaviour
 
         for (int i = 0; i < charts.Count; i++)
         {
-            if (currentTime >= charts[i].appearTime * (60f / charts[i].bpm) + playerManager.musicOffset &&
-                strikerStatus[i] == 0)
+            if (strikerList[i] == null) continue;
+
+            if (currentTime >= charts[i].appearTime * (60f / charts[i].bpm) + playerManager.musicOffset && strikerStatus[i] == 0)
             {
                 strikerStatus[i] = 1;
                 strikerList[i].SetActive(true);
             }
-            else if (currentTime >= charts[i].disappearTime * (60f / charts[i].bpm) + playerManager.musicOffset &&
-                     strikerStatus[i] == 1)
+            else if (currentTime >= charts[i].disappearTime * (60f / charts[i].bpm) + playerManager.musicOffset && strikerStatus[i] == 1)
             {
                 strikerList[i].GetComponent<StrikerController>().strikerExit();
                 strikerStatus[i] = 2;
@@ -57,50 +57,37 @@ public class StrikerManager : MonoBehaviour
 
     public void InitStriker(int idx)
     {
-        if (StageFlowManager.Instance != null)
-        {
+        if (StageFlowManager.Instance != null) {
             bossController = StageFlowManager.Instance.bossController;
         }
         else
-        {
             bossController = null;
-        }
 
-        if (holdExclamation != null)
-        {
-            Destroy(holdExclamation);
-        }
+        ClearStrikers();
 
+        if (holdExclamation != null) Destroy(holdExclamation);
         holdExclamation = Instantiate(holdExclamationPrefab);
 
         var audioSourceObject = GameObject.Find("Audio Source");
         if (audioSourceObject != null)
-        {
             holdExclamation.GetComponent<holdExclamation>().audioSource = audioSourceObject.GetComponent<AudioSource>();
-        }
 
-        strikerStatus.Clear();
+        strikerStatus = new List<int>(new int[charts.Count]);
+        strikerList   = new List<GameObject>(new GameObject[charts.Count]);
 
         for (int i = 0; i < charts.Count; i++)
         {
-            strikerStatus.Add(0);
+            bool activated = charts[i].appearTime == 0;
+            if (activated) strikerStatus[i] = 1;
 
-            if (charts[i].appearTime == 0)
-            {
-                strikerStatus[i] = 1;
-                SpawnStriker(i, true);
-            }
-            else
-            {
-                SpawnStriker(i, false);
-            }
+            SpawnStriker(i, activated);
         }
     }
-
     private void SpawnStriker(int chartIndex, bool isActivated)
     {
         if (chartIndex < 0 || chartIndex >= charts.Count) return;
         if (spawnPositions == null || spawnPositions.Length == 0) return;
+        
 
         int hp = charts[chartIndex].notes.Length;
         float bpm = charts[chartIndex].bpm;
@@ -114,7 +101,7 @@ public class StrikerManager : MonoBehaviour
         GameObject selectedStriker = strikerPrefabs[prefabIndex];
         GameObject striker = Instantiate(selectedStriker, spawnPositions[positionIndex].position, Quaternion.identity);
 
-        strikerList.Add(striker);
+        strikerList[chartIndex] = striker;
 
         StrikerController strikerController = striker.GetComponent<StrikerController>();
         if (strikerController != null)

@@ -14,6 +14,12 @@ public class StageSetupManager : MonoBehaviour
     [SerializeField] private GameController gameController;
     [SerializeField] private JudgeSystem judgeSystem;
 
+    [Header("CutIn UI")]
+    [SerializeField] private DynamicUIManager dynamicUIManager;
+    [SerializeField] private RectTransform cutInParent; // 반드시 Canvas 아래 컨테이너
+    private GameObject spawnedCutInUp;
+    private GameObject spawnedCutInDown;
+
     [Header("Tutorial Modules")]
     [SerializeField] private TutorialManager tutorialManager;
     [SerializeField] private DialogueManager dialogueManager;
@@ -80,6 +86,29 @@ public class StageSetupManager : MonoBehaviour
 
         guideboxTop = Instantiate(guideboxTopPrefab, new Vector3(0f, 0.6f, 0f), Quaternion.identity);
         guideboxBottom = Instantiate(guideboxBottomPrefab, new Vector3(0f, -0.6f, 0f), Quaternion.identity);
+    }
+
+    public void SetCutIn(StageData stageData)
+    {
+        if (dynamicUIManager == null) dynamicUIManager = FindObjectOfType<DynamicUIManager>(true);
+
+        // 기존 컷인 정리
+        if (spawnedCutInUp != null) Destroy(spawnedCutInUp);
+        if (spawnedCutInDown != null) Destroy(spawnedCutInDown);
+        spawnedCutInUp = null;
+        spawnedCutInDown = null;
+
+        // StageData에 저장된 프리팹
+        GameObject upPrefab = stageData.CutInUpPrefab;
+        GameObject downPrefab = stageData.CutInDownPrefab;
+
+        if (upPrefab != null)
+            spawnedCutInUp = Instantiate(upPrefab, cutInParent, false);
+
+        if (downPrefab != null)
+            spawnedCutInDown = Instantiate(downPrefab, cutInParent, false);
+
+        dynamicUIManager.SetCutInObjects(spawnedCutInUp, spawnedCutInDown);
     }
 
     public void ApplyStageModules()

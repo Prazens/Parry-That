@@ -39,8 +39,6 @@ public class StageFlowManager : MonoBehaviour
     private bool victorySequenceTriggered = false;
     private bool victoryStarted = false;
 
-    public BossController Boss => bossController;
-
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -157,6 +155,7 @@ public class StageFlowManager : MonoBehaviour
         if (stageSetupManager != null)
         {
             stageSetupManager.ApplyStageModules();
+            stageSetupManager.SetCutIn(currentStageData);
             stageSetupManager.SpawnPlayer();
         }
 
@@ -175,11 +174,6 @@ public class StageFlowManager : MonoBehaviour
 
         Time.timeScale = 1f;
 
-        if (strikerManager != null)
-        {
-            strikerManager.ClearStrikers();
-        }
-
         if (dynamicUIManager != null)
         {
             dynamicUIManager.Setup_UI();
@@ -196,20 +190,11 @@ public class StageFlowManager : MonoBehaviour
             bossController.clearHp();
         }
 
-        if (stageSetupManager != null)
-        {
-            stageSetupManager.SpawnPlayer();
-        }
-
         if (stageChartLoader != null)
         {
             if (currentStageData != null)
             {
                 stageChartLoader.LoadChartsFromStageData(currentStageData);
-            }
-            else
-            {
-                stageChartLoader.LoadChartsIntoStrikerManager();
             }
         }
         else
@@ -219,6 +204,7 @@ public class StageFlowManager : MonoBehaviour
 
         if (strikerManager != null)
         {
+            strikerManager.ClearStrikers();
             strikerManager.InitStriker(0);
         }
 

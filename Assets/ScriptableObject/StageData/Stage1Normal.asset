@@ -28,3 +28,6 @@ MonoBehaviour:
   bgm: {fileID: 8300000, guid: 2a58be39a94f8f1499dbced119ddbbeb, type: 3}
   overrideMusicOffset: 0
   musicOffset: 0
+  cutInUpPrefab: {fileID: 5141218571372973629, guid: bb12253c0c433044e8ff902aa7058426, type: 3}
+  cutInDownPrefab: {fileID: 3491680995409643223, guid: 2beb9ed04b3801b45ae8ed4be314bc73, type: 3}
+  bossSpawnPrefabs: []

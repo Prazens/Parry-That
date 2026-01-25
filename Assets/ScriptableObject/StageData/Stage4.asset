@@ -12,12 +12,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e35ccfe094e13414891f641969d18e51, type: 3}
   m_Name: Stage4
   m_EditorClassIdentifier: 
-  stageId: 0
+  stageId: 4
   difficulty: 0
-  category: 1
-  displayName: Stage
-  chartJsons: []
-  bgm: {fileID: 0}
+  category: 2
+  displayName: Stage4
+  chartJsons:
+  - {fileID: 4900000, guid: 854c466d7288d7a4fa4ce28af911e17d, type: 3}
+  - {fileID: 4900000, guid: 110db19d10b43954ab0c8385f1ee391c, type: 3}
+  - {fileID: 4900000, guid: 785da34b69f76da4e8ee127891abdd58, type: 3}
+  - {fileID: 4900000, guid: 40605bb1f1c57e542b2b328f72938367, type: 3}
+  bgm: {fileID: 8300000, guid: df079bda5828e1e4eada7217bfe741d0, type: 3}
   overrideMusicOffset: 0
   musicOffset: 0
-  bossSpawnEntries: []
+  cutInUpPrefab: {fileID: 2590032415983499436, guid: 1135389da89fc02438398ee8d2079be8, type: 3}
+  cutInDownPrefab: {fileID: 3646633788866453936, guid: 4d4c3079d1c6da44ca3e25baaf094dfa, type: 3}
+  bossSpawnPrefabs:
+  - prefab: {fileID: 205060887376973189, guid: 26a5df6f340af6d40ba5323cbe734719, type: 3}
+    attachPointName: 
+    localPosition: {x: 0, y: 0, z: 0}
+    localEulerAngles: {x: 0, y: 0, z: 0}
+    localScale: {x: 0.6, y: 0.6, z: 1}
+  - prefab: {fileID: 693316808083340081, guid: ba2adb02dbdd6924285c316c7944706c, type: 3}
+    attachPointName: 
+    localPosition: {x: 0, y: 0, z: 0}
+    localEulerAngles: {x: 0, y: 0, z: 0}
+    localScale: {x: 0.6, y: 0.6, z: 1}

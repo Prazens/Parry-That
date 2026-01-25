@@ -19,20 +19,13 @@ public class BossSpawnEntry
     public string attachPointName;
 
     [Tooltip("부모 기준 로컬 위치 오프셋")]
-    public Vector3 localPosition;
+    public Vector3 localPosition = Vector3.zero;
 
     [Tooltip("부모 기준 로컬 회전(오일러)")]
-    public Vector3 localEulerAngles;
+    public Vector3 localEulerAngles = Vector3.zero;
 
     [Tooltip("부모 기준 로컬 스케일")]
-    public Vector3 localScale;
-
-    public BossSpawnEntry()
-    {
-        localPosition = Vector3.zero;
-        localEulerAngles = Vector3.zero;
-        localScale = Vector3.one;
-    }
+    public Vector3 localScale = Vector3.one;
 }
 
 [CreateAssetMenu(menuName = "Stage/Stage Data")]
@@ -54,8 +47,16 @@ public class StageData : ScriptableObject
     [SerializeField] private bool overrideMusicOffset = false;
     [SerializeField] private float musicOffset = 0f;
 
+    [Header("CutIn UI")]
+    [SerializeField] private GameObject cutInUpPrefab;
+    [SerializeField] private GameObject cutInDownPrefab;
+
+    public GameObject CutInUpPrefab => cutInUpPrefab;
+    public GameObject CutInDownPrefab => cutInDownPrefab;
+
+
     [Header("Boss Spawns (Boss stage only)")]
-    [SerializeField] private List<BossSpawnEntry> bossSpawnEntries = new List<BossSpawnEntry>();
+    [SerializeField] private List<BossSpawnEntry> bossSpawnPrefabs = new List<BossSpawnEntry>();
 
     public string SaveKey => $"{stageId}_{difficulty}";
 
@@ -70,5 +71,5 @@ public class StageData : ScriptableObject
     public bool OverrideMusicOffset => overrideMusicOffset;
     public float MusicOffset => musicOffset;
 
-    public IReadOnlyList<BossSpawnEntry> BossSpawnPrefabs => BossSpawnPrefabs;
+    public IReadOnlyList<BossSpawnEntry> BossSpawnPrefabs => bossSpawnPrefabs;
 }

@@ -44,6 +44,7 @@ public class DynamicUIManager : MonoBehaviour
     // CutIn (구버전 UIManager 그대로 이식)
     // -------------------------
     [Header("CutIn")]
+    [SerializeField] private RectTransform cutInParent; // Canvas 아래에 있는 컨테이너
     [SerializeField] private GameObject[] cutScenes; // 0: Up, 1: Down
 
     public bool isStop1 = false;
@@ -70,6 +71,9 @@ public class DynamicUIManager : MonoBehaviour
     // -------------------------
     public void Setup_UI()
     {
+        // -------------------------
+        // HUD 기본 세팅 (원래 코드 그대로)
+        // -------------------------
         if (TutorialManager.isTutorial)
         {
             if (hpDisplay != null) hpDisplay.SetActive(false);
@@ -108,6 +112,16 @@ public class DynamicUIManager : MonoBehaviour
                 }
             }
         }
+    }
+
+
+    public void SetCutInObjects(GameObject upObj, GameObject downObj)
+    {
+        if (cutScenes == null || cutScenes.Length < 2)
+            cutScenes = new GameObject[2];
+
+        cutScenes[0] = upObj;
+        cutScenes[1] = downObj;
     }
 
     public void HideAll()

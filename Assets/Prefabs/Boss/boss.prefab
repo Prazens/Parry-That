@@ -105,8 +105,6 @@ MonoBehaviour:
   stageFlowManager: {fileID: 0}
   bossAnimator: {fileID: 7657989550637156508}
   hpBarPrefab: {fileID: 8497898252444216346, guid: 89cb566f97c8d124381826ff7e0c4402, type: 3}
-  hpBar: {fileID: 0}
-  hpControl: {fileID: 0}
 --- !u!95 &7657989550637156508
 Animator:
   serializedVersion: 5

@@ -34,10 +34,6 @@ public class BossController : MonoBehaviour
         if (bossAnimator == null)
         {
             bossAnimator = GetComponent<Animator>();
-            if (bossAnimator == null)
-            {
-                bossAnimator = GetComponentInChildren<Animator>(true);
-            }
         }
 
         // -------------------------
@@ -83,8 +79,8 @@ public class BossController : MonoBehaviour
 
     public void clearHp()
     {
-        hp = 0;
-        maxHp = 0;
+        hp = 101;
+        maxHp = 101;
         UpdateHpUI();
     }
 
