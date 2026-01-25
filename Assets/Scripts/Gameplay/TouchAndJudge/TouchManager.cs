@@ -40,9 +40,11 @@ public class TouchManager : MonoBehaviour
 
     void Update()
     {
-        if (StageFlowManager.isActive) // StageManager.isActive -> StageFlowManager.isActive
+        if (StageFlowManager.isActive)
         {
-            if (isTouchAvailable)
+            KeyChecker();
+            MouseChecker();
+            /*if (isTouchAvailable)
             {
                 TouchChecker();
             }
@@ -50,7 +52,7 @@ public class TouchManager : MonoBehaviour
             {
                 //KeyChecker();  // Legacy
                 MouseChecker();
-            }
+            }*/
         }
     }
 

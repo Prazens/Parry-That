@@ -41,28 +41,13 @@ public class DynamicUIManager : MonoBehaviour
     private Vector2 position_down = new Vector2(0f, -0.6f);
 
     // -------------------------
-    // CutIn (구버전 그대로)
+    // CutIn (구버전 UIManager 그대로 이식)
     // -------------------------
     [Header("CutIn")]
     [SerializeField] private GameObject[] cutScenes; // 0: Up, 1: Down
 
     public bool isStop1 = false;
     public bool isStop2 = false;
-
-    // ✅ 두번째부터 안 나오는 문제 방지용 최소치:
-    // - 같은 컷인이 다시 들어오면 이전 코루틴을 끊고(StopCoroutine),
-    //   상태/트리거를 리셋한 뒤 다시 시작.
-    private Coroutine cutInRoutine1;
-    private Coroutine cutInRoutine2;
-
-    // -------------------------
-    // CutIn Sound (요청: DynamicUIManager로 다시)
-    // -------------------------
-    [Header("CutIn Sound")]
-    [SerializeField] private AudioSource cutInAudioSource;
-    [SerializeField] private AudioClip cutInLoopClip;     // 컷인(홀드 중) 루프/지속 사운드
-    [SerializeField] private AudioClip cutInEndClip;      // 컷인 종료(홀드 끝) 사운드
-    [SerializeField] private float cutInSoundVolume = 1f;
 
     private void Awake()
     {
@@ -99,6 +84,7 @@ public class DynamicUIManager : MonoBehaviour
             scoreDisplay.GetComponent<TextMeshProUGUI>().text = "0";
             initialPosition[0] = scoreDisplay.transform.position;
         }
+
         if (hpDisplay != null)
         {
             initialPosition[1] = hpDisplay.transform.position;
@@ -114,6 +100,7 @@ public class DynamicUIManager : MonoBehaviour
                 heartDisplay.transform.localPosition = new Vector3(27 * (i % 5), -27 * (i / 5), 0);
 
                 heartDisplays[i] = heartDisplay;
+
                 if (heartImages != null && heartImages.Length > 0)
                 {
                     heartDisplay.GetComponent<Image>().sprite = heartImages[0];
@@ -176,12 +163,21 @@ public class DynamicUIManager : MonoBehaviour
         if (judgeDisplayPrefab == null) return;
 
         Vector3 generatePosition = Vector3.up;
+
         switch (direction)
         {
-            case Direction.Up: generatePosition = Vector3.up * Screen.height / 6; break;
-            case Direction.Down: generatePosition = Vector3.down * Screen.height / 6; break;
-            case Direction.Left: generatePosition = Vector3.left * 120; break;
-            case Direction.Right: generatePosition = Vector3.right * 120; break;
+            case Direction.Up:
+                generatePosition = Vector3.up * Screen.height / 6;
+                break;
+            case Direction.Down:
+                generatePosition = Vector3.down * Screen.height / 6;
+                break;
+            case Direction.Left:
+                generatePosition = Vector3.left * 120;
+                break;
+            case Direction.Right:
+                generatePosition = Vector3.right * 120;
+                break;
         }
 
         GameObject judgeDisplay = Instantiate(judgeDisplayPrefab);
@@ -190,6 +186,7 @@ public class DynamicUIManager : MonoBehaviour
         judgeDisplay.transform.position = new Vector3(Screen.width / 2, Screen.height / 2) + generatePosition;
 
         int spriteIndex = math.abs(judge - 3);
+
         if (judgeImages != null && spriteIndex >= 0 && spriteIndex < judgeImages.Length)
         {
             judgeDisplay.GetComponent<Image>().sprite = judgeImages[spriteIndex];
@@ -246,6 +243,7 @@ public class DynamicUIManager : MonoBehaviour
         isFading = true;
 
         float elapsedTime = 0f;
+
         while (elapsedTime < fadeDuration * 0.01f)
         {
             elapsedTime += Time.deltaTime;
@@ -253,9 +251,11 @@ public class DynamicUIManager : MonoBehaviour
             SetAlpha(alpha);
             yield return null;
         }
+
         SetAlpha(maxAlpha);
 
         elapsedTime = 0f;
+
         while (elapsedTime < fadeDuration * 0.99f)
         {
             elapsedTime += Time.deltaTime;
@@ -263,6 +263,7 @@ public class DynamicUIManager : MonoBehaviour
             SetAlpha(alpha);
             yield return null;
         }
+
         SetAlpha(0f);
 
         isFading = false;
@@ -283,17 +284,28 @@ public class DynamicUIManager : MonoBehaviour
     public void ShowParticle(Direction direction, bool perfect)
     {
         Vector2 spawnPos = Vector2.zero;
+
         switch (direction)
         {
-            case Direction.Up: spawnPos = position_up; break;
-            case Direction.Down: spawnPos = position_down; break;
+            case Direction.Up:
+                spawnPos = position_up;
+                break;
+            case Direction.Down:
+                spawnPos = position_down;
+                break;
         }
 
         GameObject particleObj2;
         int randNum = UnityEngine.Random.Range(0, 3);
 
-        if (perfect) particleObj2 = Instantiate(ParticlePerfect[randNum], spawnPos, Quaternion.identity);
-        else particleObj2 = Instantiate(ParticleParried[randNum], spawnPos, Quaternion.identity);
+        if (perfect)
+        {
+            particleObj2 = Instantiate(ParticlePerfect[randNum], spawnPos, Quaternion.identity);
+        }
+        else
+        {
+            particleObj2 = Instantiate(ParticleParried[randNum], spawnPos, Quaternion.identity);
+        }
 
         Animator particle = particleObj2.GetComponentInChildren<Animator>();
         if (particle != null)
@@ -310,7 +322,7 @@ public class DynamicUIManager : MonoBehaviour
     }
 
     // =========================================================
-    // ✅ CutIn : 구버전 UIManager 로직 "그대로"
+    // CutIn : 구버전 UIManager 로직 그대로 이식
     // =========================================================
     private IEnumerator EaseInEffect(GameObject targetUIImage, Direction direction, float _duration)
     {
@@ -320,9 +332,6 @@ public class DynamicUIManager : MonoBehaviour
         Animator animator = targetUIImage.GetComponent<Animator>();
         if (animator != null)
         {
-            // 트리거가 씹히는 경우 방지(연속 호출 시)
-            animator.ResetTrigger("cutIn");
-            animator.ResetTrigger("cutOut");
             animator.SetTrigger("cutIn");
         }
 
@@ -331,19 +340,16 @@ public class DynamicUIManager : MonoBehaviour
 
         Vector2 startPos = uiElement.anchoredPosition;
 
-        // ⭐ 시작 상태 강제(두번째부터 안 나오는 원인 제거)
-        if (uiImage != null) uiImage.color = Color.white;
-        uiElement.anchoredPosition = startPos;
-
         while (elapsedTime < duration + 0.12f)
         {
-            if (targetUIImage == cutScenes[0] && isStop1)
+            if (isStop1)
             {
                 elapsedTime = 0f;
                 isStop1 = false;
                 break;
             }
-            if (targetUIImage == cutScenes[1] && isStop2)
+
+            if (isStop2)
             {
                 elapsedTime = 0f;
                 isStop2 = false;
@@ -351,16 +357,16 @@ public class DynamicUIManager : MonoBehaviour
             }
 
             float t = (duration <= 0f) ? 1f : (elapsedTime / duration);
-            t = Mathf.Clamp01(t);
-            t = Mathf.Sqrt(Mathf.Sqrt(Mathf.Sqrt(t)));
+            t = Mathf.Sqrt(Mathf.Sqrt(Mathf.Sqrt(t))); // Ease out
 
             switch (direction)
             {
                 case Direction.Up:
-                    uiElement.anchoredPosition = Vector2.Lerp(startPos, startPos + Vector2.right * 1600, t);
+                    uiElement.anchoredPosition = Vector2.Lerp(startPos, startPos + Vector2.right * 1600f, t);
                     break;
+
                 case Direction.Down:
-                    uiElement.anchoredPosition = Vector2.Lerp(startPos, startPos + Vector2.left * 1600, t);
+                    uiElement.anchoredPosition = Vector2.Lerp(startPos, startPos + Vector2.left * 1600f, t);
                     break;
             }
 
@@ -375,7 +381,7 @@ public class DynamicUIManager : MonoBehaviour
 
         Vector2 currentPos = uiElement.anchoredPosition;
 
-        elapsedTime = 0f;
+        // 구버전 그대로: elapsedTime 리셋 안 함
         while (elapsedTime < 0.3f)
         {
             float t = elapsedTime / 0.3f;
@@ -390,8 +396,6 @@ public class DynamicUIManager : MonoBehaviour
 
         if (animator != null)
         {
-            animator.ResetTrigger("cutIn");
-            animator.ResetTrigger("cutOut");
             animator.SetTrigger("cutOut");
         }
     }
@@ -402,75 +406,13 @@ public class DynamicUIManager : MonoBehaviour
 
         if (isHide)
         {
-            // ✅ 구버전 방식: stop flag만 올려서 코루틴이 “원복+cutOut”까지 가도록 유도
             isStop1 = true;
             isStop2 = true;
-
-            // ✅ 사운드도 같이 끄기 (요청)
-            StopCutInHoldSound();
-            PlayCutInEndSound();
-            return;
         }
-
-        // ✅ 연속 호출되면 이전 코루틴 정리(두번째부터 안 나오는 문제 방지)
-        if (cutInRoutine1 != null)
+        else
         {
-            StopCoroutine(cutInRoutine1);
-            cutInRoutine1 = null;
+            StartCoroutine(EaseInEffect(cutScenes[0], Direction.Up, _duration));
+            StartCoroutine(EaseInEffect(cutScenes[1], Direction.Down, _duration));
         }
-        if (cutInRoutine2 != null)
-        {
-            StopCoroutine(cutInRoutine2);
-            cutInRoutine2 = null;
-        }
-
-        // stop 플래그 잔존 방지
-        isStop1 = false;
-        isStop2 = false;
-
-        cutInRoutine1 = StartCoroutine(EaseInEffect(cutScenes[0], Direction.Up, _duration));
-        cutInRoutine2 = StartCoroutine(EaseInEffect(cutScenes[1], Direction.Down, _duration));
-
-        // ✅ 사운드 (요청: DynamicUIManager로 이동)
-        PlayCutInHoldSound();
-    }
-
-    // =========================================================
-    // ✅ CutIn Sound (DynamicUIManager)
-    // =========================================================
-    public void PlayCutInHoldSound()
-    {
-        if (cutInAudioSource == null) return;
-        if (cutInLoopClip == null) return;
-
-        if (!cutInAudioSource.isPlaying || cutInAudioSource.clip != cutInLoopClip)
-        {
-            cutInAudioSource.Stop();
-            cutInAudioSource.clip = cutInLoopClip;
-            cutInAudioSource.loop = true;
-            cutInAudioSource.volume = cutInSoundVolume * PlayerPrefs.GetFloat("masterVolume", 1f) * PlayerPrefs.GetFloat("playerVolume", 1f);
-            cutInAudioSource.Play();
-        }
-    }
-
-    public void StopCutInHoldSound()
-    {
-        if (cutInAudioSource == null) return;
-        if (cutInAudioSource.clip == cutInLoopClip)
-        {
-            cutInAudioSource.Stop();
-            cutInAudioSource.clip = null;
-        }
-    }
-
-    public void PlayCutInEndSound()
-    {
-        if (cutInAudioSource == null) return;
-        if (cutInEndClip == null) return;
-
-        cutInAudioSource.PlayOneShot(
-            cutInEndClip,
-            cutInSoundVolume * PlayerPrefs.GetFloat("masterVolume", 1f) * PlayerPrefs.GetFloat("playerVolume", 1f)
-        );
     }
 }
