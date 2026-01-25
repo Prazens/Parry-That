@@ -1,0 +1,272 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 030148ca4f1b0e6419176c7fa6452b9d, type: 3}
+  m_Name: Prologue
+  m_EditorClassIdentifier: Assembly-CSharp::CutsceneData
+  textSet:
+  - "\uB300\uD559\uC0DD '\uC18C\uB9AC'\uB294 \uC2DC\uD5D8\uC744 \uC55E\uB450\uACE0
+    \uD314\uC790 \uC88B\uAC8C \uC790\uACE0 \uC788\uC5C8\uC2B5\uB2C8\uB2E4."
+  - " \uC2EC\uC9C0\uC5B4 \uAFC8\uAE4C\uC9C0 \uAFB8\uACE0 \uC788\uB124\uC694."
+  - "\uC6A9\uC0AC '\uC18C\uB9AC'\uC2DC\uC5EC, \uC138\uACC4\uB97C \uAD6C\uD574\uC8FC\uC18C\uC11C!!"
+  - "\uB9C8\uC655\uC774 \uC18C\uB9AC\uC758 \uC815\uB839\uB4E4\uC744 \uD0C0\uB77D\uC2DC\uCF1C
+    \uC790\uAE30 \uBD80\uD558\uB85C \uBC14\uAFB8\uACE0 \uC788\uC2B5\uB2C8\uB2E4!"
+  - "\uC9C0\uAE08 \uB9C8\uC655\uC744 \uBA48\uCD94\uC9C0 \uBABB\uD558\uBA74 \uC138\uC0C1\uC5D0
+    \uC18C\uB9AC\uAC00 \uC5C6\uC5B4\uC838 \uBC84\uB9B4 \uAC81\uB2C8\uB2E4!"
+  - "\"\uBBF8\uC548\uD55C\uB370 \uAFC8\uC778 \uAC70 \uB2E4 \uD2F0\uB09C\uB2E4.\""
+  - "'\uC18C\uB9AC'\uB294 9\uC2DC\uC5D0 \uC2DC\uD5D8\uC774 \uC788\uC5C8\uC73C\uBBC0\uB85C,
+    \uAFC8 \uAFC0 \uC2DC\uAC04\uB530\uC704 \uC5C6\uC5C8\uC2B5\uB2C8\uB2E4."
+  - "\uADF8\uB7EC\uB098 \uC9DC\uC794\n                                     \n\"\uC544\""
+  - "\"\uC544\uB2C8, \uC54C\uB78C\uC774 \uBD84\uBA85 \uC6B8\uB838\uC5B4\uC57C\uD588\uB294\uB370...?\"\n                                    
+    \n\n\"\uC544?\""
+  - "\uC8FD\uC5EC\uBC84\uB9AC\uACA0\uB2E4 \uB9C8\uC655!!!!"
+  panels:
+  - type: 0
+    anchorMin: {x: 0.5, y: 1}
+    anchorMax: {x: 0.5, y: 1}
+    pivot: {x: 0.5, y: 0.5}
+    anchoredPosition: {x: 0, y: -350}
+    size: {x: 1800, y: 1261}
+    scale: {x: 0.56, y: 0.56, z: 1}
+    sprite: {fileID: 21300000, guid: 9586115a4c62b884495fbf9b4edc2a0f, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0.5, y: 0}
+    anchorMax: {x: 0.5, y: 0}
+    pivot: {x: 0.5, y: 0.5}
+    anchoredPosition: {x: 0, y: 280}
+    size: {x: 1800, y: 1236}
+    scale: {x: 0.56, y: 0.56, z: 1}
+    sprite: {fileID: 21300000, guid: 90f0e8ad14e1cd7489d6838ae1410f7a, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0, y: 0}
+    anchorMax: {x: 1, y: 1}
+    pivot: {x: 0.5, y: 0.5}
+    anchoredPosition: {x: 0, y: 0}
+    size: {x: 0, y: 0}
+    scale: {x: 1, y: 1, z: 1}
+    sprite: {fileID: 21300000, guid: af88363ad7b26af40aed6069c2fc7d07, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0, y: 0}
+    anchorMax: {x: 1, y: 1}
+    pivot: {x: 0.5, y: 0.5}
+    anchoredPosition: {x: 0, y: 0}
+    size: {x: 0, y: 0}
+    scale: {x: 1, y: 1, z: 1}
+    sprite: {fileID: 21300000, guid: b172a4a99f288b442870ccc9bf2f01c5, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0, y: 0}
+    anchorMax: {x: 1, y: 1}
+    pivot: {x: 0.5, y: 0.5}
+    anchoredPosition: {x: 0, y: 0}
+    size: {x: 0, y: 0}
+    scale: {x: 1, y: 1, z: 1}
+    sprite: {fileID: 21300000, guid: c3fa47b1130ff5743bc31fd251153120, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0, y: 0}
+    anchorMax: {x: 1, y: 1}
+    pivot: {x: 0.5, y: 0.5}
+    anchoredPosition: {x: 0, y: 0}
+    size: {x: 0, y: 0}
+    scale: {x: 1, y: 1, z: 1}
+    sprite: {fileID: 21300000, guid: efd0f13c32a0f754ab4d5c4d93886e18, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0, y: 0}
+    anchorMax: {x: 1, y: 1}
+    pivot: {x: 0.5, y: 0.5}
+    anchoredPosition: {x: 0, y: 0}
+    size: {x: 0, y: 0}
+    scale: {x: 1, y: 1, z: 1}
+    sprite: {fileID: 21300000, guid: 2c80e1e86689b184584854f93f716fb0, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0, y: 0}
+    anchorMax: {x: 1, y: 1}
+    pivot: {x: 0.5, y: 0.5}
+    anchoredPosition: {x: 0, y: 0}
+    size: {x: 0, y: 0}
+    scale: {x: 1, y: 1, z: 1}
+    sprite: {fileID: 21300000, guid: e2fbc56a0347c1d4aa8aadc10f990f3d, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 1
+    anchorMin: {x: 0, y: 0}
+    anchorMax: {x: 1, y: 1}
+    pivot: {x: 0.5, y: 0.5}
+    anchoredPosition: {x: 0, y: 0}
+    size: {x: 0, y: 0}
+    scale: {x: 1, y: 1, z: 1}
+    sprite: {fileID: 21300000, guid: b5220e0e64fb8724aa300dc51a7eb829, type: 3}
+    animatorcontroller: {fileID: 9100000, guid: 5370820d7548ec0478493f2e8f46bab1, type: 2}
+  - type: 0
+    anchorMin: {x: 0, y: 0}
+    anchorMax: {x: 1, y: 1}
+    pivot: {x: 0.5, y: 0.5}
+    anchoredPosition: {x: 0, y: 0}
+    size: {x: 0, y: 0}
+    scale: {x: 1, y: 1, z: 1}
+    sprite: {fileID: 21300000, guid: e0fe8238d689dcc4d93ad59719f661a5, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0, y: 0}
+    anchorMax: {x: 1, y: 1}
+    pivot: {x: 0.5, y: 0.5}
+    anchoredPosition: {x: 0, y: 0}
+    size: {x: 0, y: 0}
+    scale: {x: 1, y: 1, z: 1}
+    sprite: {fileID: 21300000, guid: 1fe6a90b94723fc45bea99f992745ed8, type: 3}
+    animatorcontroller: {fileID: 0}
+  clickSteps:
+  - actions:
+    - actionType: 2
+      index: 0
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 5
+      index: 0
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 2
+      index: 1
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 4
+      index: 1
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 3
+      index: 0
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 3
+      index: 1
+      waitseconds: 0.3
+      animatorTrigger: 
+    - actionType: 2
+      index: 2
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 5
+      index: 2
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 3
+      index: 2
+      waitseconds: 0.3
+      animatorTrigger: 
+    - actionType: 2
+      index: 3
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 5
+      index: 3
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 3
+      index: 3
+      waitseconds: 0.3
+      animatorTrigger: 
+    - actionType: 2
+      index: 4
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 5
+      index: 4
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 3
+      index: 4
+      waitseconds: 0.3
+      animatorTrigger: 
+    - actionType: 2
+      index: 5
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 5
+      index: 5
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 3
+      index: 5
+      waitseconds: 0.3
+      animatorTrigger: 
+    - actionType: 2
+      index: 6
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 5
+      index: 6
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 3
+      index: 6
+      waitseconds: 0.3
+      animatorTrigger: 
+    - actionType: 2
+      index: 7
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 5
+      index: 7
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 3
+      index: 7
+      waitseconds: 0.3
+      animatorTrigger: 
+    - actionType: 2
+      index: 8
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 5
+      index: 8
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 6
+      index: 8
+      waitseconds: 2
+      animatorTrigger: Play
+  - actions:
+    - actionType: 3
+      index: 8
+      waitseconds: 0.3
+      animatorTrigger: 
+    - actionType: 2
+      index: 9
+      waitseconds: 0.7
+      animatorTrigger: 
+    - actionType: 1
+      index: 9
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 0
+      index: 10
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 5
+      index: 9
+      waitseconds: 1.4
+      animatorTrigger: 
+  bgm: {fileID: 8300000, guid: d63eee0d6f4446e469e91f3bd1213ae1, type: 3}
+  loopBgm: 1
+  bgmVolume: 1

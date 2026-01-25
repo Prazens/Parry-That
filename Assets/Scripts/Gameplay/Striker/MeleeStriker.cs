@@ -69,7 +69,7 @@ public class MeleeStriker : MonoBehaviour
         if (currentNoteIndex >= chartData.notes.Length) return;
 
         // 현재 시간 가져오기
-        float currentTime = StageManager.Instance.currentTime;
+        float currentTime = StageFlowManager.Instance.currentTime;
         // 1️⃣ `prepareTime` 확인 → 준비 상태 활성화 & `arriveTime`과 `type` 저장
         if (currentNoteIndex < chartData.notes.Length && currentTime >= chartData.notes[currentNoteIndex].time * (60f / bpm) + playerManager.musicOffset)
         {

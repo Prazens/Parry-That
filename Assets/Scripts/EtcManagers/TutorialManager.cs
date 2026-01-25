@@ -13,10 +13,13 @@ public class TutorialManager : MonoBehaviour
     [Header("기본 UI참조")]
     [SerializeField] private Canvas mainCanvas;
     [SerializeField] private Font DescriptionFont;
-    [SerializeField] private StageManager stageManager;
+    [SerializeField] private StageFlowManager stageFlowManager;
+    [SerializeField] private StageAudioManager stageAudioManager;
     [SerializeField] private StrikerManager strikerManager;
-    // [SerializeField] private StageManager strikerController;
-    [SerializeField] private ScoreManager ScoreManager;
+
+    // ScoreManager -> JudgeSystem (필드만 교체, 본문 로직은 안 건드림)
+    [SerializeField] private JudgeSystem judgeSystem;
+
     [SerializeField] private GameObject VictoryAnime;
     private PlayerManager playerManager;
 
@@ -39,15 +42,24 @@ public class TutorialManager : MonoBehaviour
     private Animator animator;
 
     Text GameDescriptionText;
-    // public static int[] StrikerNum = { 0, 1, 2, 3, 7, 11, 15 };   // 14까지 존재. // 각 패턴 스트라이커 시작 인덱스
 
     private void Awake()
     {
-        // 튜토리얼 시작시 소환/세팅할 것들
-        databaseManager = GameObject.FindObjectOfType<DatabaseManager>();
+        databaseManager = FindObjectOfType<DatabaseManager>();
         isTutorial = true;
         phase = 0;
 
+        ChartTimeList.AddRange(new float[] { 0f, 6f, 6f, 10f, 6f, 10f, 14f });
+
+        spriteRenderer = VictoryAnime.GetComponent<SpriteRenderer>();
+        animeSpriteImg = VictoryAnime.GetComponent<Image>();
+        animator = VictoryAnime.GetComponent<Animator>();
+
+        VictoryAnime.SetActive(false);
+    }
+
+    private void Start()
+    {
         // 공격 설명 텍스트 생성
         GameObject GameDescription = new GameObject("GameDescription");
         GameDescription.transform.SetParent(mainCanvas.transform, false);
@@ -64,36 +76,30 @@ public class TutorialManager : MonoBehaviour
         GameDescriptionText.text = "노란색 느낌표가 뜨는 박자를 따라 화면을 터치하세요.";
 
         GameDescription.SetActive(true);
-
-        ChartTimeList.AddRange(new float[] {0f, 6f, 6f, 10f, 6f, 10f, 14f  }); ; // 차트 반복 시작 시간   // 
-        // chartIdxList.AddRange(new int[] { 0, 3, 9, 12, 16, 24, 26 }); // 각 게임의 시작 채보 인덱스  // 25가 마지막
-
-        spriteRenderer = VictoryAnime.GetComponent<SpriteRenderer>();
-        animeSpriteImg = VictoryAnime.GetComponent<Image>();
-        animator = VictoryAnime.GetComponent<Animator>();
-
-        VictoryAnime.SetActive(false);
-    }
-    private void Start()
-    {
+        
         playerManager = GameObject.Find("Player(Clone)").GetComponent<PlayerManager>();
         StartCoroutine(Daehwa1());  // 처음 대화 시작
-        // count = 0;
-        StageManager.isActive = false;  // 게임 비활성화
+
+        StageFlowManager.isActive = false;
     }
 
-    // private int count = 0;   // 임시 테스트용
     private void Update()
     {
-        float currentTime = StageManager.Instance.currentTime;
-        // // Debug.Log($"{currentTime}");
-        if (daehwaIndex >= ChartTimeList.Count) 
+        float currentTime = StageFlowManager.Instance.currentTime;
+
+        if (daehwaIndex >= ChartTimeList.Count)
             return; //모든 대화 끝나면 그냥 RETURN
 
         if (!isDaehwa)  // 대화 중이 아닌 상황 (게임 중)
         {
-            //// Debug.LogWarning($"시간: {currentTime} :{ChartTimeList[daehwaIndex - 1]} ~ {ChartTimeList[daehwaIndex]}, 대화인덱스:{daehwaIndex}");
-            if (currentTime >= ChartTimeList[daehwaIndex] + stageManager.musicOffset)   // idx: 게임 끝난 후의 목표 대화 idx
+            // stageFlowManager.musicOffset -> StageAudioManager에서 관리
+            float musicOffset = 0f;
+            if (stageFlowManager != null && stageAudioManager != null)
+            {
+                musicOffset = stageAudioManager.musicOffset;
+            }
+
+            if (currentTime >= ChartTimeList[daehwaIndex] + musicOffset)
             {
                 List<GameObject> strikerList_ = strikerManager.strikerList;
                 bool isClear = true;
@@ -103,17 +109,17 @@ public class TutorialManager : MonoBehaviour
                     GameObject striker = strikerList_[i];
                     StrikerController strikerController = striker.GetComponent<StrikerController>();
 
-                    // Debug.LogError($"CheckComplete: {striker.name} hp: {strikerController.hp}");
-
                     if (strikerController.hp != 0)
                     {
                         isClear = false; // 클리어 조건 미달
                     }
                 }
+
                 if (isClear) patternComplete = true;
                 print(patternComplete);
 
-                if (patternComplete) {
+                if (patternComplete)
+                {
                     phase += 1;
                     strikerManager.strikerList.Clear();
                     isDaehwa = true;
@@ -121,15 +127,14 @@ public class TutorialManager : MonoBehaviour
                 else
                 {
                     strikerManager.strikerList.Clear();
-                    stageManager.StartStage();
+                    stageFlowManager.StartStage();
                 }
-                
             }
-            
         }
 
         animeSpriteImg.sprite = spriteRenderer.sprite;
     }
+
     private IEnumerator Daehwa1()
     {
         isDaehwa = true;
@@ -161,13 +166,22 @@ public class TutorialManager : MonoBehaviour
         GameDescriptionText.text = "노란색 느낌표가 뜨는 박자를 따라 화면을 터치하세요.";
 
         isDaehwa = false;
-        StageManager.isActive = true;
 
-        // 튜토 게임 1
+        // StageManager.isActive = true -> StageFlowManager.isActive = true
+        StageFlowManager.isActive = true;
+
         daehwaIndex += 1;
-        yield return new WaitUntil(() => isDaehwa);  // 패턴 성공할 때까지 대기 (isDaehwa가 true가 되면 다음 코드 실행됨)
-        StageManager.isActive = false;
-        stageManager.AudioPause();
+        yield return new WaitUntil(() => isDaehwa);
+
+        // StageManager.isActive = false -> StageFlowManager.isActive = false
+        StageFlowManager.isActive = false;
+
+        // stageFlowManager.AudioPause() -> StageAudioManager.AudioPause()
+        if (stageFlowManager != null && stageAudioManager != null)
+        {
+            stageAudioManager.AudioPause();
+        }
+
         patternComplete = false;
         StartCoroutine(Daehwa2());
     }
@@ -183,7 +197,7 @@ public class TutorialManager : MonoBehaviour
         string Daehwa2_Text3 = "좀 맞아야 정신을 차리지 않을까요?";
         yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "정령", Daehwa2_Text3, true));
 
-        string Daehwa2_Text4 = "그런가..?";
+        string Daehwa2_Text4 = "그런가..??";
         yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[6], "소리", Daehwa2_Text4, false));
 
         string Daehwa2_Text5 = "아무튼, 이제 더 강한 공격도 같이 오니 용사님부터 걱정하세요!";
@@ -195,14 +209,18 @@ public class TutorialManager : MonoBehaviour
         GameDescriptionText.text = "빨간색 느낌표가 뜨는 박자를 따라 공격이 오는 방향으로 스와이프하세요.";
 
         isDaehwa = false;
-        // count = 0;
 
-        // 튜토 게임 2 함수
         daehwaIndex += 1;
-        stageManager.StartStage();
-        yield return new WaitUntil(() => isDaehwa);  // 패턴 성공할 때까지 대기 (isDaehwa가 true가 되면 다음 코드 실행됨)
-        StageManager.isActive = false;
-        stageManager.AudioPause();
+        stageFlowManager.StartStage();
+        yield return new WaitUntil(() => isDaehwa);
+
+        StageFlowManager.isActive = false;
+
+        if (stageAudioManager != null)
+        {
+            stageAudioManager.AudioPause();
+        }
+
         patternComplete = false;
         StartCoroutine(Daehwa3());
     }
@@ -227,14 +245,18 @@ public class TutorialManager : MonoBehaviour
         GameDescriptionText.text = "탭한 상태에서 원하는 방향으로 스와이프하여 강패링을 할 수도 있습니다.";
 
         isDaehwa = false;
-        // count = 0;
 
-        // 튜토 게임 3 함수
         daehwaIndex += 1;
-        stageManager.StartStage();
-        yield return new WaitUntil(() => isDaehwa);  // 패턴 성공할 때까지 대기 (isDaehwa가 true가 되면 다음 코드 실행됨)
-        StageManager.isActive = false;
-        stageManager.AudioPause();
+        stageFlowManager.StartStage();
+        yield return new WaitUntil(() => isDaehwa);
+
+        StageFlowManager.isActive = false;
+
+        if (stageAudioManager != null)
+        {
+            stageAudioManager.AudioPause();
+        }
+
         patternComplete = false;
         StartCoroutine(Daehwa4());
     }
@@ -257,12 +279,17 @@ public class TutorialManager : MonoBehaviour
 
         isDaehwa = false;
 
-        // 튜토 게임 4 함수
         daehwaIndex += 1;
-        stageManager.StartStage();
-        yield return new WaitUntil(() => isDaehwa);  // 패턴 성공할 때까지 대기 (isDaehwa가 true가 되면 다음 코드 실행됨)
-        StageManager.isActive = false;
-        stageManager.AudioPause();
+        stageFlowManager.StartStage();
+        yield return new WaitUntil(() => isDaehwa);
+
+        StageFlowManager.isActive = false;
+
+        if (stageAudioManager != null)
+        {
+            stageAudioManager.AudioPause();
+        }
+
         patternComplete = false;
         StartCoroutine(Daehwa5());
     }
@@ -282,12 +309,17 @@ public class TutorialManager : MonoBehaviour
 
         isDaehwa = false;
 
-        // 튜토 게임 5 함수
         daehwaIndex += 1;
-        stageManager.StartStage();
-        yield return new WaitUntil(() => isDaehwa);  // 패턴 성공할 때까지 대기 (isDaehwa가 true가 되면 다음 코드 실행됨)
-        StageManager.isActive = false;
-        stageManager.AudioPause();
+        stageFlowManager.StartStage();
+        yield return new WaitUntil(() => isDaehwa);
+
+        StageFlowManager.isActive = false;
+
+        if (stageAudioManager != null)
+        {
+            stageAudioManager.AudioPause();
+        }
+
         patternComplete = false;
         StartCoroutine(Daehwa6());
     }
@@ -322,56 +354,23 @@ public class TutorialManager : MonoBehaviour
 
         isDaehwa = false;
 
-        // 튜토 게임 6 함수
         daehwaIndex += 1;
-        stageManager.StartStage();
-        yield return new WaitUntil(() => isDaehwa);  // 패턴 성공할 때까지 대기 (isDaehwa가 true가 되면 다음 코드 실행됨)
-        StageManager.isActive = false;
-        stageManager.AudioPause();
+        stageFlowManager.StartStage();
+        yield return new WaitUntil(() => isDaehwa);
+
+        StageFlowManager.isActive = false;
+
+        if (stageAudioManager != null)
+        {
+            stageAudioManager.AudioPause();
+        }
+
         patternComplete = false;
         StartCoroutine(Daehwa_Final());
     }
 
     private IEnumerator Daehwa_Final()
     {
-        /*List<GameObject> strikerList_ = strikerManager.strikerList;
-        bool isClear = true;
-
-        for (int i = 0; i < strikerList_.Count; i++)
-        {
-            GameObject striker = strikerList_[i];
-            StrikerController strikerController = striker.GetComponent<StrikerController>();
-            if (strikerController.hp != 0)
-            {
-                isClear = false; // 클리어 조건 미달
-            }
-        }
-
-        if (isClear)
-        {
-            // 엔딩 애니메이션
-            VictoryAnime.SetActive(true);
-            animator.SetTrigger("Play");
-            yield return new WaitForSecondsRealtime(3f);
-
-
-            string Daehwa7_Text2 = "좋아요! 이제 마왕을 잡으러 떠나요!!!!";
-            yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "정령", Daehwa7_Text2, true));
-        }
-        else
-        {
-            string Daehwa7_Text1 = "튜토리얼은 메뉴에서 다시 진행할 수 있어요.";
-            yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "정령", Daehwa7_Text1, true));
-
-            string Daehwa7_Text3 = "이제 마왕을 잡으러 떠나요!!!!";
-            yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "정령", Daehwa7_Text3, true));
-        }*/
-
-        // 승리 애니메이션
-        /*VictoryAnime.SetActive(true);
-        animator.SetTrigger("Play");
-        yield return new WaitForSecondsRealtime(3f);*/
-
         string Daehwa7_Text2 = "좋아요! 이제 마왕을 잡으러 떠나요!!!!";
         yield return StartCoroutine(dialogueManager.ShowDialogue(CharacterSprite[0], "정령", Daehwa7_Text2, true));
 
@@ -380,12 +379,8 @@ public class TutorialManager : MonoBehaviour
         yield break;
     }
 
-    // checkComplete1,2 중에서 1의 방식을 우선적으로 구현. (2로 구현시 많은 버그 예상)
-
-    // 인덱스에 해당하는 스트라이커들을 생성한 상태에서 사용. 그 스트라이커 전부 체력이 0이 되었는지 확인하는 함수
     private void checkComplete1()
     {
-
         List<GameObject> strikerList_ = strikerManager.strikerList;
         bool isClear = true;
 
@@ -394,60 +389,23 @@ public class TutorialManager : MonoBehaviour
             GameObject striker = strikerList_[i];
             StrikerController strikerController = striker.GetComponent<StrikerController>();
 
-            // Debug.LogError($"CheckComplete: {striker.name} hp: {strikerController.hp}");
-
             if (strikerController.hp != 0)
             {
-                isClear = false; // 클리어 조건 미달
-            }
-        }
-        if (isClear) patternComplete = true;    // 모든 스트라이커들이 체력이 0이면 patternComplete = true
-        // Debug.LogError($"{patternComplete}");
-
-    }
-
-    // 모든 스트라이커를 생성한 상태에서 사용. 그 중에서 특정 인덱스에 해당하는 이들이 체력이 모두 0이 되었는지 확인하는 함수 -> 
-    /*private void checkComplete2(int daehwaIndex) { 
-
-        List<GameObject> strikerList_ = strikerManager.strikerList;
-        bool isClear = true;
-
-        int startIndex = StrikerNum[daehwaIndex - 1]; // 시작 인덱스
-        int endIndex = StrikerNum[daehwaIndex];      // 끝 인덱스
-
-        for (int i = startIndex; i < endIndex; i++)
-        {
-            if (i >= strikerList_.Count)
-            {
-                // Debug.LogError($"스트라이커 인덱스 {i}가 유효하지 않습니다.");
-                continue;
-            }
-
-            GameObject striker = strikerList_[i];
-            StrikerController strikerController = striker.GetComponent<StrikerController>();
-
-            // Debug.LogError($"CheckComplete: {striker.name} hp: {strikerController.hp}");
-
-            if (strikerController.hp != 0)
-            {
-                isClear = false; // 클리어 조건 미달
+                isClear = false;
             }
         }
         if (isClear) patternComplete = true;
-        // Debug.LogError($"{patternComplete}");
-
-    }*/
+    }
 
     public void SkipOn()
     {
-        if (TitleMenu.TitlePassed) SceneLinkage.StageLV = 0;
-        else SceneLinkage.StageLV = 1;
-
         DatabaseManager.isTutorialDone = true;
         isTutorial = false;
         phase = 0;
         daehwaIndex = 0;
+
         databaseManager.SaveTutorialDone();
+
         SceneManager.LoadScene("Main");
     }
 }
