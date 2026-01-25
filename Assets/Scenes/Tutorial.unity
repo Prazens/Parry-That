@@ -3015,7 +3015,7 @@ MonoBehaviour:
     notes: []
   tutorialManager: {fileID: 1355106857}
   holdExclamationPrefab: {fileID: 2570531951866361977, guid: 9255d8ba8e6bdf14183e532a558b85b3, type: 3}
-  holdingSound: {fileID: 0}
+  holdingSound: {fileID: 8300000, guid: a6abaf2bfff29ce46824765150158679, type: 3}
   strikerList: []
   strikerStatus: 
   boss: {fileID: 0}
