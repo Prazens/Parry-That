@@ -45,10 +45,21 @@ public class TutorialManager : MonoBehaviour
 
     private void Awake()
     {
-        databaseManager = GameObject.FindObjectOfType<DatabaseManager>();
+        databaseManager = FindObjectOfType<DatabaseManager>();
         isTutorial = true;
         phase = 0;
 
+        ChartTimeList.AddRange(new float[] { 0f, 6f, 6f, 10f, 6f, 10f, 14f });
+
+        spriteRenderer = VictoryAnime.GetComponent<SpriteRenderer>();
+        animeSpriteImg = VictoryAnime.GetComponent<Image>();
+        animator = VictoryAnime.GetComponent<Animator>();
+
+        VictoryAnime.SetActive(false);
+    }
+
+    private void Start()
+    {
         // 공격 설명 텍스트 생성
         GameObject GameDescription = new GameObject("GameDescription");
         GameDescription.transform.SetParent(mainCanvas.transform, false);
@@ -65,28 +76,15 @@ public class TutorialManager : MonoBehaviour
         GameDescriptionText.text = "노란색 느낌표가 뜨는 박자를 따라 화면을 터치하세요.";
 
         GameDescription.SetActive(true);
-
-        ChartTimeList.AddRange(new float[] { 0f, 6f, 6f, 10f, 6f, 10f, 14f });
-
-        spriteRenderer = VictoryAnime.GetComponent<SpriteRenderer>();
-        animeSpriteImg = VictoryAnime.GetComponent<Image>();
-        animator = VictoryAnime.GetComponent<Animator>();
-
-        VictoryAnime.SetActive(false);
-    }
-
-    private void Start()
-    {
+        
         playerManager = GameObject.Find("Player(Clone)").GetComponent<PlayerManager>();
         StartCoroutine(Daehwa1());  // 처음 대화 시작
 
-        // StageManager.Instance.isActive = false; -> StageFlowManager로
         StageFlowManager.isActive = false;
     }
 
     private void Update()
     {
-        // StageManager.Instance.currentTime -> StageFlowManager.Instance.currentTime
         float currentTime = StageFlowManager.Instance.currentTime;
 
         if (daehwaIndex >= ChartTimeList.Count)
@@ -401,14 +399,13 @@ public class TutorialManager : MonoBehaviour
 
     public void SkipOn()
     {
-        if (TitleMenu.TitlePassed) SceneLinkage.StageLV = 0;
-        else SceneLinkage.StageLV = 1;
-
         DatabaseManager.isTutorialDone = true;
         isTutorial = false;
         phase = 0;
         daehwaIndex = 0;
+
         databaseManager.SaveTutorialDone();
+
         SceneManager.LoadScene("Main");
     }
 }

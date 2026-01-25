@@ -40,10 +40,28 @@ public class CutSceneManager : MonoBehaviour
     {
         typingSound = GetComponent<AudioSource>();
         databaseManager = FindObjectOfType<DatabaseManager>();
+        
+        //스테이지에 따라 컷씬 데이터 연결
+        if (data == null)
+        {
+            int stageId = StageSelection.SelectedStageId;
 
-        //if문을 통해 특정 컷씬 테스트 시에는 직접 연결해서 볼 수 있음.
-        //대신 최종본에서는 data칸이 none이어야 함.
-        if (data == null) data = datas[SceneLinkage.StageLV];     
+            if (datas != null && stageId >= 0 && stageId < datas.Length)
+            {
+                data = datas[stageId];
+            }
+            else
+            {
+                data = null;
+            }
+        }
+        
+        //컷씬이 없는 스테이지면 넘어감
+        if (data == null)
+        {
+            EndCutScene();
+            return;
+        }
 
         CreateTextUI();
         CreatePanelsFromSO();
@@ -51,7 +69,7 @@ public class CutSceneManager : MonoBehaviour
 
         currentIndex = 0;
 
-        if (data != null && data.clickSteps.Count > 0)
+        if (data.clickSteps.Count > 0)
         {
             StartCoroutine(ExecuteClickStep(0));
         }
@@ -295,45 +313,10 @@ public class CutSceneManager : MonoBehaviour
         isTyping = false;
     }
 
-    //컷씬 종료 시 씬 불러옴
+    //컷씬 종료 시 Stage씬 불러옴
     public void EndCutScene()
     {
-        switch (SceneLinkage.StageLV)
-        {
-            case 0: 
-                SceneManager.LoadScene("Tutorial");
-                break;
-            case 1: 
-                SceneManager.LoadScene("Stage1");
-                break;
-            case 2: 
-                SceneManager.LoadScene("Stage2");
-                break;
-            case 3: 
-                SceneManager.LoadScene("Beat Master");
-                break;
-            case 4:
-                SceneManager.LoadScene("Stage4");
-                break;
-            case 5:
-                SceneManager.LoadScene("Stage5");
-                break;
-            case 6:
-                SceneManager.LoadScene("Main");
-                break;
-            case 7:
-                SceneManager.LoadScene("Stage1Easy");
-                break;
-            case 8:
-                SceneManager.LoadScene("Stage2Easy");
-                break;
-            case 9:
-                SceneManager.LoadScene("Beat Master Easy");
-                break;
-            default:
-                Debug.LogError("존재하지 않는 스테이지");
-                break;
-        }
+        SceneManager.LoadScene("Stage");
     }
 
     //텍스트 UI 오브젝트 생성

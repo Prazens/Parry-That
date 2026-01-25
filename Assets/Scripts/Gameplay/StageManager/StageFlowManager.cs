@@ -6,19 +6,19 @@ using UnityEngine;
 
 public class StageFlowManager : MonoBehaviour
 {
-    public static StageFlowManager Instance; // 전역 접근용 싱글턴
+    public static StageFlowManager Instance;
 
-    public float currentTime { get; private set; } // 현재 스테이지 시간
-    public float stageDuration = 180f; // 스테이지 전체 길이 (초)
+    public float currentTime { get; private set; }
+    public float stageDuration = 180f;
 
-    public static bool isActive = false; // 스테이지 활성화 여부
+    public static bool isActive = false;
     public bool is_over = false;
 
     [SerializeField] private StrikerManager strikerManager;
-    [SerializeField] private BossController boss;
+    [SerializeField] public BossController bossController;
 
     [Header("Managers")]
-    [SerializeField] private StageSpawnManager stageSpawnManager;
+    [SerializeField] private StageSetupManager stageSetupManager;
     [SerializeField] private StageChartLoader stageChartLoader;
     [SerializeField] private StageAudioManager stageAudioManager;
     [SerializeField] private StaticUIManager staticUIManager;
@@ -26,7 +26,10 @@ public class StageFlowManager : MonoBehaviour
     [SerializeField] private StageResultManager stageResultManager;
     [SerializeField] private JudgeSystem judgeSystem;
 
-    private int clearStrikers = 0;
+    [Header("Stage Data")]
+    [SerializeField] private StageLevelManager stageLevelManager;
+    private StageData currentStageData;
+
     private bool button_active = true;
 
     private bool AnimationEnable = true;
@@ -36,6 +39,8 @@ public class StageFlowManager : MonoBehaviour
     private bool victorySequenceTriggered = false;
     private bool victoryStarted = false;
 
+    public BossController Boss => bossController;
+
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -44,6 +49,13 @@ public class StageFlowManager : MonoBehaviour
 
     private void Start()
     {
+        ResolveStageData();
+
+        if (stageAudioManager != null)
+        {
+            stageAudioManager.ApplyStageData(currentStageData);
+        }
+
         if (stageAudioManager != null && stageAudioManager.musicSource != null && stageAudioManager.musicSource.clip != null)
         {
             stageDuration = stageAudioManager.musicSource.clip.length + stageAudioManager.musicOffset + 1f;
@@ -58,12 +70,20 @@ public class StageFlowManager : MonoBehaviour
 
         currentTime += Time.deltaTime;
 
-        // 음악 재생 조건(원래 StageManager.Update 로직)
+        // 음악 재생 조건(기존 로직 유지)
         if (stageAudioManager != null && stageAudioManager.musicSource != null && !stageAudioManager.musicPlayed)
         {
-            if (!TutorialManager.isTutorial)
+            if (stageAudioManager.musicSource.clip != null)
             {
-                if (currentTime >= 2f)
+                if (currentStageData != null && currentStageData.Category != StageCategory.Tutorial)
+                {
+                    if (currentTime >= 2f)
+                    {
+                        stageAudioManager.musicSource.Play();
+                        stageAudioManager.musicPlayed = true;
+                    }
+                }
+                else
                 {
                     stageAudioManager.musicSource.Play();
                     stageAudioManager.musicPlayed = true;
@@ -71,12 +91,10 @@ public class StageFlowManager : MonoBehaviour
             }
             else
             {
-                stageAudioManager.musicSource.Play();
                 stageAudioManager.musicPlayed = true;
             }
         }
 
-        // 스테이지 종료 조건 + 승리 연출 (원래 방식에 맞춰 폴링)
         if (currentTime >= stageDuration && AnimationEnable)
         {
             if (!victorySequenceTriggered)
@@ -129,8 +147,25 @@ public class StageFlowManager : MonoBehaviour
 
     public void StartStage()
     {
+        ResolveStageData();
+
+        if (stageAudioManager != null)
+        {
+            stageAudioManager.ApplyStageData(currentStageData);
+        }
+
+        if (stageSetupManager != null)
+        {
+            stageSetupManager.ApplyStageModules();
+            stageSetupManager.SpawnPlayer();
+        }
+
+        if (stageAudioManager != null && stageAudioManager.musicSource != null && stageAudioManager.musicSource.clip != null)
+        {
+            stageDuration = stageAudioManager.musicSource.clip.length + stageAudioManager.musicOffset + 1f;
+        }
+
         currentTime = 0f;
-        clearStrikers = 0;
         is_over = false;
         isPaused = false;
         button_active = true;
@@ -147,30 +182,35 @@ public class StageFlowManager : MonoBehaviour
 
         if (dynamicUIManager != null)
         {
-            dynamicUIManager.Initialize_UI();
+            dynamicUIManager.Setup_UI();
         }
 
-        // 오디오 초기화 (원래 StartStage에서 하던 musicSource.time=0f 대응)
         if (stageAudioManager != null && stageAudioManager.musicSource != null)
         {
             stageAudioManager.musicSource.time = 0f;
             stageAudioManager.musicPlayed = false;
         }
 
-        if (boss != null)
+        if (bossController != null)
         {
-            boss.clearHp();
+            bossController.clearHp();
         }
 
-        if (stageSpawnManager != null)
+        if (stageSetupManager != null)
         {
-            stageSpawnManager.SpawnPlayer();
-            // stageSpawnManager.SpawnGuideboxes();
+            stageSetupManager.SpawnPlayer();
         }
 
         if (stageChartLoader != null)
         {
-            stageChartLoader.LoadChartsIntoStrikerManager();
+            if (currentStageData != null)
+            {
+                stageChartLoader.LoadChartsFromStageData(currentStageData);
+            }
+            else
+            {
+                stageChartLoader.LoadChartsIntoStrikerManager();
+            }
         }
         else
         {
@@ -182,19 +222,14 @@ public class StageFlowManager : MonoBehaviour
             strikerManager.InitStriker(0);
         }
 
-        if (judgeSystem != null) 
+        if (judgeSystem != null)
         {
             judgeSystem.Initialize();
         }
 
-        // 정지 UI 숨김 (토글 기반)
         if (staticUIManager != null)
         {
-            staticUIManager.ToggleOverlay(false);
-            staticUIManager.ToggleClearPanel(false);
-            staticUIManager.ToggleGameOverPanel(false);
-            staticUIManager.TogglePausePanel(false);
-            staticUIManager.UpdatePauseButtonSprite(false);
+            staticUIManager.Setup_UI();
         }
 
         isActive = true;
@@ -213,7 +248,6 @@ public class StageFlowManager : MonoBehaviour
             strikerManager.ClearStrikers();
         }
 
-        // 음악 정지 (StopAudio() 대신 musicSource.Stop())
         if (stageAudioManager != null && stageAudioManager.musicSource != null)
         {
             if (stageAudioManager.musicSource.isPlaying)
@@ -222,7 +256,6 @@ public class StageFlowManager : MonoBehaviour
             }
         }
 
-        // 정지 UI 숨김 + 버튼 원복 (토글 기반)
         if (staticUIManager != null)
         {
             staticUIManager.ToggleOverlay(false);
@@ -232,7 +265,6 @@ public class StageFlowManager : MonoBehaviour
             staticUIManager.UpdatePauseButtonSprite(false);
         }
 
-        // 컷인 중지
         if (dynamicUIManager != null)
         {
             dynamicUIManager.CutInDisplay(0f, true);
@@ -247,7 +279,6 @@ public class StageFlowManager : MonoBehaviour
         is_over = true;
         button_active = false;
 
-        // 음악 정지
         if (stageAudioManager != null && stageAudioManager.musicSource != null)
         {
             if (stageAudioManager.musicSource.isPlaying)
@@ -256,13 +287,11 @@ public class StageFlowManager : MonoBehaviour
             }
         }
 
-        // 결과 처리
         if (stageResultManager != null)
         {
             stageResultManager.ProcessGameOverResult();
         }
 
-        // GameOver UI 표시 (토글 기반)
         if (staticUIManager != null)
         {
             staticUIManager.ToggleGameOverPanel(true);
@@ -277,7 +306,6 @@ public class StageFlowManager : MonoBehaviour
         is_over = true;
         button_active = false;
 
-        // 음악 정지
         if (stageAudioManager != null && stageAudioManager.musicSource != null)
         {
             if (stageAudioManager.musicSource.isPlaying)
@@ -286,13 +314,11 @@ public class StageFlowManager : MonoBehaviour
             }
         }
 
-        // 결과 처리(별 계산 + 저장 + 최고점 갱신)
         if (stageResultManager != null)
         {
             stageResultManager.ProcessClearResult();
         }
 
-        // Clear UI 표시 (토글 기반)
         if (staticUIManager != null)
         {
             staticUIManager.ToggleClearPanel(true);
@@ -366,5 +392,25 @@ public class StageFlowManager : MonoBehaviour
     public void ChangeTime(float time)
     {
         currentTime = time;
+    }
+
+    private void ResolveStageData()
+    {
+        if (stageLevelManager == null)
+        {
+            currentStageData = null;
+            return;
+        }
+
+        if (!StageSelection.HasValidSelection())
+        {
+            currentStageData = null;
+            return;
+        }
+
+        currentStageData = stageLevelManager.GetStageData(
+            StageSelection.SelectedStageId,
+            StageSelection.SelectedDifficulty
+        );
     }
 }

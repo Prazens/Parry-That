@@ -17,9 +17,12 @@ public class StaticUIManager : MonoBehaviour
     [SerializeField] private GameObject pausePanelPrefab;
 
     [Header("Pause")]
-    [SerializeField] private GameObject pauseButtonObject;
+    [SerializeField] private GameObject pauseButton;
     [SerializeField] private Sprite unpauseButtonSprite;
     [SerializeField] private TextMeshProUGUI continueText;
+
+    [Header("Tutorial")]
+    [SerializeField] private GameObject skipButton;
 
     [Header("Countdown")]
     [SerializeField] private TextMeshProUGUI countdownText;
@@ -46,17 +49,51 @@ public class StaticUIManager : MonoBehaviour
 
     private bool victoryPlayed = false;
 
+    private bool initialized = false;
+
     private void Start()
     {
-        CreateOverlay();
-        CreatePanels();
+        if (initialized) return;
+        initialized = true;
+
+        if (canvasRoot == null || canvasPause == null)
+        {
+            Debug.LogError("[StaticUIManager] canvasRoot/canvasPause is not assigned.");
+            return;
+        }
+
+        if (overlayObject == null && overlayPrefab != null)
+        {
+            overlayObject = Instantiate(overlayPrefab, canvasPause);
+            overlayObject.SetActive(false);
+        }
+
+        if (clearPanel == null && clearPanelPrefab != null)
+        {
+            clearPanel = Instantiate(clearPanelPrefab, canvasRoot);
+            clearPanel.SetActive(false);
+        }
+
+        if (gameOverPanel == null && gameOverPanelPrefab != null)
+        {
+            gameOverPanel = Instantiate(gameOverPanelPrefab, canvasRoot);
+            gameOverPanel.SetActive(false);
+        }
+
+        if (pausePanel == null && pausePanelPrefab != null)
+        {
+            pausePanel = Instantiate(pausePanelPrefab, canvasPause);
+            pausePanel.SetActive(false);
+        }
+
         CachePauseButton();
         CacheVictory();
 
-        ToggleOverlay(false);
-        ToggleClearPanel(false);
-        ToggleGameOverPanel(false);
-        TogglePausePanel(false);
+        // ✅ Start에서 ToggleXXX를 여러 번 호출하지 말고 직접 끔(토글 내부 로직/텍스트 갱신 방지)
+        if (overlayObject != null) overlayObject.SetActive(false);
+        if (clearPanel != null) clearPanel.SetActive(false);
+        if (gameOverPanel != null) gameOverPanel.SetActive(false);
+        if (pausePanel != null) pausePanel.SetActive(false);
 
         if (countdownText != null) countdownText.gameObject.SetActive(false);
         if (victoryAnimatorObject != null) victoryAnimatorObject.SetActive(false);
@@ -105,6 +142,30 @@ public class StaticUIManager : MonoBehaviour
         {
             pausePanel = Instantiate(pausePanelPrefab, canvasPause);
             pausePanel.SetActive(false);
+        }
+    }
+
+    public void Setup_UI()
+    {
+        if (TutorialManager.isTutorial)
+        {
+            pauseButton.SetActive(false);
+            skipButton.SetActive(true);
+            ToggleOverlay(false);
+            ToggleClearPanel(false);
+            ToggleGameOverPanel(false);
+            TogglePausePanel(false);
+            UpdatePauseButtonSprite(false);
+        }
+        else
+        {
+            pauseButton.SetActive(true);
+            skipButton.SetActive(false);
+            ToggleOverlay(false);
+            ToggleClearPanel(false);
+            ToggleGameOverPanel(false);
+            TogglePausePanel(false);
+            UpdatePauseButtonSprite(false);
         }
     }
 
@@ -170,7 +231,6 @@ public class StaticUIManager : MonoBehaviour
         }
     }
 
-    // 원래 방식: ScoreText / ParfectText / BounceText / GuardText / HitText를 찾아서 넣기
     public void UpdatePanelScores(GameObject panelObject)
     {
         if (panelObject == null) return;
@@ -260,9 +320,9 @@ public class StaticUIManager : MonoBehaviour
 
     private void CachePauseButton()
     {
-        if (pauseButtonObject == null) return;
+        if (pauseButton == null) return;
 
-        pauseButtonImage = pauseButtonObject.GetComponent<Image>();
+        pauseButtonImage = pauseButton.GetComponent<Image>();
         if (pauseButtonImage != null)
         {
             originalPauseButtonSprite = pauseButtonImage.sprite;

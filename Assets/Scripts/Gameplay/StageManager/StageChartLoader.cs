@@ -7,8 +7,7 @@ using UnityEngine;
 /// - strikerManager.charts.Clear()
 /// - TutorialManager.isTutorial / TutorialManager.phase 분기
 /// - JsonReader.ReadJson<ChartData>(TextAsset) 로드 후 Add
-/// 
-/// 원래 StageManager에 없던 기능/함수는 최대한 추가하지 않음.
+///
 /// </summary>
 public class StageChartLoader : MonoBehaviour
 {
@@ -76,7 +75,6 @@ public class StageChartLoader : MonoBehaviour
                         strikerManager.charts.Add(JsonReader.ReadJson<ChartData>(jsonCharts[i]));
                     }
                     break;
-                    
 
                 default:
                     for (int i = 0; i < jsonCharts.Length; i++)
@@ -92,6 +90,69 @@ public class StageChartLoader : MonoBehaviour
             {
                 strikerManager.charts.Add(JsonReader.ReadJson<ChartData>(jsonCharts[i]));
             }
+        }
+    }
+
+    public void LoadChartsFromStageData(StageData stageData)
+    {
+        if (strikerManager == null)
+        {
+            Debug.LogError("[StageChartLoader] strikerManager is not assigned.");
+            return;
+        }
+
+        strikerManager.charts.Clear();
+
+        if (stageData == null)
+        {
+            LoadChartsIntoStrikerManager();
+            return;
+        }
+
+        IReadOnlyList<TextAsset> chartJsons = stageData.ChartJsons;
+        if (chartJsons == null || chartJsons.Count == 0)
+        {
+            Debug.LogWarning("[StageChartLoader] stageData.ChartJsons is empty. Fallback to jsonCharts.");
+            LoadChartsIntoStrikerManager();
+            return;
+        }
+
+        if (TutorialManager.isTutorial)
+        {
+            void AddRange(int start, int endExclusive)
+            {
+                int safeStart = Mathf.Max(start, 0);
+                int safeEnd = Mathf.Min(endExclusive, chartJsons.Count);
+
+                for (int i = safeStart; i < safeEnd; i++)
+                {
+                    TextAsset chartJson = chartJsons[i];
+                    if (chartJson == null) continue;
+                    strikerManager.charts.Add(JsonReader.ReadJson<ChartData>(chartJson));
+                }
+            }
+
+            switch (TutorialManager.phase)
+            {
+                case 0: AddRange(0, 1); break;
+                case 1: AddRange(1, 2); break;
+                case 2: AddRange(2, 3); break;
+                case 3: AddRange(3, 5); break;
+                case 4: AddRange(5, 7); break;
+                case 5: AddRange(7, 9); break;
+                default: AddRange(0, chartJsons.Count); break;
+            }
+
+            return;
+        }
+
+        // 일반 스테이지는 전부 로드
+        for (int chartIndex = 0; chartIndex < chartJsons.Count; chartIndex++)
+        {
+            TextAsset chartJson = chartJsons[chartIndex];
+            if (chartJson == null) continue;
+
+            strikerManager.charts.Add(JsonReader.ReadJson<ChartData>(chartJson));
         }
     }
 }

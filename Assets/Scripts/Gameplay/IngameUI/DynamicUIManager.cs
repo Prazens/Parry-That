@@ -68,7 +68,7 @@ public class DynamicUIManager : MonoBehaviour
     // -------------------------
     // HUD
     // -------------------------
-    public void Initialize_UI()
+    public void Setup_UI()
     {
         if (TutorialManager.isTutorial)
         {
@@ -83,6 +83,7 @@ public class DynamicUIManager : MonoBehaviour
         {
             scoreDisplay.GetComponent<TextMeshProUGUI>().text = "0";
             initialPosition[0] = scoreDisplay.transform.position;
+            scoreDisplay.SetActive(true);
         }
 
         if (hpDisplay != null)

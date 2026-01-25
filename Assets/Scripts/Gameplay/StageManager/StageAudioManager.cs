@@ -4,8 +4,6 @@ using UnityEngine;
 
 /// <summary>
 /// StageManager에 있던 오디오 관련 필드/함수만 분리.
-/// (원래 스크립트에 없던 함수는 추가하지 않음)
-///
 /// 포함:
 /// - musicSource, musicOffset, musicPlayed, savedMusicTime
 /// - RestartAudio(float RollBackTime)
@@ -30,6 +28,24 @@ public class StageAudioManager : MonoBehaviour
         {
             musicSource.volume = PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("bgmVolume", 1);
         }
+    }
+
+    public void ApplyStageData(StageData stageData)
+    {
+        if (stageData == null) return;
+
+        // BGM 적용(없으면 기존 클립 유지)
+        if (musicSource != null && stageData.Bgm != null)
+        {
+            musicSource.clip = stageData.Bgm;
+        }
+
+        // 오프셋 적용: override가 true일 때만 스테이지 값을 사용
+        if (stageData.OverrideMusicOffset)
+        {
+            musicOffset = stageData.MusicOffset;
+        }
+        // override가 false면 기존대로 PlayerPrefs에서 읽어온 전역 musicOffset 유지
     }
 
     // 튜토리얼에서 노래 n초 전으로 되돌리는 용도의 함수 (기존 StageManager.RestartAudio 그대로)

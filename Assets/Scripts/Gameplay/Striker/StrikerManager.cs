@@ -6,157 +6,139 @@ public class StrikerManager : MonoBehaviour
 {
     [SerializeField] private List<GameObject> strikerPrefabs;
     public Transform[] spawnPositions;
-    private PlayerManager playerManager; // Player 정보 저장
+
+    private PlayerManager playerManager;
+
     [SerializeField] private DynamicUIManager dynamicUIManager;
-    public List<ChartData> charts; // 각 스트라이커의 채보 데이터
-    [SerializeField] private TutorialManager tutorialManager;
 
-    [SerializeField] private GameObject holdExclamationPrefab; // 홀드 느낌표 프리팹
-    private GameObject holdExclamation; // 홀드 느낌표
-    [SerializeField] private AudioClip holdingSound;  // 홀드 중
+    public List<ChartData> charts;
 
-    // 스트라이커 저장해놓을 공간
+    [SerializeField] public TutorialManager tutorialManager;
+
+    [SerializeField] private GameObject holdExclamationPrefab;
+    private GameObject holdExclamation;
+    [SerializeField] private AudioClip holdingSound;
+
     public List<GameObject> strikerList = new List<GameObject>();
     public List<int> strikerStatus = new List<int>();
 
-    //보스전 전용
-    [SerializeField] private BossController boss;
-    public bool isBossStage = false;
+    private BossController bossController;
 
     public void SetPlayer(PlayerManager player)
     {
         playerManager = player;
-        // Debug.Log("PlayerManager successfully linked to StrikerManager.");
     }
 
-    //private void Start()
-    //{
-    //    if (TutorialManager.isTutorial)
-    //    {
-    //        tutorialManager = GameObject.Find("TutorialManager").GetComponent<TutorialManager>();
-    //        if (tutorialManager = null) // Debug.LogError("튜토리얼 매니저 못찾음");
-    //    }
-
-    //}
     private void Update()
     {
+        // 안전장치
+        if (StageFlowManager.Instance == null) return;
+        if (playerManager == null) return;
+        if (charts == null) return;
+
         float currentTime = StageFlowManager.Instance.currentTime;
-        //if (TutorialManager.isTutorial && !tutorialManager.isDaehwa)
-        //{
-        //    for (int i = 0; i < TutorialManager.StrikerNum[tutorialManager.daehwaIndex] - TutorialManager.StrikerNum[tutorialManager.daehwaIndex - 1]; i++)
-        //    {
-        //        if (currentTime >= charts[i].appearTime * (60f / charts[i].bpm) + playerManager.musicOffset &&
-        //            strikerStatus[i] == 0)
-        //        {
-        //            strikerStatus[i] = 1;
-        //            // Debug.Log($"SpawnStriker({i})");
-        //            strikerList[i].SetActive(true);
-        //        }
-        //        else if (currentTime >= charts[i].disappearTime * (60f / charts[i].bpm) + playerManager.musicOffset &&
-        //                 strikerStatus[i] == 1)
-        //        {
-        //            // Debug.Log($"beClearedStriker({i})");
-        //            strikerList[i].GetComponent<StrikerController>().beCleared();
-        //            strikerStatus[i] = 2;
-        //        }
-        //    }
-        //}
-        //else if (!TutorialManager.isTutorial)
+
+        for (int i = 0; i < charts.Count; i++)
         {
-            for (int i = 0; i < charts.Count; i++)
+            if (currentTime >= charts[i].appearTime * (60f / charts[i].bpm) + playerManager.musicOffset &&
+                strikerStatus[i] == 0)
             {
-                if (currentTime >= charts[i].appearTime * (60f / charts[i].bpm) + playerManager.musicOffset &&
-                    strikerStatus[i] == 0)
-                {
-                    strikerStatus[i] = 1;
-                    // Debug.Log($"SpawnStriker({i})");
-                    strikerList[i].SetActive(true);
-                }
-                else if (currentTime >= charts[i].disappearTime * (60f / charts[i].bpm) + playerManager.musicOffset &&
-                         strikerStatus[i] == 1)
-                {
-                    // Debug.Log($"beClearedStriker({i})");
-                    strikerList[i].GetComponent<StrikerController>().strikerExit();
-                    strikerStatus[i] = 2;
-                }
+                strikerStatus[i] = 1;
+                strikerList[i].SetActive(true);
+            }
+            else if (currentTime >= charts[i].disappearTime * (60f / charts[i].bpm) + playerManager.musicOffset &&
+                     strikerStatus[i] == 1)
+            {
+                strikerList[i].GetComponent<StrikerController>().strikerExit();
+                strikerStatus[i] = 2;
             }
         }
-
     }
 
     public void InitStriker(int idx)
     {
+        if (StageFlowManager.Instance != null)
+        {
+            bossController = StageFlowManager.Instance.bossController;
+        }
+        else
+        {
+            bossController = null;
+        }
+
         if (holdExclamation != null)
         {
             Destroy(holdExclamation);
         }
+
         holdExclamation = Instantiate(holdExclamationPrefab);
-        holdExclamation.GetComponent<holdExclamation>().audioSource = GameObject.Find("Audio Source").GetComponent<AudioSource>();
+
+        var audioSourceObject = GameObject.Find("Audio Source");
+        if (audioSourceObject != null)
+        {
+            holdExclamation.GetComponent<holdExclamation>().audioSource = audioSourceObject.GetComponent<AudioSource>();
+        }
 
         strikerStatus.Clear();
-        // Debug.Log($"InitStriker {charts.Count}");
+
         for (int i = 0; i < charts.Count; i++)
         {
             strikerStatus.Add(0);
+
             if (charts[i].appearTime == 0)
             {
                 strikerStatus[i] = 1;
-                // Debug.Log($"SpawnStriker({i})");
                 SpawnStriker(i, true);
             }
             else
             {
                 SpawnStriker(i, false);
             }
-
         }
     }
 
-    // Start is called before the first frame update
-    private void SpawnStriker(int chartIndex, bool isActivated) // striker를 원하는 위치에 spawn, 현재 위쪽과 아래 쪽 두곳으로 spawnpoint 지정해놓음
+    private void SpawnStriker(int chartIndex, bool isActivated)
     {
+        if (chartIndex < 0 || chartIndex >= charts.Count) return;
+        if (spawnPositions == null || spawnPositions.Length == 0) return;
+
         int hp = charts[chartIndex].notes.Length;
         float bpm = charts[chartIndex].bpm;
-        int positionIndex = charts[chartIndex].direction - 1;
-        int prepabindex = charts[chartIndex].strikerType;
 
-        // 소환 위치 유효성 검사
-        if (positionIndex < 0 || positionIndex >= spawnPositions.Length)
-        {
-            // Debug.LogError("Invalid spawn position index!");
-            return;
-        }
-        if (chartIndex < 0 || chartIndex >= charts.Count) return;
-        GameObject selectedStriker = strikerPrefabs[prepabindex];
-        // 스트라이커 생성
+        int positionIndex = charts[chartIndex].direction - 1;
+        int prefabIndex = charts[chartIndex].strikerType;
+
+        if (positionIndex < 0 || positionIndex >= spawnPositions.Length) return;
+        if (prefabIndex < 0 || prefabIndex >= strikerPrefabs.Count) return;
+
+        GameObject selectedStriker = strikerPrefabs[prefabIndex];
         GameObject striker = Instantiate(selectedStriker, spawnPositions[positionIndex].position, Quaternion.identity);
 
-        // 스트라이커 저장
         strikerList.Add(striker);
 
-        // 스트라이커 초기화
         StrikerController strikerController = striker.GetComponent<StrikerController>();
-        strikerController.dynamicUIManager = dynamicUIManager;
-        strikerController.holdExclamation = holdExclamation;
-        strikerController.holdingSound = holdingSound;
-        
         if (strikerController != null)
         {
-            if (isBossStage && boss != null)
+            strikerController.dynamicUIManager = dynamicUIManager;
+            strikerController.holdExclamation = holdExclamation;
+            strikerController.holdingSound = holdingSound;
+
+            if (bossController != null)
             {
-                boss.RegisterStriker(strikerController);
-                boss.Initialize(hp);
+                bossController.RegisterStriker(strikerController);
             }
+
             int isMelee = 0;
-            if(prepabindex == 1) // 원거리 스트라이커면 PlayerManager 정보 넘겨주기
-            {
-                isMelee = 1;
-            }
-            strikerController.Initialize(hp, bpm, playerManager, (Direction)(positionIndex + 1), charts[chartIndex], isMelee);
-        }
-        else
-        {
-            // Debug.LogError("Striker prefab is missing StrikerController!");
+            if (prefabIndex == 1) isMelee = 1;
+
+            strikerController.Initialize(
+                hp,
+                bpm,
+                playerManager,
+                (Direction)(positionIndex + 1),
+                charts[chartIndex],
+                isMelee
+            );
         }
 
         if (!isActivated)
@@ -171,22 +153,21 @@ public class StrikerManager : MonoBehaviour
         {
             if (striker != null)
             {
-                // Striker가 소유한 Projectile 제거
                 StrikerController strikerController = striker.GetComponent<StrikerController>();
                 if (strikerController != null && !strikerController.isMelee)
                 {
                     strikerController.ClearProjectiles();
                 }
-                Destroy(striker); // Striker GameObject 삭제
+                Destroy(striker);
             }
         }
 
-        strikerList.Clear(); // 리스트 초기화
+        strikerList.Clear();
 
         var remains = FindObjectsOfType<StrikerController>();
         foreach (var remain in remains)
         {
             Destroy(remain.gameObject);
-        }   
+        }
     }
 }

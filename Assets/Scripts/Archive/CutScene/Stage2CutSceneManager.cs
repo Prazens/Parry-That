@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿/*
+using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -326,3 +327,4 @@ public class Stage2CutSceneManager : MonoBehaviour
         else Debug.LogError("SceneLinkage StageLV잘못됨");
     }
 }
+*/
