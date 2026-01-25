@@ -11,7 +11,7 @@ public class StrikerController : MonoBehaviour
     // striker 자체에 들어가는 script
     [SerializeField] private List<GameObject> projectilePrefabs; // 투사체 프리팹
     public PlayerManager playerManager; // Player 정보 저장
-    public UIManager uiManager;
+    public DynamicUIManager dynamicUIManager;
     [SerializeField] public ChartData chartData; // 채보 데이터
     [SerializeField] public int hp; // 스트라이커 HP
     private int initialHp; // 스트라이커 initialHp
@@ -119,7 +119,7 @@ public class StrikerController : MonoBehaviour
         if (currentNoteIndex >= chartData.notes.Length) return;
 
         // 현재 시간 가져오기
-        float currentTime = StageManager.Instance.currentTime;
+        float currentTime = StageFlowManager.Instance.currentTime;
         // `prepareTime` 확인 → 준비 상태 활성화 & `arriveTime`과 `type` 저장
         if (currentNoteIndex < chartData.notes.Length && currentTime >= chartData.notes[currentNoteIndex].time * (60f / bpm) + musicOffset)
         {
@@ -128,7 +128,7 @@ public class StrikerController : MonoBehaviour
     }
     private void HandleMeleeMovement()
     {
-        float currentTime = StageManager.Instance.currentTime;
+        float currentTime = StageFlowManager.Instance.currentTime;
 
         //공격 이전에 출발
         if (prepareQueue.Count > 0 && currentTime >= (prepareQueue.Peek().Item1 * (60d / bpm)) + musicOffset - animeOffset - moveTime && !isMoved && prepareQueue.Peek().Item2 != 3 && !isMoving)
@@ -199,12 +199,12 @@ public class StrikerController : MonoBehaviour
 
     public void ActMeleeHoldStart()
     {
-        // Debug.Log($"ActMeleeHoldStart {judgeableQueue.Peek().arriveBeat} {bpm} {StageManager.Instance.currentTime}");
+        // Debug.Log($"ActMeleeHoldStart {judgeableQueue.Peek().arriveBeat} {bpm} {StageFlowManager.Instance.currentTime}");
         bladeAnimator.SetTrigger("bladePlay");
 
         audioSource.PlayOneShot(holdingSound, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("playerVolume", 1));
 
-        uiManager.CutInDisplay(judgeableQueue.Peek().arriveBeat * (60f / bpm) - StageManager.Instance.currentTime + musicOffset);
+        dynamicUIManager.CutInDisplay(judgeableQueue.Peek().arriveBeat * (60f / bpm) - StageFlowManager.Instance.currentTime + musicOffset);
 
         // StartCoroutine(MeleeHoldStartAnim());
         isHolding = true;
@@ -235,7 +235,7 @@ public class StrikerController : MonoBehaviour
             prepareQueue.Dequeue(); // 준비된 공격 제거
         }
         ActMeleeHit();
-        uiManager.CutInDisplay(0, true);
+        dynamicUIManager.CutInDisplay(0, true);
     }
 
     public void ActStreamStart()
@@ -292,7 +292,7 @@ public class StrikerController : MonoBehaviour
         // Debug.Log(isMoved);
         while (!isMoved)
         {
-            float currentTime = StageManager.Instance.currentTime;
+            float currentTime = StageFlowManager.Instance.currentTime;
 
             float fraction = (targetTime - currentTime) / moveTime;
             transform.position = Vector3.Lerp(targetPosition, originalPosition, Mathf.Clamp01(fraction));
@@ -322,7 +322,7 @@ public class StrikerController : MonoBehaviour
         else animator.SetBool("MovingBack", true);
         while (isMoving)
         {
-            float currentTime = StageManager.Instance.currentTime;
+            float currentTime = StageFlowManager.Instance.currentTime;
 
             if (backtime == 0f) backtime = currentTime;
             float fraction = (currentTime - backtime) / (moveTime / 2);
@@ -354,7 +354,7 @@ public class StrikerController : MonoBehaviour
         // Debug.Log("MeleeHoldStartAnim");
         while (isMoved)
         {
-            float currentTime = StageManager.Instance.currentTime;
+            float currentTime = StageFlowManager.Instance.currentTime;
 
             if (backtime == 0f) backtime = currentTime;
             float fraction = (currentTime - backtime) / (moveTime / 3);
@@ -394,7 +394,7 @@ public class StrikerController : MonoBehaviour
 
     private void HandleProjectileAttack()
     {
-        float currentTime = StageManager.Instance.currentTime;
+        float currentTime = StageFlowManager.Instance.currentTime;
 
         if (prepareQueue.Count > 0 && currentTime >= (prepareQueue.Peek().Item1 * (60d / bpm)) + musicOffset - 0.5f)
         {
@@ -422,7 +422,7 @@ public class StrikerController : MonoBehaviour
             holdSpriteAnimator.SetTrigger("holdStart");
         }
 
-        uiManager.CutInDisplay(judgeableQueue.Peek().arriveBeat * (60f / bpm) - StageManager.Instance.currentTime + musicOffset);
+        dynamicUIManager.CutInDisplay(judgeableQueue.Peek().arriveBeat * (60f / bpm) - StageFlowManager.Instance.currentTime + musicOffset);
 
         isHolding = true;
     }
@@ -451,7 +451,7 @@ public class StrikerController : MonoBehaviour
         if (prepareQueue.Count != 0) prepareQueue.Dequeue();
 
         // 컷인 제거
-        uiManager?.CutInDisplay(0, true);
+        dynamicUIManager?.CutInDisplay(0, true);
     }
 
 

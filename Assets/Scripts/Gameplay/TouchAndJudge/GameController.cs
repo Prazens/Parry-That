@@ -5,85 +5,60 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
-    [SerializeField] private StageManager stageManager; // StageManager 연결
-    // Start is called before the first frame update
+    [SerializeField] private StageFlowManager stageFlowManager; // StageFlowManager 연결
+
     void Start()
     {
-        //if (stageManager != null)
-        //{
-        //    stageManager.ResetStage(); // 스테이지 초기화
-        //}
-        //if (stageManager != null)
-        //{
-        //   stageManager.StartStage(); // 스테이지 시작
-        //}
-        //else
-        //{
-        //   // Debug.LogError("StageManager is not assigned!");
-        //}
-
         StartStage();
-        // Debug.Log("게임시작");
-        // switch (SceneLinkage.StageLV)
-        // {
-        //     case 1:
-        //         StartStage();
-        //         // Debug.Log("게임시작");
-        //         break;
-        //     case 2:
-        //         //StartStage()
-        //         break;
-        //     case 3:
-        //         //StartStage2()
-        //         break;
-        //     default:
-        //         // // Debug.Log($"{SceneLinkage.StageLV}");
-        //         break;
-        // }
     }
+
     public void StartStage()
     {
-        if (stageManager != null)
+        if (stageFlowManager != null)
         {
-            stageManager.FirstStartStage(); // 스테이지 시작
+            stageFlowManager.FirstStartStage(); // 스테이지 시작
         }
         else
         {
-            // Debug.LogError("StageManager is not assigned!");
+            // Debug.LogError("StageFlowManager is not assigned!");
         }
     }
+
     private Vector2 touchStartPosition;
     private Vector2 touchEndPosition;
     private bool isSwiping = false;
     [SerializeField] private float swipeThreshold = 50f;
     [SerializeField] private bool isTouchAvailable = false;
 
-    // Update is called once per frame
     void Update()
     {
-        if(stageManager.is_over)
+        if (stageFlowManager == null) return;
+
+        if (stageFlowManager.is_over)
         {
-            if (isTouchAvailable)   
+            if (isTouchAvailable)
             {
                 DetectSwipe();
             }
-            else    
-            { 
+            else
+            {
                 DetectMouseSwipe();
             }
         }
-        if(stageManager.isPaused)
+
+        if (stageFlowManager.isPaused)
         {
-            if (isTouchAvailable)   
+            if (isTouchAvailable)
             {
                 DetectSwipe();
             }
-            else    
-            { 
+            else
+            {
                 DetectMouseSwipe();
             }
         }
     }
+
     private void DetectSwipe()
     {
         if (Input.touchCount > 0)
@@ -99,20 +74,17 @@ public class GameController : MonoBehaviour
             {
                 touchEndPosition = touch.position;
 
-                // 스와이프 방향 확인
                 Vector2 direction = touchEndPosition - touchStartPosition;
 
                 if (direction.magnitude > swipeThreshold)
                 {
                     float verticalSwipe = direction.y;
 
-                    // 위로 스와이프 감지
                     if (verticalSwipe > 0 && Mathf.Abs(verticalSwipe) > Mathf.Abs(direction.x))
                     {
                         OnSwipeUp();
                     }
 
-                    // 아래로 스와이프 감지
                     if (verticalSwipe < 0 && Mathf.Abs(verticalSwipe) > Mathf.Abs(direction.x))
                     {
                         OnSwipeDown();
@@ -123,6 +95,7 @@ public class GameController : MonoBehaviour
             }
         }
     }
+
     private void DetectMouseSwipe()
     {
         if (Input.GetMouseButtonDown(0))
@@ -138,40 +111,36 @@ public class GameController : MonoBehaviour
             isSwiping = false;
         }
     }
+
     private void ProcessSwipe()
     {
-        // 스와이프 방향 및 거리 계산
         Vector2 direction = touchEndPosition - touchStartPosition;
 
         if (direction.magnitude > swipeThreshold)
         {
             float verticalSwipe = direction.y;
 
-            // 위로 스와이프 감지
             if (verticalSwipe > 0 && Mathf.Abs(verticalSwipe) > Mathf.Abs(direction.x))
             {
                 OnSwipeUp();
             }
 
-            // 아래로 스와이프 감지
             if (verticalSwipe < 0 && Mathf.Abs(verticalSwipe) > Mathf.Abs(direction.x))
             {
                 OnSwipeDown();
             }
         }
     }
+
     private void OnSwipeUp()
     {
-        // Debug.Log("Swipe Up Detected");
-
-        // 결과창 활성화 상태에서만 RestartStage 호출
-        if (stageManager != null && stageManager.is_over)
+        if (stageFlowManager != null && stageFlowManager.is_over)
         {
-            stageManager.RestartStage();
+            stageFlowManager.RestartStage();
         }
-        if (stageManager != null && stageManager.isPaused)
+        if (stageFlowManager != null && stageFlowManager.isPaused)
         {
-            stageManager.RestartStage();
+            stageFlowManager.RestartStage();
         }
     }
 
@@ -180,6 +149,4 @@ public class GameController : MonoBehaviour
         SceneManager.LoadScene("Main");
         Time.timeScale = 1f;
     }
-
-
 }

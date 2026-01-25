@@ -1,3 +1,4 @@
+/*
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -700,3 +701,4 @@ public class StageManager : MonoBehaviour
         musicSource.UnPause();
     }
 }
+*/

@@ -14,7 +14,7 @@ public class BossController : MonoBehaviour
     [Header("Links")]
     [SerializeField] private ParriedProjectileManager parryFX;
     [SerializeField] private StrikerManager strikerManager;   
-    [SerializeField] private StageManager stageManager;
+    [SerializeField] private StageFlowManager stageFlowManager;
     public Animator bossAnimator;
 
     private readonly List<StrikerController> minions = new();
