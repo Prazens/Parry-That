@@ -316,7 +316,8 @@ public class CutSceneManager : MonoBehaviour
     //컷씬 종료 시 Stage씬 불러옴
     public void EndCutScene()
     {
-        SceneManager.LoadScene("Stage");
+        if (StageSelection.SelectedStageId == 6) SceneManager.LoadScene("Main");
+        else SceneManager.LoadScene("Stage");
     }
 
     //텍스트 UI 오브젝트 생성
