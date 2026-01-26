@@ -1660,6 +1660,7 @@ GameObject:
   - component: {fileID: 1009306965}
   - component: {fileID: 1009306964}
   - component: {fileID: 1009306967}
+  - component: {fileID: 1009306968}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1755,6 +1756,50 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_force: 20
   m_offset: {x: 0.4, y: 0.4, z: 0.4}
+--- !u!114 &1009306968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1009306963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
+  m_UseScreenCoordOverride: 0
+  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
+  m_TaaSettings:
+    m_Quality: 3
+    m_FrameInfluence: 0.1
+    m_JitterScale: 1
+    m_MipBias: 0
+    m_VarianceClampScale: 0.9
+    m_ContrastAdaptiveSharpening: 0
 --- !u!1 &1055898946
 GameObject:
   m_ObjectHideFlags: 0
@@ -2377,7 +2422,6 @@ GameObject:
   - component: {fileID: 1394439260}
   - component: {fileID: 1394439259}
   - component: {fileID: 1394439258}
-  - component: {fileID: 1394439257}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -2406,18 +2450,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &1394439257
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394439255}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d753c59a92beb7b40887d7fdb292916b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1394439258
 MonoBehaviour:
   m_ObjectHideFlags: 0
