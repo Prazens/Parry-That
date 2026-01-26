@@ -8,14 +8,14 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using System.Linq;
 
-public class TitleMenu : MonoBehaviour
+public class TitleUI : Singleton<TitleUI>
 {
     private Vector2 startPos;
     public float swipeThreshold = 50f;
 
     public RectTransform menuPanel;
     public RectTransform nextPanel;
-    public float slideDuration; // ȭ�� ��ȯ �ð�
+    public float slideDuration;
 
     private Vector2 MenuStartPos;
     private Vector2 StageMenuStartPos;
@@ -41,10 +41,10 @@ public class TitleMenu : MonoBehaviour
     public AudioClip SwordUpSound;
     public AudioClip StageSelectSound;
 
-    void Start()
+    public void InitUI()
     {
 
-        Application.targetFrameRate = 120; // ������ 120 ����
+        Application.targetFrameRate = 120; // 120프레임
 
         menuPanel = GameObject.Find("Title").GetComponent<RectTransform>();
         nextPanel = GameObject.Find("StageMenu").GetComponent<RectTransform>();
@@ -300,6 +300,7 @@ public class TitleMenu : MonoBehaviour
         }
         swordRect.anchoredPosition = endPosDown;
         SwordUpEnd = true;
+        MenuManager.Instance.SwordUpEnd();
         Debug.Log("SwordUpEnd");
     }
 
@@ -310,6 +311,7 @@ public class TitleMenu : MonoBehaviour
         Vector2 endPosDown = new Vector2(startPos.x, startPos.y + canvasRect.rect.height + 400);
         swordRect.anchoredPosition = endPosDown;
         SwordUpEnd = true;
+        MenuManager.Instance.SwordUpEnd();
     }
 
 
@@ -322,7 +324,7 @@ public class TitleMenu : MonoBehaviour
     {
         if (isFading) return;
         StartCoroutine(FadeEffect());
-        Debug.Log("�Լ� ȣ�� �Ϸ�");
+        Debug.Log("로고 페이드 아웃 완료");
     }
 
     private IEnumerator FadeEffect()
@@ -332,7 +334,7 @@ public class TitleMenu : MonoBehaviour
         isFading = true;
 
         float elapsedTime = 0f;
-        Debug.Log("���̵�ƿ� ����");
+        Debug.Log("로고 페이드 아웃 시작");
         while (elapsedTime < fadeDuration)
         {
             elapsedTime += Time.deltaTime;
