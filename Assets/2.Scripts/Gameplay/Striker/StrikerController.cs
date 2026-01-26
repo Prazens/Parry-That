@@ -42,17 +42,6 @@ public class StrikerController : MonoBehaviour
     private List<GameObject> prepareExclamation = new List<GameObject>(); // 느낌표 오브젝트 저장
     public GameObject holdExclamation; // 홀드 느낌표
 
-    //준비 효과음
-    [SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioClip prepareSoundNormal;  // 일반 공격 준비 효과음 (type 0)
-    [SerializeField] private AudioClip prepareSoundStrong;  // 강한 공격 준비 효과음 (type 1)
-    //패링 효과음
-    [SerializeField] private AudioClip parrySoundNormal;  // 일반 공격 준비 효과음 (type 0)
-    [SerializeField] private AudioClip parrySoundStrong;  // 강한 공격 준비 효과음 (type 1)
-    //패링 효과음
-    [SerializeField] public AudioClip holdingSound;  // 홀드 중
-    [SerializeField] private AudioClip holdingEnd;  // 홀드 끝
-
     // 근접 공격 관련 변수
     private Vector3 originalPosition;
     private Vector3 targetPosition;
@@ -409,8 +398,7 @@ public class StrikerController : MonoBehaviour
     // StrikerController.cs
     private void ActRangeHoldStart()
     {
-        if (audioSource != null && holdingSound != null)
-            audioSource.PlayOneShot(holdingSound, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("playerVolume", 1));
+        sound.PlayHoldStart();
         if(holdSpriteAnimator != null)
         {
             holdSpriteAnimator.SetTrigger("holdStart");
@@ -424,9 +412,7 @@ public class StrikerController : MonoBehaviour
     private void ActRangeHoldFinish()
     {
         // 홀드 종료 연출
-        audioSource.Stop();
-        if (audioSource != null && holdingEnd != null)
-            audioSource.PlayOneShot(holdingEnd, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("playerVolume", 1));
+        sound.PlayHoldEnd();
 
         if (holdSpriteAnimator != null)
         {
@@ -452,40 +438,40 @@ public class StrikerController : MonoBehaviour
     private void PrepareForAttack()
     {
         float arriveTime = chartData.notes[currentNoteIndex].arriveTime;
-        int noteType = chartData.notes[currentNoteIndex].type; // 노트 타입 저장
+        AttackType noteType = (AttackType)chartData.notes[currentNoteIndex].type; // 노트 타입 저장
 
-        if ((noteType != 3 && noteType != 5) || isHolding || isRenta)
+        if ((noteType != AttackType.HoldFinishStrong && noteType != AttackType.StreamStart) || isHolding || isRenta)
         {
-            prepareQueue.Enqueue(new Tuple<float, int>(arriveTime, noteType)); // 도착 시간과 타입 저장
-            ShowExclamation(noteType); // 느낌표 표시
+            prepareQueue.Enqueue(new Tuple<float, int>(arriveTime, (int)noteType)); // 도착 시간과 타입 저장
+            ShowExclamation((int)noteType); // 느낌표 표시
             // Debug.Log("prepare!");
         }
 
         if (isBossMinion && boss != null)
         {
-            boss.OnMinionPrepare(location, noteType, arriveTime);
+            boss.OnMinionPrepare(location, (int)noteType, arriveTime);
         }
 
         if (isMelee)
         {
-            if (noteType == 2)
+            if (noteType == AttackType.HoldStart)
             {
                 judgeableQueue.Enqueue(new Judgeable(AttackType.HoldStart, arriveTime, location, this, null, this.ActMeleeHoldStart));
                 judgeableQueue.Enqueue(new Judgeable(AttackType.HoldStop, chartData.notes[currentNoteIndex + 1].arriveTime, location, this, null, this.ActMeleeHoldFinish));
             }
-            else if (noteType != 3)
+            else if (noteType != AttackType.HoldFinishStrong)
             {
-                judgeableQueue.Enqueue(new Judgeable((AttackType)noteType, arriveTime, location, this, null, this.ActMeleeHit));
+                judgeableQueue.Enqueue(new Judgeable(noteType, arriveTime, location, this, null, this.ActMeleeHit));
             }
         }
         else
         {
-            if (noteType == 2)
+            if (noteType == AttackType.HoldStart)
             {
                 judgeableQueue.Enqueue(new Judgeable(AttackType.HoldStart, arriveTime, location, this, null, this.ActRangeHoldStart));
                 judgeableQueue.Enqueue(new Judgeable(AttackType.HoldStop, chartData.notes[currentNoteIndex + 1].arriveTime, location, this, null, this.ActRangeHoldFinish));
             }
-            else if (noteType == 5)
+            else if (noteType == AttackType.StreamStart)
             {
                 var j = new Judgeable(AttackType.StreamStart, arriveTime, location, this, null, this.ActStreamStart);
                 j.SetStreamCount(CalcStreamCountForThisSegment(currentNoteIndex));
@@ -502,18 +488,16 @@ public class StrikerController : MonoBehaviour
 
         currentNoteIndex++; // 다음 노트로 이동
     }
-    private void PlayPrepareSound(int type)
+
+    private void PlayPrepareSound(AttackType type)
     {
-        if (audioSource != null)
+        if (type == AttackType.Normal)
         {
-            if (type == 0 && prepareSoundNormal != null)
-            {
-                audioSource.PlayOneShot(prepareSoundNormal, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("enemyVolume", 1));
-            }
-            else if (type == 1 && prepareSoundStrong != null)
-            {
-                audioSource.PlayOneShot(prepareSoundStrong, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("enemyVolume", 1));
-            }
+            sound.PlayPrepareNormal();
+        }
+        else if (type == AttackType.Strong)
+        {
+            sound.PlayPrepareStrong();
         }
     }
 
@@ -768,19 +752,22 @@ public class StrikerController : MonoBehaviour
         }
     }
 
+    private void PlayParrySound(AttackType type)
+    {
+        if (type == AttackType.Normal)
+        {
+            sound.PlayParryNormal();
+        }
+        else if (type == AttackType.Strong)
+        {
+            sound.PlayParryStrong();
+        }
+    }
+
     public void TakeDamage(int damage, AttackType type)
     {
-        if (audioSource != null)
-        {
-            if (type == AttackType.Normal && parrySoundNormal != null)
-            {
-                audioSource.PlayOneShot(parrySoundNormal, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("playerVolume", 1));
-            }
-            else if (type == AttackType.Strong && parrySoundStrong != null)
-            {
-                audioSource.PlayOneShot(parrySoundStrong, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("playerVolume", 1));
-            }
-        }
+        PlayParrySound(type);
+
         if (isBossMinion && boss != null)
         {
             // 자기 HP는 깎지 않고 보스에게 전달
