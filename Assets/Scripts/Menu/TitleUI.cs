@@ -8,14 +8,14 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using System.Linq;
 
-public class TitleMenu : MonoBehaviour
+public class TitleUI : Singleton<TitleUI>
 {
     private Vector2 startPos;
     public float swipeThreshold = 50f;
 
     public RectTransform menuPanel;
     public RectTransform nextPanel;
-    public float slideDuration; // ȭ�� ��ȯ �ð�
+    public float slideDuration;
 
     private Vector2 MenuStartPos;
     private Vector2 StageMenuStartPos;
@@ -27,7 +27,7 @@ public class TitleMenu : MonoBehaviour
 
     private bool GoStageMenu = false;
     public static bool SwordUpEnd = false;
-    public bool MouseControl;   // Inspector â���� ����
+    public bool MouseControl;
     public static bool TitlePassed = false;
     public bool isPossibleStage = true;
 
@@ -41,12 +41,10 @@ public class TitleMenu : MonoBehaviour
     public AudioClip SwordUpSound;
     public AudioClip StageSelectSound;
 
-    [SerializeField] private StageMenu stageMenu;
-
-    void Start()
+    public void InitUI()
     {
 
-        Application.targetFrameRate = 120; // ������ 120 ����
+        Application.targetFrameRate = 120; // 120프레임
 
         menuPanel = GameObject.Find("Title").GetComponent<RectTransform>();
         nextPanel = GameObject.Find("StageMenu").GetComponent<RectTransform>();
@@ -68,7 +66,7 @@ public class TitleMenu : MonoBehaviour
             TitleText_originalColor = TitleText.color;
         }
 
-        if (TitlePassed)  // ������������ ������ �� �������� �޴�â ���·� ��ġ ����
+        if (TitlePassed)
         {
             ChangePanelPosition(MenuStartPos, StageMenuStartPos);
             ChangeSwordPosition();
@@ -77,15 +75,15 @@ public class TitleMenu : MonoBehaviour
         Debug.Log($"{TitlePassed}");
     }
 
-    void Update()   // ���� �������� �ϸ� Ÿ��Ʋ ȭ�鿡�� �������� ���� ȭ������ ��ȯ
+    void Update()
     {
         if (!GoStageMenu || SwordUpEnd)
         {
-            if (MouseControl)   // ���콺 ����
+            if (MouseControl)
             {
                 MouseMove();
             }
-            else    // ��ġ ����
+            else
             { 
                 TouchMove();
             }
@@ -99,7 +97,7 @@ public class TitleMenu : MonoBehaviour
 
         // ���� �÷��� ������ �������� ����
         int[] possibleStages = { 0, 1, 2, 3, 4, 5, 6 };
-        isPossibleStage = possibleStages.Contains(StageMenu.currentIndex);
+        isPossibleStage = possibleStages.Contains(StageMenu.Instance.currentIndex);
 
         // �ӽ��ڵ� for imsi
         rt_imsi.rectTransform.anchoredPosition = Sword.rectTransform.anchoredPosition;
@@ -161,12 +159,12 @@ public class TitleMenu : MonoBehaviour
             {
                 if (GoStageMenu & SwordUpEnd & isPossibleStage)
                 {
-                    if (Mathf.Abs(startPos.x - endPos.x) >= stageMenu.threshold) return;
+                    if (Mathf.Abs(startPos.x - endPos.x) >= StageMenu.Instance.threshold) return;
                     else
                     {
                         AudioSource.clip = StageSelectSound;
                         AudioSource.Play();
-                        stageMenu.SelectStage();
+                        StageMenu.Instance.SelectStage();
                     }
                     // GameController.GetComponent<GameController>().StartStage();
                 }
@@ -202,12 +200,12 @@ public class TitleMenu : MonoBehaviour
                 {
                     if (GoStageMenu & SwordUpEnd)
                     {
-                        if (Mathf.Abs(startPos.x - endPos.x) >= stageMenu.threshold) return;
+                        if (Mathf.Abs(startPos.x - endPos.x) >= StageMenu.Instance.threshold) return;
                         else
                         {
                             AudioSource.clip = StageSelectSound;
                             AudioSource.Play();
-                            stageMenu.SelectStage();
+                            StageMenu.Instance.SelectStage();
                         }
                         // GameController.GetComponent<GameController>().StartStage();
                     }
@@ -302,6 +300,7 @@ public class TitleMenu : MonoBehaviour
         }
         swordRect.anchoredPosition = endPosDown;
         SwordUpEnd = true;
+        MenuManager.Instance.SwordUpEnd();
         Debug.Log("SwordUpEnd");
     }
 
@@ -312,6 +311,7 @@ public class TitleMenu : MonoBehaviour
         Vector2 endPosDown = new Vector2(startPos.x, startPos.y + canvasRect.rect.height + 400);
         swordRect.anchoredPosition = endPosDown;
         SwordUpEnd = true;
+        MenuManager.Instance.SwordUpEnd();
     }
 
 
@@ -324,7 +324,7 @@ public class TitleMenu : MonoBehaviour
     {
         if (isFading) return;
         StartCoroutine(FadeEffect());
-        Debug.Log("�Լ� ȣ�� �Ϸ�");
+        Debug.Log("로고 페이드 아웃 완료");
     }
 
     private IEnumerator FadeEffect()
@@ -334,7 +334,7 @@ public class TitleMenu : MonoBehaviour
         isFading = true;
 
         float elapsedTime = 0f;
-        Debug.Log("���̵�ƿ� ����");
+        Debug.Log("로고 페이드 아웃 시작");
         while (elapsedTime < fadeDuration)
         {
             elapsedTime += Time.deltaTime;
@@ -357,17 +357,12 @@ public class TitleMenu : MonoBehaviour
         }
     }
 
-    // SwordUpEnd = true �Ǹ� Į�� ���Ʒ��� �ణ�� �յ� ���ٴϰ� �ִ� IDLE ���·�
-
-    // 
-
-
     // testScene
 
     // 필요한 클릭 수와 시간 창을 설정
-    public int requiredSwipes = 5; // 아래 방향 스와이프 횟수
-    public float timeWindow = 1f;  // 시간 제한 (초)
-    public float TswipeThreshold = 50f; // 스와이프로 간주할 최소 이동 거리 (픽셀 단위)
+    private int requiredSwipes = 5; // 아래 방향 스와이프 횟수
+    private float timeWindow = 1f;  // 시간 제한 (초)
+    private float TswipeThreshold = 50f; // 스와이프로 간주할 최소 이동 거리 (픽셀 단위)
 
     private List<float> swipeTimes = new List<float>(); // 스와이프 발생 시간 저장
     private Vector2 touchStartPos; // 터치/마우스 시작 위치 기록

@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 using UnityEditor;
 using UnityEngine.SceneManagement;
 
-public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
+public class StageMenu : Singleton<StageMenu>, IDragHandler, IEndDragHandler
 {
     [SerializeField] private Image[] StageImgSet;
     Image Sword;
@@ -31,7 +31,15 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
     [SerializeField] private GameObject BlackOverlayObj;
     private Image BlackOverlay;
 
-    private string[] StageName = {"Tutorial", "1.The First Beat", "2.Echoing Strikes", "3.Beat Master", "4.Final Encore (Easy)", "5.Final Encore (Hard)", "Epilogue"};
+    private string[] StageName = {
+        "Tutorial",
+        "1.The First Beat",
+        "2.Echoing Strikes",
+        "3.Beat Master",
+        "4.Final Encore (Easy)",
+        "5.Final Encore (Hard)",
+        "Epilogue"
+        };
 
     [SerializeField] private GameObject SettingCanvas;
     [SerializeField] private GameObject SettingBackGround;
@@ -259,7 +267,7 @@ public class StageMenu : MonoBehaviour, IDragHandler, IEndDragHandler
     // 여기서부터 좌우 스와이프 관련 코드
     [Header("Stage Objects")]
     public List<RectTransform> stageObjects;
-    public static int currentIndex = 1;
+    public int currentIndex = 1;
 
     public float threshold = 270f;
     private float swipeSpeed = 0.7f;   // 감도

@@ -1,8 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DatabaseManager : MonoBehaviour
+public class DatabaseManager : Singleton<DatabaseManager>
 {
     public int[] score;
     public int[] star;
@@ -16,6 +17,17 @@ public class DatabaseManager : MonoBehaviour
     public static bool isStage7Done;
     public static bool isStage8Done;
     public static bool isStage9Done;
+    
+    public static string[] StageName = {
+        "Tutorial",
+        "1.The First Beat",
+        "2.Echoing Strikes",
+        "3.Beat Master",
+        "4.Final Encore (Easy)",
+        "5.Final Encore (Hard)",
+        "Epilogue"
+        };
+
     private void Awake()
     {
         if (FindObjectsOfType<DatabaseManager>().Length > 1)
@@ -35,7 +47,7 @@ public class DatabaseManager : MonoBehaviour
     }
     public void SaveScoreData()
     {
-        // ½ºÅ×ÀÌÁö °³¼ö¸¸Å­ °¢°¢ ÀúÀå
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å­ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         PlayerPrefs.SetInt("Score1", score[1]);
         PlayerPrefs.SetInt("Score2", score[2]);
         PlayerPrefs.SetInt("Score3", score[3]);
@@ -49,7 +61,7 @@ public class DatabaseManager : MonoBehaviour
     }
     public void SaveStarData()
     {
-        // ½ºÅ×ÀÌÁö °³¼ö¸¸Å­ °¢°¢ ÀúÀå
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å­ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         PlayerPrefs.SetInt("Stage1_Star", star[1]);
         PlayerPrefs.SetInt("Stage2_Star", star[2]);
         PlayerPrefs.SetInt("Stage3_Star", star[3]);
@@ -68,8 +80,8 @@ public class DatabaseManager : MonoBehaviour
         {
             score[1] = PlayerPrefs.GetInt("Score1");
             star[1] = PlayerPrefs.GetInt("Stage1_Star");
-            // Debug.Log($"{score[1]} Á¡ ·Îµå");
-            // Debug.Log($"º° {star[1]}°³ ·Îµå");
+            // Debug.Log($"{score[1]} ï¿½ï¿½ ï¿½Îµï¿½");
+            // Debug.Log($"ï¿½ï¿½ {star[1]}ï¿½ï¿½ ï¿½Îµï¿½");
             score[2] = PlayerPrefs.GetInt("Score2");
             star[2] = PlayerPrefs.GetInt("Stage2_Star");
             score[3] = PlayerPrefs.GetInt("Score3");
