@@ -6,69 +6,69 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: Assets/Scenes/Archive/CutScene/Prologue.unity
+    path: Assets/1.Scenes/Archive/CutScene/Prologue.unity
     guid: 4614aa11965e63c439d6acdb0fa0489a
   - enabled: 1
     path: Assets/Scenes/StageScene/Tutorial.unity
     guid: 95d1df49a84d03542b2f4824c0f7a754
   - enabled: 1
-    path: Assets/Scenes/Main.unity
+    path: Assets/1.Scenes/Main.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
-    path: Assets/Scenes/Loading.unity
+    path: Assets/1.Scenes/Loading.unity
     guid: 535f8b70ef67ec44db4edcf7c5934632
   - enabled: 0
-    path: Assets/Scenes/Archive/CutScene/tmpScene.unity
+    path: Assets/1.Scenes/Archive/CutScene/tmpScene.unity
     guid: 401f78b6b1a1f6a499d72b0d3182b4d5
   - enabled: 1
-    path: Assets/Scenes/Stage.unity
+    path: Assets/1.Scenes/Stage.unity
     guid: 9259c9d64a312064fb78506fa5c95dd9
   - enabled: 1
-    path: Assets/Scenes/StageScene/Stage1.unity
+    path: Assets/1.Scenes/StageScene/Stage1.unity
     guid: 83cc75104c2cdc04a9ffeaa4bed34356
   - enabled: 1
-    path: Assets/Scenes/StageScene/Stage2.unity
+    path: Assets/1.Scenes/StageScene/Stage2.unity
     guid: daf8fe433c3d9c147b366b9fb649dc67
   - enabled: 1
-    path: Assets/Scenes/StageScene/Beat Master.unity
+    path: Assets/1.Scenes/StageScene/Beat Master.unity
     guid: ca95caa7cc56e6844878f4ec40296916
   - enabled: 1
-    path: Assets/Scenes/StageScene/Stage4.unity
+    path: Assets/1.Scenes/StageScene/Stage4.unity
     guid: 0da5a6f80dce1c44cb22d01cbebc3935
   - enabled: 1
-    path: Assets/Scenes/StageScene/Stage5.unity
+    path: Assets/1.Scenes/StageScene/Stage5.unity
     guid: d1a0bae3df62bf648a9d7642b429a024
   - enabled: 0
-    path: Assets/Scenes/Archive/CutScene/tmpScene 2.unity
+    path: Assets/1.Scenes/Archive/CutScene/tmpScene 2.unity
     guid: 054515fc431863c46a9caa3fad934ea1
   - enabled: 0
-    path: Assets/Scenes/Archive/CutScene/tmpScene 3.unity
+    path: Assets/1.Scenes/Archive/CutScene/tmpScene 3.unity
     guid: ab1dfbfdad695514a8d23c2f2718c3dd
   - enabled: 0
-    path: Assets/Scenes/Archive/CutScene/tmpScene 4.unity
+    path: Assets/1.Scenes/Archive/CutScene/tmpScene 4.unity
     guid: 23bd145699bbbff4b918effa81b01379
   - enabled: 0
-    path: Assets/Scenes/Archive/CutScene/EndScene.unity
+    path: Assets/1.Scenes/Archive/CutScene/EndScene.unity
     guid: a95936a5c48f0774b9e473225c1792b0
   - enabled: 1
-    path: Assets/Scenes/StageScene/testScene.unity
+    path: Assets/1.Scenes/StageScene/testScene.unity
     guid: 58a272e420a6b5149a0d1a160321644b
   - enabled: 1
-    path: Assets/Scenes/StageScene/testScene_Boss.unity
+    path: Assets/1.Scenes/StageScene/testScene_Boss.unity
     guid: 6fa40c619f1647a479f158e23b129134
   - enabled: 1
-    path: Assets/Scenes/StageScene/EasyBoss.unity
+    path: Assets/1.Scenes/StageScene/EasyBoss.unity
     guid: e6ed8fbde95e32b40b40ef0f4b8674c0
   - enabled: 1
-    path: Assets/Scenes/StageScene/Stage1Easy.unity
+    path: Assets/1.Scenes/StageScene/Stage1Easy.unity
     guid: 293dadfeba966e84488325cdcb3771f8
   - enabled: 1
-    path: Assets/Scenes/StageScene/Stage2Easy.unity
+    path: Assets/1.Scenes/StageScene/Stage2Easy.unity
     guid: be8a49415f0b59b4ba279681f0802f57
   - enabled: 1
-    path: Assets/Scenes/StageScene/Beat Master Easy.unity
+    path: Assets/1.Scenes/StageScene/Beat Master Easy.unity
     guid: 431bba048ef01df4e9f54fea93647a19
   - enabled: 1
-    path: Assets/Scenes/CutScene.unity
+    path: Assets/1.Scenes/CutScene.unity
     guid: e041f4b3cdb993944afac357cc0134ce
   m_configObjects: {}

@@ -31,29 +31,42 @@ public class StrikerManager : MonoBehaviour
 
     private void Update()
     {
-        // 안전장치
         if (StageFlowManager.Instance == null) return;
         if (playerManager == null) return;
         if (charts == null) return;
+        if (strikerList == null || strikerStatus == null) return;
+
+        int processCount = charts.Count;
+        if (strikerList.Count < processCount) processCount = strikerList.Count;
+        if (strikerStatus.Count < processCount) processCount = strikerStatus.Count;
+
+        if (processCount <= 0) return;
 
         float currentTime = StageFlowManager.Instance.currentTime;
 
-        for (int i = 0; i < charts.Count; i++)
+        for (int i = 0; i < processCount; i++)
         {
-            if (strikerList[i] == null) continue;
+            GameObject striker = strikerList[i];
+            if (striker == null) continue;
 
-            if (currentTime >= charts[i].appearTime * (60f / charts[i].bpm) + playerManager.musicOffset && strikerStatus[i] == 0)
+            ChartData chart = charts[i];
+
+            float appearTimeSeconds = chart.appearTime * (60f / chart.bpm) + playerManager.musicOffset;
+            float disappearTimeSeconds = chart.disappearTime * (60f / chart.bpm) + playerManager.musicOffset;
+
+            if (currentTime >= appearTimeSeconds && strikerStatus[i] == 0)
             {
                 strikerStatus[i] = 1;
-                strikerList[i].SetActive(true);
+                striker.SetActive(true);
             }
-            else if (currentTime >= charts[i].disappearTime * (60f / charts[i].bpm) + playerManager.musicOffset && strikerStatus[i] == 1)
+            else if (currentTime >= disappearTimeSeconds && strikerStatus[i] == 1)
             {
-                strikerList[i].GetComponent<StrikerController>().strikerExit();
+                striker.GetComponent<StrikerController>().strikerExit();
                 strikerStatus[i] = 2;
             }
         }
     }
+
 
     public void InitStriker(int idx)
     {
