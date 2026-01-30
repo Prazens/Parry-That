@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using System.Linq;
 
-public class TitleMenu : MonoBehaviour
+public class TitleMenu: MonoBehaviour
 {
     private Vector2 startPos;
     public float swipeThreshold = 50f;

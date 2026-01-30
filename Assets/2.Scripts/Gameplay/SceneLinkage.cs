@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SceneLinkage : MonoBehaviour
 {
-    public static int StageLV = 0;
+    public static int StageLV = 1;
     public static bool isNormal = true;  // true: normal, false: hard
 
     // [stageIndex, difficulty]

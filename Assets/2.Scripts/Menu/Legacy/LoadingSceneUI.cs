@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LoadingSceneUI : MonoBehaviour
+public class LoadingSceneUI: MonoBehaviour
 {
     [SerializeField] private RectTransform rt_slide;
     [SerializeField] private RectTransform rt_txt;
