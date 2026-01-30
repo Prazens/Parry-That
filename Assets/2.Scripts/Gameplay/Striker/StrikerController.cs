@@ -31,7 +31,17 @@ public class StrikerController : MonoBehaviour
     private float lastProjectileTime = 0f; // 마지막 투사체 발사 시간
 
     [SerializeField] public Queue<Judgeable> judgeableQueue = new Queue<Judgeable> { };
-    private Queue<Tuple<float, int>> prepareQueue = new Queue<Tuple<float, int>>(); // (arriveTime, type) 저장
+    private struct PrepareEntry
+    {
+        public float arriveTime;
+        public AttackType attackType;
+        public PrepareEntry(float _arriveTime, AttackType _attackType)
+        {
+            arriveTime = _arriveTime;
+            attackType = _attackType;
+        }
+    }
+    private Queue<PrepareEntry> prepareQueue = new(); // (arriveTime, type) 저장
 
     public GameObject hpBarPrefab;
     public GameObject hpBar;
@@ -122,28 +132,29 @@ public class StrikerController : MonoBehaviour
         float currentTime = StageFlowManager.Instance.currentTime;
 
         //공격 이전에 출발
-        if (prepareQueue.Count > 0 && currentTime >= (prepareQueue.Peek().Item1 * (60d / bpm)) + musicOffset - animeOffset - moveTime && !isMoved && prepareQueue.Peek().Item2 != 3 && !isMoving)
+        if (prepareQueue.Count > 0 && currentTime >= ((prepareQueue.Peek().arriveTime * (60d / bpm)) + musicOffset - animeOffset - moveTime) && !isMoved &&
+            prepareQueue.Peek().attackType != AttackType.HoldFinishStrong && !isMoving)
         {
             isMoving = true;
-            StartCoroutine(MeleeGo(prepareQueue.Peek().Item1 * (60f / bpm) + musicOffset - animeOffset));
+            StartCoroutine(MeleeGo(prepareQueue.Peek().arriveTime * (60f / bpm) + musicOffset - animeOffset));
         }
 
         // 채보 시간에 맞춰 공격
-        if (prepareQueue.Count > 0 && currentTime >= (prepareQueue.Peek().Item1 * (60d / bpm)) + musicOffset - animeOffset)
+        if (prepareQueue.Count > 0 && currentTime >= (prepareQueue.Peek().arriveTime * (60d / bpm)) + musicOffset - animeOffset)
         {
-            int attackType = prepareQueue.Peek().Item2;
-            float attackTime = prepareQueue.Peek().Item1;
+            AttackType attackType = (AttackType)prepareQueue.Peek().attackType;
+            float attackTime = prepareQueue.Peek().arriveTime;
 
             // 공격
             //근접 전용의 scoreManager의 judge를 이용해야함. projectile과 구분해서 애니메이션도 다르게 되어야한다.
             // 투사체 저장은 PrepareForAttack에서 미리함
 
-            anim.SetAttackType(attackType);
+            anim.SetAttackType((int)attackType);
 
             //공격 애니메이션 작용
-            if (attackType != 3)
+            if (attackType != AttackType.HoldFinishStrong)
             {
-                if (attackType == 2)
+                if (attackType == AttackType.HoldStart)
                 {
                     animator.SetBool("isAttacking", true);
                     transform.GetChild(0).transform.localPosition = DirTool.TranstoVec(DirTool.ReverseDir(location)) * 2f;
@@ -159,7 +170,7 @@ public class StrikerController : MonoBehaviour
             }
             exclamationRelocation();
             prepareQueue.Dequeue(); // 준비된 공격 제거
-            if (attackType != 3 && attackType != 2 && prepareQueue.Count == 0)
+            if (attackType != AttackType.HoldFinishStrong && attackType != AttackType.HoldStart && prepareQueue.Count == 0)
             {
                 StartCoroutine(WaitAndGoBack());
             }
@@ -382,17 +393,18 @@ public class StrikerController : MonoBehaviour
     {
         float currentTime = StageFlowManager.Instance.currentTime;
 
-        if (prepareQueue.Count > 0 && currentTime >= (prepareQueue.Peek().Item1 * (60d / bpm)) + musicOffset - 0.5f)
+        if (prepareQueue.Count > 0 && currentTime >= (prepareQueue.Peek().arriveTime * (60d / bpm)) + musicOffset - 0.5f)
         {
-            var (t, idx) = prepareQueue.Peek();
-            if(idx == 2 || idx == 3)
+            var prepare = prepareQueue.Peek();
+            var (t, idx) = (prepare.arriveTime, prepare.attackType);
+            if (idx == AttackType.HoldStart || idx == AttackType.HoldFinishStrong)
             {
                 prepareQueue.Dequeue();     // 큐 소비
                 exclamationRelocation();    // 느낌표 한 칸 제거
                 lastProjectileTime = currentTime;
                 return;
             }
-            FireProjectile(t, idx);
+            FireProjectile(t, (int)idx);
             prepareQueue.Dequeue();
             lastProjectileTime = currentTime;
         }
@@ -445,8 +457,8 @@ public class StrikerController : MonoBehaviour
 
         if ((noteType != AttackType.HoldFinishStrong && noteType != AttackType.StreamStart) || isHolding || isRenta)
         {
-            prepareQueue.Enqueue(new Tuple<float, int>(arriveTime, (int)noteType)); // 도착 시간과 타입 저장
-            ShowExclamation((int)noteType); // 느낌표 표시
+            prepareQueue.Enqueue(new PrepareEntry(arriveTime, noteType)); // 도착 시간과 타입 저장
+            ShowExclamation(noteType); // 느낌표 표시
             // Debug.Log("prepare!");
         }
 
@@ -518,7 +530,7 @@ public class StrikerController : MonoBehaviour
         }
     }
 
-    private void ShowExclamation(int type)
+    private void ShowExclamation(AttackType type)
     {
         //** 기존 느낌표 지우고 다시 생성**
         foreach (GameObject ex in prepareExclamation)
@@ -528,7 +540,7 @@ public class StrikerController : MonoBehaviour
         int count = prepareQueue.Count; // 현재 준비된 공격 개수
         prepareExclamation.Clear();
 
-        if (type == 2 || type == 5)
+        if (type == AttackType.HoldStart || type == AttackType.StreamStart)
         {
             if (SceneManager.GetActiveScene().name == "Stage4" ||
                 SceneManager.GetActiveScene().name == "Stage5" ||
@@ -537,7 +549,7 @@ public class StrikerController : MonoBehaviour
             else
                 holdExclamation.GetComponent<holdExclamation>().Appear(bpm, 1);
         }
-        else if (type == 3 || type == 6)
+        else if (type == AttackType.HoldFinishStrong || type == AttackType.StreamFinish)
         {
             if (SceneManager.GetActiveScene().name == "Stage4" ||
                 SceneManager.GetActiveScene().name == "Stage5" ||
@@ -548,7 +560,7 @@ public class StrikerController : MonoBehaviour
 
         }
 
-        List<Tuple<float, int>> tempList = new List<Tuple<float, int>>(prepareQueue); // 현재 큐를 리스트로 변환 (순서 유지)
+        List<PrepareEntry> tempList = new List<PrepareEntry>(prepareQueue); // 현재 큐를 리스트로 변환 (순서 유지)
 
 
         for (int i = 0; i < count; i++)
@@ -562,7 +574,7 @@ public class StrikerController : MonoBehaviour
             SpriteRenderer exclamationSprite = newExclamation.GetComponent<SpriteRenderer>();
             if (exclamationSprite != null)
             {
-                int noteColor = tempList[i].Item2;
+                int noteColor = (int)tempList[i].attackType;
                 // 🔹 `type`이 `exclamationSprites` 범위 내에 있는지 확인
                 if (noteColor >= 0 && noteColor < exclamationSprites.Count)
                 {
