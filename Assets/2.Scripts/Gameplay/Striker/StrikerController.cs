@@ -10,6 +10,9 @@ public class StrikerController : MonoBehaviour
     [SerializeField] private StrikerAnim anim;
     [SerializeField] private StrikerSound sound;
 
+    public StrikerAnim Anim => anim;
+    public StrikerSound Sound => sound;
+
     // striker 자체에 들어가는 script
     [SerializeField] private List<GameObject> projectilePrefabs; // 투사체 프리팹
     public PlayerManager playerManager; // Player 정보 저장
@@ -489,18 +492,6 @@ public class StrikerController : MonoBehaviour
         currentNoteIndex++; // 다음 노트로 이동
     }
 
-    private void PlayPrepareSound(AttackType type)
-    {
-        if (type == AttackType.Normal)
-        {
-            sound.PlayPrepareNormal();
-        }
-        else if (type == AttackType.Strong)
-        {
-            sound.PlayPrepareStrong();
-        }
-    }
-
     // 느낌표 생성 관련 함수
     private void SetupExclamationParent()
     {
@@ -752,18 +743,6 @@ public class StrikerController : MonoBehaviour
         }
     }
 
-    private void PlayParrySound(AttackType type)
-    {
-        if (type == AttackType.Normal)
-        {
-            sound.PlayParryNormal();
-        }
-        else if (type == AttackType.Strong)
-        {
-            sound.PlayParryStrong();
-        }
-    }
-
     public void TakeDamage(int damage, AttackType type)
     {
         PlayParrySound(type);
@@ -852,6 +831,30 @@ public class StrikerController : MonoBehaviour
         if (particleSystemGreen != null)
         {
             particleSystemGreen.Play();
+        }
+    }
+
+    private void PlayPrepareSound(AttackType type)
+    {
+        if (type == AttackType.Normal)
+        {
+            sound.PlayPrepareNormal();
+        }
+        else if (type == AttackType.Strong)
+        {
+            sound.PlayPrepareStrong();
+        }
+    }
+
+    private void PlayParrySound(AttackType type)
+    {
+        if (type == AttackType.Normal)
+        {
+            sound.PlayParryNormal();
+        }
+        else if (type == AttackType.Strong)
+        {
+            sound.PlayParryStrong();
         }
     }
 }

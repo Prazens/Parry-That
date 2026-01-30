@@ -10,13 +10,18 @@ public class StrikerSound : MonoBehaviour
     [SerializeField] private AudioClip parrySoundNormal;  // 일반 공격 준비 효과음 (type 0)
     [SerializeField] private AudioClip parrySoundStrong;  // 강한 공격 준비 효과음 (type 1)
     //패링 효과음
-    [SerializeField] public AudioClip holdingSound;  // 홀드 중
+    [SerializeField] private AudioClip holdingSound;  // 홀드 중
     [SerializeField] private AudioClip holdingEnd;  // 홀드 끝
 
     void Awake()
     {
         if (audioSource == null)
             audioSource = GetComponent<AudioSource>();
+    }
+
+    public void SetHoldingSound(AudioClip clip)
+    {
+        holdingSound = clip;
     }
 
     public void PlayPrepareNormal()
