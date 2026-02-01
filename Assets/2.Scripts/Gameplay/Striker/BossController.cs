@@ -129,8 +129,6 @@ public class BossController : MonoBehaviour
     {
         if (hpControl == null) return;
 
-        // 기존 식 유지(너가 의도한대로라면 OK)
-        // hp/maxHp가 1이면 0, 0이면 1이 됨 (게이지가 줄어드는 형태)
         float ratio = (maxHp <= 0) ? 0f : (float)hp / maxHp;
         hpControl.localScale = new Vector3(1f - ratio, 1f, 1f);
     }
@@ -154,8 +152,9 @@ public class BossController : MonoBehaviour
     private void OnBossDead()
     {
         if (bossAnimator != null)
-        {
             bossAnimator.SetTrigger("BossDie");
-        }
+
+        var chibi = transform.Find("boss_chibi");
+        chibi.gameObject.SetActive(true);
     }
 }
