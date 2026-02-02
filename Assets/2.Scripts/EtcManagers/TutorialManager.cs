@@ -81,6 +81,8 @@ public class TutorialManager : MonoBehaviour
         StartCoroutine(Daehwa1());  // 처음 대화 시작
 
         StageFlowManager.isActive = false;
+
+        stageAudioManager.AudioPause();
     }
 
     private void Update()
