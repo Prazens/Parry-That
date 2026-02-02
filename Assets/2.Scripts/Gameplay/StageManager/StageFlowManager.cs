@@ -28,7 +28,7 @@ public class StageFlowManager : MonoBehaviour
 
     [Header("Stage Data")]
     [SerializeField] private StageLevelManager stageLevelManager;
-    private StageData currentStageData;
+    public StageData currentStageData;
 
     private bool button_active = true;
 
