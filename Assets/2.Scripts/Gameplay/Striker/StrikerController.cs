@@ -10,6 +10,9 @@ public class StrikerController : MonoBehaviour
     [SerializeField] private StrikerAnim anim;
     [SerializeField] private StrikerSound sound;
 
+    public StrikerAnim Anim => anim;
+    public StrikerSound Sound => sound;
+
     // striker 자체에 들어가는 script
     [SerializeField] private List<GameObject> projectilePrefabs; // 투사체 프리팹
     public PlayerManager playerManager; // Player 정보 저장
@@ -28,7 +31,17 @@ public class StrikerController : MonoBehaviour
     private float lastProjectileTime = 0f; // 마지막 투사체 발사 시간
 
     [SerializeField] public Queue<Judgeable> judgeableQueue = new Queue<Judgeable> { };
-    private Queue<Tuple<float, int>> prepareQueue = new Queue<Tuple<float, int>>(); // (arriveTime, type) 저장
+    private struct PrepareEntry
+    {
+        public float arriveTime;
+        public AttackType attackType;
+        public PrepareEntry(float _arriveTime, AttackType _attackType)
+        {
+            arriveTime = _arriveTime;
+            attackType = _attackType;
+        }
+    }
+    private Queue<PrepareEntry> prepareQueue = new(); // (arriveTime, type) 저장
 
     public GameObject hpBarPrefab;
     public GameObject hpBar;
@@ -41,17 +54,6 @@ public class StrikerController : MonoBehaviour
     private Transform exclamationParent; // 느낌표 표시 위치
     private List<GameObject> prepareExclamation = new List<GameObject>(); // 느낌표 오브젝트 저장
     public GameObject holdExclamation; // 홀드 느낌표
-
-    //준비 효과음
-    [SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioClip prepareSoundNormal;  // 일반 공격 준비 효과음 (type 0)
-    [SerializeField] private AudioClip prepareSoundStrong;  // 강한 공격 준비 효과음 (type 1)
-    //패링 효과음
-    [SerializeField] private AudioClip parrySoundNormal;  // 일반 공격 준비 효과음 (type 0)
-    [SerializeField] private AudioClip parrySoundStrong;  // 강한 공격 준비 효과음 (type 1)
-    //패링 효과음
-    [SerializeField] public AudioClip holdingSound;  // 홀드 중
-    [SerializeField] private AudioClip holdingEnd;  // 홀드 끝
 
     // 근접 공격 관련 변수
     private Vector3 originalPosition;
@@ -130,28 +132,29 @@ public class StrikerController : MonoBehaviour
         float currentTime = StageFlowManager.Instance.currentTime;
 
         //공격 이전에 출발
-        if (prepareQueue.Count > 0 && currentTime >= (prepareQueue.Peek().Item1 * (60d / bpm)) + musicOffset - animeOffset - moveTime && !isMoved && prepareQueue.Peek().Item2 != 3 && !isMoving)
+        if (prepareQueue.Count > 0 && currentTime >= ((prepareQueue.Peek().arriveTime * (60d / bpm)) + musicOffset - animeOffset - moveTime) && !isMoved &&
+            prepareQueue.Peek().attackType != AttackType.HoldFinishStrong && !isMoving)
         {
             isMoving = true;
-            StartCoroutine(MeleeGo(prepareQueue.Peek().Item1 * (60f / bpm) + musicOffset - animeOffset));
+            StartCoroutine(MeleeGo(prepareQueue.Peek().arriveTime * (60f / bpm) + musicOffset - animeOffset));
         }
 
         // 채보 시간에 맞춰 공격
-        if (prepareQueue.Count > 0 && currentTime >= (prepareQueue.Peek().Item1 * (60d / bpm)) + musicOffset - animeOffset)
+        if (prepareQueue.Count > 0 && currentTime >= (prepareQueue.Peek().arriveTime * (60d / bpm)) + musicOffset - animeOffset)
         {
-            int attackType = prepareQueue.Peek().Item2;
-            float attackTime = prepareQueue.Peek().Item1;
+            AttackType attackType = (AttackType)prepareQueue.Peek().attackType;
+            float attackTime = prepareQueue.Peek().arriveTime;
 
             // 공격
             //근접 전용의 scoreManager의 judge를 이용해야함. projectile과 구분해서 애니메이션도 다르게 되어야한다.
             // 투사체 저장은 PrepareForAttack에서 미리함
 
-            anim.SetAttackType(attackType);
+            anim.SetAttackType((int)attackType);
 
             //공격 애니메이션 작용
-            if (attackType != 3)
+            if (attackType != AttackType.HoldFinishStrong)
             {
-                if (attackType == 2)
+                if (attackType == AttackType.HoldStart)
                 {
                     animator.SetBool("isAttacking", true);
                     transform.GetChild(0).transform.localPosition = DirTool.TranstoVec(DirTool.ReverseDir(location)) * 2f;
@@ -167,7 +170,7 @@ public class StrikerController : MonoBehaviour
             }
             exclamationRelocation();
             prepareQueue.Dequeue(); // 준비된 공격 제거
-            if (attackType != 3 && attackType != 2 && prepareQueue.Count == 0)
+            if (attackType != AttackType.HoldFinishStrong && attackType != AttackType.HoldStart && prepareQueue.Count == 0)
             {
                 StartCoroutine(WaitAndGoBack());
             }
@@ -390,17 +393,18 @@ public class StrikerController : MonoBehaviour
     {
         float currentTime = StageFlowManager.Instance.currentTime;
 
-        if (prepareQueue.Count > 0 && currentTime >= (prepareQueue.Peek().Item1 * (60d / bpm)) + musicOffset - 0.5f)
+        if (prepareQueue.Count > 0 && currentTime >= (prepareQueue.Peek().arriveTime * (60d / bpm)) + musicOffset - 0.5f)
         {
-            var (t, idx) = prepareQueue.Peek();
-            if(idx == 2 || idx == 3)
+            var prepare = prepareQueue.Peek();
+            var (t, idx) = (prepare.arriveTime, prepare.attackType);
+            if (idx == AttackType.HoldStart || idx == AttackType.HoldFinishStrong)
             {
                 prepareQueue.Dequeue();     // 큐 소비
                 exclamationRelocation();    // 느낌표 한 칸 제거
                 lastProjectileTime = currentTime;
                 return;
             }
-            FireProjectile(t, idx);
+            FireProjectile(t, (int)idx);
             prepareQueue.Dequeue();
             lastProjectileTime = currentTime;
         }
@@ -409,8 +413,7 @@ public class StrikerController : MonoBehaviour
     // StrikerController.cs
     private void ActRangeHoldStart()
     {
-        if (audioSource != null && holdingSound != null)
-            audioSource.PlayOneShot(holdingSound, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("playerVolume", 1));
+        sound.PlayHoldStart();
         if(holdSpriteAnimator != null)
         {
             holdSpriteAnimator.SetTrigger("holdStart");
@@ -424,9 +427,7 @@ public class StrikerController : MonoBehaviour
     private void ActRangeHoldFinish()
     {
         // 홀드 종료 연출
-        audioSource.Stop();
-        if (audioSource != null && holdingEnd != null)
-            audioSource.PlayOneShot(holdingEnd, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("playerVolume", 1));
+        sound.PlayHoldEnd();
 
         if (holdSpriteAnimator != null)
         {
@@ -452,40 +453,40 @@ public class StrikerController : MonoBehaviour
     private void PrepareForAttack()
     {
         float arriveTime = chartData.notes[currentNoteIndex].arriveTime;
-        int noteType = chartData.notes[currentNoteIndex].type; // 노트 타입 저장
+        AttackType noteType = (AttackType)chartData.notes[currentNoteIndex].type; // 노트 타입 저장
 
-        if ((noteType != 3 && noteType != 5) || isHolding || isRenta)
+        if ((noteType != AttackType.HoldFinishStrong && noteType != AttackType.StreamStart) || isHolding || isRenta)
         {
-            prepareQueue.Enqueue(new Tuple<float, int>(arriveTime, noteType)); // 도착 시간과 타입 저장
+            prepareQueue.Enqueue(new PrepareEntry(arriveTime, noteType)); // 도착 시간과 타입 저장
             ShowExclamation(noteType); // 느낌표 표시
             // Debug.Log("prepare!");
         }
 
         if (isBossMinion && boss != null)
         {
-            boss.OnMinionPrepare(location, noteType, arriveTime);
+            boss.OnMinionPrepare(location, (int)noteType, arriveTime);
         }
 
         if (isMelee)
         {
-            if (noteType == 2)
+            if (noteType == AttackType.HoldStart)
             {
                 judgeableQueue.Enqueue(new Judgeable(AttackType.HoldStart, arriveTime, location, this, null, this.ActMeleeHoldStart));
                 judgeableQueue.Enqueue(new Judgeable(AttackType.HoldStop, chartData.notes[currentNoteIndex + 1].arriveTime, location, this, null, this.ActMeleeHoldFinish));
             }
-            else if (noteType != 3)
+            else if (noteType != AttackType.HoldFinishStrong)
             {
-                judgeableQueue.Enqueue(new Judgeable((AttackType)noteType, arriveTime, location, this, null, this.ActMeleeHit));
+                judgeableQueue.Enqueue(new Judgeable(noteType, arriveTime, location, this, null, this.ActMeleeHit));
             }
         }
         else
         {
-            if (noteType == 2)
+            if (noteType == AttackType.HoldStart)
             {
                 judgeableQueue.Enqueue(new Judgeable(AttackType.HoldStart, arriveTime, location, this, null, this.ActRangeHoldStart));
                 judgeableQueue.Enqueue(new Judgeable(AttackType.HoldStop, chartData.notes[currentNoteIndex + 1].arriveTime, location, this, null, this.ActRangeHoldFinish));
             }
-            else if (noteType == 5)
+            else if (noteType == AttackType.StreamStart)
             {
                 var j = new Judgeable(AttackType.StreamStart, arriveTime, location, this, null, this.ActStreamStart);
                 j.SetStreamCount(CalcStreamCountForThisSegment(currentNoteIndex));
@@ -501,20 +502,6 @@ public class StrikerController : MonoBehaviour
         PlayPrepareSound(noteType);
 
         currentNoteIndex++; // 다음 노트로 이동
-    }
-    private void PlayPrepareSound(int type)
-    {
-        if (audioSource != null)
-        {
-            if (type == 0 && prepareSoundNormal != null)
-            {
-                audioSource.PlayOneShot(prepareSoundNormal, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("enemyVolume", 1));
-            }
-            else if (type == 1 && prepareSoundStrong != null)
-            {
-                audioSource.PlayOneShot(prepareSoundStrong, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("enemyVolume", 1));
-            }
-        }
     }
 
     // 느낌표 생성 관련 함수
@@ -543,7 +530,7 @@ public class StrikerController : MonoBehaviour
         }
     }
 
-    private void ShowExclamation(int type)
+    private void ShowExclamation(AttackType type)
     {
         //** 기존 느낌표 지우고 다시 생성**
         foreach (GameObject ex in prepareExclamation)
@@ -553,7 +540,7 @@ public class StrikerController : MonoBehaviour
         int count = prepareQueue.Count; // 현재 준비된 공격 개수
         prepareExclamation.Clear();
 
-        if (type == 2 || type == 5)
+        if (type == AttackType.HoldStart || type == AttackType.StreamStart)
         {
             if (SceneManager.GetActiveScene().name == "Stage4" ||
                 SceneManager.GetActiveScene().name == "Stage5" ||
@@ -562,7 +549,7 @@ public class StrikerController : MonoBehaviour
             else
                 holdExclamation.GetComponent<holdExclamation>().Appear(bpm, 1);
         }
-        else if (type == 3 || type == 6)
+        else if (type == AttackType.HoldFinishStrong || type == AttackType.StreamFinish)
         {
             if (SceneManager.GetActiveScene().name == "Stage4" ||
                 SceneManager.GetActiveScene().name == "Stage5" ||
@@ -573,7 +560,7 @@ public class StrikerController : MonoBehaviour
 
         }
 
-        List<Tuple<float, int>> tempList = new List<Tuple<float, int>>(prepareQueue); // 현재 큐를 리스트로 변환 (순서 유지)
+        List<PrepareEntry> tempList = new List<PrepareEntry>(prepareQueue); // 현재 큐를 리스트로 변환 (순서 유지)
 
 
         for (int i = 0; i < count; i++)
@@ -587,7 +574,7 @@ public class StrikerController : MonoBehaviour
             SpriteRenderer exclamationSprite = newExclamation.GetComponent<SpriteRenderer>();
             if (exclamationSprite != null)
             {
-                int noteColor = tempList[i].Item2;
+                int noteColor = (int)tempList[i].attackType;
                 // 🔹 `type`이 `exclamationSprites` 범위 내에 있는지 확인
                 if (noteColor >= 0 && noteColor < exclamationSprites.Count)
                 {
@@ -770,17 +757,8 @@ public class StrikerController : MonoBehaviour
 
     public void TakeDamage(int damage, AttackType type)
     {
-        if (audioSource != null)
-        {
-            if (type == AttackType.Normal && parrySoundNormal != null)
-            {
-                audioSource.PlayOneShot(parrySoundNormal, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("playerVolume", 1));
-            }
-            else if (type == AttackType.Strong && parrySoundStrong != null)
-            {
-                audioSource.PlayOneShot(parrySoundStrong, PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("playerVolume", 1));
-            }
-        }
+        PlayParrySound(type);
+
         if (isBossMinion && boss != null)
         {
             // 자기 HP는 깎지 않고 보스에게 전달
@@ -865,6 +843,30 @@ public class StrikerController : MonoBehaviour
         if (particleSystemGreen != null)
         {
             particleSystemGreen.Play();
+        }
+    }
+
+    private void PlayPrepareSound(AttackType type)
+    {
+        if (type == AttackType.Normal)
+        {
+            sound.PlayPrepareNormal();
+        }
+        else if (type == AttackType.Strong)
+        {
+            sound.PlayPrepareStrong();
+        }
+    }
+
+    private void PlayParrySound(AttackType type)
+    {
+        if (type == AttackType.Normal)
+        {
+            sound.PlayParryNormal();
+        }
+        else if (type == AttackType.Strong)
+        {
+            sound.PlayParryStrong();
         }
     }
 }

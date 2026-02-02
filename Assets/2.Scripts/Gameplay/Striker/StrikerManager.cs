@@ -121,7 +121,7 @@ public class StrikerManager : MonoBehaviour
         {
             strikerController.dynamicUIManager = dynamicUIManager;
             strikerController.holdExclamation = holdExclamation;
-            strikerController.holdingSound = holdingSound;
+            strikerController.Sound.SetHoldingSound(holdingSound);
 
             if (bossController != null)
             {
