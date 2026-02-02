@@ -76,7 +76,6 @@ public class StageAudioManager : MonoBehaviour
     public void AudioPause()
     {
         if (musicSource == null) return;
-        if (!musicPlayed) return;
 
         savedMusicTime = musicSource.time;
         musicSource.Pause();
@@ -86,7 +85,6 @@ public class StageAudioManager : MonoBehaviour
     public void AudioUnPause()
     {
         if (musicSource == null) return;
-        if (!musicPlayed) return;
 
         musicSource.time = savedMusicTime;
         musicSource.Play();
