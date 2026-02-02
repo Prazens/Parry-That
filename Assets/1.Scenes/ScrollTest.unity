@@ -668,18 +668,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 995379521}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3021fc1087def5a4f987daa9a6290fd3, type: 3}
+  m_Script: {fileID: 11500000, guid: 4779a0b383f62c94fb2cac11d0d03726, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   scrollRect: {fileID: 995379523}
   contentPanel: {fileID: 668888467}
   layoutGroup: {fileID: 668888468}
-  scaleSpeed: 10
   minScale: 0.8
   maxScale: 1
   distanceToFullDark: 600
-  darkColor: {r: 0, g: 0, b: 0, a: 0.5}
+  darkColor: {r: 0, g: 0, b: 0, a: 0.15294118}
   brightColor: {r: 1, g: 1, b: 1, a: 1}
+  previewSounds:
+  - {fileID: 8300000, guid: 6191985352a52d7478539ed4f2145590, type: 3}
+  - {fileID: 8300000, guid: 7d3a195716b0e004d8a259f7559f6c49, type: 3}
+  - {fileID: 8300000, guid: fe24be29ae86fd0459e82ab1831e0703, type: 3}
+  - {fileID: 8300000, guid: 52ef4fab7f08b12418a1157635065395, type: 3}
+  - {fileID: 8300000, guid: 52ef4fab7f08b12418a1157635065395, type: 3}
 --- !u!1 &1030840904
 GameObject:
   m_ObjectHideFlags: 0

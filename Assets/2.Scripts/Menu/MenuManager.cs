@@ -55,10 +55,10 @@ public class MenuManager : Singleton<MenuManager>
         // int[] stageInfo = SceneLinkage.stageIndex;
         stageIndex = SceneLinkage.ConvertToNewStageIndex(SceneLinkage.StageLV);
         // 스테이지에서 나왔을 때 현재 인덱스를 그 스테이지로 설정
-        diskSwipeUI.curIndex = stageIndex;
+        // diskSwipeUI.curIndex = stageIndex;
 
         currentState = MenuState.StageSelect;
-        diskSwipeUI.InitUI();
+        diskSwipeUI.InitScrollView();
         infoDisplayUI.InitUI(stageIndex);
         if (stageIndex[1] >= 1)
         {
@@ -140,7 +140,7 @@ public class MenuManager : Singleton<MenuManager>
     public void WhenTitleEnd()
     {
         currentState = MenuState.StageSelect;
-        diskSwipeUI.InitUI();
+        diskSwipeUI.InitScrollView();
         infoDisplayUI.InitUI(stageIndex);
         if (stageIndex[1] >= 1)
         {

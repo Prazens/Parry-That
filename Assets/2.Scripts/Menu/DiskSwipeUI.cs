@@ -8,6 +8,7 @@ using UnityEngine.EventSystems;
 /// 디스크 스와이프 UI 관리
 /// <para>"StageMenu.cs"에서 분리됨</para>
 /// <para>터치 입력 받고 디스크 스크롤, 현재 선택된 스테이지 표시</para>
+/// <para>스테이지 선택 관련 연출 포함?</para>
 /// </summary>
 public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
 {
@@ -26,22 +27,25 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
     [Space]
     private List<List<Sprite>> stageDiskSprites;  // [stageIndex][difficulty] 스프라이트 목록
 
+    [SerializeField] private List<AudioClip> previewSounds;  // 디스크 선택시 재생할 미리듣기 사운드 목록
+    private AudioSource currentPreviewSound;
 
     private RectTransform[] stageDisks;
     private float[] itemPositions;
-    private bool isDragging = false;
+    public bool isDragging = false;
     private int targetIndex = 0;
     private float itemWidth;
     private float centerPos; // 화면의 정중앙 좌표
     private float interval;
 
-    public void Start()  // 임시
+    private void Start()  // 임시
     {
         InitScrollView();
     }
 
     public void InitScrollView(int initialIndex = 0, int difficulty = 0)
     {
+        currentPreviewSound = gameObject.AddComponent<AudioSource>();  // 임시로 여기에 추가
         // 아이템 위치 및 패딩 설정, 나중에는 instantiate로 동적 생성 시켜야 함
         int childCount = contentPanel.childCount;
         stageDisks = new RectTransform[childCount];
@@ -72,7 +76,12 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
         GoToStage(initialIndex);
     }
 
-    public void GoToStage(int stageIndex)
+    public void UpdateDifficulty(int difficulty)
+    {
+        // 난이도에 따라 아이템 갱신
+    }
+
+    private void GoToStage(int stageIndex)
     {
         if (stageIndex < 0 || stageIndex >= stageDisks.Length)
         {
@@ -85,21 +94,17 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
         UpdateScaleAndColor();
     }
 
-    public void UpdateDifficulty(int difficulty)
+    private void Update()
     {
-        // 난이도에 따라 아이템 갱신
-    }
-
-    void Update()
-    {
-        if (!isDragging && MenuManager.Instance.currentState == MenuManager.MenuState.StageSelect)
-        {
-            stageDisks[targetIndex].Rotate(0, 0, 1.7f * Time.deltaTime);  // CD 회전, 임시로 하드코딩 된 값
-        }
+        // if (!isDragging && MenuManager.Instance.currentState == MenuManager.MenuState.StageSelect)
+        // {
+        //     stageDisks[targetIndex].Rotate(0, 0, 1.7f * Time.deltaTime);  // CD 회전, 임시로 하드코딩 된 값
+        // }
     }
 
     private void UpdateScaleAndColor()
     {
+        Debug.Log("UpdateScaleAndColor called");
         int maxEffectRange = 2;  // 임시로 하드코딩 된 값
         for (int i = Mathf.Max(0, targetIndex - maxEffectRange); i < Mathf.Min(stageDisks.Length, targetIndex + maxEffectRange + 1); i++)
         {
@@ -123,16 +128,32 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
         if (currentScrollX < itemPositions[targetIndex] - interval / 2f && targetIndex != itemPositions.Length - 1)
         {
             targetIndex++;
+            StartCoroutine(TempMusicPlay(targetIndex));
         }
         else if (currentScrollX > itemPositions[targetIndex] + interval / 2f && targetIndex != 0)
         {
             targetIndex--;
+            StartCoroutine(TempMusicPlay(targetIndex));
         }
+    }
+
+    IEnumerator TempMusicPlay(int targetIndex)  // 임시로 여기에 넣어놓음, 아마 매니저를 새로 파거나 MenuManager에 넣어야 할 듯
+    {
+        Debug.Log("TempMusicPlay called for index: " + targetIndex);
+        currentPreviewSound.loop = true;
+        currentPreviewSound.Stop();
+        currentPreviewSound.clip = previewSounds[targetIndex];
+        currentPreviewSound.volume = 0.5f;
+        currentPreviewSound.Play();
+        yield return null;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        isDragging = true;
+        if (!isDragging)
+        {
+            isDragging = true;
+        }
         CheckTargetIndex();
         UpdateScaleAndColor();
     }
