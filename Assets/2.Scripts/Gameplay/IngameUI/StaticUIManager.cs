@@ -31,9 +31,6 @@ public class StaticUIManager : MonoBehaviour
     [SerializeField] private GameObject victoryAnimatorObject;
     [SerializeField] private AudioSource victoryAudioSource;
 
-    [Header("Stars (Display Only)")]
-    [SerializeField] private GameObject[] starObjects;
-
     [Header("Result")]
     [SerializeField] private StageResultManager stageResultManager;
 
@@ -337,15 +334,18 @@ public class StaticUIManager : MonoBehaviour
 
     private void UpdateStarDisplay()
     {
-        if (starObjects == null || starObjects.Length == 0) return;
+        if (clearPanel == null) return;
         if (stageResultManager == null) return;
 
         int stars = stageResultManager.LatestStarCount;
 
-        for (int i = 0; i < starObjects.Length; i++)
-        {
-            if (starObjects[i] == null) continue;
-            starObjects[i].SetActive(i < stars);
-        }
+        // ClearPanel 인스턴스에서 직접 Star 오브젝트 찾기
+        Transform star1 = clearPanel.transform.Find("Star1");
+        Transform star2 = clearPanel.transform.Find("Star2");
+        Transform star3 = clearPanel.transform.Find("Star3");
+
+        if (star1 != null) star1.gameObject.SetActive(stars >= 1);
+        if (star2 != null) star2.gameObject.SetActive(stars >= 2);
+        if (star3 != null) star3.gameObject.SetActive(stars >= 3);
     }
 }
