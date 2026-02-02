@@ -40,11 +40,6 @@ public class DiffButtonUI : MonoBehaviour
 
     public void WhenButtonClicked()
     {
-        int[] targetIndex = new int[2] {
-            MenuManager.Instance.stageIndex[0],
-            MenuManager.Instance.stageIndex[1] == 0 ? 1 : 0
-        };
-        
-        MenuManager.Instance.UpdateCurStage(targetIndex);
+        MenuManager.Instance.UpdateCurStage(MenuManager.Instance.stageIndex[0], MenuManager.Instance.stageIndex[1] == 0 ? 1 : 0);
     }
 }

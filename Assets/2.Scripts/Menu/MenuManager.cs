@@ -52,27 +52,19 @@ public class MenuManager : Singleton<MenuManager>
 
     public void InitUI()
     {
-        if (!TitleUI.TitlePassed)
-        {
-            currentState = MenuState.Title;
-            titleUI.InitUI();
-        }
-        else
-        {
-            // int[] stageInfo = SceneLinkage.stageIndex;
-            stageIndex = SceneLinkage.ConvertToNewStageIndex(SceneLinkage.StageLV);
-            // 스테이지에서 나왔을 때 현재 인덱스를 그 스테이지로 설정
-            diskSwipeUI.curIndex = stageIndex;
+        // int[] stageInfo = SceneLinkage.stageIndex;
+        stageIndex = SceneLinkage.ConvertToNewStageIndex(SceneLinkage.StageLV);
+        // 스테이지에서 나왔을 때 현재 인덱스를 그 스테이지로 설정
+        diskSwipeUI.curIndex = stageIndex;
 
-            currentState = MenuState.StageSelect;
-            diskSwipeUI.InitUI();
-            infoDisplayUI.InitUI(stageIndex);
-            if (stageIndex[1] >= 1)
-            {
-                diffButtonUI.InitUI(stageIndex[1]);
-            }
-            settingUI.InitUI();
+        currentState = MenuState.StageSelect;
+        diskSwipeUI.InitUI();
+        infoDisplayUI.InitUI(stageIndex);
+        if (stageIndex[1] >= 1)
+        {
+            diffButtonUI.InitUI(stageIndex[1]);
         }
+        settingUI.InitUI();
 
         RectTransform imgHistoryRect = GameObject.Find("Img_History").GetComponent<RectTransform>();
         Sword = GameObject.Find("Img_Sword").GetComponent<Image>();
@@ -98,6 +90,11 @@ public class MenuManager : Singleton<MenuManager>
         Color originalOverlayColor = BlackOverlay.color;
         BlackOverlay.color = new Color (originalOverlayColor.r, originalOverlayColor.g, originalOverlayColor.b, 0f);
 
+        if (!TitleUI.TitlePassed)
+        {
+            currentState = MenuState.Title;
+            titleUI.InitUI();
+        }
     }
 
     /// <summary>
@@ -105,13 +102,14 @@ public class MenuManager : Singleton<MenuManager>
     /// <para>DiskSwipeUI, DiffButtonUI에서 정보 갱신받음</para>
     /// <para>DiskSwipeUI, DiffButtonUI, InfoDisplayUI를 갱신함</para>   
     /// </summary>
-    /// <param name="index">스테이지 인덱스, {스테이지, 난이도}</param>
-    public void UpdateCurStage(int[] index)
+    /// <param name="index">스테이지 인덱스 번호만</param>
+    /// <param name="difficulty">난이도 인덱스</param>
+    public void UpdateCurStage(int index, int difficulty = 0)
     {
         bool needUpdate = false;
-        if (stageIndex[0] != index[0])
+        if (stageIndex[0] != index)
         {
-            stageIndex[0] = index[0];
+            stageIndex[0] = index;
             if (StageDBManager.Instance.diffNumbers[stageIndex[0]] == 0)
             {
                 // 난이도 없는 스테이지로 전환 시
@@ -125,9 +123,9 @@ public class MenuManager : Singleton<MenuManager>
             needUpdate = true;
         }
 
-        if (stageIndex[1] != index[1])
+        if (stageIndex[1] != difficulty)
         {
-            stageIndex[1] = index[1];
+            stageIndex[1] = difficulty;
             diskSwipeUI.UpdateDifficulty(stageIndex[1]);
 
             needUpdate = true;
@@ -136,6 +134,17 @@ public class MenuManager : Singleton<MenuManager>
         if (needUpdate)
         {
             infoDisplayUI.DisplayInfo(stageIndex);
+        }
+    }
+
+    public void WhenTitleEnd()
+    {
+        currentState = MenuState.StageSelect;
+        diskSwipeUI.InitUI();
+        infoDisplayUI.InitUI(stageIndex);
+        if (stageIndex[1] >= 1)
+        {
+            diffButtonUI.InitUI(stageIndex[1]);
         }
     }
 
