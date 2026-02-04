@@ -72,6 +72,12 @@ public class StageAudioManager : MonoBehaviour
         musicPlayed = true;
     }
 
+    public void StopAudio()
+    {
+        if (musicSource == null) return;
+        musicSource.Stop();
+    }
+
     // 기존 StageManager의 PauseStage에서 하던 "시간 저장 + Pause"를 여기로 이동
     public void AudioPause()
     {

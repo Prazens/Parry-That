@@ -44,7 +44,7 @@ public class StaticUIManager : MonoBehaviour
 
     private Animator victoryAnimator;
 
-    private bool victoryPlayed = false;
+    public bool victoryPlayed = false;
 
     private bool initialized = false;
 
@@ -86,7 +86,7 @@ public class StaticUIManager : MonoBehaviour
         CachePauseButton();
         CacheVictory();
 
-        // ✅ Start에서 ToggleXXX를 여러 번 호출하지 말고 직접 끔(토글 내부 로직/텍스트 갱신 방지)
+        // Start에서 ToggleXXX를 여러 번 호출하지 말고 직접 끔(토글 내부 로직/텍스트 갱신 방지)
         if (overlayObject != null) overlayObject.SetActive(false);
         if (clearPanel != null) clearPanel.SetActive(false);
         if (gameOverPanel != null) gameOverPanel.SetActive(false);
@@ -288,18 +288,26 @@ public class StaticUIManager : MonoBehaviour
         countdownText.gameObject.SetActive(false);
     }
 
+    public void ResetVictoryAnimation()
+    {
+        victoryPlayed = false;
+        if (victoryAnimatorObject != null) victoryAnimatorObject.SetActive(false);
+    }
+
+
     public void StartVictoryAnimation()
     {
         if (victoryAnimatorObject == null || victoryAnimator == null) return;
+        if (victoryPlayed) return; // 중복 방지 (선택)
 
         victoryPlayed = true;
         victoryAnimatorObject.SetActive(true);
 
-        if (victoryAudioSource != null)
-        {
-            victoryAudioSource.Play();
-        }
+        if (victoryAudioSource != null) victoryAudioSource.Play();
+
+        victoryAnimator.SetTrigger("Play");
     }
+
 
     public bool VictoryAnimationFinished()
     {
