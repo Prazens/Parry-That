@@ -3,13 +3,16 @@ using UnityEngine;
 public class StrikerSound : MonoBehaviour
 {
     [SerializeField] private AudioSource audioSource;
-    //준비 효과음
+
+    [Header("준비 효과음")]
     [SerializeField] private AudioClip prepareSoundNormal;  // 일반 공격 준비 효과음 (type 0)
     [SerializeField] private AudioClip prepareSoundStrong;  // 강한 공격 준비 효과음 (type 1)
-    //패링 효과음
-    [SerializeField] private AudioClip parrySoundNormal;  // 일반 공격 준비 효과음 (type 0)
-    [SerializeField] private AudioClip parrySoundStrong;  // 강한 공격 준비 효과음 (type 1)
-    //패링 효과음
+
+    [Header("패링 효과음")]
+    [SerializeField] private AudioClip parrySoundNormal;  // 일반 공격 패링 효과음 (type 0)
+    [SerializeField] private AudioClip parrySoundStrong;  // 강한 공격 패링 효과음 (type 1)
+
+    [Header("홀드 효과음")]
     [SerializeField] private AudioClip holdingSound;  // 홀드 중
     [SerializeField] private AudioClip holdingEnd;  // 홀드 끝
 

@@ -14,7 +14,7 @@ public class Judgeable
     public GameObject judgeableObject;
 
     // 판정 끝날 시 실행할 메소드(매개변수와 반환값 모두 없음)
-    private Action onDestroy;
+    public Action onDestroy;
 
     public Direction noteDirection;
     public AttackType attackType;
@@ -35,22 +35,5 @@ public class Judgeable
     public void SetStreamCount(int _count)
     {
         streamCount = _count;
-    }
-
-    public void FinishJudge()
-    {
-        if (strikerController.judgeableQueue.Peek() == this)
-        {
-            strikerController.judgeableQueue.Dequeue();
-            if (judgeableObject != null)
-            {
-                GameObject.Destroy(judgeableObject);
-            }
-
-            if (onDestroy != null)
-            {
-                onDestroy();
-            }
-        }
     }
 }

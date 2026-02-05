@@ -30,7 +30,8 @@ public class StrikerController : MonoBehaviour
     // 임시로 발사체 저장해놓을 공간
     private float lastProjectileTime = 0f; // 마지막 투사체 발사 시간
 
-    [SerializeField] public Queue<Judgeable> judgeableQueue = new Queue<Judgeable> { };
+    [SerializeField] private JudgeSystem judgeSystem;
+
     private struct PrepareEntry
     {
         public float arriveTime;
@@ -205,7 +206,7 @@ public class StrikerController : MonoBehaviour
 
         sound.PlayHoldStart();
 
-        dynamicUIManager.CutInDisplay(judgeableQueue.Peek().arriveBeat * (60f / bpm) - StageFlowManager.Instance.currentTime + musicOffset);
+        dynamicUIManager.CutInDisplay(judgeSystem.PeekJudgeable(location).arriveBeat * (60f / bpm) - StageFlowManager.Instance.currentTime + musicOffset);
 
         // StartCoroutine(MeleeHoldStartAnim());
         isHolding = true;
@@ -419,7 +420,7 @@ public class StrikerController : MonoBehaviour
             holdSpriteAnimator.SetTrigger("holdStart");
         }
 
-        dynamicUIManager.CutInDisplay(judgeableQueue.Peek().arriveBeat * (60f / bpm) - StageFlowManager.Instance.currentTime + musicOffset);
+        dynamicUIManager.CutInDisplay(judgeSystem.PeekJudgeable(location).arriveBeat * (60f / bpm) - StageFlowManager.Instance.currentTime + musicOffset);
 
         isHolding = true;
     }
@@ -459,7 +460,6 @@ public class StrikerController : MonoBehaviour
         {
             prepareQueue.Enqueue(new PrepareEntry(arriveTime, noteType)); // 도착 시간과 타입 저장
             ShowExclamation(noteType); // 느낌표 표시
-            // Debug.Log("prepare!");
         }
 
         if (isBossMinion && boss != null)
@@ -471,34 +471,31 @@ public class StrikerController : MonoBehaviour
         {
             if (noteType == AttackType.HoldStart)
             {
-                judgeableQueue.Enqueue(new Judgeable(AttackType.HoldStart, arriveTime, location, this, null, this.ActMeleeHoldStart));
-                judgeableQueue.Enqueue(new Judgeable(AttackType.HoldStop, chartData.notes[currentNoteIndex + 1].arriveTime, location, this, null, this.ActMeleeHoldFinish));
+                judgeSystem.EnqueueJudgeable(new Judgeable(AttackType.HoldStart, arriveTime, location, this, null, this.ActMeleeHoldStart));
+                judgeSystem.EnqueueJudgeable(new Judgeable(AttackType.HoldStop, chartData.notes[currentNoteIndex + 1].arriveTime, location, this, null, this.ActMeleeHoldFinish));
             }
             else if (noteType != AttackType.HoldFinishStrong)
             {
-                judgeableQueue.Enqueue(new Judgeable(noteType, arriveTime, location, this, null, this.ActMeleeHit));
+                judgeSystem.EnqueueJudgeable(new Judgeable(noteType, arriveTime, location, this, null, this.ActMeleeHit));
             }
         }
         else
         {
             if (noteType == AttackType.HoldStart)
             {
-                judgeableQueue.Enqueue(new Judgeable(AttackType.HoldStart, arriveTime, location, this, null, this.ActRangeHoldStart));
-                judgeableQueue.Enqueue(new Judgeable(AttackType.HoldStop, chartData.notes[currentNoteIndex + 1].arriveTime, location, this, null, this.ActRangeHoldFinish));
+                judgeSystem.EnqueueJudgeable(new Judgeable(AttackType.HoldStart, arriveTime, location, this, null, this.ActRangeHoldStart));
+                judgeSystem.EnqueueJudgeable(new Judgeable(AttackType.HoldStop, chartData.notes[currentNoteIndex + 1].arriveTime, location, this, null, this.ActRangeHoldFinish));
             }
             else if (noteType == AttackType.StreamStart)
             {
                 var j = new Judgeable(AttackType.StreamStart, arriveTime, location, this, null, this.ActStreamStart);
                 j.SetStreamCount(CalcStreamCountForThisSegment(currentNoteIndex));
-                judgeableQueue.Enqueue(j);
-                judgeableQueue.Enqueue(new Judgeable(AttackType.StreamFinish, chartData.notes[currentNoteIndex + 1].arriveTime, location, this, null, this.ActStreamFinish));
+                judgeSystem.EnqueueJudgeable(j);
+                judgeSystem.EnqueueJudgeable(new Judgeable(AttackType.StreamFinish, chartData.notes[currentNoteIndex + 1].arriveTime, location, this, null, this.ActStreamFinish));
             }
         }
 
-        // 애니메이션 실행 (느낌표 표시)
-        // **애니메 준비)**
-        //animator.SetTrigger("isPrepar이션 실행 (공격e");
-        // **🔹 효과음 재생 (일반 / 강한 공격에 따라 다름)**
+        // 효과음 재생
         PlayPrepareSound(noteType);
 
         currentNoteIndex++; // 다음 노트로 이동
@@ -630,7 +627,7 @@ public class StrikerController : MonoBehaviour
         }
 
         // 투사체 저장
-        judgeableQueue.Enqueue(new Judgeable((AttackType)index, time, location, this, projectile));
+        judgeSystem.EnqueueJudgeable(new Judgeable((AttackType)index, time, location, this, projectile));
         // // Debug.Log($"judgeableQueue의 길이:{judgeableQueue.Count}");
 
         // 투사체에 타겟 설정
@@ -745,9 +742,9 @@ public class StrikerController : MonoBehaviour
 
     public void ClearProjectiles()
     {
-        while (judgeableQueue.Count > 0)
+        while (judgeSystem.CountJudgeable(location) > 0)
         {
-            GameObject projectile = judgeableQueue.Dequeue().judgeableObject;
+            GameObject projectile = judgeSystem.DequeueJudgeable(location).judgeableObject;
             if (projectile != null)
             {
                 Destroy(projectile); // Projectile 삭제
