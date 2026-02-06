@@ -1,0 +1,3 @@
+레이어순서는 stagepanel1 > stagepanel2 > stagepanel3 > scorepanel
+stagepanel2는 하드모드일 때만 깔리는 애니메이션
+완성된 샷은 이미지 참고
