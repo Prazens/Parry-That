@@ -685,6 +685,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: fe24be29ae86fd0459e82ab1831e0703, type: 3}
   - {fileID: 8300000, guid: 52ef4fab7f08b12418a1157635065395, type: 3}
   - {fileID: 8300000, guid: 52ef4fab7f08b12418a1157635065395, type: 3}
+  isDragging: 0
 --- !u!1 &1030840904
 GameObject:
   m_ObjectHideFlags: 0

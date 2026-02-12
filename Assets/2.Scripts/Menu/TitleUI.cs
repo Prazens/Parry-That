@@ -1,384 +1,101 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using TMPro;
-using System.Linq;
+using UnityEngine;
+using UnityEngine.UI;
 
-public class TitleUI : Singleton<TitleUI>
+/// <summary>
+/// 타이틀 화면 연출 및 UI 관리
+/// </summary>
+public class TitleUI : MonoBehaviour
 {
     private Vector2 startPos;
-    public float swipeThreshold = 50f;
+    [SerializeField] private float swipeThreshold = 50f;
+    [SerializeField] private float slideDuration;
 
-    public RectTransform menuPanel;
-    public RectTransform nextPanel;
-    public float slideDuration;
+    [SerializeField] private Image titleImg;
+    [SerializeField] private TextMeshProUGUI titleText;
 
-    private Vector2 MenuStartPos;
-    private Vector2 StageMenuStartPos;
+    public float transitionDur;
 
-    private Image Sword;
-    private Image Title;
-    private GameObject imsi;
-    private Image rt_imsi;
+    [Header("Camera")]
+    public GameObject mainCamera;
+    // 카메라 무브먼트가 많아지면 따로 스크립트 분리 고려
 
-    private bool GoStageMenu = false;
-    public static bool SwordUpEnd = false;
-    public bool MouseControl;
-    public static bool TitlePassed = false;
-    public bool isPossibleStage = true;
+    public bool isActivated = false;
 
-    public GameObject GameController;
-
-    public GameObject TitleTextObj;
-    public TextMeshProUGUI TitleText;
-    private Color TitleText_originalColor;
-
-    private AudioSource AudioSource;
-    public AudioClip SwordUpSound;
-    public AudioClip StageSelectSound;
-
+    /// <summary>
+    /// TitleUI 초기화
+    /// </summary>
     public void InitUI()
     {
-
-        Application.targetFrameRate = 120; // 120프레임
-
-        menuPanel = GameObject.Find("Title").GetComponent<RectTransform>();
-        nextPanel = GameObject.Find("StageMenu").GetComponent<RectTransform>();
-        Sword = GameObject.Find("Img_Sword").GetComponent<Image>();
-        Title = GameObject.Find("Img_Title").GetComponent<Image>();
-        imsi = GameObject.Find("imsi");
-        rt_imsi = imsi.GetComponent<Image>();
-        AudioSource = GetComponent<AudioSource>();
-
-        GameController = GameObject.Find("GameController");
-        TitleTextObj = GameObject.Find("TitleText");
-        TitleText = TitleTextObj.GetComponent<TextMeshProUGUI>();
-
-        MenuStartPos = menuPanel.anchoredPosition;
-        StageMenuStartPos = nextPanel.anchoredPosition;
-
-        if (TitleText != null)
-        {
-            TitleText_originalColor = TitleText.color;
-        }
-
-        if (TitlePassed)
-        {
-            ChangePanelPosition(MenuStartPos, StageMenuStartPos);
-            ChangeSwordPosition();
-            GoStageMenu = true;
-        }
-        Debug.Log($"{TitlePassed}");
+        mainCamera.transform.position = new Vector3(0, 0, -10);  // 임시로 값 하드코딩
+        titleImg.color = new Color(titleImg.color.r, titleImg.color.g, titleImg.color.b, 1f);
     }
 
     void Update()
     {
-        if (!GoStageMenu || SwordUpEnd)
-        {
-            if (MouseControl)
-            {
-                MouseMove();
-            }
-            else
-            { 
-                TouchMove();
-            }
-        }
-
-        if (TitleText != null)
+        // 타이틀 안내 문구 펄스 효과
+        if (titleText != null)
         {
             float alpha = (Mathf.Sin(Time.time * 1f) * 0.35f + 0.65f);
-            TitleText.color = new Color(TitleText_originalColor.r, TitleText_originalColor.g, TitleText_originalColor.b, alpha);
-        }
-
-        // ���� �÷��� ������ �������� ����
-        int[] possibleStages = { 0, 1, 2, 3, 4, 5, 6 };
-        isPossibleStage = possibleStages.Contains(StageMenu.Instance.currentIndex);
-
-        // �ӽ��ڵ� for imsi
-        rt_imsi.rectTransform.anchoredPosition = Sword.rectTransform.anchoredPosition;
-        // if (1 <= StageMenu.currentIndex && StageMenu.currentIndex <= 100) imsi.SetActive(true);
-        // else imsi.SetActive(false);
-
-        imsi.SetActive(false);  // imsi
-        if (!isPossibleStage) imsi.SetActive(true);
-
-        //testScene
-#if UNITY_EDITOR
-        // 에디터 환경: 마우스 입력으로 스와이프 처리
-        if (Input.GetMouseButtonDown(0))
-        {
-            touchStartPos = Input.mousePosition;
-        }
-        if (Input.GetMouseButtonUp(0))
-        {
-            Vector2 touchEndPos = Input.mousePosition;
-            Vector2 swipeDelta = touchEndPos - touchStartPos;
-            if (swipeDelta.magnitude >= TswipeThreshold && swipeDelta.y < 0)
-            {
-                RegisterSwipe();
-            }
-        }
-#endif
-
-        // 모바일 터치 입력 처리
-        if (Input.touchCount > 0)
-        {
-            Touch touch = Input.GetTouch(0);
-            if (touch.phase == TouchPhase.Began)
-            {
-                touchStartPos = touch.position;
-            }
-            else if (touch.phase == TouchPhase.Ended)
-            {
-                Vector2 touchEndPos = touch.position;
-                Vector2 swipeDelta = touchEndPos - touchStartPos;
-                if (swipeDelta.magnitude >= TswipeThreshold && swipeDelta.y < 0)
-                {
-                    RegisterSwipe();
-                }
-            }
+            titleText.color = new Color(titleText.color.r, titleText.color.g, titleText.color.b, alpha);
         }
     }
 
-    private void MouseMove()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            startPos = Input.mousePosition;
-        }
-        if (Input.GetMouseButtonUp(0))
-        {
-            Vector2 endPos = Input.mousePosition;
-            float swipeDistance = startPos.y - endPos.y;
-            if (swipeDistance < -swipeThreshold)
-            {
-                if (GoStageMenu & SwordUpEnd & isPossibleStage)
-                {
-                    if (Mathf.Abs(startPos.x - endPos.x) >= StageMenu.Instance.threshold) return;
-                    else
-                    {
-                        AudioSource.clip = StageSelectSound;
-                        AudioSource.Play();
-                        StageMenu.Instance.SelectStage();
-                    }
-                    // GameController.GetComponent<GameController>().StartStage();
-                }
-                if (!GoStageMenu)
-                {
-                    OnSwipeUp();
-                    LogoFadeOut();
-                    AudioSource.clip = SwordUpSound;
-                    AudioSource.Play();
-                    GoStageMenu = true;
-                    TitlePassed = true;
-                }
-            }
-        }
-    }
-
-    private void TouchMove()
-    {
-        if (Input.touchCount > 0)
-        {
-            Touch touch = Input.GetTouch(0);
-
-            if (touch.phase == TouchPhase.Began)
-            {
-                startPos = touch.position;
-            }
-            else if (touch.phase == TouchPhase.Ended)
-            {
-                Vector2 endPos = touch.position;
-                float swipeDistance = startPos.y - endPos.y;
-
-                if (swipeDistance < -swipeThreshold)
-                {
-                    if (GoStageMenu & SwordUpEnd)
-                    {
-                        if (Mathf.Abs(startPos.x - endPos.x) >= StageMenu.Instance.threshold) return;
-                        else
-                        {
-                            AudioSource.clip = StageSelectSound;
-                            AudioSource.Play();
-                            StageMenu.Instance.SelectStage();
-                        }
-                        // GameController.GetComponent<GameController>().StartStage();
-                    }
-                    if (!GoStageMenu)
-                    {
-                        OnSwipeUp();
-                        LogoFadeOut();
-                        AudioSource.clip = SwordUpSound;
-                        AudioSource.Play();
-                        GoStageMenu = true;
-                        TitlePassed = true;
-                    }
-                }
-            }
-        }
-    }
-
+    /// <summary>
+    /// 스와이프 업 이벤트 처리
+    /// </summary>
     public void OnSwipeUp()
     {
-        TitleTextObj.SetActive(false);
-        if (!TitlePassed)   // ó�� �������� ��
+        if (!isActivated)
         {
-            StartCoroutine(SlidePanels(MenuStartPos, StageMenuStartPos));
-            StartCoroutine(SwordUp());
+            isActivated = true;
+            titleText.gameObject.SetActive(false);
+            StartCoroutine(LogoFade());
+            StartCoroutine(MoveCam(0f, transitionDur));
+            MenuManager.Instance.sword.StartSwordUp(MenuManager.Instance.height / 7 * 6, transitionDur);
         }
     }
 
-    private IEnumerator SlidePanels(Vector2 FirstPanel, Vector2 SecondPanel)
+    /// <summary>
+    /// 카메라를 ease out 효과로 위로 이동시키는 코루틴
+    /// </summary>
+    /// <param name="targetY">World 좌표 기준 이동 대상 Y좌표</param>
+    /// <param name="duration">이동에 걸리는 시간(초)</param>
+    private IEnumerator MoveCam(float targetY, float duration)
     {
-        RectTransform canvasRect = Sword.GetComponentInParent<Canvas>().GetComponent<RectTransform>();
-        float elapsedTime = 0;
-        Vector2 FirstPanelEnd = new Vector2(FirstPanel.x, FirstPanel.y - canvasRect.rect.height);
-        Vector2 SecondPanelEnd = new Vector2(SecondPanel.x, SecondPanel.y - canvasRect.rect.height);
-
-        while (elapsedTime < slideDuration)
-        {
-            menuPanel.anchoredPosition = Vector2.Lerp(FirstPanel, FirstPanelEnd, elapsedTime / slideDuration);
-            nextPanel.anchoredPosition = Vector2.Lerp(SecondPanel, SecondPanelEnd, elapsedTime / slideDuration);
-
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        menuPanel.anchoredPosition = FirstPanelEnd;
-        nextPanel.anchoredPosition = SecondPanelEnd;
-    }
-
-    private void ChangePanelPosition(Vector2 FirstPanel, Vector2 SecondPanel)
-    {
-        RectTransform canvasRect = Sword.GetComponentInParent<Canvas>().GetComponent<RectTransform>();
-        Vector2 FirstPanelEnd = new Vector2(FirstPanel.x, FirstPanel.y - canvasRect.rect.height);
-        Vector2 SecondPanelEnd = new Vector2(SecondPanel.x, SecondPanel.y - canvasRect.rect.height);
-        menuPanel.anchoredPosition = FirstPanelEnd;
-        nextPanel.anchoredPosition = SecondPanelEnd;
-    }
-
-    private IEnumerator SwordUp()
-    {
-        RectTransform swordRect = Sword.GetComponent<RectTransform>();
-        RectTransform canvasRect = Sword.GetComponentInParent<Canvas>().GetComponent<RectTransform>();
-
-        Vector2 startPos = swordRect.anchoredPosition;
-        float relativeHeight = canvasRect.rect.height ;
-
-        Vector2 endPosUp = new Vector2(startPos.x, startPos.y + relativeHeight);
-        Vector2 endPosDown = new Vector2(startPos.x, startPos.y + canvasRect.rect.height - 100);
-
-        float durationUp = 2f;
-        float durationDown = 1f;
-        float elapsedTime = 0;
-
-        while (elapsedTime < durationUp)
-        {
-            float t = elapsedTime / durationUp;
-            t = Mathf.SmoothStep(0, 1, t);
-            Sword.GetComponent<RectTransform>().anchoredPosition = Vector2.Lerp(startPos, endPosUp, t);
-
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-        swordRect.anchoredPosition = endPosUp;
-
-        elapsedTime = 0;
-        while (elapsedTime < durationDown)
-        {
-            float t = elapsedTime / durationDown;
-            t = Mathf.SmoothStep(0, 1, t);
-            Sword.GetComponent<RectTransform>().anchoredPosition = Vector2.Lerp(endPosUp, endPosDown, t);
-
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-        swordRect.anchoredPosition = endPosDown;
-        SwordUpEnd = true;
-        MenuManager.Instance.SwordUpEnd();
-        Debug.Log("SwordUpEnd");
-    }
-
-    private void ChangeSwordPosition()
-    {
-        RectTransform swordRect = Sword.GetComponent<RectTransform>();
-        RectTransform canvasRect = Sword.GetComponentInParent<Canvas>().GetComponent<RectTransform>();
-        Vector2 endPosDown = new Vector2(startPos.x, startPos.y + canvasRect.rect.height + 400);
-        swordRect.anchoredPosition = endPosDown;
-        SwordUpEnd = true;
-        MenuManager.Instance.SwordUpEnd();
-    }
-
-
-
-    [SerializeField] private float fadeDuration;
-
-    private bool isFading = false;
-
-    public void LogoFadeOut()
-    {
-        if (isFading) return;
-        StartCoroutine(FadeEffect());
-        Debug.Log("로고 페이드 아웃 완료");
-    }
-
-    private IEnumerator FadeEffect()
-    {
-        if (Title == null) yield break;
-
-        isFading = true;
-
         float elapsedTime = 0f;
-        Debug.Log("로고 페이드 아웃 시작");
-        while (elapsedTime < fadeDuration)
+        Vector3 startPosition = mainCamera.transform.position;
+        float startY = startPosition.y;
+
+        while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
-            float alpha = Mathf.Lerp(1f, 0f, elapsedTime / fadeDuration);
-            SetAlpha(alpha);
+            float t = Mathf.Clamp01(elapsedTime / duration);
+            float easeOutT = 1f - Mathf.Pow(1f - t, 2);
+            float currentY = Mathf.Lerp(startY, targetY, easeOutT);
+            mainCamera.transform.position = new Vector3(startPosition.x, currentY, startPosition.z);
+
             yield return null;
         }
-        SetAlpha(0f);
-
-        isFading = false;
+        mainCamera.transform.position = new Vector3(startPosition.x, targetY, startPosition.z);
     }
 
-    private void SetAlpha(float alpha)
+    /// <summary>
+    /// 로고 페이드 아웃 코루틴
+    /// </summary>
+    private IEnumerator LogoFade()
     {
-        if (Title != null)
+        float dur = transitionDur / 1.5f;
+        float elapsedTime = 0f;
+        while (elapsedTime < dur)
         {
-            Color color = Title.color;
-            color.a = alpha;
-            Title.color = color;
+            elapsedTime += Time.deltaTime;
+            float alpha = Mathf.Lerp(1f, 0f, elapsedTime / dur);
+            titleImg.color = new Color(titleImg.color.r, titleImg.color.g, titleImg.color.b, alpha);
+
+            yield return null;
         }
-    }
-
-    // testScene
-
-    // 필요한 클릭 수와 시간 창을 설정
-    private int requiredSwipes = 5; // 아래 방향 스와이프 횟수
-    private float timeWindow = 1f;  // 시간 제한 (초)
-    private float TswipeThreshold = 50f; // 스와이프로 간주할 최소 이동 거리 (픽셀 단위)
-
-    private List<float> swipeTimes = new List<float>(); // 스와이프 발생 시간 저장
-    private Vector2 touchStartPos; // 터치/마우스 시작 위치 기록
-
-    void RegisterSwipe()
-    {
-        float currentTime = Time.time;
-        swipeTimes.Add(currentTime);
-
-        // 1초(timeWindow)보다 오래된 스와이프 기록 제거
-        swipeTimes.RemoveAll(time => currentTime - time > timeWindow);
-
-        // 1초 안에 필요한 스와이프 수 이상이면 testScene으로 전환
-        if (swipeTimes.Count >= requiredSwipes)
-        {
-            SceneManager.LoadScene("testScene");
-        }
+        titleImg.color = new Color(titleImg.color.r, titleImg.color.g, titleImg.color.b, 0f);
     }
 }

@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
+using static MenuManager;
 
 /// <summary>
 /// 디스크 스와이프 UI 관리
@@ -38,10 +39,10 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
     private float centerPos; // 화면의 정중앙 좌표
     private float interval;
 
-    private void Start()  // 임시
-    {
-        InitScrollView();
-    }
+    //private void Start()  // 임시
+    //{
+    //    InitScrollView();
+    //}
 
     public void InitScrollView(int initialIndex = 0, int difficulty = 0)
     {
@@ -96,10 +97,10 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
 
     private void Update()
     {
-        // if (!isDragging && MenuManager.Instance.currentState == MenuManager.MenuState.StageSelect)
-        // {
-        //     stageDisks[targetIndex].Rotate(0, 0, 1.7f * Time.deltaTime);  // CD 회전, 임시로 하드코딩 된 값
-        // }
+        if (!isDragging && MenuManager.Instance.currentState == MenuManager.MenuState.StageSelect)
+        {
+            stageDisks[targetIndex].Rotate(0, 0, 1.7f * Time.deltaTime);  // CD 회전, 임시로 하드코딩 된 값
+        }
     }
 
     private void UpdateScaleAndColor()
@@ -129,11 +130,13 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
         {
             targetIndex++;
             StartCoroutine(TempMusicPlay(targetIndex));
+            MenuManager.Instance.UpdateCurStage(targetIndex, MenuManager.Instance.stageIndex[1]);
         }
         else if (currentScrollX > itemPositions[targetIndex] + interval / 2f && targetIndex != 0)
         {
             targetIndex--;
             StartCoroutine(TempMusicPlay(targetIndex));
+            MenuManager.Instance.UpdateCurStage(targetIndex, MenuManager.Instance.stageIndex[1]);
         }
     }
 
@@ -142,6 +145,10 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
         Debug.Log("TempMusicPlay called for index: " + targetIndex);
         currentPreviewSound.loop = true;
         currentPreviewSound.Stop();
+        if (targetIndex >= previewSounds.Count)
+        {
+            yield return null;
+        }
         currentPreviewSound.clip = previewSounds[targetIndex];
         currentPreviewSound.volume = 0.5f;
         currentPreviewSound.Play();
@@ -150,6 +157,11 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (MenuManager.Instance.currentState != MenuState.StageSelect)
+        {
+            return;
+        }
+
         if (!isDragging)
         {
             isDragging = true;
@@ -160,6 +172,11 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (MenuManager.Instance.currentState != MenuState.StageSelect)
+        {
+            return;
+        }
+
         isDragging = false;
         StartCoroutine(SnapToDisk());
     }

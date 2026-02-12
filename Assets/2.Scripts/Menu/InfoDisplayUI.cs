@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class InfoDisplayUI : MonoBehaviour
 {
-    [SerializeField] private GameObject[] Stars;
+    [SerializeField] private GameObject[] stars;
     private TextMeshProUGUI txtStageName;
     private TextMeshProUGUI txtStageScore;
 
@@ -29,16 +29,16 @@ public class InfoDisplayUI : MonoBehaviour
         {
             if (i != StageDBManager.Instance.starRatings[stageIndex[0], stageIndex[1]])
             {
-                Stars[i].SetActive(false);
+                stars[i].SetActive(false);
             }
             else
             {
-                Stars[i].SetActive(true);
+                stars[i].SetActive(true);
             }
         }
         if (StageDBManager.Instance.starRatings[stageIndex[0], stageIndex[1]] >= 4)
         {
-            Stars[3].SetActive(true);
+            stars[3].SetActive(true);
         }
     }
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static MenuManager;
 
 public class DiffButtonUI : MonoBehaviour
 {
@@ -40,6 +41,11 @@ public class DiffButtonUI : MonoBehaviour
 
     public void WhenButtonClicked()
     {
+        if (MenuManager.Instance.currentState == MenuState.StageSelect)
+        {
+            return;
+        }
+
         MenuManager.Instance.UpdateCurStage(MenuManager.Instance.stageIndex[0], MenuManager.Instance.stageIndex[1] == 0 ? 1 : 0);
     }
 }
