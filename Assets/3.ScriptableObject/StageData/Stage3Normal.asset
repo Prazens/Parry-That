@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e35ccfe094e13414891f641969d18e51, type: 3}
+  m_Name: Stage3Normal
+  m_EditorClassIdentifier: 
+  stageId: 3
+  difficulty: 0
+  category: 1
+  displayName: Stage3Normal
+  chartJsons:
+  - {fileID: 4900000, guid: f5748ff3d9d28114fb9772c7f53d9653, type: 3}
+  - {fileID: 4900000, guid: 00757ac84bcfaec4486ee244f5c49459, type: 3}
+  - {fileID: 4900000, guid: eb14aa3f822660a458644b2e0f133eff, type: 3}
+  - {fileID: 4900000, guid: e89d76169229ed9478ec9907c29fd676, type: 3}
+  - {fileID: 4900000, guid: 0bccb394c7f0c354eb8c982d12265992, type: 3}
+  - {fileID: 4900000, guid: 6d1f9e3559542d14388cf9bb79853bb7, type: 3}
+  - {fileID: 4900000, guid: c4c816d79dce0364a956a26c30aada28, type: 3}
+  - {fileID: 4900000, guid: 646b30c313416f04084a66ac97eefff4, type: 3}
+  bgm: {fileID: 8300000, guid: fe174dd821546d84995d0047f7b28835, type: 3}
+  overrideMusicOffset: 0
+  musicOffset: 0
+  cutInUpPrefab: {fileID: 3830714329297533927, guid: bb12253c0c433044e8ff902aa7058426, type: 3}
+  cutInDownPrefab: {fileID: 6510084509892605857, guid: 2beb9ed04b3801b45ae8ed4be314bc73, type: 3}
+  bossSpawnPrefabs: []
