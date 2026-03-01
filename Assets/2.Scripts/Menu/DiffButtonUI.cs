@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using UnityEngine.UI;
+using static MenuManager;
 
 public class DiffButtonUI : MonoBehaviour
 {
@@ -9,20 +11,23 @@ public class DiffButtonUI : MonoBehaviour
     [SerializeField] private Sprite hardButton;
     [SerializeField] private GameObject modeButtonObj;
     private Button modeButton;
+    private int difficulty;  // 0: Normal, 1: Hard
 
     public void InitUI(int difficulty)
     {
-        modeButton = modeButtonObj.GetComponent<Button>();
+        // modeButton = modeButtonObj.GetComponent<Button>();
 
-        modeButton.onClick.AddListener(WhenButtonClicked);
+        // modeButton.onClick.AddListener(WhenButtonClicked);
 
         if (difficulty == 0)
         {
             modeButtonObj.GetComponent<Image>().sprite = normalButton;
+            this.difficulty = 0;
         }
         else
         {
             modeButtonObj.GetComponent<Image>().sprite = hardButton;
+            this.difficulty = 1;
         }
     }
 
@@ -40,11 +45,22 @@ public class DiffButtonUI : MonoBehaviour
 
     public void WhenButtonClicked()
     {
-        int[] targetIndex = new int[2] {
-            MenuManager.Instance.stageIndex[0],
-            MenuManager.Instance.stageIndex[1] == 0 ? 1 : 0
-        };
-        
-        MenuManager.Instance.UpdateCurStage(targetIndex);
+        Debug.Log("DiffButton clicked");
+        if (MenuManager.Instance.currentState != MenuState.StageSelect)
+        {
+            return;
+        }
+
+        difficulty = 1 - difficulty;  // Toggle between 0 and 1
+
+        if (difficulty == 0)
+        {
+            modeButtonObj.GetComponent<Image>().sprite = normalButton;
+        }
+        else
+        {
+            modeButtonObj.GetComponent<Image>().sprite = hardButton;
+        }
+        MenuManager.Instance.UpdateCurStage(MenuManager.Instance.stageIndex[0], MenuManager.Instance.stageIndex[1] == 0 ? 1 : 0);
     }
 }

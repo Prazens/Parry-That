@@ -178,12 +178,12 @@ TextureImporter:
       name: new_cd4_0
       rect:
         serializedVersion: 2
-        x: 70
+        x: 69
         y: 118
-        width: 1036
+        width: 1038
         height: 1036
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
