@@ -69,32 +69,33 @@ public class MenuManager : Singleton<MenuManager>
         height = GetComponent<RectTransform>().rect.height;
 
         // int[] stageInfo = SceneLinkage.stageIndex;
-        stageIndex = SceneLinkage.ConvertToNewStageIndex(SceneLinkage.StageLV);
+        // stageIndex = SceneLinkage.ConvertToNewStageIndex(SceneLinkage.StageLV);
+        stageIndex = StageDBManager.Instance.CurrentStage;  // DB에서 현재 스테이지 정보 불러오기
         // 스테이지에서 나왔을 때 현재 인덱스를 그 스테이지로 설정
         // diskSwipeUI.curIndex = stageIndex;
 
-        diskSwipeUI.InitScrollView();
+        diskSwipeUI.InitScrollView(stageIndex[0], stageIndex[1]);
         infoDisplayUI.InitUI(stageIndex);
         if (stageIndex[1] >= 1)
         {
             diffButtonUI.InitUI(stageIndex[1]);
         }
-        //settingUI.InitUI();
+        settingUI.InitUI();
 
-        RectTransform imgHistoryRect = GameObject.Find("Img_History").GetComponent<RectTransform>();
+        //RectTransform imgHistoryRect = GameObject.Find("Img_History").GetComponent<RectTransform>();
         StageMenuTextObj = GameObject.Find("StageMenuText");
         StageMenuText = StageMenuTextObj.GetComponent<TextMeshProUGUI>();
         StageMenuTextObj.SetActive(false);
         if (StageMenuText != null)
         {
-            StageMenuText_originalColor = StageMenuText.color;
+           StageMenuText_originalColor = StageMenuText.color;
         }
 
-        imgHistoryRect.anchorMin = new Vector2(0, 0.75f);
-        imgHistoryRect.anchorMax = new Vector2(1, 1);
-        imgHistoryRect.offsetMin = Vector2.zero;
-        imgHistoryRect.offsetMax = Vector2.zero;
-        imgHistoryRect.pivot = new Vector2(0.5f, 1);
+        //imgHistoryRect.anchorMin = new Vector2(0, 0.75f);
+        //imgHistoryRect.anchorMax = new Vector2(1, 1);
+        //imgHistoryRect.offsetMin = Vector2.zero;
+        //imgHistoryRect.offsetMax = Vector2.zero;
+        //imgHistoryRect.pivot = new Vector2(0.5f, 1);
 
         BlackOverlay = BlackOverlayObj.GetComponent<Image>();
         RectTransform BlackOverlayRT = BlackOverlay.GetComponent<RectTransform>();
@@ -132,7 +133,7 @@ public class MenuManager : Singleton<MenuManager>
         if (stageIndex[0] != index)
         {
             stageIndex[0] = index;
-            if (StageDBManager.Instance.diffNumbers[stageIndex[0]] == 0)
+            if (StageDBManager.Instance.diffNumbers[stageIndex[0]] == 1)
             {
                 // 난이도 없는 스테이지로 전환 시
                 diffButtonUI.SetVisibility(false);
@@ -164,14 +165,15 @@ public class MenuManager : Singleton<MenuManager>
     /// 타이틀 연출 끝나고 칼 올라오는 연출까지 끝났을 때
     /// <para>또는 스테이지를 선택해서 검 올라가는 연출 끝났을 때</para>
     /// </summary>
+    /// </summary>
     public void SwordUpEnd()
     {
         // 타이틀에서 스테이지 선택으로 전환
         if (currentState == MenuState.Title)
         {
             currentState = MenuState.StageSelect;
-            diskSwipeUI.InitScrollView();
             infoDisplayUI.InitUI(stageIndex);
+            diskSwipeUI.GoToStage(stageIndex[0]);
             if (stageIndex[1] >= 1)
             {
                 diffButtonUI.InitUI(stageIndex[1]);
@@ -196,6 +198,8 @@ public class MenuManager : Singleton<MenuManager>
             if (Input.anyKey || Input.GetMouseButton(0))
             {
                 idleTime = 0f;
+                StageMenuTextObj.SetActive(false);
+                EnableStageMenuText = false;
             }
             else
             {
@@ -205,12 +209,12 @@ public class MenuManager : Singleton<MenuManager>
             if (idleTime >= 5f) // 5초 이상 입력 없으면 활성화
             {
                 StageMenuTextObj.SetActive(true);
-                EnableStageMenuText = false;
+                EnableStageMenuText = true;
             }
         }
         
         // 안내 문구 펄스
-        if (StageMenuText != null && !EnableStageMenuText)
+        if (StageMenuText != null && EnableStageMenuText)
         {
             if (isFadingIn)
             {

@@ -13,7 +13,11 @@ public class MenuSwipeDetecter : Singleton<MenuSwipeDetecter>
     // Update is called once per frame
     void Update()
     {
-        SwipeDetect();
+        if (MenuManager.Instance.currentState == MenuManager.MenuState.Title
+            || MenuManager.Instance.currentState == MenuManager.MenuState.StageSelect)
+        {
+            SwipeDetect();
+        }
     }
 
     /// <summary>

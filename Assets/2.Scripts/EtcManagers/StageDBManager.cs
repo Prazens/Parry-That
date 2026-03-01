@@ -19,7 +19,7 @@ public class StageDBManager : Singleton<StageDBManager>
 
     // 현재 선택된 스테이지와 난이도 인덱스
     // MenuManager와 연동됨
-    private int[] currentStage = new int[2];  // [stageIndex, difficultyIndex]
+    private int[] currentStage = new int[2] { 1, 0 };  // [stageIndex, difficultyIndex]
 
     public int[] CurrentStage
     {
@@ -27,7 +27,7 @@ public class StageDBManager : Singleton<StageDBManager>
         set
         {
             currentStage[0] = value[0];
-            currentStage[1] = Mathf.Min(value[1], diffNumbers[value[0]]);
+            currentStage[1] = Mathf.Min(value[1], diffNumbers[value[0]] - 1);
         }
     }
 

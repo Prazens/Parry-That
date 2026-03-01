@@ -26,12 +26,16 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
     [SerializeField] private Color brightColor = new Color(1f, 1f, 1f, 1f);
 
     [Space]
-    private List<List<Sprite>> stageDiskSprites;  // [stageIndex][difficulty] 스프라이트 목록
+    [SerializeField] private List<Sprite> unpackedStageDiskSprites;  // 스프라이트 리스트
+    // [SerializeField] private Sprite tutorialDiskSprite;  // 튜토리얼 디스크 스프라이트
+    // [SerializeField] private Sprite epilogueDiskSprite;  // 에필로그 디스크 스프라이트
+    private List<List<List<Sprite>>> stageDiskSprites;  // [stageIndex][isCleared][difficulty] 스프라이트 목록, 튜토리얼과 에필로그 미포함
+    // 없는 난이도는 자리는 있지만 null로 남겨두어야 함
 
     [SerializeField] private List<AudioClip> previewSounds;  // 디스크 선택시 재생할 미리듣기 사운드 목록
     private AudioSource currentPreviewSound;
 
-    private RectTransform[] stageDisks;
+    private RectTransform[] stageDisks;  // 튜토리얼과 에필로그 포함
     private float[] itemPositions;
     public bool isDragging = false;
     private int targetIndex = 0;
@@ -44,8 +48,32 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
     //    InitScrollView();
     //}
 
-    public void InitScrollView(int initialIndex = 0, int difficulty = 0)
+    public void InitScrollView(int initialIndex, int difficulty)
     {
+        stageDiskSprites = new List<List<List<Sprite>>>();
+        int stageCount = StageDBManager.Instance.stageNumbers - 2;
+        for (int i = 0; i < stageCount; i++)
+        {
+            stageDiskSprites.Add(new List<List<Sprite>>());
+            for (int j = 0; j < 2; j++)  // 클리어 여부에 따른 스프라이트 구분
+            {
+                stageDiskSprites[i].Add(new List<Sprite>());
+                for (int k = 0; k < StageDBManager.MAX_DIFFS; k++)  // 난이도에 따른 스프라이트 구분
+                {
+                    int spriteIndex = (i * 2 * StageDBManager.MAX_DIFFS)
+                        + (j * StageDBManager.MAX_DIFFS) + k;
+                    if (spriteIndex < unpackedStageDiskSprites.Count)
+                    {
+                        stageDiskSprites[i][j].Add(unpackedStageDiskSprites[spriteIndex]);
+                    }
+                    else
+                    {
+                        Debug.LogError($"Not enough sprites in unpackedStageDiskSprites for stage {i}, clear {j}, difficulty {k}");
+                    }
+                }
+            }
+        }
+
         currentPreviewSound = gameObject.AddComponent<AudioSource>();  // 임시로 여기에 추가
         // 아이템 위치 및 패딩 설정, 나중에는 instantiate로 동적 생성 시켜야 함
         int childCount = contentPanel.childCount;
@@ -75,14 +103,32 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
         
         centerPos = viewPortWidth / 2f;  // 화면 정중앙 x좌표 (ViewPort 기준)
         GoToStage(initialIndex);
+        if (difficulty > 0)
+        {
+            UpdateDifficulty(difficulty);
+        }
     }
+
 
     public void UpdateDifficulty(int difficulty)
     {
         // 난이도에 따라 아이템 갱신
+
+        for (int i = 0; i < stageDiskSprites.Count; i++)
+        {
+            Debug.Log($"Updating stage {i + 1} disk sprite for difficulty {difficulty}");
+            stageDisks[i + 1].GetComponent<Image>().sprite = stageDiskSprites
+                [i]
+                [StageDBManager.Instance.starRatings[StageDBManager.Instance.CurrentStage[0], StageDBManager.Instance.CurrentStage[1]] == 0 ? 0 : 1]
+                [Mathf.Min(difficulty, StageDBManager.Instance.diffNumbers[i + 1] - 1)];
+        }
     }
 
-    private void GoToStage(int stageIndex)
+    /// <summary>
+    /// 스테이지 인덱스에 해당하는 디스크로 이동
+    /// </summary>
+    /// <param name="stageIndex"></param>
+    public void GoToStage(int stageIndex)
     {
         if (stageIndex < 0 || stageIndex >= stageDisks.Length)
         {
@@ -92,7 +138,27 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
 
         targetIndex = stageIndex;
         contentPanel.anchoredPosition = new Vector2(itemPositions[targetIndex], contentPanel.anchoredPosition.y);
+        StartCoroutine(TempMusicPlay(targetIndex));
+        MenuManager.Instance.UpdateCurStage(targetIndex, MenuManager.Instance.stageIndex[1]);
         UpdateScaleAndColor();
+    }
+
+    public void GoLeft()
+    {
+        if (targetIndex > 0)
+        {
+            targetIndex--;
+            GoToStage(targetIndex);
+        }
+    }
+
+    public void GoRight()
+    {
+        if (targetIndex < stageDisks.Length - 1)
+        {
+            targetIndex++;
+            GoToStage(targetIndex);
+        }
     }
 
     private void Update()
@@ -103,9 +169,12 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
         }
     }
 
+    /// <summary>
+    /// 중앙에서 멀어질수록 작아지고 어두워지는 효과 업데이트
+    /// </summary>
     private void UpdateScaleAndColor()
     {
-        Debug.Log("UpdateScaleAndColor called");
+        // Debug.Log("UpdateScaleAndColor called");
         int maxEffectRange = 2;  // 임시로 하드코딩 된 값
         for (int i = Mathf.Max(0, targetIndex - maxEffectRange); i < Mathf.Min(stageDisks.Length, targetIndex + maxEffectRange + 1); i++)
         {
@@ -123,6 +192,9 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
         }
     }
 
+    /// <summary>
+    /// 선택중인 디스크 확인 및 targetIndex 업데이트
+    /// </summary>
     private void CheckTargetIndex()
     {
         float currentScrollX = contentPanel.anchoredPosition.x;
@@ -140,17 +212,28 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
         }
     }
 
+    /// <summary>
+    /// 미리듣기 사운드 재생 코루틴
+    /// </summary>
+    /// <param name="targetIndex"></param>
+    /// <returns></returns>
     IEnumerator TempMusicPlay(int targetIndex)  // 임시로 여기에 넣어놓음, 아마 매니저를 새로 파거나 MenuManager에 넣어야 할 듯
     {
         Debug.Log("TempMusicPlay called for index: " + targetIndex);
+
+        if (MenuManager.Instance.currentState != MenuManager.MenuState.StageSelect)
+        {
+            yield break;
+        }
+
         currentPreviewSound.loop = true;
         currentPreviewSound.Stop();
-        if (targetIndex >= previewSounds.Count)
+        if (targetIndex == StageDBManager.Instance.stageNumbers - 1)  // 에필로그는 미리듣기 없음
         {
             yield return null;
         }
         currentPreviewSound.clip = previewSounds[targetIndex];
-        currentPreviewSound.volume = 0.5f;
+        currentPreviewSound.volume = PlayerPrefs.GetFloat("bgmVolume", 1f) * PlayerPrefs.GetFloat("masterVolume", 1f);
         currentPreviewSound.Play();
         yield return null;
     }
@@ -181,6 +264,10 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
         StartCoroutine(SnapToDisk());
     }
 
+    /// <summary>
+    /// 디스크가 중앙에 스냅되도록 하는 코루틴
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator SnapToDisk()
     {
         while (true)
