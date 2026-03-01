@@ -138,7 +138,7 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
 
         targetIndex = stageIndex;
         contentPanel.anchoredPosition = new Vector2(itemPositions[targetIndex], contentPanel.anchoredPosition.y);
-        StartCoroutine(TempMusicPlay(targetIndex));
+        StartPreviewSound(targetIndex);
         MenuManager.Instance.UpdateCurStage(targetIndex, MenuManager.Instance.stageIndex[1]);
         UpdateScaleAndColor();
     }
@@ -201,19 +201,20 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
         if (currentScrollX < itemPositions[targetIndex] - interval / 2f && targetIndex != itemPositions.Length - 1)
         {
             targetIndex++;
-            StartCoroutine(TempMusicPlay(targetIndex));
+            StartPreviewSound(targetIndex);
             MenuManager.Instance.UpdateCurStage(targetIndex, MenuManager.Instance.stageIndex[1]);
         }
         else if (currentScrollX > itemPositions[targetIndex] + interval / 2f && targetIndex != 0)
         {
             targetIndex--;
-            StartCoroutine(TempMusicPlay(targetIndex));
+            StartPreviewSound(targetIndex);
             MenuManager.Instance.UpdateCurStage(targetIndex, MenuManager.Instance.stageIndex[1]);
         }
     }
 
     /// <summary>
     /// 미리듣기 사운드 재생 코루틴
+    /// <para>-1이면 사운드 멈춤</para>
     /// </summary>
     /// <param name="targetIndex"></param>
     /// <returns></returns>
@@ -228,14 +229,21 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
 
         currentPreviewSound.loop = true;
         currentPreviewSound.Stop();
-        if (targetIndex == StageDBManager.Instance.stageNumbers - 1)  // 에필로그는 미리듣기 없음
+
+
+        if (targetIndex == StageDBManager.Instance.stageNumbers - 1 || targetIndex < 0)  // 에필로그는 미리듣기 없음
         {
-            yield return null;
+            yield break;
         }
         currentPreviewSound.clip = previewSounds[targetIndex];
         currentPreviewSound.volume = PlayerPrefs.GetFloat("bgmVolume", 1f) * PlayerPrefs.GetFloat("masterVolume", 1f);
         currentPreviewSound.Play();
-        yield return null;
+        yield break;
+    }
+
+    public void StartPreviewSound(int targetIndex)
+    {
+        StartCoroutine(TempMusicPlay(targetIndex));
     }
 
     public void OnDrag(PointerEventData eventData)

@@ -1,4 +1,5 @@
 using TMPro;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -29,12 +30,17 @@ public class SettingUI : MonoBehaviour
             prevState = MenuManager.Instance.currentState;
             MenuManager.Instance.currentState = MenuManager.MenuState.Settings;
             MenuManager.Instance.diskSwipeUI.gameObject.GetComponent<ScrollRect>().enabled = false;
+            MenuManager.Instance.diskSwipeUI.StartPreviewSound(-1);
         }
         else
         {
             SettingPanel.SetActive(false);
             MenuManager.Instance.currentState = prevState;
             MenuManager.Instance.diskSwipeUI.gameObject.GetComponent<ScrollRect>().enabled = true;
+            if (MenuManager.Instance.currentState == MenuManager.MenuState.StageSelect || StageDBManager.Instance.CurrentStage[0] != StageDBManager.Instance.stageNumbers - 1)
+            {
+                MenuManager.Instance.diskSwipeUI.StartPreviewSound(StageDBManager.Instance.CurrentStage[0]);
+            }
         }
     }
 

@@ -173,7 +173,7 @@ public class MenuManager : Singleton<MenuManager>
         {
             currentState = MenuState.StageSelect;
             infoDisplayUI.InitUI(stageIndex);
-            diskSwipeUI.GoToStage(stageIndex[0]);
+            diskSwipeUI.StartPreviewSound(stageIndex[0]);
             if (stageIndex[1] >= 1)
             {
                 diffButtonUI.InitUI(stageIndex[1]);
