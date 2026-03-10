@@ -52,33 +52,36 @@ public class TitleUI : MonoBehaviour
             isActivated = true;
             titleText.gameObject.SetActive(false);
             StartCoroutine(LogoFade());
-            StartCoroutine(MoveCam(0f, transitionDur));
-            MenuManager.Instance.sword.StartSwordUp(MenuManager.Instance.height / 7 * 6, transitionDur);
+            StartCoroutine(MoveUI(transitionDur));
+            MenuManager.Instance.sword.StartSwordUp(-MenuManager.Instance.height / 7, transitionDur);
         }
     }
 
     /// <summary>
-    /// 카메라를 ease out 효과로 위로 이동시키는 코루틴
+    /// UI를 ease out 효과로 아래로 이동시키는 코루틴
     /// </summary>
     /// <param name="targetY">World 좌표 기준 이동 대상 Y좌표</param>
     /// <param name="duration">이동에 걸리는 시간(초)</param>
-    private IEnumerator MoveCam(float targetY, float duration)
+    private IEnumerator MoveUI(float duration)
     {
+        RectTransform titleUIMoveRect = transform.GetComponent<RectTransform>();
+        RectTransform menuUIMoveRect = MenuManager.Instance.transform.GetComponent<RectTransform>();
+
         float elapsedTime = 0f;
-        Vector3 startPosition = mainCamera.transform.position;
-        float startY = startPosition.y;
 
         while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
             float t = Mathf.Clamp01(elapsedTime / duration);
             float easeOutT = 1f - Mathf.Pow(1f - t, 2);
-            float currentY = Mathf.Lerp(startY, targetY, easeOutT);
-            mainCamera.transform.position = new Vector3(startPosition.x, currentY, startPosition.z);
+
+            titleUIMoveRect.anchoredPosition = Vector2.Lerp(Vector2.zero, new Vector2(0f, -MenuManager.Instance.height), easeOutT);
+            menuUIMoveRect.anchoredPosition = titleUIMoveRect.anchoredPosition + new Vector2(0f, MenuManager.Instance.height);
 
             yield return null;
         }
-        mainCamera.transform.position = new Vector3(startPosition.x, targetY, startPosition.z);
+        titleUIMoveRect.anchoredPosition = new Vector2(0f, -MenuManager.Instance.height);
+        menuUIMoveRect.anchoredPosition = Vector2.zero;
     }
 
     /// <summary>

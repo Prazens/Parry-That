@@ -8,7 +8,13 @@ public class MenuSwipeDetecter : Singleton<MenuSwipeDetecter>
     protected override bool DontDestroy => false;
 
     [SerializeField] private float swipeThreshold = 50f;
+    private float weightedSwipeThreshold;
     private Vector2 startPos = Vector2.zero;  // 기본값
+
+    void Start()
+    {
+        weightedSwipeThreshold = swipeThreshold * Screen.height / 1920f;  // 화면 크기에 따른 가중치 적용
+    }
 
     // Update is called once per frame
     void Update()
@@ -35,13 +41,13 @@ public class MenuSwipeDetecter : Singleton<MenuSwipeDetecter>
             float swipeDistance = startPos.y - Input.mousePosition.y;
 
             // 스와이프 업 감지
-            if (swipeDistance < -swipeThreshold)
+            if (swipeDistance < -weightedSwipeThreshold)
             {
                 OnSwipeUp();
             }
 
             // 스와이프 다운 감지
-            if (swipeDistance > swipeThreshold)
+            if (swipeDistance > weightedSwipeThreshold)
             {
                 // OnSwipeDown();
             }
@@ -60,13 +66,13 @@ public class MenuSwipeDetecter : Singleton<MenuSwipeDetecter>
                 float swipeDistance = startPos.y - touch.position.y;
 
                 // 스와이프 업 감지
-                if (swipeDistance < -swipeThreshold)
+                if (swipeDistance < -weightedSwipeThreshold)
                 {
                     OnSwipeUp();
                 }
 
                 // 스와이프 다운 감지
-                if (swipeDistance > swipeThreshold)
+                if (swipeDistance > weightedSwipeThreshold)
                 {
                     // OnSwipeDown();
                 }

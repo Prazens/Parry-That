@@ -66,7 +66,7 @@ public class MenuManager : Singleton<MenuManager>
     public void InitUI()
     {
         Application.targetFrameRate = 120; // 120프레임
-        height = GetComponent<RectTransform>().rect.height;
+        height = transform.parent.GetComponent<RectTransform>().rect.height;
 
         // int[] stageInfo = SceneLinkage.stageIndex;
         // stageIndex = SceneLinkage.ConvertToNewStageIndex(SceneLinkage.StageLV);
@@ -110,10 +110,13 @@ public class MenuManager : Singleton<MenuManager>
             titleUI.InitUI();
             sword.InitUI();
             isFirstLaunch = false;
-            titleUI.mainCamera.transform.position = new Vector3(0f, -10f, -10f);  // 임시 하드코딩
+            titleUI.transform.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;  // 타이틀 UI 위치 초기화
+            transform.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, height);  // 메뉴 UI 위치 초기화
         }
         else
         {
+            titleUI.transform.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -height);  // 타이틀 UI 위치 초기화
+            transform.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;  // 메뉴 UI 위치 초기화
             sword.InitUI(true);
             currentState = MenuState.StageSelect;
             SwordUpEnd();

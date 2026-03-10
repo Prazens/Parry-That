@@ -33,10 +33,11 @@ public class SwordMovement : MonoBehaviour
     /// <summary>
     /// 검 올라오는 연출
     /// </summary>
+    /// <param name="addY">올라가는 y값</param>
     /// <param name="dur">지속 시간</param>
-    public void StartSwordUp(float dist, float dur)
+    public void StartSwordUp(float addY, float dur)
     {
-        StartCoroutine(SwordUp(dist, dur));
+        StartCoroutine(SwordUp(addY, dur));
     }
 
     /// <summary>
