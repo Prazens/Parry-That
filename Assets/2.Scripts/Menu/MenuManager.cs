@@ -17,8 +17,8 @@ public class MenuManager : Singleton<MenuManager>
     protected override bool DontDestroy => false;
 
     private bool EnableStageMenuText = true;
-    private GameObject StageMenuTextObj;
-    private TextMeshProUGUI StageMenuText;
+    [SerializeField] private GameObject StageMenuTextObj;
+    [SerializeField] private TextMeshProUGUI StageMenuText;
     private Color StageMenuText_originalColor;
     private float idleTime = 0f;
     private bool isFadingIn = true;
@@ -66,7 +66,19 @@ public class MenuManager : Singleton<MenuManager>
     public void InitUI()
     {
         Application.targetFrameRate = 120; // 120프레임
-        height = transform.parent.GetComponent<RectTransform>().rect.height;
+        
+        // 🔥 수정: 부모 오브젝트가 정상적인 UI인지 확인하는 안전장치 추가
+        if (transform.parent != null && transform.parent.GetComponent<RectTransform>() != null)
+        {
+            height = transform.parent.GetComponent<RectTransform>().rect.height;
+        }
+        else
+        {
+            // 부모가 없으면 자기 자신의 UI 높이나, 현재 화면의 해상도 높이를 대신 사용합니다.
+            RectTransform myRect = GetComponent<RectTransform>();
+            height = myRect != null ? myRect.rect.height : Screen.height;
+            Debug.LogWarning("MenuManager의 부모 RectTransform을 찾을 수 없어 기본 높이를 사용합니다. MenuManager가 Canvas 안에 있는지 확인해주세요!");
+        }
 
         // int[] stageInfo = SceneLinkage.stageIndex;
         // stageIndex = SceneLinkage.ConvertToNewStageIndex(SceneLinkage.StageLV);
@@ -83,14 +95,19 @@ public class MenuManager : Singleton<MenuManager>
         settingUI.InitUI();
 
         //RectTransform imgHistoryRect = GameObject.Find("Img_History").GetComponent<RectTransform>();
-        StageMenuTextObj = GameObject.Find("StageMenuText");
-        StageMenuText = StageMenuTextObj.GetComponent<TextMeshProUGUI>();
-        StageMenuTextObj.SetActive(false);
+        if (StageMenuTextObj != null)
+        {
+            StageMenuTextObj.SetActive(false);
+        }
+
         if (StageMenuText != null)
         {
            StageMenuText_originalColor = StageMenuText.color;
         }
-
+        else
+        {
+            Debug.LogError("MenuManager에 StageMenuText가 할당되지 않았습니다! 인스펙터 창을 확인해주세요.");
+        }
         //imgHistoryRect.anchorMin = new Vector2(0, 0.75f);
         //imgHistoryRect.anchorMax = new Vector2(1, 1);
         //imgHistoryRect.offsetMin = Vector2.zero;

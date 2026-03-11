@@ -33,7 +33,7 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
     // 없는 난이도는 자리는 있지만 null로 남겨두어야 함
 
     [SerializeField] private List<AudioClip> previewSounds;  // 디스크 선택시 재생할 미리듣기 사운드 목록
-    private AudioSource currentPreviewSound;
+    [SerializeField] private AudioSource currentPreviewSound;
 
     private RectTransform[] stageDisks;  // 튜토리얼과 에필로그 포함
     private float[] itemPositions;
@@ -72,10 +72,18 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
                     }
                 }
             }
+        }// 🔥 수정: 스크립트에서 동적으로 생성하던 코드 삭제하고 달려있는 컴포넌트 찾기
+        if (currentPreviewSound == null)
+        {
+            currentPreviewSound = GetComponent<AudioSource>();
+            if (currentPreviewSound == null)
+            {
+                Debug.LogError("DiskSwipeUI에 AudioSource 컴포넌트가 없습니다! 연결해주세요.");
+            }
         }
 
-        currentPreviewSound = gameObject.AddComponent<AudioSource>();  // 임시로 여기에 추가
         // 아이템 위치 및 패딩 설정, 나중에는 instantiate로 동적 생성 시켜야 함
+
         int childCount = contentPanel.childCount;
         stageDisks = new RectTransform[childCount];
         for (int i = 0; i < childCount; i++)
@@ -226,7 +234,7 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
         {
             yield break;
         }
-
+        if (currentPreviewSound == null) yield break;
         currentPreviewSound.loop = true;
         currentPreviewSound.Stop();
 
