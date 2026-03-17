@@ -8,6 +8,7 @@ using UnityEditor;
 using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
 using System.Data;
+using DG.Tweening; // 🔥 DOTween 사용 필수 선언
 
 /// <summary>
 /// 스테이지 메뉴 UI 띄우고, UI에 정보 전달, 클릭시 스테이지 실행
@@ -16,21 +17,17 @@ public class MenuManager : Singleton<MenuManager>
 {
     protected override bool DontDestroy => false;
 
-    private bool EnableStageMenuText = true;
-    [SerializeField] private GameObject StageMenuTextObj;
-    [SerializeField] private TextMeshProUGUI StageMenuText;
-    private Color StageMenuText_originalColor;
+    [Header("Tutorial Guide")]
+    // 🔥 텍스트 관련 변수 싹 다 지우고 손가락 가이드 연결
+    public HandTutorialIndicator handGuide; 
     private float idleTime = 0f;
-    private bool isFadingIn = true;
-    private float fadeInTimer = 0f;
-    private float fadeInStartTime = 0f;
+    private bool isShowingGuide = false;
 
     private Image BlackOverlay;
     [SerializeField] private GameObject BlackOverlayObj;
 
     public SwordMovement sword;
     private Image swordImage;
-    // public GameObject modeChageButton;
 
     [Header("UI Links")]
     public TitleUI titleUI;
@@ -54,37 +51,27 @@ public class MenuManager : Singleton<MenuManager>
 
     public float height;
 
-    // for debug
     private void Start()
     {
-        InitUI();  // 외부에서 호출하도록 변경
+        InitUI(); 
     }
 
-    /// <summary>
-    /// MenuManager의 초기화 함수
-    /// </summary>
     public void InitUI()
     {
-        Application.targetFrameRate = 120; // 120프레임
+        Application.targetFrameRate = 120; 
         
-        // 🔥 수정: 부모 오브젝트가 정상적인 UI인지 확인하는 안전장치 추가
         if (transform.parent != null && transform.parent.GetComponent<RectTransform>() != null)
         {
             height = transform.parent.GetComponent<RectTransform>().rect.height;
         }
         else
         {
-            // 부모가 없으면 자기 자신의 UI 높이나, 현재 화면의 해상도 높이를 대신 사용합니다.
             RectTransform myRect = GetComponent<RectTransform>();
             height = myRect != null ? myRect.rect.height : Screen.height;
             Debug.LogWarning("MenuManager의 부모 RectTransform을 찾을 수 없어 기본 높이를 사용합니다. MenuManager가 Canvas 안에 있는지 확인해주세요!");
         }
 
-        // int[] stageInfo = SceneLinkage.stageIndex;
-        // stageIndex = SceneLinkage.ConvertToNewStageIndex(SceneLinkage.StageLV);
-        stageIndex = StageDBManager.Instance.CurrentStage;  // DB에서 현재 스테이지 정보 불러오기
-        // 스테이지에서 나왔을 때 현재 인덱스를 그 스테이지로 설정
-        // diskSwipeUI.curIndex = stageIndex;
+        stageIndex = StageDBManager.Instance.CurrentStage; 
 
         diskSwipeUI.InitScrollView(stageIndex[0], stageIndex[1]);
         infoDisplayUI.InitUI(stageIndex);
@@ -94,25 +81,10 @@ public class MenuManager : Singleton<MenuManager>
         }
         settingUI.InitUI();
 
-        //RectTransform imgHistoryRect = GameObject.Find("Img_History").GetComponent<RectTransform>();
-        if (StageMenuTextObj != null)
+        if (handGuide != null)
         {
-            StageMenuTextObj.SetActive(false);
+            handGuide.StopTutorial();
         }
-
-        if (StageMenuText != null)
-        {
-           StageMenuText_originalColor = StageMenuText.color;
-        }
-        else
-        {
-            Debug.LogError("MenuManager에 StageMenuText가 할당되지 않았습니다! 인스펙터 창을 확인해주세요.");
-        }
-        //imgHistoryRect.anchorMin = new Vector2(0, 0.75f);
-        //imgHistoryRect.anchorMax = new Vector2(1, 1);
-        //imgHistoryRect.offsetMin = Vector2.zero;
-        //imgHistoryRect.offsetMax = Vector2.zero;
-        //imgHistoryRect.pivot = new Vector2(0.5f, 1);
 
         BlackOverlay = BlackOverlayObj.GetComponent<Image>();
         RectTransform BlackOverlayRT = BlackOverlay.GetComponent<RectTransform>();
@@ -127,26 +99,19 @@ public class MenuManager : Singleton<MenuManager>
             titleUI.InitUI();
             sword.InitUI();
             isFirstLaunch = false;
-            titleUI.transform.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;  // 타이틀 UI 위치 초기화
-            transform.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, height);  // 메뉴 UI 위치 초기화
+            titleUI.transform.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;  
+            transform.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, height);  
         }
         else
         {
-            titleUI.transform.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -height);  // 타이틀 UI 위치 초기화
-            transform.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;  // 메뉴 UI 위치 초기화
+            titleUI.transform.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -height);  
+            transform.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;  
             sword.InitUI(true);
             currentState = MenuState.StageSelect;
             SwordUpEnd();
         }
     }
 
-    /// <summary>
-    /// 현재 스테이지 정보 업데이트
-    /// <para>DiskSwipeUI, DiffButtonUI에서 정보 갱신받음</para>
-    /// <para>DiskSwipeUI, DiffButtonUI, InfoDisplayUI를 갱신함</para>   
-    /// </summary>
-    /// <param name="index">스테이지 인덱스 번호만</param>
-    /// <param name="difficulty">난이도 인덱스</param>
     public void UpdateCurStage(int index, int difficulty = 0)
     {
         bool needUpdate = false;
@@ -155,7 +120,6 @@ public class MenuManager : Singleton<MenuManager>
             stageIndex[0] = index;
             if (StageDBManager.Instance.diffNumbers[stageIndex[0]] == 1)
             {
-                // 난이도 없는 스테이지로 전환 시
                 diffButtonUI.SetVisibility(false);
             }
             else
@@ -181,17 +145,15 @@ public class MenuManager : Singleton<MenuManager>
         }
     }
 
-    /// <summary>
-    /// 타이틀 연출 끝나고 칼 올라오는 연출까지 끝났을 때
-    /// <para>또는 스테이지를 선택해서 검 올라가는 연출 끝났을 때</para>
-    /// </summary>
-    /// </summary>
     public void SwordUpEnd()
     {
-        // 타이틀에서 스테이지 선택으로 전환
         if (currentState == MenuState.Title)
         {
             currentState = MenuState.StageSelect;
+            
+            // 🔥 타이틀에서 칼 뽑고 넘어오면, 이제 칼이 둥둥 떠다니도록 지시!
+            sword.StartFloating(); 
+            
             infoDisplayUI.InitUI(stageIndex);
             diskSwipeUI.StartPreviewSound(stageIndex[0]);
             if (stageIndex[1] >= 1)
@@ -200,8 +162,6 @@ public class MenuManager : Singleton<MenuManager>
             }
             return;
         }
-
-        // 스테이지 선택에서 스테이지 로딩으로 전환
         else if (currentState == MenuState.StageSelect)
         {
             StageDBManager.Instance.CurrentStage = stageIndex;
@@ -209,97 +169,57 @@ public class MenuManager : Singleton<MenuManager>
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
-        // 안내 문구 활성화
-        if (currentState != MenuState.Title && EnableStageMenuText)
+        if (handGuide != null)
         {
+            // 입력 감지 시 타이머 초기화 및 가이드 숨김
             if (Input.anyKey || Input.GetMouseButton(0))
             {
                 idleTime = 0f;
-                StageMenuTextObj.SetActive(false);
-                EnableStageMenuText = false;
+                if (isShowingGuide)
+                {
+                    handGuide.StopTutorial();
+                    isShowingGuide = false;
+                }
             }
             else
             {
                 idleTime += Time.deltaTime;
             }
 
-            if (idleTime >= 5f) // 5초 이상 입력 없으면 활성화
+            // 5초 이상 아무 입력이 없을 때 가이드 등장!
+            if (idleTime >= 5f && !isShowingGuide)
             {
-                StageMenuTextObj.SetActive(true);
-                EnableStageMenuText = true;
-            }
-        }
-        
-        // 안내 문구 펄스
-        if (StageMenuText != null && EnableStageMenuText)
-        {
-            if (isFadingIn)
-            {
-                // 처음 페이드 인 (0 → 1)
-                fadeInTimer += Time.deltaTime / 2f; // 2초 동안 페이드 인
-                float alpha = Mathf.Clamp01(fadeInTimer);
-                StageMenuText.color = new Color(StageMenuText_originalColor.r, StageMenuText_originalColor.g, StageMenuText_originalColor.b, alpha);
+                isShowingGuide = true;
 
-                if (fadeInTimer >= 1f)
+                if (currentState == MenuState.Title)
                 {
-                    isFadingIn = false;
-                    fadeInStartTime = Time.time;
+                    // 🔥 타이틀 창: 위로 스와이프 (칼 뽑기 안내)
+                    handGuide.PlaySwipe(new Vector2(0f, 1f));
+                }
+                else if (currentState == MenuState.StageSelect)
+                {
+                    // 🔥 스테이지 창: 좌측으로 스와이프 (디스크 넘기기 안내)
+                    handGuide.PlaySwipe(new Vector2(0f, 1f));
                 }
             }
-            else
-            {
-                float elapsedTime = Time.time - fadeInStartTime;
-                float alpha = Mathf.Sin(elapsedTime * 1f + Mathf.PI / 3) * 0.35f + 0.65f;
-                StageMenuText.color = new Color(StageMenuText_originalColor.r, StageMenuText_originalColor.g, StageMenuText_originalColor.b, alpha);
-            }
         }
-
-        // if (diskSwipeUI.currentIndex == 1
-        //     || diskSwipeUI.currentIndex == 2
-        //     || diskSwipeUI.currentIndex == 3)
-        // {
-        //     SceneLinkage.StageLV = SceneLinkage.isEasy ? diskSwipeUI.currentIndex + 6 : diskSwipeUI.currentIndex;
-        //     // if (modeChgButtonAble) modeChageButton.SetActive(true);
-        // }
-        // else
-        // {
-        //     SceneLinkage.StageLV = diskSwipeUI.currentIndex;
-        //     // if (modeChgButtonAble) modeChageButton.SetActive(false);
-        // }
-        
     }
 
     /// <summary>
-    /// 스테이지 시작 시 호출
+    /// 스테이지 시작 시 호출 (검정 배경 연출)
     /// </summary>
     public void StartStage()
     {
-        sword.StartSwordUp(height / 2f, 2f);  // 애니메이션 지속 시간 임시로 하드코딩
-        StartCoroutine(StartStageCoroutine(2f));  // 임시로 하드코딩
+        float dur = 2f;
         BlackOverlayObj.SetActive(true);
+
+        // 검정색 박스 진해지는 연출 (DOTween)
+        BlackOverlay.DOFade(1f, dur).SetEase(Ease.OutQuad);
+
+        // 칼 올라가는 연출은 이제 SwordMovement가 스스로 DOTween으로 처리함
+        sword.StartSwordUp(height / 2f, dur); 
     }
 
-    /// <summary>
-    /// 검정색 박스 진해지는 연출 코루틴
-    /// </summary>
-    /// <param name="dur">지속 시간</param>
-    public IEnumerator StartStageCoroutine(float dur)
-    {
-        BlackOverlayObj.SetActive(true);
-        float elapsedTime = 0f;
-
-        while (elapsedTime < dur)
-        {
-            elapsedTime += Time.deltaTime;
-            float t = Mathf.Clamp01(elapsedTime / dur);
-
-            float overlayAlpha = (t > 0.8f) ? 1f : Mathf.Clamp01(t * 1.3f);
-            BlackOverlay.color = new Color(0f, 0f, 0f, overlayAlpha);
-
-            yield return null; // 다음 프레임까지 대기
-        }
-    }
 }
