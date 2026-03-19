@@ -53,7 +53,7 @@ public class NotePerformer : MonoBehaviour
     {
         if (charts == null)
         {
-            Debug.LogWarning("NotePlayer.InitNotes: Charts is null");
+            Debug.LogWarning("NotePerformer.InitNotes: Charts is null");
             notes = System.Array.Empty<NoteDataNew>();
             return;
         }
@@ -115,6 +115,7 @@ public class NotePerformer : MonoBehaviour
     void Update()
     {
         if (StageFlowManager.Instance == null) return;
+        if (notes == null || notes.Length <= 0) return;
         float currentSec = StageFlowManager.Instance.currentTime;
 
         // 공격 준비

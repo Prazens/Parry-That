@@ -948,7 +948,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   strikerManager: {fileID: 2036327256}
-  notePerformer: {fileID: 768575892}
   jsonCharts: []
 --- !u!1 &477627791
 GameObject:
@@ -1220,7 +1219,6 @@ MonoBehaviour:
   stageFlowManager: {fileID: 25638220}
   gameController: {fileID: 768575887}
   judgeSystem: {fileID: 768575891}
-  notePerformer: {fileID: 768575892}
   dynamicUIManager: {fileID: 1305503427}
   cutInParent: {fileID: 1394439256}
   tutorialManager: {fileID: 1355106857}
@@ -1388,7 +1386,6 @@ GameObject:
   - component: {fileID: 768575887}
   - component: {fileID: 768575886}
   - component: {fileID: 768575891}
-  - component: {fileID: 768575892}
   m_Layer: 0
   m_Name: GameController
   m_TagString: GameController
@@ -1434,7 +1431,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stageFlowManager: {fileID: 25638220}
   swipeThreshold: 50
-  isTouchAvailable: 0
+  isTouchAvailable: 1
 --- !u!114 &768575889
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1449,7 +1446,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   judgeSystem: {fileID: 768575891}
   playerManager: {fileID: 0}
-  isTouchAvailable: 0
+  isTouchAvailable: 1
 --- !u!4 &768575890
 Transform:
   m_ObjectHideFlags: 0
@@ -1482,26 +1479,13 @@ MonoBehaviour:
   parriedProjectileManager: {fileID: 768575886}
   dynamicUIManager: {fileID: 1305503427}
   stageAudioManager: {fileID: 2139028259}
-  notePerformer: {fileID: 768575892}
   combo: 0
   score: 0
   lastNonMissJudge: 0
   isHolding: 0
   isOnStream: 0
   streamCount: -1
---- !u!114 &768575892
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 768575885}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0648161ef0fbdf428394d25a9cfd108, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  strikerManager: {fileID: 2036327256}
+  bpm: 0
 --- !u!1 &783409969
 GameObject:
   m_ObjectHideFlags: 0
@@ -3104,6 +3088,7 @@ MonoBehaviour:
   - {fileID: 1293562708}
   - {fileID: 1055898947}
   - {fileID: 783409970}
+  dynamicUIManager: {fileID: 1305503427}
   charts:
   - bpm: 0
     strikerType: 0
@@ -3121,6 +3106,7 @@ MonoBehaviour:
   holdExclamationPrefab: {fileID: 2570531951866361977, guid: 9255d8ba8e6bdf14183e532a558b85b3, type: 3}
   holdingSound: {fileID: 8300000, guid: a6abaf2bfff29ce46824765150158679, type: 3}
   strikerList: []
+  strikerStatus: 
   bossController: {fileID: 0}
 --- !u!4 &2036327257
 Transform:

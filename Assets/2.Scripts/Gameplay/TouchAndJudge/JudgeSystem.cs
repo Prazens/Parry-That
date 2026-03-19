@@ -35,7 +35,6 @@ public class JudgeSystem : MonoBehaviour
     };
     public Queue<JudgeFormat> judgeQueue = new();
 
-    public int bpm;
     public List<int[]> judgeDetails = new List<int[]>();  
 
     private string[] judgeStrings = new string[7]
