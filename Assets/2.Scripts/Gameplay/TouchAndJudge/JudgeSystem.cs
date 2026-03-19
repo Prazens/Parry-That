@@ -403,12 +403,9 @@ public class JudgeSystem : MonoBehaviour
 
             if (judgement >= JudgeType.LateParried && judgement <= JudgeType.EarlyParried)
             {
-                targetStriker?.TakeDamage(1, judgeObject.attackType);
-                dynamicUIManager?.ShowParticle(judgeObject.noteDirection, false);
-
                 if (parriedProjectileManager != null &&
                     targetStriker != null &&
-                    !targetStriker.isMelee &&
+                    judgeObject.judgeableObject != null &&
                     judgeObject.attackType != AttackType.StreamStart)
                 {
                     if (targetStriker.boss != null)
@@ -477,7 +474,6 @@ public class JudgeSystem : MonoBehaviour
             }
 
             judgeable.strikerController.OnJudge(judgeable, isParried);
-            judgeable.onDestroy?.Invoke(judgeable);
         }
     }
 }

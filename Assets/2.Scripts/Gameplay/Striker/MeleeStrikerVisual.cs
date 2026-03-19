@@ -9,18 +9,18 @@ public sealed class MeleeStrikerVisual : StrikerVisual
     private readonly float attackAnimTime = 0.02f;
     public override float preAttackDelay => attackMoveTime + attackAnimTime;
     public override float disappearDuration => 2.5f;
-    private Vector3 originalPosition;
-    private Vector3 targetPosition;
+
+    // Melee 전용 변수
     private bool isLastInBurst = false;
     private bool isFinalAttack = false;
     private bool isMoved = false;
     private bool isMoving = false;
 
-    public override void SetDirection(int direction)
+    protected override void SetLocation(Direction location)
     {
-        base.SetDirection(direction);
+        base.SetLocation(location);
 
-        bladeAnimator.SetInteger("bladeDirection", direction);
+        bladeAnimator.SetInteger("bladeDirection", (int)location);
     }
 
     public override void SetAttackType(int attackType)
@@ -47,6 +47,8 @@ public sealed class MeleeStrikerVisual : StrikerVisual
 
     public override void OnHit(AttackType attackType)
     {
+        base.OnHit(attackType);
+
         if (attackType == AttackType.Normal || attackType == AttackType.Strong ||
             attackType == AttackType.HoldFinishStrong)
         {
@@ -81,7 +83,7 @@ public sealed class MeleeStrikerVisual : StrikerVisual
         if (attackType == AttackType.HoldStart)
         {
             animator.SetBool("isAttacking", true);
-            transform.GetChild(0).transform.localPosition = DirTool.TranstoVec(DirTool.ReverseDir(direction)) * 2f;
+            transform.GetChild(0).transform.localPosition = DirTool.TranstoVec(DirTool.ReverseDir(location)) * 2f;
             yield break;
         }
 
@@ -134,7 +136,7 @@ public sealed class MeleeStrikerVisual : StrikerVisual
         isMoving = true;
         animator.SetBool("MovingGo", true);
 
-        yield return LerpPosition(originalPosition, targetPosition, attackMoveTime);
+        yield return LerpPosition(defaultPosition, targetPosition, attackMoveTime);
 
         animator.SetBool("MovingGo", false);
         isMoved = true;
@@ -149,7 +151,7 @@ public sealed class MeleeStrikerVisual : StrikerVisual
         isMoving = true;
         animator.SetBool("MovingBack", true);
 
-        yield return LerpPosition(targetPosition, originalPosition, attackMoveTime / 2.0f);
+        yield return LerpPosition(targetPosition, defaultPosition, attackMoveTime / 2.0f);
 
         animator.SetBool("MovingBack", false);
         isMoving = false;
@@ -163,24 +165,8 @@ public sealed class MeleeStrikerVisual : StrikerVisual
         isMoving = true;
         animator.SetBool("hp0", true);
 
-        yield return LerpPosition(targetPosition, originalPosition, 0.3f);
+        yield return LerpPosition(targetPosition, defaultPosition, 0.3f);
 
         isMoving = false;
-    }
-
-    private IEnumerator LerpPosition(Vector3 start, Vector3 end, float duration)
-    {
-        var flow = StageFlowManager.Instance;
-        float startSec = flow.currentTime;
-        float elapsed = 0;
-
-        while (elapsed < duration)
-        {
-            elapsed = flow.currentTime - startSec;
-            transform.position = Vector3.Lerp(start, end, elapsed / duration);
-            yield return null;
-        }
-
-        transform.position = end;
     }
 }

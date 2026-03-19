@@ -2,8 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 연타 투사체: 현재 사용되지 않음
+/// </summary>
 public class renProjectile : MonoBehaviour
 {
+    /*
     // 연타 투사체에 들어가는 script
     public Transform target; // 플레이어 위치 (중앙)
     public float speed = 5.0f; // 노트 이동 속도
@@ -94,4 +98,5 @@ public class renProjectile : MonoBehaviour
             cloneScript.genTimeMultiplier = genTimeMultiplier;
         }
     }
+    */
 }

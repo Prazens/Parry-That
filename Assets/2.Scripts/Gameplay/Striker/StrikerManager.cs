@@ -129,8 +129,8 @@ public class StrikerManager : MonoBehaviour
 
         if (striker != null)
         {
-            striker.dynamicUIManager = dynamicUIManager;
-            striker.notePerformer = notePerformer;
+            striker.Visual.dynamicUIManager = dynamicUIManager;
+            striker.manager = this;
             striker.judgeSystem = judgeSystem;
             striker.holdExclamation = holdExclamation;
             striker.Sound.SetHoldingSound(holdingSound);
@@ -140,17 +140,7 @@ public class StrikerManager : MonoBehaviour
                 bossController.RegisterStriker(striker);
             }
 
-            int isMelee = 0;
-            if (prefabIndex == 1) isMelee = 1;
-
-            striker.Initialize(
-                hp,
-                bpm,
-                playerManager,
-                (Direction)(positionIndex + 1),
-                charts[chartIndex],
-                isMelee
-            );
+            striker.Initialize(playerManager, (Direction)(positionIndex + 1));
         }
 
         if (!isActivated)
@@ -165,10 +155,7 @@ public class StrikerManager : MonoBehaviour
         {
             if (striker != null)
             {
-                if (striker != null && !striker.isMelee)
-                {
-                    striker.ClearProjectiles();
-                }
+                striker.ClearProjectiles();
                 Destroy(striker);
             }
         }
@@ -182,6 +169,6 @@ public class StrikerManager : MonoBehaviour
         }
     }
 
-    private float BeatToSec(float beatIndex, float offset = 0)
+    public float BeatToSec(float beatIndex, float offset = 0)
         => notePerformer.BeatToSec(beatIndex, offset);
 }

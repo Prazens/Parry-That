@@ -101,18 +101,7 @@ public class TutorialManager : MonoBehaviour
 
             if (currentTime >= ChartTimeList[daehwaIndex] + musicOffset)
             {
-                List<StrikerController> strikerList_ = strikerManager.strikerList;
                 bool isClear = true;
-
-                for (int i = 0; i < strikerList_.Count; i++)
-                {
-                    StrikerController striker = strikerList_[i];
-
-                    if (striker.hp != 0)
-                    {
-                        isClear = false; // 클리어 조건 미달
-                    }
-                }
 
                 if (isClear) patternComplete = true;
                 print(patternComplete);
@@ -376,23 +365,6 @@ public class TutorialManager : MonoBehaviour
         SkipOn();
 
         yield break;
-    }
-
-    private void checkComplete1()
-    {
-        List<StrikerController> strikerList_ = strikerManager.strikerList;
-        bool isClear = true;
-
-        for (int i = 0; i < strikerList_.Count; i++)
-        {
-            StrikerController striker = strikerList_[i];
-            
-            if (striker.hp != 0)
-            {
-                isClear = false;
-            }
-        }
-        if (isClear) patternComplete = true;
     }
 
     public void SkipOn()

@@ -22,17 +22,17 @@ public class StrikerAttack : MonoBehaviour
     {
         if (attackType == AttackType.HoldStart)
         {
-            judgeSystem.EnqueueJudgeable(new Judgeable(attackType, arriveBeat, nextArriveBeat, location, controller, null, controller.ActHoldStart));
+            judgeSystem.EnqueueJudgeable(new Judgeable(attackType, arriveBeat, nextArriveBeat, location, controller, null));
         }
         else if (attackType == AttackType.HoldFinishStrong)
         {
-            judgeSystem.EnqueueJudgeable(new Judgeable(AttackType.HoldStop, arriveBeat, nextArriveBeat, location, controller, null, controller.ActHoldFinish));
+            judgeSystem.EnqueueJudgeable(new Judgeable(AttackType.HoldStop, arriveBeat, nextArriveBeat, location, controller, null));
         }
     }
 
     public virtual void OnAttackStart(StrikerAttackContext context, GameObject projectile)
     {
         if (context.attackType == AttackType.HoldStart || context.attackType == AttackType.HoldFinishStrong) return;
-        judgeSystem.EnqueueJudgeable(new Judgeable(context.attackType, context.arriveBeat, context.nextArriveBeat, location, controller, projectile, null));
+        judgeSystem.EnqueueJudgeable(new Judgeable(context.attackType, context.arriveBeat, context.nextArriveBeat, location, controller, projectile));
     }
 }

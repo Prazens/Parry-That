@@ -13,9 +13,6 @@ public class Judgeable
     // 투사체 등 판정과 연동되는 GameObject
     public GameObject judgeableObject;
 
-    // 판정 끝날 시 실행할 메소드(반환값 없음)
-    public Action<Judgeable> onDestroy;
-
     public Direction noteDirection;
     public AttackType attackType;
     public float arriveBeat;
@@ -23,7 +20,7 @@ public class Judgeable
     public int streamCount = -1; // 몇 번 입력해야 하는지 (stream 판정용)
     // public NoteData noteData;
 
-    public Judgeable(AttackType _attackType, float _arriveBeat, float _nextArriveBeat, Direction _noteDirection, StrikerController _strikerController, GameObject _judgeableObject = null, Action<Judgeable> _onDestroy = null)
+    public Judgeable(AttackType _attackType, float _arriveBeat, float _nextArriveBeat, Direction _noteDirection, StrikerController _strikerController, GameObject _judgeableObject = null)
     {
         attackType = _attackType;
         arriveBeat = _arriveBeat;
@@ -31,7 +28,6 @@ public class Judgeable
         noteDirection = _noteDirection;
         strikerController = _strikerController;
         judgeableObject = _judgeableObject;
-        onDestroy = _onDestroy;
     }
 
     public void SetStreamCount(int _count)

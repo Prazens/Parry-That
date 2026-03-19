@@ -118,10 +118,10 @@ public class NotePerformer : MonoBehaviour
         float currentSec = StageFlowManager.Instance.currentTime;
 
         // 공격 준비
-        //PrepareNextNote(currentSec);
+        PrepareNextNote(currentSec);
 
         // 공격
-        //HandleAttack(currentSec);
+        HandleAttack(currentSec);
     }
 
     private void PrepareNextNote(float currentSec)

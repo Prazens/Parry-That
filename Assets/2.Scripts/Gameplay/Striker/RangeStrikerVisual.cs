@@ -4,8 +4,6 @@ using UnityEngine;
 
 public sealed class RangeStrikerVisual : StrikerVisual
 {
-    // Stream(Renta, 연타)은 당장 사용되지 않아 무시할 예정
-
     [SerializeField] private List<projectile> projectilePrefabs; // 투사체 프리팹
 
     public override float preAttackDelay => 0.5f;
@@ -27,6 +25,7 @@ public sealed class RangeStrikerVisual : StrikerVisual
 
     public override void OnHit(AttackType attackType)
     {
+        base.OnHit(attackType);
         animator.SetTrigger("isDamaged");
     }
 
@@ -42,7 +41,7 @@ public sealed class RangeStrikerVisual : StrikerVisual
         projectile selectedProjectile = projectilePrefabs[(int)attackType];
 
         Vector3 projectilePos = transform.position;
-        switch (direction)
+        switch (location)
         {
             case Direction.Left:
                 projectilePos += new Vector3(-2f, 0, 0);
@@ -53,7 +52,7 @@ public sealed class RangeStrikerVisual : StrikerVisual
         }
         // 투사체 생성
         projectile projectile = Instantiate(selectedProjectile, projectilePos, Quaternion.identity);
-        switch (direction)
+        switch (location)
         {
             case Direction.Up:
                 projectile.transform.rotation = Quaternion.Euler(0, 0, 0);
