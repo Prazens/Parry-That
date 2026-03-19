@@ -42,16 +42,15 @@ public class TouchManager : MonoBehaviour
     {
         if (StageFlowManager.isActive)
         {
-            MouseChecker();
-            //if (isTouchAvailable)
-            //{
-            //    TouchChecker();
-            //}
-            //else
-            //{
-            //    //KeyChecker();  // Legacy
-            //    MouseChecker();
-            //}
+            if (isTouchAvailable)
+            {
+                TouchChecker();
+            }
+            else
+            {
+                //KeyChecker();  // Legacy
+                MouseChecker();  // 터치에 중복
+            }
         }
     }
 

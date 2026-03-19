@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e35ccfe094e13414891f641969d18e51, type: 3}
-  m_Name: Stage4
+  m_Name: Stage4Normal
   m_EditorClassIdentifier: 
   stageId: 4
   difficulty: 0
   category: 2
-  displayName: Stage4
+  displayName: Stage4Normal
   chartJsons:
   - {fileID: 4900000, guid: 854c466d7288d7a4fa4ce28af911e17d, type: 3}
   - {fileID: 4900000, guid: 110db19d10b43954ab0c8385f1ee391c, type: 3}

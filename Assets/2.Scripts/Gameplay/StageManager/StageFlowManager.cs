@@ -28,11 +28,9 @@ public class StageFlowManager : MonoBehaviour
 
     [Header("Stage Data")]
     [SerializeField] private StageLevelManager stageLevelManager;
-    private StageData currentStageData;
+    public StageData currentStageData;
 
     private bool button_active = true;
-
-    private bool AnimationEnable = true;
 
     public bool isPaused = false;
 
@@ -93,7 +91,7 @@ public class StageFlowManager : MonoBehaviour
             }
         }
 
-        if (currentTime >= stageDuration && AnimationEnable)
+        if (currentTime >= stageDuration)
         {
             if (!victorySequenceTriggered)
             {
@@ -103,10 +101,7 @@ public class StageFlowManager : MonoBehaviour
                 {
                     staticUIManager.StartVictoryAnimation();
                     victoryStarted = true;
-                }
-                else
-                {
-                    EndStage();
+                    stageAudioManager.StopAudio();
                 }
             }
 
@@ -168,7 +163,6 @@ public class StageFlowManager : MonoBehaviour
         is_over = false;
         isPaused = false;
         button_active = true;
-        AnimationEnable = true;
         victorySequenceTriggered = false;
         victoryStarted = false;
 
@@ -223,7 +217,6 @@ public class StageFlowManager : MonoBehaviour
 
     public void RestartStage()
     {
-        AnimationEnable = true;
         victorySequenceTriggered = false;
         victoryStarted = false;
 
@@ -249,6 +242,7 @@ public class StageFlowManager : MonoBehaviour
             staticUIManager.ToggleGameOverPanel(false);
             staticUIManager.TogglePausePanel(false);
             staticUIManager.UpdatePauseButtonSprite(false);
+            staticUIManager.ResetVictoryAnimation();
         }
 
         if (dynamicUIManager != null)
@@ -292,13 +286,6 @@ public class StageFlowManager : MonoBehaviour
         is_over = true;
         button_active = false;
 
-        if (stageAudioManager != null && stageAudioManager.musicSource != null)
-        {
-            if (stageAudioManager.musicSource.isPlaying)
-            {
-                stageAudioManager.musicSource.Stop();
-            }
-        }
 
         if (stageResultManager != null)
         {
