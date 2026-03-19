@@ -200,7 +200,7 @@ public class DynamicUIManager : MonoBehaviour
         judgeDisplay.transform.localScale = new Vector3(0.12f, 0.12f, 0f);
         judgeDisplay.transform.position = new Vector3(Screen.width / 2, Screen.height / 2) + generatePosition;
 
-        int spriteIndex = math.abs(judge - 3);
+        int spriteIndex = math.abs(judge - 4);
 
         if (judgeImages != null && spriteIndex >= 0 && spriteIndex < judgeImages.Length)
         {

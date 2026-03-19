@@ -12,6 +12,7 @@ using UnityEngine;
 public class StageChartLoader : MonoBehaviour
 {
     [SerializeField] private StrikerManager strikerManager;
+    [SerializeField] private NotePerformer notePerformer;
     [SerializeField] private TextAsset[] jsonCharts;
 
     public void LoadChartsIntoStrikerManager()
@@ -91,6 +92,12 @@ public class StageChartLoader : MonoBehaviour
                 strikerManager.charts.Add(JsonReader.ReadJson<ChartData>(jsonCharts[i]));
             }
         }
+
+        // 모든 차트 로드 후 NotePerformer 초기화
+        if (notePerformer != null)
+        {
+            notePerformer.InitNotes(strikerManager.charts);
+        }
     }
 
     public void LoadChartsFromStageData(StageData stageData)
@@ -153,6 +160,12 @@ public class StageChartLoader : MonoBehaviour
             if (chartJson == null) continue;
 
             strikerManager.charts.Add(JsonReader.ReadJson<ChartData>(chartJson));
+        }
+
+        // 모든 차트 로드 후 NotePerformer 초기화
+        if (notePerformer != null)
+        {
+            notePerformer.InitNotes(strikerManager.charts);
         }
     }
 }
