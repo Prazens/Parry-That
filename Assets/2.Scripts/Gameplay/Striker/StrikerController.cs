@@ -4,14 +4,45 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// 공격 시 필요한 정보를 담는 구조체.
+/// </summary>
+public struct StrikerAttackContext
+{
+    public float currentSec;
+    public float arriveBeat;
+    public float nextArriveBeat;
+    public AttackType attackType;
+    public bool isLastInBurst;
+    public bool isFinalAttack;
+
+    public StrikerAttackContext(float currentSec, float arriveBeat, float nextArriveBeat, AttackType attackType, bool isLastInBurst, bool isFinalAttack)
+    {
+        this.currentSec = currentSec;
+        this.arriveBeat = arriveBeat;
+        this.nextArriveBeat = nextArriveBeat;
+        this.attackType = attackType;
+        this.isLastInBurst = isLastInBurst;
+        this.isFinalAttack = isFinalAttack;
+    }
+}
+
+/// <summary>
+/// 각 Striker의 세부 컴포넌트들을 연결하는 핵심 로직.
+/// </summary>
 public class StrikerController : MonoBehaviour
 {
     [Header("Striker Components")]
-    [SerializeField] private StrikerAnim anim;
+    [SerializeField] private StrikerAttack attack;
+    [SerializeField] private StrikerVisual visual;
     [SerializeField] private StrikerSound sound;
 
-    public StrikerAnim Anim => anim;
+    public StrikerAttack Attack => attack;
+    public StrikerVisual Visual => visual;
     public StrikerSound Sound => sound;
+
+    public NotePerformer notePerformer;
+    public JudgeSystem judgeSystem;
 
     // striker 자체에 들어가는 script
     [SerializeField] private List<GameObject> projectilePrefabs; // 투사체 프리팹
@@ -30,15 +61,14 @@ public class StrikerController : MonoBehaviour
     // 임시로 발사체 저장해놓을 공간
     private float lastProjectileTime = 0f; // 마지막 투사체 발사 시간
 
-    [SerializeField] private JudgeSystem judgeSystem;
 
     private struct PrepareEntry
     {
-        public float arriveTime;
+        public float arriveBeat;
         public AttackType attackType;
-        public PrepareEntry(float _arriveTime, AttackType _attackType)
+        public PrepareEntry(float _arriveBeat, AttackType _attackType)
         {
-            arriveTime = _arriveTime;
+            arriveBeat = _arriveBeat;
             attackType = _attackType;
         }
     }
@@ -93,7 +123,7 @@ public class StrikerController : MonoBehaviour
             SetMeleeTargetPosition();
         }
 
-        anim.SetDirection((int)location);
+        visual.SetDirection((int)location);
 
         // 초기 위치를 화면 밖으로 설정
         spawnPosition = GetSpawnPosition();
@@ -105,7 +135,10 @@ public class StrikerController : MonoBehaviour
         musicOffset = PlayerPrefs.GetFloat("musicOffset", 2);
 
         playerManager = GameObject.FindWithTag("Player").GetComponent<PlayerManager>();
+
+        attack.Init(this);
     }
+
     private void Update() // 현재 striker 자체에서 투사체 일정 간격으로 발사
     {
         if (isMelee)
@@ -128,29 +161,65 @@ public class StrikerController : MonoBehaviour
             PrepareForAttack();
         }
     }
+
+    public float BeatToSec(float beat) => notePerformer.BeatToSec(beat, musicOffset);
+
+    public void OnNotice(float arriveBeat, float nextArriveBeat, AttackType attackType)
+    {
+        attack.OnNotice(arriveBeat, nextArriveBeat, attackType);
+    }
+
+    public void OnAttackStart(StrikerAttackContext context)
+    {
+        GameObject projectile = visual.OnAttackStart(context);
+        attack.OnAttackStart(context, projectile);
+    }
+
+    public void OnJudge(Judgeable judgeable, bool isHit)
+    {
+        visual.OnJudge(judgeable, isHit);
+        sound.PlayHoldSound(judgeable.attackType);
+
+        if (isHit)
+        {
+            OnHit(judgeable.attackType);
+        }
+    }
+
+    private void OnHit(AttackType attackType)
+    {
+        visual.OnHit(attackType);
+        sound.PlayParrySound(attackType);
+    }
+
+    public void OnClear()
+    {
+        visual.OnClear();
+    }
+
     private void HandleMeleeMovement()
     {
         float currentTime = StageFlowManager.Instance.currentTime;
 
         //공격 이전에 출발
-        if (prepareQueue.Count > 0 && currentTime >= ((prepareQueue.Peek().arriveTime * (60d / bpm)) + musicOffset - animeOffset - moveTime) && !isMoved &&
+        if (prepareQueue.Count > 0 && currentTime >= ((prepareQueue.Peek().arriveBeat * (60d / bpm)) + musicOffset - animeOffset - moveTime) && !isMoved &&
             prepareQueue.Peek().attackType != AttackType.HoldFinishStrong && !isMoving)
         {
             isMoving = true;
-            StartCoroutine(MeleeGo(prepareQueue.Peek().arriveTime * (60f / bpm) + musicOffset - animeOffset));
+            StartCoroutine(MeleeGo(prepareQueue.Peek().arriveBeat * (60f / bpm) + musicOffset - animeOffset));
         }
 
         // 채보 시간에 맞춰 공격
-        if (prepareQueue.Count > 0 && currentTime >= (prepareQueue.Peek().arriveTime * (60d / bpm)) + musicOffset - animeOffset)
+        if (prepareQueue.Count > 0 && currentTime >= (prepareQueue.Peek().arriveBeat * (60d / bpm)) + musicOffset - animeOffset)
         {
             AttackType attackType = (AttackType)prepareQueue.Peek().attackType;
-            float attackTime = prepareQueue.Peek().arriveTime;
+            float attackTime = prepareQueue.Peek().arriveBeat;
 
             // 공격
             //근접 전용의 scoreManager의 judge를 이용해야함. projectile과 구분해서 애니메이션도 다르게 되어야한다.
             // 투사체 저장은 PrepareForAttack에서 미리함
 
-            anim.SetAttackType((int)attackType);
+            visual.SetAttackType((int)attackType);
 
             //공격 애니메이션 작용
             if (attackType != AttackType.HoldFinishStrong)
@@ -218,7 +287,7 @@ public class StrikerController : MonoBehaviour
         animator.SetBool("isAttacking", false);
         bladeAnimator.SetTrigger("bladeHoldFinish");
 
-        sound.PlayHoldEnd();
+        sound.PlayHoldFinish();
 
         transform.GetChild(0).transform.localPosition = Vector3.zero;
         isHolding = false;
@@ -251,7 +320,7 @@ public class StrikerController : MonoBehaviour
     {
         // 연타 종료 시의 처리, Judgeable의 onDestroy에 저장 후 호출
         // (streamstart 일 때만, streamend는 그냥 끝 시간 알림용, 별도 판정 처리 없음)
-        sound.PlayHoldEnd();
+        sound.PlayHoldFinish();
         
         isRenta = false;
 
@@ -394,10 +463,10 @@ public class StrikerController : MonoBehaviour
     {
         float currentTime = StageFlowManager.Instance.currentTime;
 
-        if (prepareQueue.Count > 0 && currentTime >= (prepareQueue.Peek().arriveTime * (60d / bpm)) + musicOffset - 0.5f)
+        if (prepareQueue.Count > 0 && currentTime >= (prepareQueue.Peek().arriveBeat * (60d / bpm)) + musicOffset - 0.5f)
         {
             var prepare = prepareQueue.Peek();
-            var (t, idx) = (prepare.arriveTime, prepare.attackType);
+            var (t, idx) = (prepare.arriveBeat, prepare.attackType);
             if (idx == AttackType.HoldStart || idx == AttackType.HoldFinishStrong)
             {
                 prepareQueue.Dequeue();     // 큐 소비
@@ -428,7 +497,7 @@ public class StrikerController : MonoBehaviour
     private void ActRangeHoldFinish()
     {
         // 홀드 종료 연출
-        sound.PlayHoldEnd();
+        sound.PlayHoldFinish();
 
         if (holdSpriteAnimator != null)
         {
@@ -449,54 +518,54 @@ public class StrikerController : MonoBehaviour
         // 컷인 제거
         dynamicUIManager?.CutInDisplay(0, true);
     }
+ 
+    public void ActHoldStart(Judgeable judgeable)
+    {
+        if (isMelee)
+            ActMeleeHoldStart();
+        else
+            ActRangeHoldStart();
+    }
+
+    public void ActHoldFinish(Judgeable judgeable)
+    {
+        if (isMelee)
+            ActMeleeHoldFinish();
+        else
+            ActRangeHoldFinish();
+    }
 
 
     private void PrepareForAttack()
     {
-        float arriveTime = chartData.notes[currentNoteIndex].arriveTime;
+        float arriveBeat = chartData.notes[currentNoteIndex].arriveTime;
         AttackType noteType = (AttackType)chartData.notes[currentNoteIndex].type; // 노트 타입 저장
 
         if ((noteType != AttackType.HoldFinishStrong && noteType != AttackType.StreamStart) || isHolding || isRenta)
         {
-            prepareQueue.Enqueue(new PrepareEntry(arriveTime, noteType)); // 도착 시간과 타입 저장
+            prepareQueue.Enqueue(new PrepareEntry(arriveBeat, noteType)); // 도착 박자와 타입 저장
             ShowExclamation(noteType); // 느낌표 표시
         }
 
         if (isBossMinion && boss != null)
         {
-            boss.OnMinionPrepare(location, (int)noteType, arriveTime);
+            boss.OnMinionPrepare(location, (int)noteType, arriveBeat);
         }
 
-        if (isMelee)
-        {
-            if (noteType == AttackType.HoldStart)
-            {
-                judgeSystem.EnqueueJudgeable(new Judgeable(AttackType.HoldStart, arriveTime, location, this, null, this.ActMeleeHoldStart));
-                judgeSystem.EnqueueJudgeable(new Judgeable(AttackType.HoldStop, chartData.notes[currentNoteIndex + 1].arriveTime, location, this, null, this.ActMeleeHoldFinish));
-            }
-            else if (noteType != AttackType.HoldFinishStrong)
-            {
-                judgeSystem.EnqueueJudgeable(new Judgeable(noteType, arriveTime, location, this, null, this.ActMeleeHit));
-            }
-        }
-        else
-        {
-            if (noteType == AttackType.HoldStart)
-            {
-                judgeSystem.EnqueueJudgeable(new Judgeable(AttackType.HoldStart, arriveTime, location, this, null, this.ActRangeHoldStart));
-                judgeSystem.EnqueueJudgeable(new Judgeable(AttackType.HoldStop, chartData.notes[currentNoteIndex + 1].arriveTime, location, this, null, this.ActRangeHoldFinish));
-            }
-            else if (noteType == AttackType.StreamStart)
-            {
-                var j = new Judgeable(AttackType.StreamStart, arriveTime, location, this, null, this.ActStreamStart);
-                j.SetStreamCount(CalcStreamCountForThisSegment(currentNoteIndex));
-                judgeSystem.EnqueueJudgeable(j);
-                judgeSystem.EnqueueJudgeable(new Judgeable(AttackType.StreamFinish, chartData.notes[currentNoteIndex + 1].arriveTime, location, this, null, this.ActStreamFinish));
-            }
-        }
+
+        float nextArriveBeat = (currentNoteIndex + 1 < chartData.notes.Length) ? chartData.notes[currentNoteIndex + 1].arriveTime : -1f;
+        OnNotice(arriveBeat, nextArriveBeat, noteType);
+
+        //if (!isMelee && noteType == AttackType.StreamStart)
+        //{
+        //    var j = new Judgeable(AttackType.StreamStart, arriveTime, location, this, null, this.ActStreamStart);
+        //    j.SetStreamCount(CalcStreamCountForThisSegment(currentNoteIndex));
+        //    judgeSystem.EnqueueJudgeable(j);
+        //    judgeSystem.EnqueueJudgeable(new Judgeable(AttackType.StreamFinish, chartData.notes[currentNoteIndex + 1].arriveTime, location, this, null, this.ActStreamFinish));
+        //}
 
         // 효과음 재생
-        PlayPrepareSound(noteType);
+        sound.PlayPrepareSound(noteType);
 
         currentNoteIndex++; // 다음 노트로 이동
     }
@@ -627,7 +696,7 @@ public class StrikerController : MonoBehaviour
         }
 
         // 투사체 저장
-        judgeSystem.EnqueueJudgeable(new Judgeable((AttackType)index, time, location, this, projectile));
+        judgeSystem.EnqueueJudgeable(new Judgeable((AttackType)index, time, -1f, location, this, projectile));
         // // Debug.Log($"judgeableQueue의 길이:{judgeableQueue.Count}");
 
         // 투사체에 타겟 설정
@@ -637,7 +706,7 @@ public class StrikerController : MonoBehaviour
             if (playerManager == null) playerManager = GameObject.FindWithTag("Player").GetComponent<PlayerManager>();
             projScript.target = playerManager.transform; // 플레이어를 타겟으로 설정
             projScript.owner = this;   // 소유자로 현재 스트라이커 설정
-            projScript.arriveTime = time;
+            projScript.arriveTime = BeatToSec(time);
             projScript.type = index;
         }
         animator.SetTrigger("Attack");
@@ -682,6 +751,7 @@ public class StrikerController : MonoBehaviour
         hp = _initialHp;
         initialHp = _initialHp;
         bpm = initialBpm;
+        Debug.Log($"StrikerController: Initialize: bpm is {bpm}");
         playerManager = targetPlayer;
         // Debug.Log($"{gameObject.name} spawned with HP: {hp}, BPM: {bpm}");
         location = direction;
@@ -754,7 +824,7 @@ public class StrikerController : MonoBehaviour
 
     public void TakeDamage(int damage, AttackType type)
     {
-        PlayParrySound(type);
+        sound.PlayParrySound(type);
 
         if (isBossMinion && boss != null)
         {
@@ -840,30 +910,6 @@ public class StrikerController : MonoBehaviour
         if (particleSystemGreen != null)
         {
             particleSystemGreen.Play();
-        }
-    }
-
-    private void PlayPrepareSound(AttackType type)
-    {
-        if (type == AttackType.Normal)
-        {
-            sound.PlayPrepareNormal();
-        }
-        else if (type == AttackType.Strong)
-        {
-            sound.PlayPrepareStrong();
-        }
-    }
-
-    private void PlayParrySound(AttackType type)
-    {
-        if (type == AttackType.Normal)
-        {
-            sound.PlayParryNormal();
-        }
-        else if (type == AttackType.Strong)
-        {
-            sound.PlayParryStrong();
         }
     }
 }

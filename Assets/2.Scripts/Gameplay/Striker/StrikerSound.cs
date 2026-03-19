@@ -27,25 +27,61 @@ public class StrikerSound : MonoBehaviour
         holdingSound = clip;
     }
 
-    public void PlayPrepareNormal()
+    public void PlayPrepareSound(AttackType type)
+    {
+        if (type == AttackType.Normal)
+        {
+            PlayPrepareNormal();
+        }
+        else if (type == AttackType.Strong)
+        {
+            PlayPrepareStrong();
+        }
+    }
+
+    public void PlayParrySound(AttackType type)
+    {
+        if (type == AttackType.Normal)
+        {
+            PlayParryNormal();
+        }
+        else if (type == AttackType.Strong)
+        {
+            PlayParryStrong();
+        }
+    }
+
+    public void PlayHoldSound(AttackType type)
+    {
+        if (type == AttackType.HoldStart)
+        {
+            PlayHoldStart();
+        }
+        else if (type == AttackType.HoldStop || type == AttackType.HoldFinishStrong)
+        {
+            PlayHoldFinish();
+        }
+    }
+
+    private void PlayPrepareNormal()
     {
         if (audioSource == null || prepareSoundNormal == null) return;
         audioSource.PlayOneShot(prepareSoundNormal, GetEffectiveEnemyVolume());
     }
 
-    public void PlayPrepareStrong()
+    private void PlayPrepareStrong()
     {
         if (audioSource == null || prepareSoundStrong == null) return;
         audioSource.PlayOneShot(prepareSoundStrong, GetEffectiveEnemyVolume());
     }
 
-    public void PlayParryNormal()
+    private void PlayParryNormal()
     {
         if (audioSource == null || parrySoundNormal == null) return;
         audioSource.PlayOneShot(parrySoundNormal, GetEffectivePlayerVolume());
     }
 
-    public void PlayParryStrong()
+    private void PlayParryStrong()
     {
         if (audioSource == null || parrySoundStrong == null) return;
         audioSource.PlayOneShot(parrySoundStrong, GetEffectivePlayerVolume());
@@ -57,7 +93,7 @@ public class StrikerSound : MonoBehaviour
         audioSource.PlayOneShot(holdingSound, GetEffectivePlayerVolume());
     }
 
-    public void PlayHoldEnd()
+    public void PlayHoldFinish()
     {
         if (audioSource == null) return;
         audioSource.Stop();

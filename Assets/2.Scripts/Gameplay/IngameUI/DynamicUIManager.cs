@@ -415,7 +415,7 @@ public class DynamicUIManager : MonoBehaviour
         }
     }
 
-    public void CutInDisplay(float _duration, bool isHide = false)
+    public void CutInDisplay(float targetTimeSeconds, bool isHide = false)
     {
         if (cutScenes == null || cutScenes.Length < 2) return;
 
@@ -426,8 +426,9 @@ public class DynamicUIManager : MonoBehaviour
         }
         else
         {
-            StartCoroutine(EaseInEffect(cutScenes[0], Direction.Up, _duration));
-            StartCoroutine(EaseInEffect(cutScenes[1], Direction.Down, _duration));
+            float duration = targetTimeSeconds - StageFlowManager.Instance.currentTime;
+            StartCoroutine(EaseInEffect(cutScenes[0], Direction.Up, duration));
+            StartCoroutine(EaseInEffect(cutScenes[1], Direction.Down, duration));
         }
     }
 }
