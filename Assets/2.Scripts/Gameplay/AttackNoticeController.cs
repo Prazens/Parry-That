@@ -8,11 +8,11 @@ using UnityEngine.UI;
 /// </summary>
 public class AttackNoticeController : MonoBehaviour
 {
+    [SerializeField] private HoldExclamation holdExclamation; // 홀드 느낌표
     [SerializeField] private Transform noticeParent; // 예고 표시 위치
     [SerializeField] private GameObject noticePrefab; // 공통 예고 프리팹
     [SerializeField] private Sprite[] noticeSprites; // 공격 타입별 예고 이미지 배열
     private List<GameObject> noticeInstances = new(); // 예고 인스턴스 저장
-    private HoldExclamation holdExclamation; // 홀드 느낌표
     private float noticeSpacing => 30f; // 예고 인스턴스 사이 간격
 
     public void ShowNewNotice(AttackType attackType, Direction direction, float durationSec)
@@ -34,6 +34,17 @@ public class AttackNoticeController : MonoBehaviour
         GameObject newNotice = Instantiate(noticePrefab, noticeParent);
         Vector3 newNoticePosition = new Vector3(currentIndex * noticeSpacing, 0, 0);
         newNotice.transform.localPosition = newNoticePosition;
+        
+        // 회전 (Direction에 따라)
+        float rotationAngle = 0f;
+        switch (direction)
+        {
+            case Direction.Up:    rotationAngle = 0f; break;
+            case Direction.Down:  rotationAngle = 180f; break;
+            case Direction.Left:  rotationAngle = 90f; break;
+            case Direction.Right: rotationAngle = -90f; break;
+        }
+        newNotice.transform.localRotation = Quaternion.Euler(0, 0, rotationAngle);
 
         // Sprite 변경 (AttackType에 따라)
         Image image = newNotice.GetComponent<Image>();

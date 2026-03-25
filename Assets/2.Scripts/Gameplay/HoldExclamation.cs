@@ -4,18 +4,19 @@ using UnityEngine;
 
 public class HoldExclamation : MonoBehaviour
 {
-    public AudioSource audioSource;
-    public AudioClip[] prepareSounds;
-    // public AudioClip prepareSoundHoldOut;
-    private int phase = 0;
+    [SerializeField] private AudioClip[] prepareSounds;
+    private AudioSource audioSource;
     private Coroutine currentCoroutine = null;
 
     void Start()
     {
-        phase = 0;
         transform.GetChild(0).gameObject.SetActive(false);
         transform.GetChild(1).gameObject.SetActive(false);
         transform.GetChild(2).gameObject.SetActive(false);
+
+        var audioSourceObject = GameObject.Find("Audio Source");
+        if (audioSourceObject != null)
+            audioSource = audioSourceObject.GetComponent<AudioSource>();
     }
 
     public void Appear(float durationSec)

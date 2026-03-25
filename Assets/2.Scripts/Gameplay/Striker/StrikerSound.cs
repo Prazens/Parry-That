@@ -22,11 +22,6 @@ public class StrikerSound : MonoBehaviour
             audioSource = GetComponent<AudioSource>();
     }
 
-    public void SetHoldingSound(AudioClip clip)
-    {
-        holdingSound = clip;
-    }
-
     public void PlayPrepareSound(AttackType type)
     {
         if (type == AttackType.Normal)

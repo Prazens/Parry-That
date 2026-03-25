@@ -1537,7 +1537,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   strikerManager: {fileID: 2036327256}
-  attackNotice: {fileID: 966445855}
+  attackNoticeController: {fileID: 966445855}
 --- !u!1 &783409969
 GameObject:
   m_ObjectHideFlags: 0
@@ -1730,6 +1730,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 927d3b1560f31484e91e21e32667425f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  holdExclamation: {fileID: 1004702137}
   noticeParent: {fileID: 416215217}
   noticePrefab: {fileID: 6564652604273379325, guid: 37a0fd3627a8c4f468ec75e41a80536b, type: 3}
   noticeSprites:
@@ -1749,9 +1750,83 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1004702136}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1004702135
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 966445856}
+    m_Modifications:
+    - target: {fileID: 2570531951866361977, guid: 9255d8ba8e6bdf14183e532a558b85b3, type: 3}
+      propertyPath: m_Name
+      value: HoldExclamation
+      objectReference: {fileID: 0}
+    - target: {fileID: 3357451000856254154, guid: 9255d8ba8e6bdf14183e532a558b85b3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3357451000856254154, guid: 9255d8ba8e6bdf14183e532a558b85b3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3357451000856254154, guid: 9255d8ba8e6bdf14183e532a558b85b3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3357451000856254154, guid: 9255d8ba8e6bdf14183e532a558b85b3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3357451000856254154, guid: 9255d8ba8e6bdf14183e532a558b85b3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3357451000856254154, guid: 9255d8ba8e6bdf14183e532a558b85b3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3357451000856254154, guid: 9255d8ba8e6bdf14183e532a558b85b3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3357451000856254154, guid: 9255d8ba8e6bdf14183e532a558b85b3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3357451000856254154, guid: 9255d8ba8e6bdf14183e532a558b85b3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3357451000856254154, guid: 9255d8ba8e6bdf14183e532a558b85b3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 9255d8ba8e6bdf14183e532a558b85b3, type: 3}
+--- !u!4 &1004702136 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3357451000856254154, guid: 9255d8ba8e6bdf14183e532a558b85b3, type: 3}
+  m_PrefabInstance: {fileID: 1004702135}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1004702137 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7350316854865707402, guid: 9255d8ba8e6bdf14183e532a558b85b3, type: 3}
+  m_PrefabInstance: {fileID: 1004702135}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23841b24ead111f4db592e37b52e7578, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1055898946
 GameObject:
   m_ObjectHideFlags: 0
@@ -3206,8 +3281,6 @@ MonoBehaviour:
     disappearTime: 0
     notes: []
   tutorialManager: {fileID: 1355106857}
-  holdExclamationPrefab: {fileID: 2570531951866361977, guid: 9255d8ba8e6bdf14183e532a558b85b3, type: 3}
-  holdingSound: {fileID: 8300000, guid: a6abaf2bfff29ce46824765150158679, type: 3}
   strikerList: []
   bossController: {fileID: 0}
 --- !u!4 &2036327257
@@ -3394,10 +3467,10 @@ SceneRoots:
   - {fileID: 1305503426}
   - {fileID: 496803403}
   - {fileID: 408684723}
+  - {fileID: 966445856}
   - {fileID: 1355106858}
   - {fileID: 1515393734}
   - {fileID: 1328849333}
   - {fileID: 163746528}
   - {fileID: 743363870}
   - {fileID: 176193419}
-  - {fileID: 966445856}

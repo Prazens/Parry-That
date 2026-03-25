@@ -127,40 +127,10 @@ MonoBehaviour:
   attack: {fileID: -2180112999125172703}
   visual: {fileID: 3315650271521731410}
   sound: {fileID: 1523450611889353992}
-  projectilePrefabs:
-  - {fileID: 9160765054753558952, guid: 4b1fc64b6f20804459cae34d57b7e7a0, type: 3}
-  - {fileID: 7152690855388890206, guid: 873bca72101daef41a84215eae8c8992, type: 3}
-  playerManager: {fileID: 0}
-  dynamicUIManager: {fileID: 0}
-  chartData:
-    bpm: 0
-    strikerType: 0
-    direction: 0
-    appearTime: 0
-    disappearTime: 0
-    notes: []
-  hp: 0
-  bpm: 0
-  location: 0
-  currentNoteIndex: 0
-  animator: {fileID: 6433468795391492344}
-  holdSpriteAnimator: {fileID: 0}
-  bladeAnimator: {fileID: 0}
+  manager: {fileID: 0}
   judgeSystem: {fileID: 0}
-  hpBarPrefab: {fileID: 8497898252444216346, guid: 89cb566f97c8d124381826ff7e0c4402, type: 3}
-  hpBar: {fileID: 0}
-  hpControl: {fileID: 0}
-  exclamationPrefab: {fileID: 6564652604273379325, guid: 37a0fd3627a8c4f468ec75e41a80536b, type: 3}
-  exclamationSprites:
-  - {fileID: 21300000, guid: b64a8416733f88b40ad3691c40e4f62e, type: 3}
-  - {fileID: 21300000, guid: 3d8e24c1eb63dd449bdd00bb0b2408ad, type: 3}
-  - {fileID: 21300000, guid: 806b81a6803e8db4dbbc0780adad968b, type: 3}
-  - {fileID: 21300000, guid: 806b81a6803e8db4dbbc0780adad968b, type: 3}
-  holdExclamation: {fileID: 0}
-  moveTime: 0.08
-  isMelee: 0
-  animeOffset: 0.1
-  particleSystemGreen: {fileID: 724184849821279184}
+  playerManager: {fileID: 0}
+  location: 0
   boss: {fileID: 0}
   isBossMinion: 0
 --- !u!82 &-5035865612886772569
@@ -283,6 +253,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 498fead4434da9041baf1bdd4e45867c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dynamicUIManager: {fileID: 0}
   animator: {fileID: 6433468795391492344}
   holdSpriteAnimator: {fileID: 0}
   particleSystemGreen: {fileID: 724184849821279184}
@@ -306,7 +277,7 @@ MonoBehaviour:
   prepareSoundStrong: {fileID: 8300000, guid: 121170503d0edaa40ae14d48ba26984c, type: 3}
   parrySoundNormal: {fileID: 8300000, guid: 96972401467906a42b50272645414fee, type: 3}
   parrySoundStrong: {fileID: 8300000, guid: 20353a13f678ac34f83635b7b2503a29, type: 3}
-  holdingSound: {fileID: 0}
+  holdingSound: {fileID: 8300000, guid: c7a8e0bf3f24efd4b8143a12facac75b, type: 3}
   holdingEnd: {fileID: 0}
 --- !u!1001 &6382469256489126875
 PrefabInstance:

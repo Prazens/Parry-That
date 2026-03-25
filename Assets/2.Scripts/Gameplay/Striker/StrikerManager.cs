@@ -20,11 +20,6 @@ public class StrikerManager : MonoBehaviour
 
     [SerializeField] public TutorialManager tutorialManager;
 
-    [SerializeField] private GameObject holdExclamationPrefab;
-    private GameObject holdExclamation;
-    [SerializeField] private AudioClip holdingSound;
-
-    private Dictionary<Direction, int> activeStrikers = new(); // 방향별 현재 활성화된 스트라이커의 strikerList 인덱스
     public List<StrikerController> strikerList = new();
     private List<int> strikerStatus = new();
 
@@ -87,13 +82,6 @@ public class StrikerManager : MonoBehaviour
 
         ClearStrikers();
 
-        if (holdExclamation != null) Destroy(holdExclamation);
-        holdExclamation = Instantiate(holdExclamationPrefab);
-
-        var audioSourceObject = GameObject.Find("Audio Source");
-        if (audioSourceObject != null)
-            holdExclamation.GetComponent<HoldExclamation>().audioSource = audioSourceObject.GetComponent<AudioSource>();
-
         strikerStatus = new List<int>(new int[charts.Count]);
         strikerList   = new List<StrikerController>(new StrikerController[charts.Count]);
 
@@ -132,7 +120,6 @@ public class StrikerManager : MonoBehaviour
             striker.Visual.dynamicUIManager = dynamicUIManager;
             striker.manager = this;
             striker.judgeSystem = judgeSystem;
-            striker.Sound.SetHoldingSound(holdingSound);
 
             if (bossController != null)
             {
