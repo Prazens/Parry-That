@@ -8,6 +8,18 @@ using UnityEngine;
 public class StrikerStream : MonoBehaviour
 {
     /*
+    private void PrepareForAttack()
+    {
+        // 연타 로직
+        //if (!isMelee && noteType == AttackType.StreamStart)
+        //{
+        //    var j = new Judgeable(AttackType.StreamStart, arriveTime, location, this, null, this.ActStreamStart);
+        //    j.SetStreamCount(CalcStreamCountForThisSegment(currentNoteIndex));
+        //    judgeSystem.EnqueueJudgeable(j);
+        //    judgeSystem.EnqueueJudgeable(new Judgeable(AttackType.StreamFinish, chartData.notes[currentNoteIndex + 1].arriveTime, location, this, null, this.ActStreamFinish));
+        //}
+    }
+
     public void ActStreamStart()
     {
         sound.PlayHoldStart();

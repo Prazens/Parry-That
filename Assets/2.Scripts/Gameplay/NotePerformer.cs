@@ -21,6 +21,7 @@ public class NotePerformer : MonoBehaviour
 
     private PlayerManager playerManager;
     [SerializeField] private StrikerManager strikerManager;
+    [SerializeField] private AttackNoticeController attackNoticeController;
 
     // 노트 관련
     private float bpm = 60f;
@@ -30,18 +31,19 @@ public class NotePerformer : MonoBehaviour
     // Prepare Queue 관련
     private struct PrepareEntry
     {
+        public int strikerIndex;
         public float arriveBeat;
         public float nextArriveBeat;
         public AttackType attackType;
-        public PrepareEntry(float _arriveBeat, float _nextArriveBeat, AttackType _attackType)
+        public PrepareEntry(int _strikerIndex, float _arriveBeat, float _nextArriveBeat, AttackType _attackType)
         {
+            strikerIndex = _strikerIndex;
             arriveBeat = _arriveBeat;
             nextArriveBeat = _nextArriveBeat;
             attackType = _attackType;
         }
     }
-    // strikerIndex별로 각각의 Prepare Queue를 가짐
-    private List<Queue<PrepareEntry>> prepareQueues = new();
+    private Queue<PrepareEntry> prepareQueue = new();
 
     public void SetPlayer(PlayerManager player)
     {
@@ -104,12 +106,7 @@ public class NotePerformer : MonoBehaviour
         notes = allNotes.ToArray();
         nextNoteIndex = 0;
 
-        // 스트라이커별 큐 초기화
-        prepareQueues.Clear();
-        for (int i = 0; i < charts.Count; i++)
-        {
-            prepareQueues.Add(new Queue<PrepareEntry>());
-        }
+        prepareQueue.Clear();
     }
 
     void Update()
@@ -155,32 +152,49 @@ public class NotePerformer : MonoBehaviour
             }
         }
 
-        // 해당 스트라이커의 큐에 저장
-        if (note.strikerIndex >= 0 && note.strikerIndex < prepareQueues.Count)
-        {
-            prepareQueues[note.strikerIndex].Enqueue(new PrepareEntry(arriveBeat, nextArriveBeat, attackType));
-        }
+        prepareQueue.Enqueue(new PrepareEntry(note.strikerIndex, arriveBeat, nextArriveBeat, attackType));
 
         StrikerController striker = strikerManager.strikerList[note.strikerIndex];
         striker.OnNotice(arriveBeat, nextArriveBeat, attackType);
+
+        // 예고 이펙트 출력
+        float durationSec = BeatToSec(arriveBeat) - BeatToSec(note.noticeBeat);
+        attackNoticeController.ShowNewNotice(attackType, striker.location, durationSec);
     }
 
     private void HandleAttack(float currentSec)
     {
-        for (int i = 0; i < prepareQueues.Count; i++)
+        // 예고 순서와 공격 시작 순서가 반드시 일치한다고 가정함
+        // (AttackNotice의 생성/삭제 순서 일관성 보장을 위해)
+        while (prepareQueue.Count > 0)
         {
-            var queue = prepareQueues[i];
-            var striker = strikerManager.strikerList[i];
+            var prepareEntry = prepareQueue.Peek();
+            var striker = strikerManager.strikerList[prepareEntry.strikerIndex];
 
-            while (queue.Count > 0 && currentSec >= BeatToSec(queue.Peek().arriveBeat, playerManager.musicOffset) - striker.Visual.preAttackDelay)
+            // 다음 공격 시작 시각에 도달하지 않았으면 종료
+            if (currentSec < BeatToSec(prepareEntry.arriveBeat, playerManager.musicOffset) - striker.Visual.preAttackDelay)
+                break;
+
+            prepareQueue.Dequeue();
+
+            // isLastInBurst: 이 스트라이커의 현재 준비된 공격 중 마지막인지
+            bool isLastInBurst = true;
+            foreach (var entry in prepareQueue)
             {
-                var prepare = queue.Dequeue();
-                bool isLastInBurst = (queue.Count == 0);
-                // 퇴장 조건: Queue가 비었으며, 앞으로 등장할 노트도 없음
-                bool isFinalAttack = isLastInBurst && !HasMoreFutureNotes(i);
-
-                striker.OnAttackStart(new StrikerAttackContext(currentSec, prepare.arriveBeat, prepare.nextArriveBeat, prepare.attackType, isLastInBurst, isFinalAttack));
+                if (entry.strikerIndex == prepareEntry.strikerIndex)
+                {
+                    isLastInBurst = false;
+                    break;
+                }
             }
+            // isFinalAttack: 이 스트라이커의 마지막 공격인지
+            bool isFinalAttack = isLastInBurst && !HasMoreFutureNotes(prepareEntry.strikerIndex);
+
+            striker.OnAttackStart(new StrikerAttackContext(currentSec, prepareEntry.arriveBeat, prepareEntry.nextArriveBeat, prepareEntry.attackType,
+                                                            isLastInBurst, isFinalAttack));
+
+            // 예고 이펙트 제거
+            attackNoticeController.DestroyFirstNotice(prepareEntry.attackType);
         }
     }
 

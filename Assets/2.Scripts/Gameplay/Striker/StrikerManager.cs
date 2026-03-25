@@ -92,7 +92,7 @@ public class StrikerManager : MonoBehaviour
 
         var audioSourceObject = GameObject.Find("Audio Source");
         if (audioSourceObject != null)
-            holdExclamation.GetComponent<holdExclamation>().audioSource = audioSourceObject.GetComponent<AudioSource>();
+            holdExclamation.GetComponent<HoldExclamation>().audioSource = audioSourceObject.GetComponent<AudioSource>();
 
         strikerStatus = new List<int>(new int[charts.Count]);
         strikerList   = new List<StrikerController>(new StrikerController[charts.Count]);
@@ -132,7 +132,6 @@ public class StrikerManager : MonoBehaviour
             striker.Visual.dynamicUIManager = dynamicUIManager;
             striker.manager = this;
             striker.judgeSystem = judgeSystem;
-            striker.holdExclamation = holdExclamation;
             striker.Sound.SetHoldingSound(holdingSound);
 
             if (bossController != null)

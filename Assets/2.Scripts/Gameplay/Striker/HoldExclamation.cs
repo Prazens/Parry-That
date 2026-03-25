@@ -1,16 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class holdExclamation : MonoBehaviour
+public class HoldExclamation : MonoBehaviour
 {
     public AudioSource audioSource;
     public AudioClip[] prepareSounds;
     // public AudioClip prepareSoundHoldOut;
     private int phase = 0;
     private Coroutine currentCoroutine = null;
-
 
     void Start()
     {
@@ -20,17 +18,18 @@ public class holdExclamation : MonoBehaviour
         transform.GetChild(2).gameObject.SetActive(false);
     }
 
-    public void Appear(float bpm, float intervalBeat)
+    public void Appear(float durationSec)
     {
         if (currentCoroutine != null)
         {
             StopCoroutine(currentCoroutine);
         }
-        currentCoroutine = StartCoroutine(Showing(bpm, intervalBeat, true));
+        currentCoroutine = StartCoroutine(Showing(durationSec, true));
     }
 
-    private IEnumerator Showing(float bpm, float intervalBeat, bool isAppear)
+    private IEnumerator Showing(float durationSec, bool isAppear)
     {
+        float intervalSec = durationSec / 2.0f;
         for (int i = 0; i < 3; i++)
         {
             transform.GetChild(i).gameObject.SetActive(isAppear);
@@ -44,20 +43,19 @@ public class holdExclamation : MonoBehaviour
                 {
                     audioSource.PlayOneShot(prepareSounds[1 - i], PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("enemyVolume", 1));
                 }
+
+                yield return new WaitForSeconds(intervalSec);
             }
-            
-            yield return new WaitForSeconds(intervalBeat / bpm * 60f);
         }
-        yield break;
     }
 
-    public void Disappear(float bpm, float intervalBeat)
+    public void Disappear(float durationSec)
     {
         if (currentCoroutine != null)
         {
             StopCoroutine(currentCoroutine);
         }
-        currentCoroutine = StartCoroutine(Showing(bpm, intervalBeat, false));
+        currentCoroutine = StartCoroutine(Showing(durationSec, false));
     }
 
     public void ForceStop()
