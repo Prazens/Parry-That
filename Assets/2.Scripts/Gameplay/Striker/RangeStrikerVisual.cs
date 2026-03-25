@@ -15,7 +15,7 @@ public sealed class RangeStrikerVisual : StrikerVisual
 
         if (context.attackType == AttackType.Normal || context.attackType == AttackType.Strong)
         {
-            GameObject projectile = FireProjectile(controller.BeatToSec(context.arriveBeat), context.attackType);
+            GameObject projectile = FireProjectile(StageFlowManager.Instance.BeatToSec(context.arriveBeat), context.attackType);
             animator.SetTrigger("Attack");
             return projectile;
         }
@@ -83,7 +83,7 @@ public sealed class RangeStrikerVisual : StrikerVisual
     {
         holdSpriteAnimator?.SetTrigger("holdStart");
  
-        dynamicUIManager.CutInDisplay(controller.BeatToSec(judgeable.nextArriveBeat));
+        dynamicUIManager.CutInDisplay(StageFlowManager.Instance.BeatToSec(judgeable.nextArriveBeat));
  
         isHolding = true;
     }

@@ -113,7 +113,7 @@ public sealed class MeleeStrikerVisual : StrikerVisual
     {
         bladeAnimator.SetTrigger("bladePlay");
 
-        dynamicUIManager.CutInDisplay(controller.BeatToSec(judgeable.nextArriveBeat));
+        dynamicUIManager.CutInDisplay(StageFlowManager.Instance.BeatToSec(judgeable.nextArriveBeat));
 
         isHolding = true;
     }

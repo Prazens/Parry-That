@@ -20,9 +20,6 @@ public class PlayerManager : MonoBehaviour
 
     private Transform direcrionDisplayer;
 
-    public float musicOffset;
-    // public float visualOffset;
-
     private AudioSource audioSource;
     [SerializeField] private AudioClip blocked;
     [SerializeField] private AudioClip hit;
@@ -33,8 +30,6 @@ public class PlayerManager : MonoBehaviour
 
     void Start()
     {
-        musicOffset = PlayerPrefs.GetFloat("musicOffset", 2);
-
         GameController gameController = FindObjectOfType<GameController>();
         if (gameController != null)
         {

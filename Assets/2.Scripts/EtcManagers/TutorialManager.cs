@@ -94,14 +94,7 @@ public class TutorialManager : MonoBehaviour
 
         if (!isDaehwa)  // 대화 중이 아닌 상황 (게임 중)
         {
-            // stageFlowManager.musicOffset -> StageAudioManager에서 관리
-            float musicOffset = 0f;
-            if (stageFlowManager != null && stageAudioManager != null)
-            {
-                musicOffset = stageAudioManager.musicOffset;
-            }
-
-            if (currentTime >= ChartTimeList[daehwaIndex] + musicOffset)
+            if (currentTime >= ChartTimeList[daehwaIndex])
             {
                 bool isClear = true;
 

@@ -24,7 +24,6 @@ public class NotePerformer : MonoBehaviour
     [SerializeField] private AttackNoticeController attackNoticeController;
 
     // 노트 관련
-    private float bpm = 60f;
     private NoteDataNew[] notes;
     private int nextNoteIndex = 0;
 
@@ -60,7 +59,13 @@ public class NotePerformer : MonoBehaviour
             return;
         }
 
-        // 전체 노트 개수 미리 계산 (성능 향상)
+        // BPM 설정 (첫 번째 차트 기준)
+        if (charts.Count > 0 && charts[0] != null && StageFlowManager.Instance != null)
+        {
+            StageFlowManager.Instance.SetBPM(charts[0].bpm);
+        }
+
+        // 전체 노트 개수 미리 계산
         int totalCount = 0;
         for (int i = 0; i < charts.Count; i++)
         {
@@ -77,10 +82,6 @@ public class NotePerformer : MonoBehaviour
             if (chart == null || chart.notes == null)
                 continue;
 
-            // 임시로 bpm 설정하는 코드
-            if (bpm != chart.bpm)
-                bpm = chart.bpm;
-
             for (int j = 0; j < chart.notes.Length; j++)
             {
                 NoteData note = chart.notes[j];
@@ -96,12 +97,7 @@ public class NotePerformer : MonoBehaviour
         }
 
         // noticeBeat 기준 정렬
-        allNotes.Sort((a, b) =>
-        {
-            if (a.noticeBeat < b.noticeBeat) return -1;
-            if (a.noticeBeat > b.noticeBeat) return 1;
-            return 0; // 같으면 순서 무관
-        });
+        allNotes.Sort((a, b) => a.noticeBeat.CompareTo(b.noticeBeat));
 
         notes = allNotes.ToArray();
         nextNoteIndex = 0;
@@ -126,7 +122,7 @@ public class NotePerformer : MonoBehaviour
     {
         // 같은 타이밍에 발생할 수 있는 모든 노트를 처리
         while (nextNoteIndex < notes.Length && 
-               currentSec >= BeatToSec(notes[nextNoteIndex].noticeBeat, playerManager.musicOffset))
+               currentSec >= StageFlowManager.Instance.BeatToSec(notes[nextNoteIndex].noticeBeat))
         {
             // 공격 준비 로직 실행
             PrepareForAttack();
@@ -158,7 +154,7 @@ public class NotePerformer : MonoBehaviour
         striker.OnNotice(arriveBeat, nextArriveBeat, attackType);
 
         // 예고 이펙트 출력
-        float durationSec = BeatToSec(arriveBeat) - BeatToSec(note.noticeBeat);
+        float durationSec = StageFlowManager.Instance.BeatToSec(arriveBeat) - StageFlowManager.Instance.BeatToSec(note.noticeBeat);
         attackNoticeController.ShowNewNotice(attackType, striker.location, durationSec);
     }
 
@@ -172,7 +168,7 @@ public class NotePerformer : MonoBehaviour
             var striker = strikerManager.strikerList[prepareEntry.strikerIndex];
 
             // 다음 공격 시작 시각에 도달하지 않았으면 종료
-            if (currentSec < BeatToSec(prepareEntry.arriveBeat, playerManager.musicOffset) - striker.Visual.preAttackDelay)
+            if (currentSec < StageFlowManager.Instance.BeatToSec(prepareEntry.arriveBeat) - striker.Visual.preAttackDelay)
                 break;
 
             prepareQueue.Dequeue();
@@ -206,11 +202,4 @@ public class NotePerformer : MonoBehaviour
         }
         return false;
     }
-
-    /// <summary>
-    /// beatIndex를 sec로 단위 변환 후 offset을 더함.
-    /// </summary>
-    /// <returns></returns>
-    public float BeatToSec(float beatIndex, float offset = 0)
-    => beatIndex * (60f / bpm) + offset;
 }

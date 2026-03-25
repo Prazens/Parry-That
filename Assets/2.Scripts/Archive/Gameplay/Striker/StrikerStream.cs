@@ -1,3 +1,4 @@
+/*
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +8,6 @@ using UnityEngine;
 /// </summary>
 public class StrikerStream : MonoBehaviour
 {
-    /*
     private void PrepareForAttack()
     {
         // 연타 로직
@@ -80,5 +80,5 @@ public class StrikerStream : MonoBehaviour
         projScript.moveTimeMultiplier = 60f / bpm;
         projScript.genTimeMultiplier = 60f / bpm;
     }
-    */
 }
+*/

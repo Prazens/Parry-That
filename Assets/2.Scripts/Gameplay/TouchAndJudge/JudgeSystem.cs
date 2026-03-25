@@ -11,10 +11,6 @@ public class JudgeSystem : MonoBehaviour
 
     // ScoreUI / UIManager -> DynamicUIManager
     [SerializeField] private DynamicUIManager dynamicUIManager;
-
-    // musicOffset -> StageAudioManager
-    [SerializeField] private StageAudioManager stageAudioManager;
-
     [SerializeField] private NotePerformer notePerformer;
 
     public int combo = 0;
@@ -41,22 +37,10 @@ public class JudgeSystem : MonoBehaviour
                                     { "공노트", "늦은 MISS", "늦은 BLOCKED", "늦은 PARRIED",
                                       "PERFECT", "빠른 PARRIED", "빠른 BLOCKED" };
 
-    private float MusicOffset
-    {
-        get
-        {
-            if (stageAudioManager == null) return 0f;
-            return stageAudioManager.musicOffset;
-        }
-    }
-
     private void Awake()
     {
         if (dynamicUIManager == null)
             dynamicUIManager = FindObjectOfType<DynamicUIManager>();
-
-        if (stageAudioManager == null)
-            stageAudioManager = FindObjectOfType<StageAudioManager>();
 
         if (notePerformer == null)
             notePerformer = FindObjectOfType<NotePerformer>();
@@ -74,7 +58,7 @@ public class JudgeSystem : MonoBehaviour
 
             float tempSecDiff =
                 StageFlowManager.Instance.currentTime
-                - notePerformer.BeatToSec(tempJudgeable.arriveBeat, MusicOffset);
+                - StageFlowManager.Instance.BeatToSec(tempJudgeable.arriveBeat);
 
             // 연타 시작
             if (tempJudgeable.attackType == AttackType.StreamStart && !isOnStream && tempSecDiff > -0.01d)
@@ -116,7 +100,7 @@ public class JudgeSystem : MonoBehaviour
                     tempJudgeable = judgeableQueue.Peek();
                     tempSecDiff =
                         StageFlowManager.Instance.currentTime
-                        - notePerformer.BeatToSec(tempJudgeable.arriveBeat, MusicOffset);
+                        - StageFlowManager.Instance.BeatToSec(tempJudgeable.arriveBeat);
                 }
                 else if (tempJudgeable.attackType == AttackType.HoldStop)
                 {
@@ -238,7 +222,7 @@ public class JudgeSystem : MonoBehaviour
                 && _judgeable.attackType != AttackType.HoldStop)
                 continue;
 
-            arriveSec = notePerformer.BeatToSec(_judgeable.arriveBeat, MusicOffset);
+            arriveSec = StageFlowManager.Instance.BeatToSec(_judgeable.arriveBeat);
             timeDiff = touchTimeSec - arriveSec;
 
             // 강공격 → 약패링 무효
@@ -276,7 +260,7 @@ public class JudgeSystem : MonoBehaviour
                     JudgeManage(_judgeable, tempJudge, false, touchDirection, type);
 
                     _judgeable = judgeableQueue.Peek();
-                    arriveSec = notePerformer.BeatToSec(_judgeable.arriveBeat, MusicOffset);
+                    arriveSec = StageFlowManager.Instance.BeatToSec(_judgeable.arriveBeat);
                     timeDiff = touchTimeSec - arriveSec;
                 }
             }
@@ -303,7 +287,7 @@ public class JudgeSystem : MonoBehaviour
         if (_judgeable != null)
         {
             Debug.Log($"Judgeable: {_judgeable.attackType}, {_judgeable.arriveBeat}, {_judgeable.noteDirection}");
-            Debug.Log($"touchTimeSec: {touchTimeSec}, arriveSec: {notePerformer.BeatToSec(_judgeable.arriveBeat, MusicOffset)}");
+            Debug.Log($"touchTimeSec: {touchTimeSec}, arriveSec: {StageFlowManager.Instance.BeatToSec(_judgeable.arriveBeat)}");
         }
         else
         {

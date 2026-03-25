@@ -47,8 +47,6 @@ public class StrikerController : MonoBehaviour
 
     public Direction location; // 위치 방향
 
-    private float musicOffset => (playerManager != null) ? playerManager.musicOffset : 2;
-
     public BossController boss;
     public bool isBossMinion = false;
 
@@ -60,9 +58,7 @@ public class StrikerController : MonoBehaviour
         attack.Init(this);
         visual.Init(this, location, transform.position, playerManager.transform.position);
     }
-
-    public float BeatToSec(float beat) => manager.BeatToSec(beat, musicOffset);
-
+    
     public void OnNotice(float arriveBeat, float nextArriveBeat, AttackType attackType)
     {
         attack.OnNotice(arriveBeat, nextArriveBeat, attackType);

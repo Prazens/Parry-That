@@ -56,8 +56,8 @@ public class StrikerManager : MonoBehaviour
             ChartData chart = charts[i];
 
             // 스트라이커 등장 및 퇴장
-            float appearTimeSeconds = BeatToSec(chart.appearTime, playerManager.musicOffset);
-            float disappearTimeSeconds = BeatToSec(chart.disappearTime, playerManager.musicOffset);
+            float appearTimeSeconds = StageFlowManager.Instance.BeatToSec(chart.appearTime);
+            float disappearTimeSeconds = StageFlowManager.Instance.BeatToSec(chart.disappearTime);
             if (currentTime >= appearTimeSeconds && strikerStatus[i] == 0)
             {
                 strikerStatus[i] = 1;
@@ -65,7 +65,6 @@ public class StrikerManager : MonoBehaviour
             }
             else if (currentTime >= disappearTimeSeconds && strikerStatus[i] == 1)
             {
-                //striker.strikerExit();
                 striker.OnClear();
                 strikerStatus[i] = 2;
             }
@@ -154,7 +153,4 @@ public class StrikerManager : MonoBehaviour
             Destroy(remain.gameObject);
         }
     }
-
-    public float BeatToSec(float beatIndex, float offset = 0)
-        => notePerformer.BeatToSec(beatIndex, offset);
 }
