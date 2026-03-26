@@ -8,7 +8,8 @@ using UnityEditor;
 using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
 using System.Data;
-using DG.Tweening; // 🔥 DOTween 사용 필수 선언
+using DG.Tweening;
+using UnityEditor.SceneManagement; // 🔥 DOTween 사용 필수 선언
 
 /// <summary>
 /// 스테이지 메뉴 UI 띄우고, UI에 정보 전달, 클릭시 스테이지 실행
@@ -47,8 +48,6 @@ public class MenuManager : Singleton<MenuManager>
 
     public int[] stageIndex = new int[] { 0, 0 };
 
-    private bool isFirstLaunch = true;
-
     public float height;
 
     private void Start()
@@ -58,7 +57,10 @@ public class MenuManager : Singleton<MenuManager>
 
     public void InitUI()
     {
-        Application.targetFrameRate = 120; 
+        if (StageDBManager.Instance.isFirstLaunch)
+        {
+            Application.targetFrameRate = 120;
+        }
         
         if (transform.parent != null && transform.parent.GetComponent<RectTransform>() != null)
         {
@@ -71,14 +73,21 @@ public class MenuManager : Singleton<MenuManager>
             Debug.LogWarning("MenuManager의 부모 RectTransform을 찾을 수 없어 기본 높이를 사용합니다. MenuManager가 Canvas 안에 있는지 확인해주세요!");
         }
 
-        stageIndex = StageDBManager.Instance.CurrentStage; 
+        stageIndex = new int[] { StageSelection.SelectedStageId, (int)StageSelection.SelectedDifficulty }; 
 
         diskSwipeUI.InitScrollView(stageIndex[0], stageIndex[1]);
         infoDisplayUI.InitUI(stageIndex);
-        if (stageIndex[1] >= 1)
+
+        diffButtonUI.InitUI(stageIndex[1]);
+        if (StageDBManager.Instance.diffNumbers[stageIndex[0]] == 1)
         {
-            diffButtonUI.InitUI(stageIndex[1]);
+            diffButtonUI.SetVisibility(false);
         }
+        else
+        {
+            diffButtonUI.SetVisibility(true);
+        }
+
         settingUI.InitUI();
 
         if (handGuide != null)
@@ -92,13 +101,13 @@ public class MenuManager : Singleton<MenuManager>
         BlackOverlayRT.anchorMax = new Vector2(1, 1);
         Color originalOverlayColor = BlackOverlay.color;
         BlackOverlay.color = new Color (originalOverlayColor.r, originalOverlayColor.g, originalOverlayColor.b, 0f);
+        currentState = MenuState.Title;
 
-        if (isFirstLaunch)
+        if (StageDBManager.Instance.isFirstLaunch)
         {
-            currentState = MenuState.Title;
             titleUI.InitUI();
             sword.InitUI();
-            isFirstLaunch = false;
+            StageDBManager.Instance.isFirstLaunch = false;
             titleUI.transform.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;  
             transform.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, height);  
         }
@@ -107,7 +116,6 @@ public class MenuManager : Singleton<MenuManager>
             titleUI.transform.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -height);  
             transform.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;  
             sword.InitUI(true);
-            currentState = MenuState.StageSelect;
             SwordUpEnd();
         }
     }
@@ -140,8 +148,8 @@ public class MenuManager : Singleton<MenuManager>
 
         if (needUpdate)
         {
-            StageDBManager.Instance.CurrentStage = stageIndex;
-            infoDisplayUI.DisplayInfo(StageDBManager.Instance.CurrentStage);
+            StageSelection.SetSelection(stageIndex[0], (Difficulty)stageIndex[1]);
+            infoDisplayUI.DisplayInfo(new int[] { StageSelection.SelectedStageId, (int)StageSelection.SelectedDifficulty });
         }
     }
 
@@ -156,15 +164,15 @@ public class MenuManager : Singleton<MenuManager>
             
             infoDisplayUI.InitUI(stageIndex);
             diskSwipeUI.StartPreviewSound(stageIndex[0]);
-            if (stageIndex[1] >= 1)
-            {
-                diffButtonUI.InitUI(stageIndex[1]);
-            }
+            // if (stageIndex[1] >= 1)
+            // {
+            //     diffButtonUI.InitUI(stageIndex[1]);
+            // }
             return;
         }
         else if (currentState == MenuState.StageSelect)
         {
-            StageDBManager.Instance.CurrentStage = stageIndex;
+            StageSelection.SetSelection(stageIndex[0], (Difficulty)stageIndex[1]);
             SceneManager.LoadScene("Loading");
         }
     }
