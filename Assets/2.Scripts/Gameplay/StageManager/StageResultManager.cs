@@ -32,6 +32,11 @@ public class StageResultManager : MonoBehaviour
         SaveStarsIfNeeded();
     }
 
+    public void ProcessPauseResult()
+    {
+        PullLatestFromJudgeSystem();
+    }
+
     public void ProcessGameOverResult()
     {
         PullLatestFromJudgeSystem();
