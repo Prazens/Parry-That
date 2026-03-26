@@ -88,6 +88,12 @@ public class JudgeSystem : MonoBehaviour
             //    }
             //}
 
+            // 홀드 중이 아니면 HoldStop 공격을 바로 EarlyMiss 처리
+            if (tempJudgeable.attackType == AttackType.HoldStop && !isHolding)
+            {
+                JudgeManage(tempJudgeable, JudgeType.EarlyMiss, true);
+            }
+
             // 늦은 MISS
             if (tempSecDiff > 0.2d)
             {
@@ -98,12 +104,6 @@ public class JudgeSystem : MonoBehaviour
                 }
 
                 JudgeManage(tempJudgeable, JudgeType.LateMiss, true);
-
-                if (tempJudgeable.attackType == AttackType.HoldStart)
-                {
-                    // HoldStop에 대한 EarlyMiss 처리, 이후 HoldStop 공격은 무시됨
-                    JudgeManage(null, JudgeType.EarlyMiss, true);
-                }
             }
         }
 
@@ -127,13 +127,13 @@ public class JudgeSystem : MonoBehaviour
         {
             if (i == 0)
             {
-                judgeDetails.Add(new int[7] { 0, 0, 0, 0, 0, 0, 0 });
+                judgeDetails.Add(new int[8] { 0, 0, 0, 0, 0, 0, 0, 0 });
                 foreach (ChartData chart in strikerManager.charts)
                     judgeDetails[0][0] += chart.notes.Length;
             }
             else
             {
-                judgeDetails.Add(new int[7] { strikerManager.charts[i - 1].notes.Length, 0, 0, 0, 0, 0, 0 });
+                judgeDetails.Add(new int[8] { strikerManager.charts[i - 1].notes.Length, 0, 0, 0, 0, 0, 0, 0 });
             }
         }
     }
@@ -288,17 +288,17 @@ public class JudgeSystem : MonoBehaviour
             return;
         isHolding = false;
 
-        // 홀드 중 손을 뗀 것으로 기본적으로 EarlyMiss 판정
-        JudgeType judgeType = JudgeType.EarlyMiss;
-
         // 모든 방향 중 가장 빠른 공격 탐색
         Judgeable judgeable = GetClosestAttackFromAllDirections();
 
-        if (judgeable != null && judgeable.attackType == AttackType.HoldStop)
+        // 손을 뗐는데 HoldStop 공격이 오지 않았으면 추후 HoldStop 공격이 왔을 때 EarlyMiss 처리됨
+        if (judgeable == null || judgeable.attackType != AttackType.HoldStop)
         {
-            float arriveSec = StageFlowManager.Instance.BeatToSec(judgeable.arriveBeat);
-            judgeType = GetJudgeType(touchTimeSec, arriveSec);
+            return;
         }
+
+        float arriveSec = StageFlowManager.Instance.BeatToSec(judgeable.arriveBeat);
+        JudgeType judgeType = GetJudgeType(touchTimeSec, arriveSec);
 
         if (judgeType != JudgeType.EarlyMiss)
         {

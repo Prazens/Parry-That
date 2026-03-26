@@ -85,7 +85,7 @@ public class StageResultManager : MonoBehaviour
         if (LatestJudgeDetails == null || LatestJudgeDetails.Count == 0) return currentStars;
 
         int[] details = LatestJudgeDetails[0];
-        if (details == null || details.Length < 7) return currentStars;
+        if (details == null || details.Length < 8) return currentStars;
 
         // 2개 조건: score >= judgeDetails[0][0] * 30000 * (2/3)
         // 기존 코드에선 (2/3)이 int 나눗셈이라 0이 되는 위험이 있었는데,
