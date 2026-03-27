@@ -14,6 +14,9 @@ public class StageFlowManager : MonoBehaviour
     public static bool isActive = false;
     public bool is_over = false;
 
+    public int currentPhaseIndex { get; private set; } = 0;
+
+
     [SerializeField] private StrikerManager strikerManager;
     [SerializeField] public BossController bossController;
 
@@ -140,6 +143,8 @@ public class StageFlowManager : MonoBehaviour
 
     public void StartStage()
     {
+        currentPhaseIndex = 0;
+
         ResolveStageData();
 
         if (stageAudioManager != null)
