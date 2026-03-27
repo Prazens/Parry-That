@@ -165,7 +165,7 @@ public class MenuManager : Singleton<MenuManager>
         else if (currentState == MenuState.StageSelect)
         {
             StageDBManager.Instance.CurrentStage = stageIndex;
-            SceneManager.LoadScene("Loading");
+            SceneManager.LoadScene("CutScene");
         }
     }
 

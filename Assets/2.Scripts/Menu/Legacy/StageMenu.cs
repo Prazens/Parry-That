@@ -296,7 +296,7 @@ public class StageMenu : Singleton<StageMenu>, IDragHandler, IEndDragHandler
 
         StageSelection.SetSelection(stageId, difficulty);
         
-        SceneManager.LoadScene("Loading");
+        SceneManager.LoadScene("CutScene");
     }
 
     // 여기서부터 좌우 스와이프 관련 코드
