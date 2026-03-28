@@ -13,11 +13,13 @@ public class StageFlowManager : MonoBehaviour
 
     public static bool isActive = false;
     public bool is_over = false;
+    public bool isDaehwa = false;
 
+    private float phaseEndTime = -1f;
     public int currentPhaseIndex { get; private set; } = 0;
 
-
     [SerializeField] private StrikerManager strikerManager;
+    [SerializeField] private DialogueManager dialogueManager;
     [SerializeField] public BossController bossController;
 
     [Header("Managers")]
@@ -34,7 +36,6 @@ public class StageFlowManager : MonoBehaviour
     public StageData currentStageData;
 
     private bool button_active = true;
-
     public bool isPaused = false;
 
     private bool victorySequenceTriggered = false;
@@ -63,13 +64,13 @@ public class StageFlowManager : MonoBehaviour
 
     private void Update()
     {
+        if (isDaehwa) return;
         if (!isActive) return;
         if (isPaused) return;
         if (is_over) return;
 
         currentTime += Time.deltaTime;
 
-        // 음악 재생 조건(기존 로직 유지)
         if (stageAudioManager != null && stageAudioManager.musicSource != null && !stageAudioManager.musicPlayed)
         {
             if (stageAudioManager.musicSource.clip != null)
@@ -94,6 +95,19 @@ public class StageFlowManager : MonoBehaviour
             }
         }
 
+        if (phaseEndTime >= 0f && currentTime >= phaseEndTime)
+        {
+            if (strikerManager != null)
+            {
+                strikerManager.strikerList.Clear();
+            }
+
+            isActive = false;
+            isDaehwa = true;
+            StartCoroutine(RunCurrentPhaseDialogue());
+            return;
+        }
+
         if (currentTime >= stageDuration)
         {
             if (!victorySequenceTriggered)
@@ -104,7 +118,10 @@ public class StageFlowManager : MonoBehaviour
                 {
                     staticUIManager.StartVictoryAnimation();
                     victoryStarted = true;
-                    stageAudioManager.StopAudio();
+                    if (stageAudioManager != null)
+                    {
+                        stageAudioManager.StopAudio();
+                    }
                 }
             }
 
@@ -120,20 +137,19 @@ public class StageFlowManager : MonoBehaviour
 
     public void FirstStartStage()
     {
-        GameObject InGameScreen = Resources.FindObjectsOfTypeAll<GameObject>()
+        GameObject inGameScreen = Resources.FindObjectsOfTypeAll<GameObject>()
             .FirstOrDefault(obj => obj.name == "InGameScreen");
-        if (InGameScreen != null)
+
+        if (inGameScreen != null)
         {
-            InGameScreen.SetActive(true);
+            inGameScreen.SetActive(true);
         }
 
         if (stageAudioManager != null && stageAudioManager.musicSource != null)
         {
-            var musicSource = stageAudioManager.musicSource;
-
+            AudioSource musicSource = stageAudioManager.musicSource;
             musicSource.Play();
             musicSource.Stop();
-
             musicSource.time = 0f;
             stageAudioManager.musicPlayed = false;
         }
@@ -165,8 +181,10 @@ public class StageFlowManager : MonoBehaviour
         }
 
         currentTime = 0f;
+        phaseEndTime = -1f;
         is_over = false;
         isPaused = false;
+        isDaehwa = false;
         button_active = true;
         victorySequenceTriggered = false;
         victoryStarted = false;
@@ -189,22 +207,10 @@ public class StageFlowManager : MonoBehaviour
             bossController.clearHp();
         }
 
-        if (stageChartLoader != null)
-        {
-            if (currentStageData != null)
-            {
-                stageChartLoader.LoadChartsFromStageData(currentStageData);
-            }
-        }
-        else
-        {
-            if (strikerManager != null) strikerManager.charts.Clear();
-        }
-
         if (strikerManager != null)
         {
             strikerManager.ClearStrikers();
-            strikerManager.InitStriker(0);
+            strikerManager.charts.Clear();
         }
 
         if (judgeSystem != null)
@@ -217,7 +223,7 @@ public class StageFlowManager : MonoBehaviour
             staticUIManager.Setup_UI();
         }
 
-        isActive = true;
+        StartCurrentPhase();
     }
 
     public void RestartStage()
@@ -258,18 +264,74 @@ public class StageFlowManager : MonoBehaviour
         StartStage();
     }
 
+    private void StartCurrentPhase()
+    {
+        if (currentStageData == null)
+        {
+            EndStage();
+            return;
+        }
+
+        IReadOnlyList<StagePhase> phases = currentStageData.Phases;
+        if (phases == null || currentPhaseIndex < 0 || currentPhaseIndex >= phases.Count)
+        {
+            EndStage();
+            return;
+        }
+
+        StagePhase phase = phases[currentPhaseIndex];
+        if (phase == null)
+        {
+            GoToNextPhase();
+            return;
+        }
+
+        bool hasChart = stageChartLoader != null && stageChartLoader.HasCurrentPhaseChart(currentStageData);
+        bool hasDialogue = stageChartLoader != null && stageChartLoader.HasCurrentPhaseDialogue(currentStageData);
+
+        if (!hasChart && !hasDialogue)
+        {
+            GoToNextPhase();
+            return;
+        }
+
+        if (hasChart)
+        {
+            phaseEndTime = -1f;
+
+            if (stageChartLoader != null)
+            {
+                phaseEndTime = stageChartLoader.PhaseEndTime(currentStageData);
+                stageChartLoader.LoadChartsFromStageData(currentStageData);
+            }
+
+            if (strikerManager != null)
+            {
+                strikerManager.ClearStrikers();
+                strikerManager.InitStriker(0);
+            }
+
+            ApplyDialogueAudioPolicyAfterDialogue();
+
+            isDaehwa = false;
+            isActive = true;
+            return;
+        }
+
+        isActive = false;
+        isDaehwa = true;
+        StartCoroutine(RunCurrentPhaseDialogue());
+    }
+
     public void GameOver()
     {
         isActive = false;
         is_over = true;
         button_active = false;
 
-        if (stageAudioManager != null && stageAudioManager.musicSource != null)
+        if (stageAudioManager != null && stageAudioManager.musicSource != null && stageAudioManager.musicSource.isPlaying)
         {
-            if (stageAudioManager.musicSource.isPlaying)
-            {
-                stageAudioManager.musicSource.Stop();
-            }
+            stageAudioManager.musicSource.Stop();
         }
 
         if (stageResultManager != null)
@@ -291,7 +353,6 @@ public class StageFlowManager : MonoBehaviour
         is_over = true;
         button_active = false;
 
-
         if (stageResultManager != null)
         {
             stageResultManager.ProcessClearResult();
@@ -302,6 +363,93 @@ public class StageFlowManager : MonoBehaviour
             staticUIManager.ToggleClearPanel(true);
             staticUIManager.ToggleOverlay(true);
         }
+    }
+
+    private IEnumerator RunCurrentPhaseDialogue()
+    {
+        isDaehwa = true;
+        ApplyDialogueAudioPolicyBeforeDialogue();
+
+        DialogueData dialogue = null;
+
+        if (stageChartLoader != null)
+        {
+            dialogue = stageChartLoader.GetCurrentPhaseDialogue(currentStageData);
+        }
+
+        if (dialogue != null)
+        {
+            foreach (DialogueLine line in dialogue.Lines)
+            {
+                yield return StartCoroutine(dialogueManager.ShowDialogue(line));
+            }
+        }
+
+        isDaehwa = false;
+        GoToNextPhase();
+    }
+
+    private void ApplyDialogueAudioPolicyBeforeDialogue()
+    {
+        if (stageChartLoader == null)
+            return;
+
+        DialogueAudioPolicy policy = stageChartLoader.GetDialogueAudioPolicy(currentStageData);
+
+        switch (policy)
+        {
+            case DialogueAudioPolicy.KeepPlaying:
+                break;
+
+            case DialogueAudioPolicy.PauseAndResume:
+                if (stageAudioManager != null)
+                {
+                    stageAudioManager.AudioPause();
+                }
+                break;
+
+            case DialogueAudioPolicy.ResetAndReplay:
+                if (stageAudioManager != null && stageAudioManager.musicSource != null)
+                {
+                    stageAudioManager.musicSource.Stop();
+                    stageAudioManager.musicSource.time = 0f;
+                    stageAudioManager.musicPlayed = false;
+                }
+
+                currentTime = 0f;
+                break;
+        }
+    }
+
+    private void ApplyDialogueAudioPolicyAfterDialogue()
+    {
+        if (stageChartLoader == null)
+            return;
+
+        DialogueAudioPolicy policy = stageChartLoader.GetDialogueAudioPolicy(currentStageData);
+
+        switch (policy)
+        {
+            case DialogueAudioPolicy.KeepPlaying:
+                break;
+
+            case DialogueAudioPolicy.PauseAndResume:
+                if (stageAudioManager != null)
+                {
+                    stageAudioManager.AudioUnPause();
+                }
+                break;
+
+            case DialogueAudioPolicy.ResetAndReplay:
+                break;
+        }
+    }
+
+    private void GoToNextPhase()
+    {
+        phaseEndTime = -1f;
+        currentPhaseIndex++;
+        StartCurrentPhase();
     }
 
     public void TogglePause()
@@ -365,11 +513,6 @@ public class StageFlowManager : MonoBehaviour
         {
             stageAudioManager.AudioUnPause();
         }
-    }
-
-    public void ChangeTime(float time)
-    {
-        currentTime = time;
     }
 
     private void ResolveStageData()

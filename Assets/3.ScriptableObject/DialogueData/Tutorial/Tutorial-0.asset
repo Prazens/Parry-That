@@ -10,6 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f5b262969ac422d438c02fa030b01cd5, type: 3}
-  m_Name: Tutorial-1
+  m_Name: Tutorial-0
   m_EditorClassIdentifier: 
-  lines: []
+  lines:
+  - speakerTag: 1
+    expressionTag: 0
+    text: "\uBA54\uB871"
+    textRevealDuration: 5
+    waitAfterReveal: 0
+    waitBeforeReveal: 0
+    speakerNameOverride: 
