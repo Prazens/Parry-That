@@ -1,0 +1,38 @@
+{
+    "direction_map": {
+        "up": 0,
+        "down": 1,
+        "left": 2,
+        "right": 3
+    },
+    "type_map": {
+        "weak": 0,
+        "strong": 1
+    },
+    "signal_map": {
+        "ready": 0,
+        "hit": 1
+    },
+    "pitch_map": {
+        "60": {
+            "direction": "up",
+            "type": "weak",
+            "signal": "ready"
+        },
+        "84": {
+            "direction": "up",
+            "type": "weak",
+            "signal": "hit"
+        },
+        "67": {
+            "direction": "up",
+            "type": "strong",
+            "signal": "ready"
+        },
+        "91": {
+            "direction": "up",
+            "type": "strong",
+            "signal": "hit"
+        }
+    }
+}
