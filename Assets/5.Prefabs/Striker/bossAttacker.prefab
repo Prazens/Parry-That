@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 5133217385244388773}
   - component: {fileID: 7564874379782612299}
   - component: {fileID: 2317185187789778627}
-  - component: {fileID: 7066760358805042365}
+  - component: {fileID: 1095194973260273150}
+  - component: {fileID: 31732609945190651}
   - component: {fileID: 6765386139301925470}
   m_Layer: 0
   m_Name: bossAttacker
@@ -124,49 +125,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ca8d74e906aa3e4cb9f4bd3bd267403, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anim: {fileID: 7066760358805042365}
+  attack: {fileID: 1095194973260273150}
+  visual: {fileID: 31732609945190651}
   sound: {fileID: 6765386139301925470}
-  projectilePrefabs:
-  - {fileID: 9160765054753558952, guid: 4b1fc64b6f20804459cae34d57b7e7a0, type: 3}
-  - {fileID: 7152690855388890206, guid: 873bca72101daef41a84215eae8c8992, type: 3}
-  - {fileID: 9160765054753558952, guid: 4d418e43ac4d856449a0c82c1acd24c6, type: 3}
+  manager: {fileID: 0}
+  judgeSystem: {fileID: 0}
   playerManager: {fileID: 0}
-  uiManager: {fileID: 0}
-  chartData:
-    bpm: 0
-    strikerType: 0
-    direction: 0
-    appearTime: 0
-    disappearTime: 0
-    notes: []
-  hp: 0
-  bpm: 0
   location: 0
-  currentNoteIndex: 0
-  animator: {fileID: 5133217385244388773}
-  holdSpriteAnimator: {fileID: 3607903540693613985}
-  bladeAnimator: {fileID: 0}
-  hpBarPrefab: {fileID: 8497898252444216346, guid: 89cb566f97c8d124381826ff7e0c4402, type: 3}
-  hpBar: {fileID: 0}
-  hpControl: {fileID: 0}
-  exclamationPrefab: {fileID: 6564652604273379325, guid: 37a0fd3627a8c4f468ec75e41a80536b, type: 3}
-  exclamationSprites:
-  - {fileID: 21300000, guid: b64a8416733f88b40ad3691c40e4f62e, type: 3}
-  - {fileID: 21300000, guid: 3d8e24c1eb63dd449bdd00bb0b2408ad, type: 3}
-  - {fileID: 21300000, guid: 806b81a6803e8db4dbbc0780adad968b, type: 3}
-  - {fileID: 21300000, guid: 806b81a6803e8db4dbbc0780adad968b, type: 3}
-  holdExclamation: {fileID: 0}
-  audioSource: {fileID: 2317185187789778627}
-  prepareSoundNormal: {fileID: 8300000, guid: dda175893514928409eb125d0286cc40, type: 3}
-  prepareSoundStrong: {fileID: 8300000, guid: 543623a595850aa47829f19d9c76705d, type: 3}
-  parrySoundNormal: {fileID: 8300000, guid: 96972401467906a42b50272645414fee, type: 3}
-  parrySoundStrong: {fileID: 8300000, guid: 20353a13f678ac34f83635b7b2503a29, type: 3}
-  holdingSound: {fileID: 8300000, guid: 88c0f9e0e87acfc4d9a729d6eb2d9de8, type: 3}
-  holdingEnd: {fileID: 8300000, guid: 8004143a0058a1c40b4ae89f9b27d841, type: 3}
-  moveTime: 0.08
-  isMelee: 0
-  animeOffset: 0.1
-  particleSystemGreen: {fileID: 8753790508775321361}
   boss: {fileID: 0}
   isBossMinion: 0
 --- !u!82 &2317185187789778627
@@ -265,7 +230,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &7066760358805042365
+--- !u!114 &1095194973260273150
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -274,12 +239,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 3366392363427253120}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ee657d85d7f57641b70e83ce3e212b5, type: 3}
+  m_Script: {fileID: 11500000, guid: 9250650683b237e4989b58bab8bc28fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &31732609945190651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3366392363427253120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 498fead4434da9041baf1bdd4e45867c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dynamicUIManager: {fileID: 0}
   animator: {fileID: 5133217385244388773}
   holdSpriteAnimator: {fileID: 3607903540693613985}
-  bladeAnimator: {fileID: 0}
+  particleSystemGreen: {fileID: 0}
+  projectilePrefabs:
+  - {fileID: 4389016233614457998, guid: 4b1fc64b6f20804459cae34d57b7e7a0, type: 3}
+  - {fileID: 4823659980016708117, guid: 873bca72101daef41a84215eae8c8992, type: 3}
+  - {fileID: 4389016233614457998, guid: 4d418e43ac4d856449a0c82c1acd24c6, type: 3}
 --- !u!114 &6765386139301925470
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -297,7 +279,7 @@ MonoBehaviour:
   prepareSoundStrong: {fileID: 8300000, guid: 543623a595850aa47829f19d9c76705d, type: 3}
   parrySoundNormal: {fileID: 8300000, guid: 96972401467906a42b50272645414fee, type: 3}
   parrySoundStrong: {fileID: 8300000, guid: 20353a13f678ac34f83635b7b2503a29, type: 3}
-  holdingSound: {fileID: 8300000, guid: 88c0f9e0e87acfc4d9a729d6eb2d9de8, type: 3}
+  holdingSound: {fileID: 8300000, guid: c7a8e0bf3f24efd4b8143a12facac75b, type: 3}
   holdingEnd: {fileID: 8300000, guid: 8004143a0058a1c40b4ae89f9b27d841, type: 3}
 --- !u!1 &5263120582227832161
 GameObject:
@@ -469,10 +451,5 @@ PrefabInstance:
 --- !u!4 &2468709385117712063 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 695506783536675237, guid: 526ba324f370fd34ca7e7a83878fb05a, type: 3}
-  m_PrefabInstance: {fileID: 3162777801234237210}
-  m_PrefabAsset: {fileID: 0}
---- !u!198 &8753790508775321361 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 5953696798176700427, guid: 526ba324f370fd34ca7e7a83878fb05a, type: 3}
   m_PrefabInstance: {fileID: 3162777801234237210}
   m_PrefabAsset: {fileID: 0}

@@ -3,13 +3,16 @@ using UnityEngine;
 public class StrikerSound : MonoBehaviour
 {
     [SerializeField] private AudioSource audioSource;
-    //준비 효과음
+
+    [Header("준비 효과음")]
     [SerializeField] private AudioClip prepareSoundNormal;  // 일반 공격 준비 효과음 (type 0)
     [SerializeField] private AudioClip prepareSoundStrong;  // 강한 공격 준비 효과음 (type 1)
-    //패링 효과음
-    [SerializeField] private AudioClip parrySoundNormal;  // 일반 공격 준비 효과음 (type 0)
-    [SerializeField] private AudioClip parrySoundStrong;  // 강한 공격 준비 효과음 (type 1)
-    //패링 효과음
+
+    [Header("패링 효과음")]
+    [SerializeField] private AudioClip parrySoundNormal;  // 일반 공격 패링 효과음 (type 0)
+    [SerializeField] private AudioClip parrySoundStrong;  // 강한 공격 패링 효과음 (type 1)
+
+    [Header("홀드 효과음")]
     [SerializeField] private AudioClip holdingSound;  // 홀드 중
     [SerializeField] private AudioClip holdingEnd;  // 홀드 끝
 
@@ -19,30 +22,61 @@ public class StrikerSound : MonoBehaviour
             audioSource = GetComponent<AudioSource>();
     }
 
-    public void SetHoldingSound(AudioClip clip)
+    public void PlayPrepareSound(AttackType type)
     {
-        holdingSound = clip;
+        if (type == AttackType.Normal)
+        {
+            PlayPrepareNormal();
+        }
+        else if (type == AttackType.Strong)
+        {
+            PlayPrepareStrong();
+        }
     }
 
-    public void PlayPrepareNormal()
+    public void PlayParrySound(AttackType type)
+    {
+        if (type == AttackType.Normal)
+        {
+            PlayParryNormal();
+        }
+        else if (type == AttackType.Strong)
+        {
+            PlayParryStrong();
+        }
+    }
+
+    public void PlayHoldSound(AttackType type)
+    {
+        if (type == AttackType.HoldStart)
+        {
+            PlayHoldStart();
+        }
+        else if (type == AttackType.HoldStop || type == AttackType.HoldFinishStrong)
+        {
+            PlayHoldFinish();
+        }
+    }
+
+    private void PlayPrepareNormal()
     {
         if (audioSource == null || prepareSoundNormal == null) return;
         audioSource.PlayOneShot(prepareSoundNormal, GetEffectiveEnemyVolume());
     }
 
-    public void PlayPrepareStrong()
+    private void PlayPrepareStrong()
     {
         if (audioSource == null || prepareSoundStrong == null) return;
         audioSource.PlayOneShot(prepareSoundStrong, GetEffectiveEnemyVolume());
     }
 
-    public void PlayParryNormal()
+    private void PlayParryNormal()
     {
         if (audioSource == null || parrySoundNormal == null) return;
         audioSource.PlayOneShot(parrySoundNormal, GetEffectivePlayerVolume());
     }
 
-    public void PlayParryStrong()
+    private void PlayParryStrong()
     {
         if (audioSource == null || parrySoundStrong == null) return;
         audioSource.PlayOneShot(parrySoundStrong, GetEffectivePlayerVolume());
@@ -54,7 +88,7 @@ public class StrikerSound : MonoBehaviour
         audioSource.PlayOneShot(holdingSound, GetEffectivePlayerVolume());
     }
 
-    public void PlayHoldEnd()
+    public void PlayHoldFinish()
     {
         if (audioSource == null) return;
         audioSource.Stop();

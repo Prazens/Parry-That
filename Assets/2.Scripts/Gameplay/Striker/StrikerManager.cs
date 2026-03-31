@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 스테이지에 있는 모든 Striker의 초기화, 등장 및 퇴장 등을 관리.
+/// </summary>
 public class StrikerManager : MonoBehaviour
 {
     [SerializeField] private List<GameObject> strikerPrefabs;
@@ -9,24 +12,25 @@ public class StrikerManager : MonoBehaviour
 
     private PlayerManager playerManager;
 
-    [SerializeField] private DynamicUIManager dynamicUIManager;
+    private NotePerformer notePerformer;
+    private JudgeSystem judgeSystem;
+    private DynamicUIManager dynamicUIManager;
 
     public List<ChartData> charts;
 
     [SerializeField] public TutorialManager tutorialManager;
 
-    [SerializeField] private GameObject holdExclamationPrefab;
-    private GameObject holdExclamation;
-    [SerializeField] private AudioClip holdingSound;
-
-    public List<GameObject> strikerList = new List<GameObject>();
-    public List<int> strikerStatus = new List<int>();
+    public List<StrikerController> strikerList = new();
+    private List<int> strikerStatus = new();
 
     public BossController bossController;
 
-    public void SetPlayer(PlayerManager player)
+    public void SetReferences(PlayerManager playerManager, NotePerformer notePerformer, JudgeSystem judgeSystem, DynamicUIManager dynamicUIManager)
     {
-        playerManager = player;
+        this.playerManager = playerManager;
+        this.notePerformer = notePerformer;
+        this.judgeSystem = judgeSystem;
+        this.dynamicUIManager = dynamicUIManager;
     }
 
     private void Update()
@@ -46,27 +50,26 @@ public class StrikerManager : MonoBehaviour
 
         for (int i = 0; i < processCount; i++)
         {
-            GameObject striker = strikerList[i];
+            StrikerController striker = strikerList[i];
             if (striker == null) continue;
 
             ChartData chart = charts[i];
 
-            float appearTimeSeconds = chart.appearTime * (60f / chart.bpm) + playerManager.musicOffset;
-            float disappearTimeSeconds = chart.disappearTime * (60f / chart.bpm) + playerManager.musicOffset;
-
+            // 스트라이커 등장 및 퇴장
+            float appearTimeSeconds = StageFlowManager.Instance.BeatToSec(chart.appearTime);
+            float disappearTimeSeconds = StageFlowManager.Instance.BeatToSec(chart.disappearTime);
             if (currentTime >= appearTimeSeconds && strikerStatus[i] == 0)
             {
                 strikerStatus[i] = 1;
-                striker.SetActive(true);
+                striker.gameObject.SetActive(true);
             }
             else if (currentTime >= disappearTimeSeconds && strikerStatus[i] == 1)
             {
-                striker.GetComponent<StrikerController>().strikerExit();
+                striker.OnClear();
                 strikerStatus[i] = 2;
             }
         }
     }
-
 
     public void InitStriker(int idx)
     {
@@ -78,15 +81,8 @@ public class StrikerManager : MonoBehaviour
 
         ClearStrikers();
 
-        if (holdExclamation != null) Destroy(holdExclamation);
-        holdExclamation = Instantiate(holdExclamationPrefab);
-
-        var audioSourceObject = GameObject.Find("Audio Source");
-        if (audioSourceObject != null)
-            holdExclamation.GetComponent<holdExclamation>().audioSource = audioSourceObject.GetComponent<AudioSource>();
-
         strikerStatus = new List<int>(new int[charts.Count]);
-        strikerList   = new List<GameObject>(new GameObject[charts.Count]);
+        strikerList   = new List<StrikerController>(new StrikerController[charts.Count]);
 
         for (int i = 0; i < charts.Count; i++)
         {
@@ -96,12 +92,12 @@ public class StrikerManager : MonoBehaviour
             SpawnStriker(i, activated);
         }
     }
+
     private void SpawnStriker(int chartIndex, bool isActivated)
     {
         if (chartIndex < 0 || chartIndex >= charts.Count) return;
         if (spawnPositions == null || spawnPositions.Length == 0) return;
         
-
         int hp = charts[chartIndex].notes.Length;
         float bpm = charts[chartIndex].bpm;
 
@@ -112,52 +108,39 @@ public class StrikerManager : MonoBehaviour
         if (prefabIndex < 0 || prefabIndex >= strikerPrefabs.Count) return;
 
         GameObject selectedStriker = strikerPrefabs[prefabIndex];
-        GameObject striker = Instantiate(selectedStriker, spawnPositions[positionIndex].position, Quaternion.identity);
+        GameObject strikerInstance = Instantiate(selectedStriker, spawnPositions[positionIndex].position, Quaternion.identity);
+        if (strikerInstance == null) return;
+        StrikerController striker = strikerInstance.GetComponent<StrikerController>();
 
         strikerList[chartIndex] = striker;
 
-        StrikerController strikerController = striker.GetComponent<StrikerController>();
-        if (strikerController != null)
+        if (striker != null)
         {
-            strikerController.dynamicUIManager = dynamicUIManager;
-            strikerController.holdExclamation = holdExclamation;
-            strikerController.Sound.SetHoldingSound(holdingSound);
+            striker.Visual.dynamicUIManager = dynamicUIManager;
+            striker.manager = this;
+            striker.judgeSystem = judgeSystem;
 
             if (bossController != null)
             {
-                bossController.RegisterStriker(strikerController);
+                bossController.RegisterStriker(striker);
             }
 
-            int isMelee = 0;
-            if (prefabIndex == 1) isMelee = 1;
-
-            strikerController.Initialize(
-                hp,
-                bpm,
-                playerManager,
-                (Direction)(positionIndex + 1),
-                charts[chartIndex],
-                isMelee
-            );
+            striker.Initialize(playerManager, (Direction)(positionIndex + 1));
         }
 
         if (!isActivated)
         {
-            striker.SetActive(false);
+            striker.gameObject.SetActive(false);
         }
     }
 
     public void ClearStrikers()
     {
-        foreach (GameObject striker in strikerList)
+        foreach (StrikerController striker in strikerList)
         {
             if (striker != null)
             {
-                StrikerController strikerController = striker.GetComponent<StrikerController>();
-                if (strikerController != null && !strikerController.isMelee)
-                {
-                    strikerController.ClearProjectiles();
-                }
+                striker.ClearProjectiles();
                 Destroy(striker);
             }
         }

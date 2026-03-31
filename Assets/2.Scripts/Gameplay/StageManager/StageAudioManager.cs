@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// StageManager에 있던 오디오 관련 필드/함수만 분리.
 /// 포함:
-/// - musicSource, musicOffset, musicPlayed, savedMusicTime
+/// - musicSource, bgmOffset, musicPlayed, savedMusicTime
 /// - RestartAudio(float RollBackTime)
 /// - ResetAudio()
 /// - AudioPause()
@@ -15,15 +15,14 @@ public class StageAudioManager : MonoBehaviour
 {
     [SerializeField] public AudioSource musicSource;
 
-    public float musicOffset;     // PlayerPrefs에서 로드
+    public float bgmOffset;     // PlayerPrefs에서 로드
     public bool musicPlayed = false;
 
     private float savedMusicTime;
 
     private void Awake()
     {
-        // 기존 StageManager.Awake() 그대로
-        musicOffset = PlayerPrefs.GetFloat("musicOffset", 2);
+        bgmOffset = PlayerPrefs.GetFloat("bgmOffset", 0f);
         if (musicSource != null)
         {
             musicSource.volume = PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("bgmVolume", 1);
@@ -41,11 +40,11 @@ public class StageAudioManager : MonoBehaviour
         }
 
         // 오프셋 적용: override가 true일 때만 스테이지 값을 사용
-        if (stageData.OverrideMusicOffset)
+        if (stageData.OverrideBgmOffset)
         {
-            musicOffset = stageData.MusicOffset;
+            bgmOffset = stageData.BgmOffset;
         }
-        // override가 false면 기존대로 PlayerPrefs에서 읽어온 전역 musicOffset 유지
+        // override가 false면 기존대로 PlayerPrefs에서 읽어온 전역 bgmOffset 유지
     }
 
     // 튜토리얼에서 노래 n초 전으로 되돌리는 용도의 함수 (기존 StageManager.RestartAudio 그대로)

@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -94,28 +94,9 @@ public class TutorialManager : MonoBehaviour
 
         if (!isDaehwa)  // 대화 중이 아닌 상황 (게임 중)
         {
-            // stageFlowManager.musicOffset -> StageAudioManager에서 관리
-            float musicOffset = 0f;
-            if (stageFlowManager != null && stageAudioManager != null)
+            if (currentTime >= ChartTimeList[daehwaIndex])
             {
-                musicOffset = stageAudioManager.musicOffset;
-            }
-
-            if (currentTime >= ChartTimeList[daehwaIndex] + musicOffset)
-            {
-                List<GameObject> strikerList_ = strikerManager.strikerList;
                 bool isClear = true;
-
-                for (int i = 0; i < strikerList_.Count; i++)
-                {
-                    GameObject striker = strikerList_[i];
-                    StrikerController strikerController = striker.GetComponent<StrikerController>();
-
-                    if (strikerController.hp != 0)
-                    {
-                        isClear = false; // 클리어 조건 미달
-                    }
-                }
 
                 if (isClear) patternComplete = true;
                 print(patternComplete);
@@ -379,24 +360,6 @@ public class TutorialManager : MonoBehaviour
         SkipOn();
 
         yield break;
-    }
-
-    private void checkComplete1()
-    {
-        List<GameObject> strikerList_ = strikerManager.strikerList;
-        bool isClear = true;
-
-        for (int i = 0; i < strikerList_.Count; i++)
-        {
-            GameObject striker = strikerList_[i];
-            StrikerController strikerController = striker.GetComponent<StrikerController>();
-
-            if (strikerController.hp != 0)
-            {
-                isClear = false;
-            }
-        }
-        if (isClear) patternComplete = true;
     }
 
     public void SkipOn()

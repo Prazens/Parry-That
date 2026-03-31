@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class JudgeSystem : MonoBehaviour
@@ -13,120 +12,102 @@ public class JudgeSystem : MonoBehaviour
     // ScoreUI / UIManager -> DynamicUIManager
     [SerializeField] private DynamicUIManager dynamicUIManager;
 
-    // musicOffset -> StageAudioManager
-    [SerializeField] private StageAudioManager stageAudioManager;
-
     public int combo = 0;
     public int score = 0;
 
     public double lastNonMissJudge = 0;
-    public bool isHolding = false;
-    public bool isOnStream = false;  // 연타 중인지 확인
-    public int streamCount = -1;  // 연타한 횟수
-    public Judgeable streamJudgeable = null; // 연타 판정용 Judgeable 저장
+    public bool isHolding = false; // 홀드 공격을 받아치는 중인지 (누르고 있는지가 아님)
+    //public bool isOnStream = false;  // 연타 중인지 확인
+    //public int streamCount = -1;  // 연타한 횟수
+    //public Judgeable streamJudgeable = null; // 연타 판정용 Judgeable 저장
 
-    public Queue<JudgeFormat> judgeQueue = new Queue<JudgeFormat>();
+    private Dictionary<Direction, Queue<Judgeable>> judgeableQueues = new() {
+        { Direction.None, new() },
+        { Direction.Up, new() },
+        { Direction.Down, new() },
+        { Direction.Left, new() },
+        { Direction.Right, new() },
+    };
+    public Queue<JudgeFormat> judgeQueue = new();
 
-    public int bpm;
     public List<int[]> judgeDetails = new List<int[]>();  
 
-    private string[] judgeStrings = new string[7]
-                                    { "공노트", "늦은 MISS", "늦은 GUARD", "늦은 BOUNCE",
-                                      "PERFECT", "빠른 BOUNCE", "빠른 GUARD" };
-
-    private StrikerController tempStrikerController = null;
-    private Judgeable tempJudgeable;
-
-    private float MusicOffset
-    {
-        get
-        {
-            if (stageAudioManager == null) return 0f;
-            return stageAudioManager.musicOffset;
-        }
-    }
+    private string[] judgeStrings = new string[8]
+                                    { "공노트", "늦은 MISS", "늦은 BLOCKED", "늦은 PARRIED",
+                                      "PERFECT", "빠른 PARRIED", "빠른 BLOCKED", "빠른 MISS" };
 
     private void Awake()
     {
         if (dynamicUIManager == null)
             dynamicUIManager = FindObjectOfType<DynamicUIManager>();
-
-        if (stageAudioManager == null)
-            stageAudioManager = FindObjectOfType<StageAudioManager>();
     }
 
     void Update()
     {
         if (!StageFlowManager.isActive) return;
 
-        foreach (GameObject striker in strikerManager.strikerList)
+        // 방향별 스트라이커 공격 Queue를 순회하며 LateMiss 여부 확인하여 처리
+        foreach (var judgeableQueue in judgeableQueues.Values)
         {
-            if (striker != null)
+            if (judgeableQueue.Count <= 0) continue;
+
+            Judgeable tempJudgeable = judgeableQueue.Peek();
+
+            float tempSecDiff =
+                StageFlowManager.Instance.currentTime
+                - StageFlowManager.Instance.BeatToSec(tempJudgeable.arriveBeat);
+
+            // 연타 시작
+            //if (tempJudgeable.attackType == AttackType.StreamStart && !isOnStream && tempSecDiff > -0.01d)
+            //{
+            //    isOnStream = true;
+            //    streamCount = 0;
+            //    streamJudgeable = judgeableQueue.Dequeue();
+            //    break;
+            //}
+
+            // 연타 종료
+            //else if (tempJudgeable.attackType == AttackType.StreamFinish)
+            //{
+            //    if (tempSecDiff > -0.01d)
+            //    {
+            //        if (streamCount < streamJudgeable.streamCount * 1 / 2)
+            //            JudgeManage(streamJudgeable, JudgeType.LateMiss);
+            //        else if (streamCount < streamJudgeable.streamCount * 3 / 4)
+            //            JudgeManage(streamJudgeable, JudgeType.LateBlocked);
+            //        else if (streamCount < streamJudgeable.streamCount)
+            //            JudgeManage(streamJudgeable, JudgeType.LateParried);
+            //        else
+            //            JudgeManage(streamJudgeable, JudgeType.Perfect);
+
+            //        isOnStream = false;
+            //        streamCount = -1;
+            //        streamJudgeable = null;
+            //        judgeableQueue.Dequeue();
+            //        break;
+            //    }
+            //}
+
+            // 홀드 중이 아니면 HoldStop 공격을 바로 EarlyMiss 처리
+            if (tempJudgeable.attackType == AttackType.HoldStop && !isHolding)
             {
-                tempStrikerController = striker.GetComponent<StrikerController>();
+                JudgeManage(tempJudgeable, JudgeType.EarlyMiss, true);
+            }
 
-                if (tempStrikerController.judgeableQueue.Count != 0)
+            // 늦은 MISS
+            if (tempSecDiff > 0.2d)
+            {
+                if (tempJudgeable.attackType == AttackType.HoldStop)
                 {
-                    tempJudgeable = tempStrikerController.judgeableQueue.Peek();
-
-                    float tempTimeDiff =
-                        StageFlowManager.Instance.currentTime
-                        - tempJudgeable.arriveBeat * 60f / tempStrikerController.bpm
-                        - MusicOffset;
-
-                    // 연타 시작
-                    if (tempJudgeable.attackType == AttackType.StreamStart && !isOnStream && tempTimeDiff > -0.01d)
-                    {
-                        isOnStream = true;
-                        streamCount = 0;
-                        streamJudgeable = tempStrikerController.judgeableQueue.Dequeue();
-                        break;
-                    }
-
-                    // 연타 종료
-                    else if (tempJudgeable.attackType == AttackType.StreamFinish)
-                    {
-                        if (tempTimeDiff > -0.01d)
-                        {
-                            if (streamCount < streamJudgeable.streamCount * 1 / 2)
-                                JudgeManage(streamJudgeable, 0);
-                            else if (streamCount < streamJudgeable.streamCount * 3 / 4)
-                                JudgeManage(streamJudgeable, 1);
-                            else if (streamCount < streamJudgeable.streamCount)
-                                JudgeManage(streamJudgeable, 2);
-                            else
-                                JudgeManage(streamJudgeable, 3);
-
-                            isOnStream = false;
-                            streamCount = -1;
-                            streamJudgeable = null;
-                            tempStrikerController.judgeableQueue.Dequeue();
-                            break;
-                        }
-                    }
-
-                    // 늦은 MISS
-                    if (tempTimeDiff > 0.2d)
-                    {
-                        if (tempJudgeable.attackType == AttackType.HoldStart)
-                        {
-                            JudgeManage(tempJudgeable, 0, true);
-                            tempJudgeable = tempStrikerController.judgeableQueue.Peek();
-                            tempTimeDiff =
-                                StageFlowManager.Instance.currentTime
-                                - tempJudgeable.arriveBeat * 60f / tempStrikerController.bpm
-                                - MusicOffset;
-                        }
-                        else if (tempJudgeable.attackType == AttackType.HoldStop)
-                        {
-                            isHolding = false;
-                        }
-                        JudgeManage(tempJudgeable, 0, true);
-                    }
+                    // Hold 공격이 끝났으므로 누르고 있는지에 무관하게 false
+                    isHolding = false;
                 }
+
+                JudgeManage(tempJudgeable, JudgeType.LateMiss, true);
             }
         }
 
+        // 터치 입력 Queue에 들어온 입력을 판정
         foreach (JudgeFormat judgeObject in judgeQueue)
             Judge(judgeObject.direction, judgeObject.timing, judgeObject.type);
 
@@ -146,316 +127,395 @@ public class JudgeSystem : MonoBehaviour
         {
             if (i == 0)
             {
-                judgeDetails.Add(new int[7] { 0, 0, 0, 0, 0, 0, 0 });
+                judgeDetails.Add(new int[8] { 0, 0, 0, 0, 0, 0, 0, 0 });
                 foreach (ChartData chart in strikerManager.charts)
                     judgeDetails[0][0] += chart.notes.Length;
             }
             else
             {
-                judgeDetails.Add(new int[7] { strikerManager.charts[i - 1].notes.Length, 0, 0, 0, 0, 0, 0 });
+                judgeDetails.Add(new int[8] { strikerManager.charts[i - 1].notes.Length, 0, 0, 0, 0, 0, 0, 0 });
             }
         }
     }
 
-    // -------------------------------------------
-    // ★ 구버전 홀드 로직 1:1 복원된 Judge()
-    // -------------------------------------------
-    public void Judge(Direction direction, double touchTimeSec, AttackType type)
+    public void EnqueueJudgeable(Judgeable judgeable)
     {
-        if (isOnStream)
-        {
-            if (type == AttackType.HoldStop)
-                return;
+        judgeableQueues[judgeable.noteDirection].Enqueue(judgeable);
+    }
 
-            if (streamCount != -1)
-            {
-                streamCount++;
-                JudgeManage(null, 6, false, Direction.None, type);
-                return;
-            }
-            else
-            {
-                Debug.LogError("stream 중이 아닌 isOnStream");
-                return;
-            }
+    public Judgeable DequeueJudgeable(Direction dir)
+    {
+        return judgeableQueues[dir].Dequeue();
+    }
+
+    public Judgeable PeekJudgeable(Direction dir)
+    {
+        return judgeableQueues[dir].Peek();
+    }
+
+    public int CountJudgeable(Direction dir)
+    {
+        return judgeableQueues[dir].Count;
+    }
+
+    public void Judge(Direction touchDirection, double touchTimeSec, AttackType touchType)
+    {
+        // 연타 중
+        //if (isOnStream)
+        //{
+        //    if (touchType == AttackType.HoldStop)
+        //        return;
+
+        //    if (streamCount != -1)
+        //    {
+        //        streamCount++;
+        //        JudgeManage(null, JudgeType.EarlyMiss, false, Direction.None, touchType);
+        //        return;
+        //    }
+        //    else
+        //    {
+        //        Debug.LogError("stream 중이 아닌 isOnStream");
+        //        return;
+        //    }
+        //}
+
+        // 홀드 중엔 HoldStop 외의 입력은 모두 무시
+        if (isHolding && touchType != AttackType.HoldStop)
+        {
+            return;
         }
 
-        // 구버전: 홀드 중엔 HoldStop 외의 입력은 모두 무시
-        if (isHolding)
-        {
-            if (!(type == AttackType.HoldStop))
-                return;
-        }
-
-        Direction touchDirection = (direction == Direction.None) ? playerManager.currentDirection : direction;
-        Judgeable _judgeable = null;
-        float arriveSec;
         double timeDiff = touchTimeSec - lastNonMissJudge;
-
         // 간접 미스 방지
-        if (type == AttackType.Strong && timeDiff < 0.01d)
+        if (touchType == AttackType.Strong && timeDiff < 0.01d)
             return;
 
-        int tempJudge = -1;
-
-        playerManager.currentDirection = touchDirection;
-
-        // 각 스트라이커 탐색
-        foreach (GameObject striker in strikerManager.strikerList)
+        // touchType에 따라 분기
+        switch (touchType)
         {
-            if (striker != null)
-            {
-                tempStrikerController = striker.GetComponent<StrikerController>();
-
-                if (tempStrikerController.judgeableQueue.Count != 0)
-                {
-                    _judgeable = tempStrikerController.judgeableQueue.Peek();
-
-                    // 방향 다르면 패스 (HoldStart/HoldStop 제외)
-                    if (tempStrikerController.location != touchDirection
-                        && _judgeable.attackType != AttackType.HoldStart
-                        && _judgeable.attackType != AttackType.HoldStop)
-                        continue;
-
-                    arriveSec = _judgeable.arriveBeat * 60f / tempStrikerController.bpm;
-                    timeDiff = touchTimeSec - arriveSec - MusicOffset;
-
-                    // 강공격 → 약패링 무효
-                    if (type == AttackType.Normal && _judgeable.attackType == AttackType.Strong)
-                    {
-                        tempJudge = -1;
-                        continue;
-                    }
-
-                    // 시간으로 판정
-                    if (timeDiff > 0.2d) tempJudge = 0;
-                    else if (timeDiff > 0.14d) tempJudge = 1;
-                    else if (timeDiff > 0.07d) tempJudge = 2;
-                    else if (timeDiff >= -0.07d) tempJudge = 3;
-                    else if (timeDiff >= -0.14d) tempJudge = 4;
-                    else if (timeDiff >= -0.2d) tempJudge = 5;
-                    else if (timeDiff >= -0.22d) tempJudge = 0;
-                    else if (type == AttackType.HoldStop) tempJudge = 0;
-                    else tempJudge = -1;
-
-                    // ----------------------------
-                    // ★ 구버전 홀드 시작 로직
-                    // ----------------------------
-                    if (!isHolding && _judgeable.attackType == AttackType.HoldStart)
-                    {
-                        if (tempJudge >= 1)
-                        {
-                            isHolding = true;
-                            type = AttackType.HoldStart;
-                            playerManager.currentDirection = tempStrikerController.location;
-                            touchDirection = tempStrikerController.location;
-                        }
-
-                        if (tempJudge == 0)
-                        {
-                            JudgeManage(_judgeable, tempJudge, false, touchDirection, type);
-
-                            _judgeable = tempStrikerController.judgeableQueue.Peek();
-                            arriveSec = _judgeable.arriveBeat * 60f / tempStrikerController.bpm;
-                            timeDiff = touchTimeSec - arriveSec - MusicOffset;
-                        }
-                    }
-
-                    // ----------------------------
-                    // ★ 구버전 홀드 종료 로직
-                    // ----------------------------
-                    else if (type == AttackType.HoldStop && tempJudge != -1)
-                    {
-                        isHolding = false;
-
-                        if (tempJudge != 0)
-                        {
-                            if (tempJudge <= 5 && tempJudge >= 1)
-                                tempJudge = 3;
-                        }
-                    }
-
-                    lastNonMissJudge = touchTimeSec;
-                    break;
-                }
-                tempStrikerController = null;
-            }
+            case AttackType.Normal:
+                JudgeNormalTouch(touchDirection, touchTimeSec);
+                return;
+            case AttackType.Strong:
+                JudgeStrongTouch(touchDirection, touchTimeSec);
+                return;
+            case AttackType.HoldStop:
+                JudgeHoldStopTouch(touchDirection, touchTimeSec);
+                return;
         }
-
-        Debug.Log($"판정 수행 : Dir.{direction}, Type.{type}, {timeDiff:F3} -> \"{judgeStrings[tempJudge + 1]}\"");
-        JudgeManage(_judgeable, tempJudge, false, touchDirection, type);
     }
 
-    public void JudgeManage(Judgeable judgeObject, int judgement, bool isPassing = false, 
-                        Direction tpD = Direction.None, AttackType tpT = AttackType.Normal)
+    private void JudgeNormalTouch(Direction touchDirection, double touchTimeSec)
     {
-        // 노트가 처리되지 않은 경우
-        if (judgeObject == null || judgement == -1)
+        AttackType touchType = AttackType.Normal;
+        JudgeType judgeType = JudgeType.None;
+
+        // 모든 방향 중 가장 빠른 공격 탐색
+        Judgeable judgeable = GetClosestAttackFromAllDirections();
+
+        // 가장 빠른 공격이 강공격이면 약패링 무시
+        if (judgeable != null && judgeable.attackType != AttackType.Strong)
         {
-            lastNonMissJudge = 0;
-            if (tpT == AttackType.HoldStop)
+            float arriveSec = StageFlowManager.Instance.BeatToSec(judgeable.arriveBeat);
+            judgeType = GetJudgeType(touchTimeSec, arriveSec);
+
+            // EarlyMiss는 무시
+            if (judgeType == JudgeType.EarlyMiss)
             {
-                return;
+                judgeType = JudgeType.None;
+            }
+        }
+
+        if (judgeType != JudgeType.None)
+        {
+            // 홀드 시작 공격 처리
+            if (judgeable.attackType == AttackType.HoldStart)
+            {
+                isHolding = true;
+                touchType = AttackType.HoldStart;
             }
 
-            // 연타 중
-            if (isOnStream && judgement == 6)
+            // 플레이어가 자동으로 공격 방향을 바라보며 패링함
+            touchDirection = judgeable.noteDirection;
+            lastNonMissJudge = touchTimeSec;
+        }
+
+        DebugJudge(touchDirection, touchTimeSec, touchType, judgeable, judgeType);
+        JudgeManage(judgeable, judgeType, false, touchDirection, touchType);
+    }
+
+    private void JudgeStrongTouch(Direction touchDirection, double touchTimeSec)
+    {
+        JudgeType judgeType = JudgeType.None;
+
+        Judgeable judgeable = null;
+        
+        // 방향에 맞는 Queue만 확인
+        var judgeableQueue = judgeableQueues[touchDirection];
+        if (judgeableQueue.Count > 0)
+        {
+            judgeable = judgeableQueue.Peek();
+
+            float arriveSec = StageFlowManager.Instance.BeatToSec(judgeable.arriveBeat);
+            judgeType = GetJudgeType(touchTimeSec, arriveSec);
+
+            // EarlyMiss는 무시
+            if (judgeType == JudgeType.EarlyMiss)
             {
-                score += 100;
-                combo = 1;
-                playerManager.Operate((Direction)UnityEngine.Random.Range(1, 5), tpT);
-                playerManager.PlayerParrySound(tpT);
-                return;
+                judgeType = JudgeType.None;
             }
 
-            playerManager.Operate(tpD, tpT);
-            playerManager.PlayerParrySound(tpT);
+            if (judgeType != JudgeType.None)
+            {
+                // 약공격에 강패링하면 Blocked 판정
+                if (judgeable.attackType == AttackType.Normal)
+                {
+                    judgeType = JudgeType.EarlyBlocked;
+                }
+
+                lastNonMissJudge = touchTimeSec;
+            }
+        }
+
+        DebugJudge(touchDirection, touchTimeSec, AttackType.Strong, judgeable, judgeType);
+        JudgeManage(judgeable, judgeType, false, touchDirection, AttackType.Strong);
+    }
+
+    private void JudgeHoldStopTouch(Direction touchDirection, double touchTimeSec)
+    {
+        // 홀드 중이 아니면 HoldStop 입력 무시
+        if (!isHolding)
+            return;
+        isHolding = false;
+
+        // 모든 방향 중 가장 빠른 공격 탐색
+        Judgeable judgeable = GetClosestAttackFromAllDirections();
+
+        // 손을 뗐는데 HoldStop 공격이 오지 않았으면 추후 HoldStop 공격이 왔을 때 EarlyMiss 처리됨
+        if (judgeable == null || judgeable.attackType != AttackType.HoldStop)
+        {
             return;
         }
 
-        // 플레이어가 조작하지 않거나 조작이 무시되는 경우, 홀드 늦게떼기 제외
-        if (!isPassing || judgeObject.attackType == AttackType.HoldStop)
+        float arriveSec = StageFlowManager.Instance.BeatToSec(judgeable.arriveBeat);
+        JudgeType judgeType = GetJudgeType(touchTimeSec, arriveSec);
+
+        if (judgeType != JudgeType.EarlyMiss)
         {
-            playerManager.Operate(judgeObject.noteDirection, judgeObject.attackType);
+            // 플레이어가 자동으로 공격 방향을 바라보며 패링함
+            touchDirection = judgeable.noteDirection;
+            lastNonMissJudge = touchTimeSec;
         }
 
-        // index로 한번에 처리
-        judgeDetails[0][judgement + 1] += 1;
+        DebugJudge(touchDirection, touchTimeSec, AttackType.HoldStop, judgeable, judgeType);
+        JudgeManage(judgeable, judgeType, false, touchDirection, AttackType.HoldStop);
+    }
 
-        if (!TutorialManager.isTutorial)
+    private Judgeable GetClosestAttackFromAllDirections()
+    {
+        Judgeable judgeable = null;
+        float arriveBeat = Mathf.Infinity;
+
+        // 모든 방향 중 가장 빠른 공격 탐색
+        foreach (var judgeableQueue in judgeableQueues.Values)
         {
-            judgeDetails[(int)judgeObject.noteDirection][judgement + 1] += 1;
-        }
+            if (judgeableQueue.Count <= 0) continue;
 
-        // 특정 Striker 찾기
-        StrikerController targetStriker = judgeObject.strikerController;
+            Judgeable tempJudgeable = judgeableQueue.Peek();
 
-        CameraMoving cameraEffect = GameObject.Find("Main Camera").GetComponent<CameraMoving>();
-
-        switch (judgement)
-        {
-            case 0:  // 늦은 BAD (MISS)
-                score += 0;
-                combo = 0;
-
-                // 피격 → 사망
-                if (--playerManager.hp == 0 && !TutorialManager.isTutorial)
-                {
-                    if (dynamicUIManager != null)
-                    {
-                        dynamicUIManager.HideAll();
-                    }
-
-                    playerManager.PlayerHitSound();
-
-                    if (StageFlowManager.Instance != null)
-                    {
-                        StageFlowManager.Instance.GameOver();
-                    }
-                }
-                // 피격 → 생존
-                else
-                {
-                    if (dynamicUIManager != null)
-                    {
-                        dynamicUIManager.ShowDamageOverlayEffect();
-                    }
-
-                    if (cameraEffect != null)
-                    {
-                        cameraEffect.CameraShake();
-                    }
-
-                    playerManager.PlayerHitSound();
-                }
-
-                break;
-
-            case 1:  // 늦은 BLOCKED
-                score += 300;
-                combo = 0;
-                playerManager.PlayerBlockedSound();
-                break;
-
-            case 2:  // 늦은 PARRIED
-                score += 9000;
-                combo += 1;
-                targetStriker?.TakeDamage(1, judgeObject.attackType);
-                if (dynamicUIManager != null) dynamicUIManager.ShowParticle(judgeObject.noteDirection, false);
-                break;
-
-            case 3:  // 완벽한 PERFECT
-                score += 30000;
-                combo += 1;
-                targetStriker?.TakeDamage(1, judgeObject.attackType);
-                if (dynamicUIManager != null) dynamicUIManager.ShowParticle(judgeObject.noteDirection, true);
-                break;
-
-            case 4:  // 빠른 PARRIED
-                score += 9000;
-                combo += 1;
-                targetStriker?.TakeDamage(1, judgeObject.attackType);
-                if (dynamicUIManager != null) dynamicUIManager.ShowParticle(judgeObject.noteDirection, false);
-                break;
-
-            case 5:  // 빠른 BLOCKED
-                score += 300;
-                combo = 0;
-                playerManager.PlayerBlockedSound();
-                break;
-        }
-
-        if (judgement != 0)
-        {
-            if (dynamicUIManager != null)
+            if (tempJudgeable.arriveBeat < arriveBeat)
             {
-                dynamicUIManager.DisplayScore(score);
+                judgeable = tempJudgeable;
+                arriveBeat = tempJudgeable.arriveBeat;
             }
+        }
 
-            if (judgement != 1 && judgement != 5)
-            {
-                if (parriedProjectileManager != null &&
-                    targetStriker != null &&
-                    !targetStriker.isMelee &&
-                    judgeObject.attackType != AttackType.StreamStart)
-                {
-                    if (targetStriker.boss != null)
-                    {
-                        int fixRandom = 0;
-                        if (judgeObject.noteDirection == Direction.Up || judgeObject.noteDirection == Direction.Right)
-                        {
-                            fixRandom = 1;
-                        }
-                        else
-                        {
-                            fixRandom = 2;
-                        }
-                        parriedProjectileManager.ParryTusache(Direction.Up, (int)judgeObject.attackType, fixRandom);
-                    }
-                    else
-                    {
-                        parriedProjectileManager.ParryTusache(judgeObject.noteDirection, (int)judgeObject.attackType);
-                    }
-                }
-            }
+        return judgeable;
+    }
+
+    private JudgeType GetJudgeType(double touchTimeSec, double attackArriveSec)
+    {
+        double timeDiff = touchTimeSec - attackArriveSec;
+        if (timeDiff > 0.2d) return JudgeType.LateMiss;
+        else if (timeDiff > 0.14d) return JudgeType.LateBlocked;
+        else if (timeDiff > 0.07d) return JudgeType.LateParried;
+        else if (timeDiff >= -0.07d) return JudgeType.Perfect;
+        else if (timeDiff >= -0.14d) return JudgeType.EarlyParried;
+        else if (timeDiff >= -0.2d) return JudgeType.EarlyBlocked;
+        else return JudgeType.EarlyMiss;
+    }
+
+    private void DebugJudge(Direction touchDirection, double touchTimeSec, AttackType touchType, Judgeable judgeable, JudgeType judgeType)
+    {
+        Debug.Log($"Touch: Dir.{touchDirection}, Type.{touchType}");
+        if (judgeable != null)
+        {
+            Debug.Log($"Judgeable: Dir.{judgeable.noteDirection}, Type.{judgeable.attackType}, Beat.{judgeable.arriveBeat}");
+            Debug.Log($"touchTimeSec: {touchTimeSec}, arriveSec: {StageFlowManager.Instance.BeatToSec(judgeable.arriveBeat)}");
         }
         else
         {
-            if (dynamicUIManager != null)
+            Debug.Log("Judgeable is null");
+        }
+        Debug.Log($"판정 결과: {judgeStrings[(int)judgeType]}");
+    }
+
+    public void JudgeManage(Judgeable judgeable, JudgeType judgeType, bool isPassing = false, 
+                        Direction touchDirection = Direction.None, AttackType touchType = AttackType.Normal)
+    {
+        // 노트가 처리되지 않은 경우
+        if (judgeType == JudgeType.None)
+        {
+            lastNonMissJudge = 0;
+
+            if (touchType == AttackType.HoldStop)
+                return;
+
+            // 연타 중
+            //if (isOnStream && judgeType == JudgeType.EarlyMiss)
+            //{
+            //    score += 100;
+            //    combo = 1;
+            //    playerManager.Operate((Direction)UnityEngine.Random.Range(1, 5), touchType);
+            //    playerManager.PlayerParrySound(touchType);
+            //    return;
+            //}
+
+            playerManager.Operate(touchDirection, touchType);
+            playerManager.PlayerParrySound(touchType);
+            return;
+        }
+
+        // 플레이어의 조작이 없는 경우 제외
+        if (!isPassing || judgeable.attackType == AttackType.HoldStop)
+        {
+            playerManager.Operate(judgeable.noteDirection, judgeable.attackType);
+        }
+
+        // 점수 부여
+        switch (judgeType)
+        {
+            case JudgeType.LateMiss:
+                score += 0;
+                combo = 0;
+                break;
+
+            case JudgeType.LateBlocked:
+                score += 300;
+                combo = 0;
+                break;
+
+            case JudgeType.LateParried:
+                score += 9000;
+                combo += 1;
+                break;
+
+            case JudgeType.Perfect:
+                score += 30000;
+                combo += 1;
+                break;
+
+            case JudgeType.EarlyParried:
+                score += 9000;
+                combo += 1;
+                break;
+
+            case JudgeType.EarlyBlocked:
+                score += 300;
+                combo = 0;
+                break;
+
+            case JudgeType.EarlyMiss:
+                score += 0;
+                combo = 0;
+                break;
+        }
+
+        // index로 한번에 처리
+        judgeDetails[0][(int)judgeType] += 1;
+        if (!TutorialManager.isTutorial)
+        {
+            judgeDetails[(int)judgeable.noteDirection][(int)judgeType] += 1;
+        }
+        dynamicUIManager?.DisplayJudge((int)judgeType, judgeable.noteDirection);
+
+        // 특정 Striker 찾기
+        StrikerController targetStriker = judgeable.strikerController;
+        CameraMoving cameraEffect = GameObject.Find("Main Camera").GetComponent<CameraMoving>();
+
+        // Miss일 때 피격 처리
+        if (judgeType == JudgeType.LateMiss || judgeType == JudgeType.EarlyMiss)
+        {
+            playerManager.hp--;
+            playerManager.PlayerHitSound();
+            dynamicUIManager?.DisplayHP(playerManager.hp, false);
+
+            // 피격 → 사망
+            if (playerManager.hp <= 0 && !TutorialManager.isTutorial)
             {
-                dynamicUIManager.DisplayHP(playerManager.hp, false);
+                dynamicUIManager?.HideAll();
+                StageFlowManager.Instance?.GameOver();
+            }
+            // 피격 → 생존
+            else
+            {
+                dynamicUIManager?.ShowDamageOverlayEffect();
+                cameraEffect?.CameraShake();
+            }
+        }
+        // 가드 시 처리
+        else if (judgeType == JudgeType.LateBlocked || judgeType == JudgeType.EarlyBlocked)
+        {
+            dynamicUIManager?.DisplayScore(score);
+            playerManager.PlayerBlockedSound();
+        }
+        // 패링 성공 시 처리
+        else if (judgeType >= JudgeType.LateParried && judgeType <= JudgeType.EarlyParried)
+        {
+            // 투사체가 있는 공격이라면 되돌려 보냄
+            if (parriedProjectileManager != null && judgeable.judgeableObject != null)
+                //&& judgeable.attackType != AttackType.StreamStart)
+            {
+                // 보스 스트라이커 - 위로 반격
+                if (targetStriker.boss != null)
+                {
+                    int fixRandom;
+                    if (judgeable.noteDirection == Direction.Up || judgeable.noteDirection == Direction.Right)
+                    {
+                        fixRandom = 1;
+                    }
+                    else
+                    {
+                        fixRandom = 2;
+                    }
+                    parriedProjectileManager.ParryTusache(Direction.Up, (int)judgeable.attackType, fixRandom);
+                }
+                // 일반 스트라이커 - 날아온 방향으로 반격
+                else
+                {
+                    parriedProjectileManager.ParryTusache(judgeable.noteDirection, (int)judgeable.attackType);
+                }
             }
         }
 
-        if (dynamicUIManager != null)
-        {
-            dynamicUIManager.DisplayJudge(judgement, judgeObject.noteDirection);
-        }
-
         // 대상 노트 제거
-        judgeObject.FinishJudge();
-
-        return;
+        bool isParried = (judgeType >= JudgeType.LateParried && judgeType <= JudgeType.EarlyParried);
+        FinishJudge(judgeable, isParried);
     }
 
+    private void FinishJudge(Judgeable judgeable, bool isParried)
+    {
+        var judgeableQueue = judgeableQueues[judgeable.noteDirection];
+
+        if (judgeableQueue.Peek() == judgeable)
+        {
+            judgeableQueue.Dequeue();
+            if (judgeable.judgeableObject != null)
+            {
+                Destroy(judgeable.judgeableObject);
+            }
+
+            judgeable.strikerController.OnJudge(judgeable, isParried);
+        }
+    }
 }

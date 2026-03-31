@@ -16,12 +16,12 @@ public class SettingUI : MonoBehaviour
         if (settingOn)
         {
             SettingPanel.SetActive(true);
-            // SettingPanel.transform.GetChild(1).GetChild(2).GetComponent<Slider>().value = (PlayerPrefs.GetFloat("musicOffset", 2f) - 2f) * 100;
+            // SettingPanel.transform.GetChild(1).GetChild(2).GetComponent<Slider>().value = PlayerPrefs.GetFloat("bgmOffset", 0f) * 100;
             SettingPanel.transform.GetChild(2).GetChild(2).GetComponent<Slider>().value = PlayerPrefs.GetFloat("masterVolume", 1f) * 20;
             SettingPanel.transform.GetChild(3).GetChild(2).GetComponent<Slider>().value = PlayerPrefs.GetFloat("bgmVolume", 1f) * 20;
             SettingPanel.transform.GetChild(4).GetChild(2).GetComponent<Slider>().value = PlayerPrefs.GetFloat("enemyVolume", 1f) * 20;
             SettingPanel.transform.GetChild(5).GetChild(2).GetComponent<Slider>().value = PlayerPrefs.GetFloat("playerVolume", 1f) * 20;
-            ChangeMusicOffset();
+            ChangeBgmOffset();
             ChangeMasterVolume();
             ChangeBGMVolume();
             ChangeEnemyVolume();
@@ -56,7 +56,7 @@ public class SettingUI : MonoBehaviour
         // Debug.Log($"PPInit, {PlayerPrefs.GetInt("isPPInited", -1)}");
         if (PlayerPrefs.GetInt("isPPInited", 0) != 1)
         {
-            // PlayerPrefs.SetFloat("musicOffset", 2f);
+            // PlayerPrefs.SetFloat("bgmOffset", 0f);
             PlayerPrefs.SetFloat("masterVolume", 1f);
             PlayerPrefs.SetFloat("bgmVolume", 1f);
             PlayerPrefs.SetFloat("enemyVolume", 1f);
@@ -65,11 +65,10 @@ public class SettingUI : MonoBehaviour
         }
     }
 
-    public void ChangeMusicOffset()
+    public void ChangeBgmOffset()
     {
-        // Debug.Log("ChangeMusicOffset");
         int sliderValue = (int)SettingPanel.transform.GetChild(1).GetChild(2).GetComponent<Slider>().value;
-        PlayerPrefs.SetFloat("musicOffset", sliderValue / 100f + 2f);
+        PlayerPrefs.SetFloat("bgmOffset", sliderValue / 100f);
         // SettingPanel.transform.GetChild(1).GetChild(1).GetComponent<TextMeshProUGUI>().text = $"{((sliderValue >= 0) ? "+" : "")}{sliderValue}";
     }
 

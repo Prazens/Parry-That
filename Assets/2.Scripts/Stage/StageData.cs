@@ -44,8 +44,8 @@ public class StageData : ScriptableObject
 
     [Header("Audio")]
     [SerializeField] private AudioClip bgm;
-    [SerializeField] private bool overrideMusicOffset = false;
-    [SerializeField] private float musicOffset = 0f;
+    [SerializeField] private bool overrideBgmOffset = false;
+    [SerializeField] private float bgmOffset = 0f;
 
     [Header("CutIn UI")]
     [SerializeField] private GameObject cutInUpPrefab;
@@ -68,8 +68,8 @@ public class StageData : ScriptableObject
     public IReadOnlyList<TextAsset> ChartJsons => chartJsons;
 
     public AudioClip Bgm => bgm;
-    public bool OverrideMusicOffset => overrideMusicOffset;
-    public float MusicOffset => musicOffset;
+    public bool OverrideBgmOffset => overrideBgmOffset;
+    public float BgmOffset => bgmOffset;
 
     public IReadOnlyList<BossSpawnEntry> BossSpawnPrefabs => bossSpawnPrefabs;
 }
