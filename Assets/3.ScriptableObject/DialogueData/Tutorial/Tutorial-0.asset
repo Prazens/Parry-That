@@ -16,7 +16,7 @@ MonoBehaviour:
   - speakerTag: 1
     expressionTag: 0
     text: "\uBA54\uB871"
-    textRevealDuration: 5
+    textRevealDuration: 2
     waitAfterReveal: 0
     waitBeforeReveal: 0
     speakerNameOverride: 

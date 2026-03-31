@@ -122,21 +122,42 @@ public class JudgeSystem : MonoBehaviour
         combo = 0;
         score = 0;
         isHolding = false;
+        isOnStream = false;
+        streamCount = -1;
+        streamJudgeable = null;
+        lastNonMissJudge = 0;
 
         judgeDetails = new List<int[]>();
 
-        for (int i = 0; i < strikerManager.charts.Count + 1; i++)
+        if (strikerManager == null || strikerManager.charts == null)
         {
-            if (i == 0)
+            judgeDetails.Add(new int[7] { 0, 0, 0, 0, 0, 0, 0 });
+            return;
+        }
+
+        ChartData chart = strikerManager.charts;
+
+        int strikerCount = chart.strikers != null ? chart.strikers.Length : 0;
+        int totalNoteCount = chart.notes != null ? chart.notes.Length : 0;
+
+        // 전체
+        judgeDetails.Add(new int[7] { totalNoteCount, 0, 0, 0, 0, 0, 0 });
+
+        // striker별
+        for (int i = 0; i < strikerCount; i++)
+        {
+            int count = 0;
+
+            if (chart.notes != null)
             {
-                judgeDetails.Add(new int[7] { 0, 0, 0, 0, 0, 0, 0 });
-                foreach (ChartData chart in strikerManager.charts)
-                    judgeDetails[0][0] += chart.notes.Length;
+                for (int j = 0; j < chart.notes.Length; j++)
+                {
+                    if (chart.notes[j].strikerIndex == i)
+                        count++;
+                }
             }
-            else
-            {
-                judgeDetails.Add(new int[7] { strikerManager.charts[i - 1].notes.Length, 0, 0, 0, 0, 0, 0 });
-            }
+
+            judgeDetails.Add(new int[7] { count, 0, 0, 0, 0, 0, 0 });
         }
     }
 

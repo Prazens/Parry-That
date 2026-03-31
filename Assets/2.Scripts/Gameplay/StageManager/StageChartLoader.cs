@@ -4,22 +4,27 @@ using UnityEngine;
 
 /// <summary>
 /// StageManager.StartStage()에서 하던 "차트 로딩 + strikerManager.charts에 전달"만 분리.
-/// - strikerManager.charts.Clear()
-/// - 현재 phase의 chartJson이 있으면 JsonReader.ReadJson<ChartData>(TextAsset) 로드 후 Add
-/// - 현재 phase의 dialogue가 있으면 다른 매니저가 꺼내 쓸 수 있도록 반환 가능
 /// </summary>
 public class StageChartLoader : MonoBehaviour
 {
     [SerializeField] private StrikerManager strikerManager;
+    [SerializeField] private NotePerformer notePerformer;
 
     public void LoadChartsFromStageData(StageData stageData)
     {
-        strikerManager.charts.Clear();
-
         TextAsset chartJson = GetCurrentPhaseChart(stageData);
-        if (chartJson == null) return;
 
-        strikerManager.charts.Add(JsonReader.ReadJson<ChartData>(chartJson));
+        if (chartJson == null)
+        {
+            strikerManager.charts = null;
+            notePerformer.InitNotes(null);
+            return;
+        }
+
+        ChartData loadedChart = JsonReader.ReadJson<ChartData>(chartJson);
+
+        strikerManager.charts = loadedChart;
+        notePerformer.InitNotes(loadedChart);
     }
 
     public TextAsset GetCurrentPhaseChart(StageData stageData)
@@ -54,13 +59,11 @@ public class StageChartLoader : MonoBehaviour
         return phase.Dialogue;
     }
 
-    //페이즈에 채보가 있는지 확인하는 함수
     public bool HasCurrentPhaseChart(StageData stageData)
     {
         return GetCurrentPhaseChart(stageData) != null;
     }
 
-    //페이즈 끝난 뒤 대사가 있는지 확인하는 함수
     public bool HasCurrentPhaseDialogue(StageData stageData)
     {
         return GetCurrentPhaseDialogue(stageData) != null;
@@ -81,10 +84,19 @@ public class StageChartLoader : MonoBehaviour
             return 0f;
 
         ChartData chart = JsonReader.ReadJson<ChartData>(phase.ChartJson);
-        if (chart == null)
+        if (chart == null || chart.strikers == null || chart.strikers.Length == 0)
             return 0f;
 
-        return chart.disappearTime * 60f / chart.bpm + 2.5f; //musicoffSet
+        float lastDisappearBeat = 0f;
+        for (int i = 0; i < chart.strikers.Length; i++)
+        {
+            if (chart.strikers[i] != null && chart.strikers[i].disappearTime > lastDisappearBeat)
+            {
+                lastDisappearBeat = chart.strikers[i].disappearTime;
+            }
+        }
+
+        return lastDisappearBeat * 60f / chart.bpm; // musicOffset
     }
 
     public DialogueAudioPolicy GetDialogueAudioPolicy(StageData stageData)

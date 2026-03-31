@@ -369,7 +369,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stageDuration: 60
   is_over: 0
+  isDaehwa: 0
   strikerManager: {fileID: 2036327256}
+  dialogueManager: {fileID: 1515393733}
   bossController: {fileID: 0}
   stageSetupManager: {fileID: 700077782}
   stageChartLoader: {fileID: 461089627}
@@ -984,7 +986,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   strikerManager: {fileID: 2036327256}
   notePerformer: {fileID: 768575892}
-  jsonCharts: []
 --- !u!1 &477627791
 GameObject:
   m_ObjectHideFlags: 0
@@ -1516,7 +1517,6 @@ MonoBehaviour:
   strikerManager: {fileID: 2036327256}
   parriedProjectileManager: {fileID: 768575886}
   dynamicUIManager: {fileID: 1305503427}
-  stageAudioManager: {fileID: 2139028259}
   notePerformer: {fileID: 768575892}
   combo: 0
   score: 0
@@ -2298,26 +2298,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 655cedfbd99fe594a9ae074ad19bd9de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogueManager: {fileID: 1515393733}
   mainCanvas: {fileID: 1394439260}
   DescriptionFont: {fileID: 12800000, guid: 7006438c118bb1748b904fe654b08d95, type: 3}
   stageFlowManager: {fileID: 25638220}
   stageAudioManager: {fileID: 2139028259}
-  strikerManager: {fileID: 2036327256}
-  judgeSystem: {fileID: 768575891}
   VictoryAnime: {fileID: 1635102681}
-  CharacterSprite:
-  - {fileID: 21300000, guid: a5961eac7d81bcd4dad7b4c7cf4966ef, type: 3}
-  - {fileID: 21300000, guid: 89ffcfb6e701bd446a115039f98b6289, type: 3}
-  - {fileID: 21300000, guid: c07b9590d8ca7244f838596ea0452bce, type: 3}
-  - {fileID: 21300000, guid: c7fe0a8aede09df4e985c57f02fe8bc4, type: 3}
-  - {fileID: 21300000, guid: 5b0e7ecc6ada3714d9afcf1bd70c148c, type: 3}
-  - {fileID: 21300000, guid: 1efd8e6e88ef5db4c99a1c054df95352, type: 3}
-  - {fileID: 21300000, guid: 15ade16487cea8f4ea5c94021c0137b8, type: 3}
-  - {fileID: 21300000, guid: 8782d35a65465e9418cc6dfc33712165, type: 3}
-  - {fileID: 21300000, guid: eeb5adb6d9207764f82241c56a71ff7e, type: 3}
-  - {fileID: 21300000, guid: 687a5fc0406ccb9458d228ddd6d4011b, type: 3}
-  isDaehwa: 1
 --- !u!4 &1355106858
 Transform:
   m_ObjectHideFlags: 0
@@ -2816,6 +2801,8 @@ MonoBehaviour:
   panelImageSource: {fileID: 21300000, guid: 803194d63284f3d42b0a52479aa6c67a, type: 3}
   triangleObj: {fileID: 1328849331}
   inGameScreen: {fileID: 1305503425}
+  soriSprites: []
+  spiritSprites: []
 --- !u!4 &1515393734
 Transform:
   m_ObjectHideFlags: 0
@@ -3451,7 +3438,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   musicSource: {fileID: 253056967}
-  musicOffset: 0
+  bgmOffset: 0
   musicPlayed: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

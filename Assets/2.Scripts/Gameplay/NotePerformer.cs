@@ -8,23 +8,12 @@ using UnityEngine;
 /// </summary>
 public class NotePerformer : MonoBehaviour
 {
-    // 기존 ChartData와 NoteData의 구조를 변경하지 않고 임시로 이렇게 갑니다.
-    private class NoteDataNew
-    {
-        public int strikerIndex;
-        
-        public float noticeBeat; // 예고 발생 시간 (박자 단위)
-        public float arriveBeat; // 도착 시간 (박자 단위)
-
-        public int type;
-    }
-
     private PlayerManager playerManager;
     [SerializeField] private StrikerManager strikerManager;
     [SerializeField] private AttackNoticeController attackNoticeController;
 
     // 노트 관련
-    private NoteDataNew[] notes;
+    private NoteData[] notes;
     private int nextNoteIndex = 0;
 
     // Prepare Queue 관련
@@ -34,14 +23,16 @@ public class NotePerformer : MonoBehaviour
         public float arriveBeat;
         public float nextArriveBeat;
         public AttackType attackType;
-        public PrepareEntry(int _strikerIndex, float _arriveBeat, float _nextArriveBeat, AttackType _attackType)
+
+        public PrepareEntry(int strikerIndex, float arriveBeat, float nextArriveBeat, AttackType attackType)
         {
-            strikerIndex = _strikerIndex;
-            arriveBeat = _arriveBeat;
-            nextArriveBeat = _nextArriveBeat;
-            attackType = _attackType;
+            this.strikerIndex = strikerIndex;
+            this.arriveBeat = arriveBeat;
+            this.nextArriveBeat = nextArriveBeat;
+            this.attackType = attackType;
         }
     }
+
     private Queue<PrepareEntry> prepareQueue = new();
 
     public void SetPlayer(PlayerManager player)
@@ -49,82 +40,54 @@ public class NotePerformer : MonoBehaviour
         playerManager = player;
     }
 
-    // 기존 ChartData와 NoteData의 구조를 변경하지 않고 임시로 이렇게 갑니다.
-    public void InitNotes(List<ChartData> charts)
+    public void InitNotes(ChartData chart)
     {
-        if (charts == null)
+        if (chart == null)
         {
-            Debug.LogWarning("NotePerformer.InitNotes: Charts is null");
-            notes = System.Array.Empty<NoteDataNew>();
+            Debug.LogWarning("NotePerformer.InitNotes: Chart is null");
+            notes = System.Array.Empty<NoteData>();
+            nextNoteIndex = 0;
+            prepareQueue.Clear();
             return;
         }
 
-        // BPM 설정 (첫 번째 차트 기준)
-        if (charts.Count > 0 && charts[0] != null && StageFlowManager.Instance != null)
+        if (StageFlowManager.Instance != null)
         {
-            StageFlowManager.Instance.SetBPM(charts[0].bpm);
+            StageFlowManager.Instance.SetBPM(chart.bpm);
         }
 
-        // 전체 노트 개수 미리 계산
-        int totalCount = 0;
-        for (int i = 0; i < charts.Count; i++)
+        if (chart.notes == null)
         {
-            if (charts[i]?.notes != null)
-                totalCount += charts[i].notes.Length;
+            notes = System.Array.Empty<NoteData>();
+            nextNoteIndex = 0;
+            prepareQueue.Clear();
+            return;
         }
 
-        List<NoteDataNew> allNotes = new(totalCount);
+        notes = (NoteData[])chart.notes.Clone();
 
-        // Chart index를 strikerIndex로 저장하면서 변환
-        for (int chartIndex = 0; chartIndex < charts.Count; chartIndex++)
-        {
-            ChartData chart = charts[chartIndex];
-            if (chart == null || chart.notes == null)
-                continue;
+        System.Array.Sort(notes, (a, b) => a.noticeBeat.CompareTo(b.noticeBeat));
 
-            for (int j = 0; j < chart.notes.Length; j++)
-            {
-                NoteData note = chart.notes[j];
-
-                allNotes.Add(new NoteDataNew
-                {
-                    strikerIndex = chartIndex,
-                    noticeBeat = note.time,
-                    arriveBeat = note.arriveTime,
-                    type = note.type
-                });
-            }
-        }
-
-        // noticeBeat 기준 정렬
-        allNotes.Sort((a, b) => a.noticeBeat.CompareTo(b.noticeBeat));
-
-        notes = allNotes.ToArray();
         nextNoteIndex = 0;
-
         prepareQueue.Clear();
     }
 
-    void Update()
+    private void Update()
     {
         if (StageFlowManager.Instance == null) return;
-        if (notes == null || notes.Length <= 0) return;
+        if (notes == null || notes.Length == 0) return;
+
         float currentSec = StageFlowManager.Instance.currentTime;
 
-        // 공격 준비
         PrepareNextNote(currentSec);
-
-        // 공격
         HandleAttack(currentSec);
     }
 
     private void PrepareNextNote(float currentSec)
     {
-        // 같은 타이밍에 발생할 수 있는 모든 노트를 처리
-        while (nextNoteIndex < notes.Length && 
+        while (nextNoteIndex < notes.Length &&
                currentSec >= StageFlowManager.Instance.BeatToSec(notes[nextNoteIndex].noticeBeat))
         {
-            // 공격 준비 로직 실행
             PrepareForAttack();
             nextNoteIndex++;
         }
@@ -132,12 +95,11 @@ public class NotePerformer : MonoBehaviour
 
     private void PrepareForAttack()
     {
-        NoteDataNew note = notes[nextNoteIndex];
+        NoteData note = notes[nextNoteIndex];
 
         float arriveBeat = note.arriveBeat;
         AttackType attackType = (AttackType)note.type;
 
-        // 다음 노트 박자 찾기
         float nextArriveBeat = -1f;
         for (int i = nextNoteIndex + 1; i < notes.Length; i++)
         {
@@ -150,32 +112,68 @@ public class NotePerformer : MonoBehaviour
 
         prepareQueue.Enqueue(new PrepareEntry(note.strikerIndex, arriveBeat, nextArriveBeat, attackType));
 
+        if (strikerManager == null || strikerManager.strikerList == null)
+        {
+            Debug.LogError("NotePerformer.PrepareForAttack: strikerManager or strikerList is null");
+            return;
+        }
+
+        if (note.strikerIndex < 0 || note.strikerIndex >= strikerManager.strikerList.Count)
+        {
+            Debug.LogError($"NotePerformer.PrepareForAttack: invalid strikerIndex {note.strikerIndex}");
+            return;
+        }
+
         StrikerController striker = strikerManager.strikerList[note.strikerIndex];
+        if (striker == null)
+        {
+            Debug.LogError($"NotePerformer.PrepareForAttack: striker is null at index {note.strikerIndex}");
+            return;
+        }
+
         striker.OnNotice(arriveBeat, nextArriveBeat, attackType);
 
-        // 예고 이펙트 출력
-        float durationSec = StageFlowManager.Instance.BeatToSec(arriveBeat) - StageFlowManager.Instance.BeatToSec(note.noticeBeat);
-        attackNoticeController.ShowNewNotice(attackType, striker.location, durationSec);
+        if (attackNoticeController != null)
+        {
+            float durationSec =
+                StageFlowManager.Instance.BeatToSec(arriveBeat) -
+                StageFlowManager.Instance.BeatToSec(note.noticeBeat);
+
+            attackNoticeController.ShowNewNotice(attackType, striker.location, durationSec);
+        }
     }
 
     private void HandleAttack(float currentSec)
     {
-        // 예고 순서와 공격 시작 순서가 반드시 일치한다고 가정함
-        // (AttackNotice의 생성/삭제 순서 일관성 보장을 위해)
         while (prepareQueue.Count > 0)
         {
-            var prepareEntry = prepareQueue.Peek();
-            var striker = strikerManager.strikerList[prepareEntry.strikerIndex];
+            PrepareEntry prepareEntry = prepareQueue.Peek();
 
-            // 다음 공격 시작 시각에 도달하지 않았으면 종료
+            if (strikerManager == null || strikerManager.strikerList == null)
+                break;
+
+            if (prepareEntry.strikerIndex < 0 || prepareEntry.strikerIndex >= strikerManager.strikerList.Count)
+            {
+                Debug.LogError($"NotePerformer.HandleAttack: invalid strikerIndex {prepareEntry.strikerIndex}");
+                prepareQueue.Dequeue();
+                continue;
+            }
+
+            StrikerController striker = strikerManager.strikerList[prepareEntry.strikerIndex];
+            if (striker == null || striker.Visual == null)
+            {
+                Debug.LogError($"NotePerformer.HandleAttack: striker or striker.Visual is null at index {prepareEntry.strikerIndex}");
+                prepareQueue.Dequeue();
+                continue;
+            }
+
             if (currentSec < StageFlowManager.Instance.BeatToSec(prepareEntry.arriveBeat) - striker.Visual.preAttackDelay)
                 break;
 
             prepareQueue.Dequeue();
 
-            // isLastInBurst: 이 스트라이커의 현재 준비된 공격 중 마지막인지
             bool isLastInBurst = true;
-            foreach (var entry in prepareQueue)
+            foreach (PrepareEntry entry in prepareQueue)
             {
                 if (entry.strikerIndex == prepareEntry.strikerIndex)
                 {
@@ -183,14 +181,24 @@ public class NotePerformer : MonoBehaviour
                     break;
                 }
             }
-            // isFinalAttack: 이 스트라이커의 마지막 공격인지
+
             bool isFinalAttack = isLastInBurst && !HasMoreFutureNotes(prepareEntry.strikerIndex);
 
-            striker.OnAttackStart(new StrikerAttackContext(currentSec, prepareEntry.arriveBeat, prepareEntry.nextArriveBeat, prepareEntry.attackType,
-                                                            isLastInBurst, isFinalAttack));
+            striker.OnAttackStart(
+                new StrikerAttackContext(
+                    currentSec,
+                    prepareEntry.arriveBeat,
+                    prepareEntry.nextArriveBeat,
+                    prepareEntry.attackType,
+                    isLastInBurst,
+                    isFinalAttack
+                )
+            );
 
-            // 예고 이펙트 제거
-            attackNoticeController.DestroyFirstNotice(prepareEntry.attackType);
+            if (attackNoticeController != null)
+            {
+                attackNoticeController.DestroyFirstNotice(prepareEntry.attackType);
+            }
         }
     }
 
@@ -198,8 +206,10 @@ public class NotePerformer : MonoBehaviour
     {
         for (int i = nextNoteIndex; i < notes.Length; i++)
         {
-            if (notes[i].strikerIndex == strikerIndex) return true;
+            if (notes[i].strikerIndex == strikerIndex)
+                return true;
         }
+
         return false;
     }
 }

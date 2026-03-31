@@ -227,7 +227,7 @@ public class StageFlowManager : MonoBehaviour
         if (strikerManager != null)
         {
             strikerManager.ClearStrikers();
-            strikerManager.charts.Clear();
+            strikerManager.charts = null;
         }
 
         if (judgeSystem != null)
