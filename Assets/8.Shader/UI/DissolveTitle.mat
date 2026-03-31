@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shader Graphs_DissolveShader
+  m_Name: DissolveTitle
   m_Shader: {fileID: -6465566751694194690, guid: cc7a7ee37d8032d4d9e5171c7701c279, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
