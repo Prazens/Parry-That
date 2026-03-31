@@ -61,6 +61,6 @@ public class SwordMovement : MonoBehaviour
 
     private void ChangeSwordPosition()
     {
-        rect.anchoredPosition += Vector2.up * MenuManager.Instance.height;
+        rect.anchoredPosition += Vector2.up * -MenuManager.Instance.height / 7;
     }
 }
