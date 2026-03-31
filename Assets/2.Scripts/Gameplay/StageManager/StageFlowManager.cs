@@ -338,6 +338,11 @@ public class StageFlowManager : MonoBehaviour
             stageAudioManager.AudioPause();
         }
 
+        if (stageResultManager != null)
+        {
+            stageResultManager.ProcessPauseResult();
+        }
+
         if (staticUIManager != null)
         {
             staticUIManager.TogglePausePanel(true);
