@@ -355,7 +355,11 @@ public class JudgeSystem : MonoBehaviour
 
         if (!TutorialManager.isTutorial)
         {
-            judgeDetails[(int)judgeObject.noteDirection][(int)judgement] += 1;
+            int strikerIndex = strikerManager.strikerList.IndexOf(judgeObject.strikerController);
+            if (strikerIndex >= 0 && strikerIndex + 1 < judgeDetails.Count)
+            {
+                judgeDetails[strikerIndex + 1][(int)judgement] += 1;
+            }
         }
 
         // 특정 Striker 찾기
