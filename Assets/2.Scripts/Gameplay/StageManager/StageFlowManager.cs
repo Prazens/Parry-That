@@ -9,6 +9,7 @@ public class StageFlowManager : MonoBehaviour
     public static StageFlowManager Instance;
 
     public float currentTime { get; private set; }
+    public float bpm { get; private set; } = 60f; // 기본값
     public float stageDuration = 180f;
 
     public static bool isActive = false;
@@ -41,6 +42,9 @@ public class StageFlowManager : MonoBehaviour
     private bool victorySequenceTriggered = false;
     private bool victoryStarted = false;
 
+    // currentTime이 (-1 * STAGE_READY_TIME)부터 시작함.
+    public const float STAGE_READY_TIME = 2.0f;
+
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -58,7 +62,7 @@ public class StageFlowManager : MonoBehaviour
 
         if (stageAudioManager != null && stageAudioManager.musicSource != null && stageAudioManager.musicSource.clip != null)
         {
-            stageDuration = stageAudioManager.musicSource.clip.length + stageAudioManager.musicOffset + 1f;
+            stageDuration = stageAudioManager.musicSource.clip.length + 1f;
         }
     }
 
@@ -75,9 +79,11 @@ public class StageFlowManager : MonoBehaviour
         {
             if (stageAudioManager.musicSource.clip != null)
             {
+                // 튜토리얼이 아닐 때만 오프셋을 적용하여 재생
                 if (currentStageData != null && currentStageData.Category != StageCategory.Tutorial)
                 {
-                    if (currentTime >= 2f)
+                    // currentTime이 bgmOffset에 도달하면 음악 재생
+                    if (currentTime >= stageAudioManager.bgmOffset)
                     {
                         stageAudioManager.musicSource.Play();
                         stageAudioManager.musicPlayed = true;
@@ -85,6 +91,7 @@ public class StageFlowManager : MonoBehaviour
                 }
                 else
                 {
+                    // 튜토리얼은 즉시 재생
                     stageAudioManager.musicSource.Play();
                     stageAudioManager.musicPlayed = true;
                 }
@@ -135,6 +142,17 @@ public class StageFlowManager : MonoBehaviour
         }
     }
 
+    public void SetBPM(float _bpm)
+    {
+        bpm = _bpm;
+    }
+
+    /// <summary>
+    /// 박자(Beat)를 시간(Seconds)으로 단위 변환
+    /// </summary>
+    public float BeatToSec(float beatIndex)
+    => beatIndex * (60f / bpm);
+
     public void FirstStartStage()
     {
         GameObject inGameScreen = Resources.FindObjectsOfTypeAll<GameObject>()
@@ -177,11 +195,10 @@ public class StageFlowManager : MonoBehaviour
 
         if (stageAudioManager != null && stageAudioManager.musicSource != null && stageAudioManager.musicSource.clip != null)
         {
-            stageDuration = stageAudioManager.musicSource.clip.length + stageAudioManager.musicOffset + 1f;
+            stageDuration = stageAudioManager.musicSource.clip.length + 1f;
         }
 
-        currentTime = 0f;
-        phaseEndTime = -1f;
+        currentTime = -STAGE_READY_TIME;
         is_over = false;
         isPaused = false;
         isDaehwa = false;

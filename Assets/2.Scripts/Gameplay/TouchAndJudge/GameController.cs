@@ -151,7 +151,7 @@ public class GameController : MonoBehaviour
             StageSelection.SetSelection(6, 0);
             SceneManager.LoadScene("CutScene");
         }
-        else SceneManager.LoadScene("Main");
+        else SceneManager.LoadScene("testMain");
         Time.timeScale = 1f;
     }
 }

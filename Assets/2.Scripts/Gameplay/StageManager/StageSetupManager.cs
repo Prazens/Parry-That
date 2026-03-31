@@ -13,6 +13,7 @@ public class StageSetupManager : MonoBehaviour
     [SerializeField] private StageFlowManager stageFlowManager;
     [SerializeField] private GameController gameController;
     [SerializeField] private JudgeSystem judgeSystem;
+    [SerializeField] private NotePerformer notePerformer;
 
     [Header("CutIn UI")]
     [SerializeField] private DynamicUIManager dynamicUIManager;
@@ -69,7 +70,12 @@ public class StageSetupManager : MonoBehaviour
 
         if (strikerManager != null)
         {
-            strikerManager.SetPlayer(playerManager);
+            strikerManager.SetReferences(playerManager, notePerformer, judgeSystem, dynamicUIManager);
+        }
+
+        if (notePerformer != null)
+        {
+            notePerformer.SetPlayer(playerManager);
         }
     }
 

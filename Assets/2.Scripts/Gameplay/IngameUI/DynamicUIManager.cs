@@ -200,7 +200,7 @@ public class DynamicUIManager : MonoBehaviour
         judgeDisplay.transform.localScale = new Vector3(0.12f, 0.12f, 0f);
         judgeDisplay.transform.position = new Vector3(Screen.width / 2, Screen.height / 2) + generatePosition;
 
-        int spriteIndex = math.abs(judge - 3);
+        int spriteIndex = math.abs(judge - 4);
 
         if (judgeImages != null && spriteIndex >= 0 && spriteIndex < judgeImages.Length)
         {
@@ -415,7 +415,7 @@ public class DynamicUIManager : MonoBehaviour
         }
     }
 
-    public void CutInDisplay(float _duration, bool isHide = false)
+    public void CutInDisplay(float targetTimeSeconds, bool isHide = false)
     {
         if (cutScenes == null || cutScenes.Length < 2) return;
 
@@ -426,8 +426,9 @@ public class DynamicUIManager : MonoBehaviour
         }
         else
         {
-            StartCoroutine(EaseInEffect(cutScenes[0], Direction.Up, _duration));
-            StartCoroutine(EaseInEffect(cutScenes[1], Direction.Down, _duration));
+            float duration = targetTimeSeconds - StageFlowManager.Instance.currentTime;
+            StartCoroutine(EaseInEffect(cutScenes[0], Direction.Up, duration));
+            StartCoroutine(EaseInEffect(cutScenes[1], Direction.Down, duration));
         }
     }
 }

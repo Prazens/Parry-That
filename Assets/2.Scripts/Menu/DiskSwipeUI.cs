@@ -127,7 +127,7 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
             Debug.Log($"Updating stage {i + 1} disk sprite for difficulty {difficulty}");
             stageDisks[i + 1].GetComponent<Image>().sprite = stageDiskSprites
                 [i]
-                [StageDBManager.Instance.starRatings[StageDBManager.Instance.CurrentStage[0], StageDBManager.Instance.CurrentStage[1]] == 0 ? 0 : 1]
+                [StageDBManager.Instance.starRatings[StageSelection.SelectedStageId, (int)StageSelection.SelectedDifficulty] == 0 ? 0 : 1]
                 [Mathf.Min(difficulty, StageDBManager.Instance.diffNumbers[i + 1] - 1)];
         }
     }

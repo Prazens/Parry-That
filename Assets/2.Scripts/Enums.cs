@@ -23,6 +23,18 @@ public enum AttackType
     StreamFinish = 6,
 }
 
+public enum JudgeType
+{
+    None = 0,
+    LateMiss = 1,
+    LateBlocked = 2,
+    LateParried = 3,
+    Perfect = 4,
+    EarlyParried = 5,
+    EarlyBlocked = 6,
+    EarlyMiss = 7
+}
+
 public class DirTool
 {
     static public Vector3 TranstoVec(Direction direction)
