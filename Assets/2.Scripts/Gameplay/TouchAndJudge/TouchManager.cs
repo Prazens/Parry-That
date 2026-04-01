@@ -40,8 +40,18 @@ public class TouchManager : MonoBehaviour
 
     void Update()
     {
-        KeyChecker();
-        MouseChecker();
+        if (StageFlowManager.isActive)
+        {
+            if (isTouchAvailable)
+            {
+                TouchChecker();
+            }
+            else
+            {
+                //KeyChecker();  // Legacy
+                MouseChecker();  // 터치에 중복
+            }
+        }
     }
 
     private void KeyChecker()

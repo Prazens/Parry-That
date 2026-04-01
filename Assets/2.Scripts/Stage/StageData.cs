@@ -65,11 +65,8 @@ public class StageData : ScriptableObject
 {
     [Header("Identity")]
     [SerializeField] private int stageId = 0;
-    [SerializeField] private Difficulty difficulty = Difficulty.Normal;
+    [SerializeField] private Difficulty difficulty = Difficulty.Easy;
     [SerializeField] private StageCategory category = StageCategory.Normal;
-
-    [Header("Display")]
-    [SerializeField] private string displayName = "Stage";
 
     [Header("Phases")]
     [SerializeField] private List<StagePhase> phases = new List<StagePhase>();
@@ -91,7 +88,6 @@ public class StageData : ScriptableObject
     public int StageId => stageId;
     public Difficulty Difficulty => difficulty;
     public StageCategory Category => category;
-    public string DisplayName => displayName;
 
     public IReadOnlyList<StagePhase> Phases => phases;
 
