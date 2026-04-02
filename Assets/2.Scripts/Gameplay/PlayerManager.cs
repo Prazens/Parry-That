@@ -10,7 +10,7 @@ public class PlayerManager : MonoBehaviour
     public JudgeSystem judgeSystem;
 
     public int hp;
-    public Direction currentDirection = Direction.Up;  // 쉴드 방향
+    private Direction currentDirection = Direction.Up;  // 쉴드 방향
 
     // StageManager -> StageFlowManager
     public StageFlowManager stageFlowManager;
@@ -48,6 +48,10 @@ public class PlayerManager : MonoBehaviour
 
     public void Operate(Direction direction, AttackType type)
     {
+        if (direction == Direction.None)
+            direction = currentDirection;
+        currentDirection = direction;
+
         switch (direction)
         {
             case Direction.Up:
