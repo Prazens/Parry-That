@@ -129,34 +129,18 @@ public class JudgeSystem : MonoBehaviour
 
         if (strikerManager == null || strikerManager.charts == null)
         {
-            judgeDetails.Add(new int[7] { 0, 0, 0, 0, 0, 0, 0 });
+            judgeDetails.Add(new int[8] { 0, 0, 0, 0, 0, 0, 0, 0 });
             return;
         }
 
         ChartData chart = strikerManager.charts;
 
-        int strikerCount = chart.strikers != null ? chart.strikers.Length : 0;
         int totalNoteCount = chart.notes != null ? chart.notes.Length : 0;
 
         // 전체
-        judgeDetails.Add(new int[7] { totalNoteCount, 0, 0, 0, 0, 0, 0 });
-
-        // striker별
-        for (int i = 0; i < strikerCount; i++)
-        {
-            int count = 0;
-
-            if (chart.notes != null)
-            {
-                for (int j = 0; j < chart.notes.Length; j++)
-                {
-                    if (chart.notes[j].strikerIndex == i)
-                        count++;
-                }
-            }
-
-            judgeDetails.Add(new int[7] { count, 0, 0, 0, 0, 0, 0 });
-        }
+        judgeDetails.Add(new int[8] { totalNoteCount, 0, 0, 0, 0, 0, 0, 0 });
+        
+        // Striker별 or 방향별은 일단 제거함 (사용처 없음)
     }
 
     public void EnqueueJudgeable(Judgeable judgeable)
@@ -454,10 +438,6 @@ public class JudgeSystem : MonoBehaviour
 
         // index로 한번에 처리
         judgeDetails[0][(int)judgeType] += 1;
-        if (!TutorialManager.isTutorial)
-        {
-            judgeDetails[(int)judgeable.noteDirection][(int)judgeType] += 1;
-        }
         dynamicUIManager?.DisplayJudge((int)judgeType, judgeable.noteDirection);
 
         // 특정 Striker 찾기
