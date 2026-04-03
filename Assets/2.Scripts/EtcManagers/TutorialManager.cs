@@ -91,6 +91,6 @@ public class TutorialManager : MonoBehaviour
 
         databaseManager.SaveTutorialDone();
 
-        SceneManager.LoadScene("Main");
+        SceneManager.LoadScene("testMain");
     }
 }

@@ -390,7 +390,7 @@ public class StageFlowManager : MonoBehaviour
         //튜토리얼이면 메인으로
         if (currentStageData.Category == StageCategory.Tutorial)
         {
-            SceneManager.LoadScene("Main");
+            FindObjectOfType<TutorialManager>().SkipOn();
         }
         else
         {
