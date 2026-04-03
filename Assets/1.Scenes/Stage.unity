@@ -1260,7 +1260,6 @@ MonoBehaviour:
   dynamicUIManager: {fileID: 1305503427}
   cutInParent: {fileID: 1394439256}
   tutorialManager: {fileID: 1355106857}
-  dialogueManager: {fileID: 1515393733}
 --- !u!1 &743363869
 GameObject:
   m_ObjectHideFlags: 0
@@ -1517,13 +1516,10 @@ MonoBehaviour:
   strikerManager: {fileID: 2036327256}
   parriedProjectileManager: {fileID: 768575886}
   dynamicUIManager: {fileID: 1305503427}
-  notePerformer: {fileID: 768575892}
   combo: 0
   score: 0
   lastNonMissJudge: 0
   isHolding: 0
-  isOnStream: 0
-  streamCount: -1
 --- !u!114 &768575892
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2782,7 +2778,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1515393733
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3255,17 +3251,8 @@ MonoBehaviour:
   - {fileID: 1055898947}
   - {fileID: 783409970}
   charts:
-  - bpm: 0
-    strikerType: 0
-    direction: 0
-    appearTime: 0
-    disappearTime: 0
-    notes: []
-  - bpm: 0
-    strikerType: 0
-    direction: 0
-    appearTime: 0
-    disappearTime: 0
+    bpm: 0
+    strikers: []
     notes: []
   tutorialManager: {fileID: 1355106857}
   strikerList: []
