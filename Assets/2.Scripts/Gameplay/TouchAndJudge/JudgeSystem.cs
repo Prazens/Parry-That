@@ -496,8 +496,9 @@ public class JudgeSystem : MonoBehaviour
                     parriedProjectileManager.ParryTusache(judgeable.noteDirection, (int)judgeable.attackType);
                 }
             }
-            dynamicUIManager?.DisplayScore(score);
         }
+        //점수 표시
+        dynamicUIManager?.DisplayScore(score);
 
         // 대상 노트 제거
         bool isParried = (judgeType >= JudgeType.LateParried && judgeType <= JudgeType.EarlyParried);
