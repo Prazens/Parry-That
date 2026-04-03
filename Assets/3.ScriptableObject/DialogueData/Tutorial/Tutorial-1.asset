@@ -12,4 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5b262969ac422d438c02fa030b01cd5, type: 3}
   m_Name: Tutorial-1
   m_EditorClassIdentifier: 
-  lines: []
+  lines:
+  - speakerTag: 2
+    expressionTag: 0
+    text: "\u3147\u3147\u3134\u3147"
+    textRevealDuration: 2
+    waitAfterReveal: 0
+    waitBeforeReveal: 0
+    speakerNameOverride: 

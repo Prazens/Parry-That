@@ -16,7 +16,7 @@ public class StrikerManager : MonoBehaviour
     private JudgeSystem judgeSystem;
     private DynamicUIManager dynamicUIManager;
 
-    public List<ChartData> charts;
+    public ChartData charts;
 
     [SerializeField] public TutorialManager tutorialManager;
 
@@ -40,7 +40,7 @@ public class StrikerManager : MonoBehaviour
         if (charts == null) return;
         if (strikerList == null || strikerStatus == null) return;
 
-        int processCount = charts.Count;
+        int processCount = charts.strikers.Length;
         if (strikerList.Count < processCount) processCount = strikerList.Count;
         if (strikerStatus.Count < processCount) processCount = strikerStatus.Count;
 
@@ -53,11 +53,11 @@ public class StrikerManager : MonoBehaviour
             StrikerController striker = strikerList[i];
             if (striker == null) continue;
 
-            ChartData chart = charts[i];
+            StrikerData strikerData = charts.strikers[i];
 
-            // 스트라이커 등장 및 퇴장
-            float appearTimeSeconds = StageFlowManager.Instance.BeatToSec(chart.appearTime);
-            float disappearTimeSeconds = StageFlowManager.Instance.BeatToSec(chart.disappearTime);
+            //스트라이커 등장 및 퇴장
+            float appearTimeSeconds = StageFlowManager.Instance.BeatToSec(strikerData.appearTime);
+            float disappearTimeSeconds = StageFlowManager.Instance.BeatToSec(strikerData.disappearTime);
             if (currentTime >= appearTimeSeconds && strikerStatus[i] == 0)
             {
                 strikerStatus[i] = 1;
@@ -81,28 +81,26 @@ public class StrikerManager : MonoBehaviour
 
         ClearStrikers();
 
-        strikerStatus = new List<int>(new int[charts.Count]);
-        strikerList   = new List<StrikerController>(new StrikerController[charts.Count]);
+        int strikerCount = charts.strikers.Length;
 
-        for (int i = 0; i < charts.Count; i++)
+        strikerStatus = new List<int>(new int[strikerCount]);
+        strikerList   = new List<StrikerController>(new StrikerController[strikerCount]);
+
+        for (int i = 0; i < strikerCount; i++)
         {
-            bool activated = charts[i].appearTime == 0;
+            bool activated = charts.strikers[i].appearTime == 0;
             if (activated) strikerStatus[i] = 1;
-
             SpawnStriker(i, activated);
         }
     }
 
     private void SpawnStriker(int chartIndex, bool isActivated)
     {
-        if (chartIndex < 0 || chartIndex >= charts.Count) return;
+        if (chartIndex < 0 || chartIndex >= charts.strikers.Length) return;
         if (spawnPositions == null || spawnPositions.Length == 0) return;
-        
-        int hp = charts[chartIndex].notes.Length;
-        float bpm = charts[chartIndex].bpm;
 
-        int positionIndex = charts[chartIndex].direction - 1;
-        int prefabIndex = charts[chartIndex].strikerType;
+        int positionIndex = charts.strikers[chartIndex].direction - 1;
+        int prefabIndex = charts.strikers[chartIndex].strikerType;
 
         if (positionIndex < 0 || positionIndex >= spawnPositions.Length) return;
         if (prefabIndex < 0 || prefabIndex >= strikerPrefabs.Count) return;

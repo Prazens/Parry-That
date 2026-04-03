@@ -267,13 +267,13 @@ public class StageMenu : Singleton<StageMenu>, IDragHandler, IEndDragHandler
         {
             // Tutorial
             stageId = 0;
-            difficulty = Difficulty.Normal;
+            difficulty = Difficulty.Easy;
         }
         else if (currentIndex == 4)
         {
-            // Final Encore (Easy/Normal 슬롯)
+            // Final Encore (Easy/Hard 슬롯)
             stageId = 4;
-            difficulty = Difficulty.Normal;
+            difficulty = Difficulty.Easy;
         }
         else if (currentIndex == 5)
         {
@@ -285,13 +285,13 @@ public class StageMenu : Singleton<StageMenu>, IDragHandler, IEndDragHandler
         {
             // Epilogue
             stageId = 6;
-            difficulty = Difficulty.Normal;
+            difficulty = Difficulty.Easy;
         }
         else
         {
             // Stage 1~3 : 모드 버튼 상태 반영
             stageId = currentIndex;
-            difficulty = SceneLinkage.isNormal ? Difficulty.Normal : Difficulty.Hard;
+            difficulty = SceneLinkage.isNormal ? Difficulty.Easy : Difficulty.Hard;
         }
 
         StageSelection.SetSelection(stageId, difficulty);
@@ -547,7 +547,7 @@ public class StageMenu : Singleton<StageMenu>, IDragHandler, IEndDragHandler
             }
             else
             {
-                // text.text = "Normal";
+                // text.text = "Easy";
                 SceneLinkage.isNormal = true;
                 // 이지 효과들
                 modeButtonObj.GetComponent<Image>().sprite = normalButton;

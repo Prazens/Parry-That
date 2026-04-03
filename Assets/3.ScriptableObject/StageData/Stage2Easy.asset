@@ -10,25 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e35ccfe094e13414891f641969d18e51, type: 3}
-  m_Name: Stage2Normal
+  m_Name: Stage2Easy
   m_EditorClassIdentifier: 
   stageId: 2
   difficulty: 0
   category: 1
   displayName: Stage2Normal
-  chartJsons:
-  - {fileID: 4900000, guid: 148c6d2e8f62c6d4ca009420fc2e3875, type: 3}
-  - {fileID: 4900000, guid: 8cd5094df843b8e4f960ef433c23b314, type: 3}
-  - {fileID: 4900000, guid: 922aba5a0f1ea9141ae927036773ba3a, type: 3}
-  - {fileID: 4900000, guid: 591b378f542471346bff98a73be8e7ed, type: 3}
-  - {fileID: 4900000, guid: fd0057544c202414b842859133b1f093, type: 3}
-  - {fileID: 4900000, guid: a9488e26cdfff99428be1f1cd8f35076, type: 3}
-  - {fileID: 4900000, guid: c25e9564bff7bf84a9e9bd4ff080d25d, type: 3}
-  - {fileID: 4900000, guid: 5dba3bfada7e6a544ba2d71782f27324, type: 3}
-  - {fileID: 4900000, guid: 7b396d0dc4c19b44095118580ec75cb0, type: 3}
+  phases:
+  - chartJson: {fileID: 4900000, guid: 9285cdc76cdb05c41aaa2b429f12f269, type: 3}
+    dialogue: {fileID: 0}
+    dialogueAudioPolicy: 0
+  - chartJson: {fileID: 4900000, guid: 8718f35c160a0dc448d3d4cb6d9b9e17, type: 3}
+    dialogue: {fileID: 0}
+    dialogueAudioPolicy: 0
+  - chartJson: {fileID: 4900000, guid: 764403194765d38438201fc5f2b1f20d, type: 3}
+    dialogue: {fileID: 0}
+    dialogueAudioPolicy: 0
   bgm: {fileID: 8300000, guid: b05227e2de4aaca4687044f1e94e0706, type: 3}
-  overrideMusicOffset: 0
-  musicOffset: 0
+  overrideBgmOffset: 0
+  bgmOffset: 0
   cutInUpPrefab: {fileID: 3830714329297533927, guid: bb12253c0c433044e8ff902aa7058426, type: 3}
   cutInDownPrefab: {fileID: 6510084509892605857, guid: 2beb9ed04b3801b45ae8ed4be314bc73, type: 3}
   bossSpawnPrefabs: []
