@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class StageFlowManager : MonoBehaviour
 {
@@ -290,9 +291,30 @@ public class StageFlowManager : MonoBehaviour
         }
 
         IReadOnlyList<StagePhase> phases = currentStageData.Phases;
-        if (phases == null || currentPhaseIndex < 0 || currentPhaseIndex >= phases.Count)
+        if (phases == null)
         {
             EndStage();
+            return;
+        }
+
+        if (currentPhaseIndex < 0)
+        {
+            EndStage();
+            return;
+        }
+
+        if (currentPhaseIndex >= phases.Count)
+        {
+            if (currentStageData.Category == StageCategory.Tutorial)
+            {
+                EndStage();
+            }
+            else
+            {
+                isActive = true;
+                isDaehwa = false;
+                phaseEndTime = -1f;
+            }
             return;
         }
 
@@ -365,20 +387,28 @@ public class StageFlowManager : MonoBehaviour
 
     private void EndStage()
     {
-        currentTime = stageDuration;
-        isActive = false;
-        is_over = true;
-        button_active = false;
-
-        if (stageResultManager != null)
+        //튜토리얼이면 메인으로
+        if (currentStageData.Category == StageCategory.Tutorial)
         {
-            stageResultManager.ProcessClearResult();
+            SceneManager.LoadScene("Main");
         }
-
-        if (staticUIManager != null)
+        else
         {
-            staticUIManager.ToggleClearPanel(true);
-            staticUIManager.ToggleOverlay(true);
+            currentTime = stageDuration;
+            isActive = false;
+            is_over = true;
+            button_active = false;
+
+            if (stageResultManager != null)
+            {
+                stageResultManager.ProcessClearResult();
+            }
+
+            if (staticUIManager != null)
+            {
+                staticUIManager.ToggleClearPanel(true);
+                staticUIManager.ToggleOverlay(true);
+            }
         }
     }
 
