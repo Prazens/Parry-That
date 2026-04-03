@@ -467,7 +467,6 @@ public class JudgeSystem : MonoBehaviour
         // 가드 시 처리
         else if (judgeType == JudgeType.LateBlocked || judgeType == JudgeType.EarlyBlocked)
         {
-            dynamicUIManager?.DisplayScore(score);
             playerManager.PlayerBlockedSound();
         }
         // 패링 성공 시 처리
@@ -497,6 +496,7 @@ public class JudgeSystem : MonoBehaviour
                     parriedProjectileManager.ParryTusache(judgeable.noteDirection, (int)judgeable.attackType);
                 }
             }
+            dynamicUIManager?.DisplayScore(score);
         }
 
         // 대상 노트 제거
