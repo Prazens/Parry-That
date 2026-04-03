@@ -208,7 +208,7 @@ Animator:
   m_GameObject: {fileID: 8735992909591658843}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 9ce30fa51266b094e9f8d1d19dd8ef95, type: 2}
+  m_Controller: {fileID: 9100000, guid: 2475224ffb77e80459e7fe6425c09347, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -364,6 +364,11 @@ MonoBehaviour:
   animator: {fileID: 1619256992334318428}
   holdSpriteAnimator: {fileID: 0}
   particleSystemGreen: {fileID: 165418590215597304}
+  directionOverrides:
+  - {fileID: 22100000, guid: e19d7aa11159600458b421a2e038c665, type: 2}
+  - {fileID: 22100000, guid: 38de8f0945df6d743b7db8117ae491b5, type: 2}
+  - {fileID: 22100000, guid: b503b7b2ffd51b24595e80b5d7137ff8, type: 2}
+  - {fileID: 22100000, guid: 05f02dcc02b1fab4790aea44ea38909e, type: 2}
   bladeAnimator: {fileID: 7491916606276098673}
 --- !u!114 &-8917282706918679281
 MonoBehaviour:

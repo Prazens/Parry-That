@@ -3,6 +3,7 @@ using UnityEngine;
 
 public sealed class MeleeStrikerVisual : StrikerVisual
 {
+    [SerializeField] private AnimatorOverrideController[] directionOverrides;
     [SerializeField] private Animator bladeAnimator;
 
     private readonly float attackMoveTime = 0.1f;
@@ -20,6 +21,7 @@ public sealed class MeleeStrikerVisual : StrikerVisual
     {
         base.SetLocation(location);
 
+        animator.runtimeAnimatorController = directionOverrides[(int)location - 1];
         bladeAnimator.SetInteger("bladeDirection", (int)location);
     }
 
@@ -66,12 +68,6 @@ public sealed class MeleeStrikerVisual : StrikerVisual
         }
     }
 
-    public override void OnClear()
-    {
-        base.OnClear();
-        animator.SetTrigger("Cleared");
-    }
-
     private IEnumerator ActMeleeAttack(AttackType attackType)
     {
         //공격 이전에 출발
@@ -80,18 +76,21 @@ public sealed class MeleeStrikerVisual : StrikerVisual
         //공격 애니메이션 작용
         SetAttackType((int)attackType);
 
+        if (attackType != AttackType.HoldStart)
+        {
+            int randomNum = Random.Range(0, 2);
+            animator.SetInteger("randomSelector", randomNum);
+            bladeAnimator.SetInteger("randomSelector", randomNum);
+        }
+
+        animator.SetTrigger("Attack");
+        bladeAnimator.SetTrigger("bladePlay");
+
         if (attackType == AttackType.HoldStart)
         {
-            animator.SetBool("isAttacking", true);
             transform.GetChild(0).transform.localPosition = DirTool.TranstoVec(DirTool.ReverseDir(location)) * 2f;
             yield break;
         }
-
-        int randomNum = Random.Range(0, 2);
-        animator.SetInteger("randomSelecter", randomNum);
-        bladeAnimator.SetInteger("randomSelecter", randomNum);
-        animator.SetTrigger("Attack");
-        bladeAnimator.SetTrigger("bladePlay");
 
         if (isLastInBurst)
         {
@@ -111,8 +110,7 @@ public sealed class MeleeStrikerVisual : StrikerVisual
 
     protected override void ActHoldStart(Judgeable judgeable)
     {
-        bladeAnimator.SetTrigger("bladePlay");
-
+        animator.SetBool("isHolding", true);
         dynamicUIManager.CutInDisplay(StageFlowManager.Instance.BeatToSec(judgeable.nextArriveBeat));
 
         isHolding = true;
@@ -120,7 +118,7 @@ public sealed class MeleeStrikerVisual : StrikerVisual
  
     protected override void ActHoldFinish(Judgeable judgeable)
     {
-        animator.SetBool("isAttacking", false);
+        animator.SetBool("isHolding", false);
         bladeAnimator.SetTrigger("bladeHoldFinish");
         transform.GetChild(0).transform.localPosition = Vector3.zero;
 
@@ -134,11 +132,9 @@ public sealed class MeleeStrikerVisual : StrikerVisual
         if (isMoved || isMoving) yield break;
 
         isMoving = true;
-        animator.SetBool("MovingGo", true);
 
         yield return LerpPosition(defaultPosition, targetPosition, attackMoveTime);
 
-        animator.SetBool("MovingGo", false);
         isMoved = true;
         isMoving = false;
     }
@@ -149,11 +145,11 @@ public sealed class MeleeStrikerVisual : StrikerVisual
 
         isMoved = false;
         isMoving = true;
-        animator.SetBool("MovingBack", true);
+        animator.SetBool("movingBack", true);
 
         yield return LerpPosition(targetPosition, defaultPosition, attackMoveTime / 2.0f);
 
-        animator.SetBool("MovingBack", false);
+        animator.SetBool("movingBack", false);
         isMoving = false;
     }
 
@@ -163,7 +159,7 @@ public sealed class MeleeStrikerVisual : StrikerVisual
 
         isMoved = false;
         isMoving = true;
-        animator.SetBool("hp0", true);
+        animator.SetTrigger("Bye");
 
         yield return LerpPosition(targetPosition, defaultPosition, 0.3f);
 

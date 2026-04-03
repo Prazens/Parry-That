@@ -57,7 +57,6 @@ public abstract class StrikerVisual : MonoBehaviour
     protected virtual void SetLocation(Direction location)
     {
         this.location = location;
-        animator.SetInteger("direction", (int)location);
     }
 
     protected void SetPosition(Vector3 defaultPosition, Vector3 targetPosition)
@@ -115,7 +114,7 @@ public abstract class StrikerVisual : MonoBehaviour
 
     public virtual void OnClear()
     {
-        animator.SetBool("isClear", true);
+        animator.SetTrigger("Cleared");
         particleSystemGreen?.Play();
         StartCoroutine(DisappearAfterAnim());
     }
