@@ -146,9 +146,9 @@ public class GameController : MonoBehaviour
 
     private void OnSwipeDown()
     {
-        if (stageFlowManager.currentStageData.StageId == 4)
+        if (stageFlowManager.currentStageData.Category == StageCategory.Boss)
         {
-            StageSelection.SetSelection(6, 0);
+            CutSceneSelection.SetSelection(stageFlowManager.currentStageData.StageId, CutSceneCategory.Epilogue);
             SceneManager.LoadScene("CutScene");
         }
         else SceneManager.LoadScene("testMain");
