@@ -45,10 +45,18 @@ public abstract class StrikerVisual : MonoBehaviour
         StartCoroutine(LerpPosition(spawnPosition, defaultPosition, spawnMoveDuration));
     }
 
+    private void OnEnable()
+    {
+        if (controller == null)
+            return;
+
+        // 스트라이커를 화면 밖에서 시작 위치로 이동
+        StartCoroutine(LerpPosition(spawnPosition, defaultPosition, spawnMoveDuration));
+    }
+
     protected virtual void SetLocation(Direction location)
     {
         this.location = location;
-        animator.SetInteger("direction", (int)location);
     }
 
     protected void SetPosition(Vector3 defaultPosition, Vector3 targetPosition)
@@ -57,7 +65,7 @@ public abstract class StrikerVisual : MonoBehaviour
         this.spawnPosition = AdjustPosition(defaultPosition, spawnOffset);
         this.targetPosition = AdjustPosition(targetPosition, targetOffset);
 
-        transform.position = defaultPosition;
+        transform.position = spawnPosition;
     }
 
     private Vector3 AdjustPosition(Vector3 position, float offset)
@@ -106,7 +114,7 @@ public abstract class StrikerVisual : MonoBehaviour
 
     public virtual void OnClear()
     {
-        animator.SetBool("isClear", true);
+        animator.SetTrigger("Cleared");
         particleSystemGreen?.Play();
         StartCoroutine(DisappearAfterAnim());
     }
