@@ -12,9 +12,9 @@ public class Tutorial : MonoBehaviour
     }
     public void SkipButtonOn()
     {
-        // ÀÓ½Ã ±¸Çö
+        // ï¿½Ó½ï¿½ ï¿½ï¿½ï¿½ï¿½
         DatabaseManager.isTutorialDone = true;
         theDatabase.SaveTutorialDone();
-        SceneManager.LoadScene("Main");
+        SceneManager.LoadScene("testMain");
     }
 }

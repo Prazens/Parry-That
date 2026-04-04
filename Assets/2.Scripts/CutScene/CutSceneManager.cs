@@ -316,7 +316,7 @@ public class CutSceneManager : MonoBehaviour
     //컷씬 종료 시 Stage씬 불러옴
     public void EndCutScene()
     {
-        if (StageSelection.SelectedStageId == 6) SceneManager.LoadScene("Main");
+        if (StageSelection.SelectedStageId == 6) SceneManager.LoadScene("testMain");
         else SceneManager.LoadScene("Stage");
     }
 

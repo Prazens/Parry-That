@@ -23,8 +23,7 @@ public class StageSetupManager : MonoBehaviour
 
     [Header("Tutorial Modules")]
     [SerializeField] private TutorialManager tutorialManager;
-    [SerializeField] private DialogueManager dialogueManager;
-
+    
     private GameObject playerObject;
     private GameObject guideboxTop;
     private GameObject guideboxBottom;
@@ -149,7 +148,6 @@ public class StageSetupManager : MonoBehaviour
             Debug.LogWarning("[StageSetupManager] StageSelection is not valid. Treating as Normal.");
 
             if (tutorialManager != null) tutorialManager.gameObject.SetActive(false);
-            if (dialogueManager != null) dialogueManager.gameObject.SetActive(false);
             strikerManager.tutorialManager = null;
 
             return;
@@ -165,7 +163,6 @@ public class StageSetupManager : MonoBehaviour
             Debug.LogError("[StageSetupManager] StageData not found. Treating as Normal.");
 
             if (tutorialManager != null) tutorialManager.gameObject.SetActive(false);
-            if (dialogueManager != null) dialogueManager.gameObject.SetActive(false);
             strikerManager.tutorialManager = null;
 
             return;
@@ -175,19 +172,16 @@ public class StageSetupManager : MonoBehaviour
         // Tutorial
         // =========================
         if (tutorialManager == null) tutorialManager = FindObjectOfType<TutorialManager>(true);
-        if (dialogueManager == null) dialogueManager = FindObjectOfType<DialogueManager>(true);
 
         if (stageData.Category == StageCategory.Tutorial)
         {
             if (tutorialManager != null) tutorialManager.gameObject.SetActive(true);
-            if (dialogueManager != null) dialogueManager.gameObject.SetActive(true);
 
             strikerManager.tutorialManager = tutorialManager;
         }
         else
         {
             if (tutorialManager != null) tutorialManager.gameObject.SetActive(false);
-            if (dialogueManager != null) dialogueManager.gameObject.SetActive(false);
 
             strikerManager.tutorialManager = null;
         }
