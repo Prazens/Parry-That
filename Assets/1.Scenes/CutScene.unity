@@ -943,7 +943,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: fba50d26fd9239645ba82d299cc6ed43, type: 2}
   - {fileID: 11400000, guid: 95390f218ef435b488284b78d526ebbf, type: 2}
   - {fileID: 11400000, guid: fba253d75b1cf7741be8b0d013be21ca, type: 2}
-  - {fileID: 11400000, guid: fba253d75b1cf7741be8b0d013be21ca, type: 2}
   - {fileID: 11400000, guid: f88a9d5a18e0d314b8f08023174aaada, type: 2}
   data: {fileID: 0}
   mainCanvas: {fileID: 1862990865}
