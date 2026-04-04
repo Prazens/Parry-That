@@ -72,7 +72,6 @@ public class StageFlowManager : MonoBehaviour
         if (isDaehwa) return;
         if (!isActive) return;
         if (isPaused) return;
-        if (is_over) return;
 
         currentTime += Time.deltaTime;
 
@@ -396,7 +395,6 @@ public class StageFlowManager : MonoBehaviour
         {
             currentTime = stageDuration;
             isActive = false;
-            is_over = true;
             button_active = false;
 
             if (stageResultManager != null)
