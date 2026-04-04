@@ -209,6 +209,8 @@ public class DialogLineController : MonoBehaviour
     {
         Debug.Log("DialogLineController: Starting LineDisappear");
 
+        // 텍스트 사라지는 애니메이션 없이 그냥 사라지게 해놓음
+        // 효과 주는 것도 괜찮을 듯한데 일단은 간단하게 처리
         disappearSequence.InsertCallback(0f, () => tmpText.transform.gameObject.SetActive(false));
 
         disappearSequence.Insert(sdm.lineDuration, dialogBar.DOAnchorPosX(0, sdm.lineCreation).SetEase(ease));
@@ -217,7 +219,7 @@ public class DialogLineController : MonoBehaviour
         disappearSequence.Insert(barDelay,
             DOTween.To(() => le.preferredHeight, h => le.preferredHeight = h, 0f, sdm.lineUpDuration)
             .SetEase(ease)
-            );
+        );
     }
 
     /// <summary>
@@ -252,6 +254,7 @@ public class DialogLineController : MonoBehaviour
     /// <summary>
     /// 글자 하나의 알파값을 설정하는 함수
     /// <para>알파값은 0~255 범위의 byte로 입력</para>
+    /// <para>지금은 사용하지 않음</para>
     /// </summary>
     /// <param name="textInfo">텍스트 정보</param>
     /// <param name="matIndex">재질 인덱스</param>
