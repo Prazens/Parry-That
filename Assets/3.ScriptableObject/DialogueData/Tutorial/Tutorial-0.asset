@@ -16,7 +16,28 @@ MonoBehaviour:
   - speakerTag: 1
     expressionTag: 0
     text: "\uBA54\uB871"
-    textRevealDuration: 2
-    waitAfterReveal: 0
-    waitBeforeReveal: 0
+    textRevealDuration: 1
+    waitAfterReveal: 4
+    waitBeforeReveal: 1
+    speakerNameOverride: 
+  - speakerTag: 2
+    expressionTag: 0
+    text: 11111
+    textRevealDuration: 1
+    waitAfterReveal: 4
+    waitBeforeReveal: 1
+    speakerNameOverride: 
+  - speakerTag: 1
+    expressionTag: 0
+    text: 22222
+    textRevealDuration: 1
+    waitAfterReveal: 4
+    waitBeforeReveal: 1
+    speakerNameOverride: 
+  - speakerTag: 1
+    expressionTag: 0
+    text: 33333
+    textRevealDuration: 1
+    waitAfterReveal: 4
+    waitBeforeReveal: 1
     speakerNameOverride: 
