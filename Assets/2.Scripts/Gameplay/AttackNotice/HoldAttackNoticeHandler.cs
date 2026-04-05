@@ -47,7 +47,6 @@ public class HoldAttackNoticeHandler : MonoBehaviour, IAttackHandler<HoldAttackN
             Disappear(durationSec);
         }
 
-
         context.judgeables?[1]?.AddOnDestroy(_ => ForceStop());
     }
 
@@ -90,14 +89,15 @@ public class HoldAttackNoticeHandler : MonoBehaviour, IAttackHandler<HoldAttackN
         float intervalSec = durationSec / 2.0f;
         for (int i = 0; i < 3; i++)
         {
+            bool isAppeared = exclamations[i].activeSelf;
             exclamations[i].SetActive(isAppear);
             if (i < 2)
             {
-                if (isAppear)
+                if (isAppear && !isAppeared)
                 {
                     audioSource.PlayOneShot(prepareSounds[i], PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("enemyVolume", 1));
                 }
-                else
+                else if (!isAppear && isAppeared)
                 {
                     audioSource.PlayOneShot(prepareSounds[1 - i], PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("enemyVolume", 1));
                 }

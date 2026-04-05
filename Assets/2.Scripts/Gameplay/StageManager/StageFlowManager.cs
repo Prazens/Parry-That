@@ -74,7 +74,15 @@ public class StageFlowManager : MonoBehaviour
         if (isPaused) return;
         if (is_over) return;
 
-        currentTime += Time.deltaTime;
+        // 음악이 재생 중일 때는 오디오 소스의 시간을 직접 참조하여 음악과 동기화
+        if (stageAudioManager != null && stageAudioManager.musicSource.isPlaying)
+        {
+            currentTime = stageAudioManager.musicSource.time + stageAudioManager.bgmOffset;
+        }
+        else
+        {
+            currentTime += Time.deltaTime;
+        }
 
         if (stageAudioManager != null && stageAudioManager.musicSource != null && !stageAudioManager.musicPlayed)
         {
