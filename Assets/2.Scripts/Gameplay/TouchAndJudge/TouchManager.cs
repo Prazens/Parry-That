@@ -1,22 +1,18 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO.IsolatedStorage;
-using System.Numerics;
-using Unity.VisualScripting;
 using UnityEngine;
-using Vector3 = UnityEngine.Vector3;
 
-public struct JudgeFormat
+public class Touched
 {
     public Direction direction;
-    public double timing;
+    public double touchSec;
     public AttackType type;
 
-    public JudgeFormat(Direction _direction, double _timing, AttackType _type)
+    public Touched(Direction _direction, double _touchSec, AttackType _type)
     {
         direction = _direction;
-        timing = _timing;
+        touchSec = _touchSec;
         type = _type;
     }
 }
@@ -35,8 +31,12 @@ public class TouchManager : MonoBehaviour
 
     private bool isTapAndSwipe = false;
     private Direction previousDirection;
-
     private Touch tempTouchs;
+
+    // 입력 감도 상수
+    private const float MOUSE_SWIPE_SENSITIVITY = 40f;
+    private const float TOUCH_SWIPE_SENSITIVITY = 0.25f;
+    private const float SWIPE_TIME_THRESHOLD = 0.1f;
 
     void Update()
     {
@@ -80,40 +80,92 @@ public class TouchManager : MonoBehaviour
 
     private void MouseChecker()
     {
-        if (Input.GetMouseButtonDown(0) && !isSwiping)
-        {
-            initialPos = Input.mousePosition;
-            lastPos = Input.mousePosition;
-            sumLength = 0;
-            isSwiping = true;
-            isTapAndSwipe = true;
-            judgeTime = StageFlowManager.Instance.currentTime;
+        Vector3 mousePos = Input.mousePosition;
 
+        if (Input.GetMouseButtonDown(0))
+        {
+            OnInputStart(mousePos, true);
+        }
+        else if (Input.GetMouseButton(0))
+        {
+            if (!isSwiping) OnInputStart(mousePos, false);
+            else OnInputUpdate(mousePos, MOUSE_SWIPE_SENSITIVITY);
+        }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            OnInputEnd();
+        }
+
+        // 마우스 클릭 해제 시점이 아니더라도 입력이 물리적으로 끊기면 종료 처리
+        if (!Input.GetMouseButton(0))
+        {
+            if (isSwiping) OnInputEnd();
+        }
+    }
+
+    private void TouchChecker()
+    {
+        if (Input.touchCount <= 0)
+        {
+            if (isSwiping) OnInputEnd();
+            return;
+        }
+
+        tempTouchs = Input.GetTouch(0);
+        Vector3 touchPos = Camera.main.ScreenToWorldPoint(tempTouchs.position);
+
+        switch (tempTouchs.phase)
+        {
+            case TouchPhase.Began:
+                OnInputStart(touchPos, true);
+                break;
+            case TouchPhase.Moved:
+            case TouchPhase.Stationary:
+                if (!isSwiping) OnInputStart(touchPos, false);
+                else OnInputUpdate(touchPos, TOUCH_SWIPE_SENSITIVITY);
+                break;
+            case TouchPhase.Ended:
+            case TouchPhase.Canceled:
+                OnInputEnd();
+                break;
+        }
+    }
+
+    private void OnInputStart(Vector3 position, bool isTap)
+    {
+        initialPos = position;
+        lastPos = position;
+        sumLength = 0;
+        isSwiping = true;
+        isTapAndSwipe = isTap;
+        judgeTime = StageFlowManager.Instance.currentTime;
+
+        if (isTap)
+        {
             SendJudge(Direction.None, judgeTime, AttackType.Normal);
             previousDirection = Direction.None;
         }
-        else if (Input.GetMouseButton(0) && !isSwiping)
-        {
-            initialPos = Input.mousePosition;
-            lastPos = Input.mousePosition;
-            sumLength = 0;
-            isSwiping = true;
-            isTapAndSwipe = false;
+    }
 
-            judgeTime = StageFlowManager.Instance.currentTime;
-        }
-        else if (sumLength > 40f && isSwiping)
-        {
-            lastPos -= initialPos;
-            double angle = Mathf.Atan2(lastPos.y, lastPos.x) * Mathf.Rad2Deg;
+    private void OnInputUpdate(Vector3 currentPos, float sensitivity)
+    {
+        if (!isSwiping) return;
 
+        sumLength += Vector3.Distance(lastPos, currentPos);
+        lastPos = currentPos;
+
+        // 시간 초과 체크
+        if (StageFlowManager.Instance.currentTime - judgeTime > SWIPE_TIME_THRESHOLD)
+        {
             isSwiping = false;
-            Direction tempDirection;
+            return;
+        }
 
-            if (angle > 150 || angle <= -150) tempDirection = Direction.Left;
-            else if (angle > 30) tempDirection = Direction.Up;
-            else if (angle > -30) tempDirection = Direction.Right;
-            else tempDirection = Direction.Down;
+        // 거리 달성(스와이프) 체크
+        if (sumLength > sensitivity)
+        {
+            isSwiping = false;
+            Direction tempDirection = CalculateDirection(lastPos - initialPos);
 
             if (isTapAndSwipe || previousDirection != tempDirection)
             {
@@ -121,112 +173,30 @@ public class TouchManager : MonoBehaviour
                 previousDirection = tempDirection;
             }
         }
-        else if (StageFlowManager.Instance.currentTime - judgeTime > 0.1f && isSwiping)
-        {
-            isSwiping = false;
-        }
-        else if (Input.GetMouseButton(0) && isSwiping)
-        {
-            sumLength += Vector3.Distance(lastPos, Input.mousePosition);
-            lastPos = Input.mousePosition;
-        }
-        else if (Input.GetMouseButtonUp(0) && isSwiping)
-        {
-            isSwiping = false;
-            SendJudge(Direction.None, judgeTime, AttackType.HoldStop);
-
-            if (judgeSystem != null && judgeSystem.isHolding)
-            {
-                print("HoldStop");
-                judgeSystem.isHolding = false;
-            }
-        }
-        else if (judgeSystem != null && judgeSystem.isHolding && !Input.GetMouseButtonUp(0))
-        {
-            SendJudge(Direction.None, judgeTime, AttackType.HoldStop);
-            print("HoldStop");
-            judgeSystem.isHolding = false;
-        }
     }
 
-    private void TouchChecker()
+    private void OnInputEnd()
     {
-        if (Input.touchCount > 0)
-        {
-            tempTouchs = Input.GetTouch(0);
+        isSwiping = false;
+        SendJudge(Direction.None, judgeTime, AttackType.HoldStop);
+    }
 
-            if (tempTouchs.phase == TouchPhase.Began && !isSwiping)
-            {
-                initialPos = Camera.main.ScreenToWorldPoint(tempTouchs.position);
-                lastPos = Camera.main.ScreenToWorldPoint(tempTouchs.position);
-                sumLength = 0;
 
-                isSwiping = true;
-                isTapAndSwipe = true;
+    private Direction CalculateDirection(Vector2 delta)
+    {
+        float angle = Mathf.Atan2(delta.y, delta.x) * Mathf.Rad2Deg;
 
-                judgeTime = StageFlowManager.Instance.currentTime;
-
-                SendJudge(Direction.None, judgeTime, AttackType.Normal);
-                previousDirection = Direction.None;
-            }
-            else if (!isSwiping)
-            {
-                initialPos = Camera.main.ScreenToWorldPoint(tempTouchs.position);
-                lastPos = Camera.main.ScreenToWorldPoint(tempTouchs.position);
-                sumLength = 0;
-
-                judgeTime = StageFlowManager.Instance.currentTime;
-
-                isSwiping = true;
-                isTapAndSwipe = false;
-            }
-            else if (sumLength > 0.25f && isSwiping)
-            {
-                lastPos -= initialPos;
-                double angle = Mathf.Atan2(lastPos.y, lastPos.x) * Mathf.Rad2Deg;
-
-                isSwiping = false;
-                Direction tempDirection;
-
-                if (angle > 150 || angle <= -150) tempDirection = Direction.Left;
-                else if (angle > 30) tempDirection = Direction.Up;
-                else if (angle > -30) tempDirection = Direction.Right;
-                else tempDirection = Direction.Down;
-
-                if (isTapAndSwipe || previousDirection != tempDirection || (judgeSystem != null && judgeSystem.isHolding))
-                {
-                    SendJudge(tempDirection, judgeTime, AttackType.Strong);
-                    previousDirection = tempDirection;
-                }
-            }
-            else if (StageFlowManager.Instance.currentTime - judgeTime > 0.1f && isSwiping)
-            {
-                isSwiping = false;
-            }
-            else if (isSwiping)
-            {
-                sumLength += Vector3.Distance(lastPos, Camera.main.ScreenToWorldPoint(tempTouchs.position));
-                lastPos = Camera.main.ScreenToWorldPoint(tempTouchs.position);
-            }
-        }
-
-        if (tempTouchs.phase == TouchPhase.Ended && isSwiping)
-        {
-            isSwiping = false;
-            SendJudge(Direction.None, judgeTime, AttackType.HoldStop);
-        }
-        else if (judgeSystem != null && judgeSystem.isHolding && Input.touchCount == 0)
-        {
-            SendJudge(Direction.None, judgeTime, AttackType.HoldStop);
-        }
+        if (angle > 150 || angle <= -150) return Direction.Left;
+        if (angle > 30) return Direction.Up;
+        if (angle > -30) return Direction.Right;
+        return Direction.Down;
     }
 
     private void SendJudge(Direction? _judgeDirection, double _judgeTime, AttackType _type)
     {
-        if (_judgeDirection.HasValue)
+        if (_judgeDirection.HasValue && judgeSystem != null)
         {
-            if (judgeSystem == null) return;
-            judgeSystem.judgeQueue.Enqueue(new JudgeFormat((Direction)_judgeDirection, _judgeTime, _type));
+            judgeSystem.touchQueue.Enqueue(new Touched((Direction)_judgeDirection, _judgeTime, _type));
         }
     }
 }
