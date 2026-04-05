@@ -10,16 +10,14 @@ public struct StrikerAttackContext
 {
     public float currentSec;
     public float arriveBeat;
-    public float nextArriveBeat;
     public AttackType attackType;
     public bool isLastInBurst;
     public bool isFinalAttack;
 
-    public StrikerAttackContext(float currentSec, float arriveBeat, float nextArriveBeat, AttackType attackType, bool isLastInBurst, bool isFinalAttack)
+    public StrikerAttackContext(float currentSec, float arriveBeat, AttackType attackType, bool isLastInBurst, bool isFinalAttack)
     {
         this.currentSec = currentSec;
         this.arriveBeat = arriveBeat;
-        this.nextArriveBeat = nextArriveBeat;
         this.attackType = attackType;
         this.isLastInBurst = isLastInBurst;
         this.isFinalAttack = isFinalAttack;
@@ -32,11 +30,9 @@ public struct StrikerAttackContext
 public class StrikerController : MonoBehaviour
 {
     [Header("Striker Components")]
-    [SerializeField] private StrikerAttack attack;
     [SerializeField] private StrikerVisual visual;
     [SerializeField] private StrikerSound sound;
 
-    public StrikerAttack Attack => attack;
     public StrikerVisual Visual => visual;
     public StrikerSound Sound => sound;
 
@@ -55,24 +51,24 @@ public class StrikerController : MonoBehaviour
         playerManager = targetPlayer;
         this.location = location;
 
-        attack.Init(this);
         visual.Init(this, location, transform.position, playerManager.transform.position);
     }
     
-    public void OnNotice(float arriveBeat, float nextArriveBeat, AttackType attackType)
+    public void OnNotice(AttackType attackType)
     {
-        attack.OnNotice(arriveBeat, nextArriveBeat, attackType);
         sound.PlayPrepareSound(attackType);
     }
 
     public void OnAttackStart(StrikerAttackContext context)
     {
         GameObject projectile = visual.OnAttackStart(context);
-        attack.OnAttackStart(context, projectile);
     }
 
-    public void OnJudge(Judgeable judgeable, bool isHit)
+    public void OnJudge(JudgeContext context)
     {
+        Judgeable judgeable = context.judgeable;
+        bool isHit = context.isParried;
+
         visual.OnJudge(judgeable, isHit);
         sound.PlayHoldSound(judgeable.attackType);
 

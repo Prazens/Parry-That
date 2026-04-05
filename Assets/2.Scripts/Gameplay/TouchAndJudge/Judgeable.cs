@@ -1,37 +1,39 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-
 
 public class Judgeable
 {
-    // Judgeable을 생성한 스트라이커
-    public StrikerController strikerController;
-
-    // 투사체 등 판정과 연동되는 GameObject
-    public GameObject judgeableObject;
-
+    private List<Action<Judgeable>> onDestroy = new();
     public Direction noteDirection;
     public AttackType attackType;
     public float arriveBeat;
-    public float nextArriveBeat; // 다음 노트의 도착 박자 (없으면 -1)
-    public int streamCount = -1; // 몇 번 입력해야 하는지 (stream 판정용)
-    // public NoteData noteData;
 
-    public Judgeable(AttackType _attackType, float _arriveBeat, float _nextArriveBeat, Direction _noteDirection, StrikerController _strikerController, GameObject _judgeableObject = null)
+    private bool _isDestroyed = false;
+
+    public Judgeable(AttackType _attackType, float _arriveBeat, Direction _noteDirection, Action<Judgeable> _onDestroy = null)
     {
         attackType = _attackType;
         arriveBeat = _arriveBeat;
-        nextArriveBeat = _nextArriveBeat;
         noteDirection = _noteDirection;
-        strikerController = _strikerController;
-        judgeableObject = _judgeableObject;
+        AddOnDestroy(_onDestroy);
     }
 
-    public void SetStreamCount(int _count)
+    public void AddOnDestroy(Action<Judgeable> _onDestroy)
     {
-        streamCount = _count;
+        if (_onDestroy != null) onDestroy.Add(_onDestroy);
+    }
+
+    public void Destroy()
+    {
+        if (_isDestroyed) return;
+        _isDestroyed = true;
+
+        var callbacks = onDestroy;
+        onDestroy = new List<Action<Judgeable>>();
+
+        foreach (var action in callbacks)
+            action?.Invoke(this);
     }
 }

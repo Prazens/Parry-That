@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class CameraMoving : MonoBehaviour
@@ -34,7 +33,7 @@ public class CameraMoving : MonoBehaviour
     {
         Vector3 t_originEuler = transform.eulerAngles;
 
-        for (int i = 0; i < 3; i++) // Èçµé¸² ¹Ýº¹ È½¼ö
+        for (int i = 0; i < 3; i++) // í”ë“¤ë¦¼ ë°˜ë³µ íšŸìˆ˜
         {
             float t_rotX = Random.Range(-m_offset.x, m_offset.x);
             float t_rotY = Random.Range(-m_offset.y, m_offset.y);
@@ -50,7 +49,7 @@ public class CameraMoving : MonoBehaviour
             }
         }
 
-        // Èçµé¸² Á¾·á ÈÄ ÃÊ±âÈ­
+        // í”ë“¤ë¦¼ ì¢…ë£Œ í›„ ì´ˆê¸°í™”
         while (Quaternion.Angle(transform.rotation, m_originRot) > 0.02f)
         {
             transform.rotation = Quaternion.RotateTowards(transform.rotation, m_originRot, m_force * Time.deltaTime);

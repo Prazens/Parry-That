@@ -3,45 +3,59 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>
-/// 공격 예고 이펙트를 출력하고 제거하는 로직.
-/// </summary>
-public class AttackNoticeController : MonoBehaviour
+public class CommonAttackNoticeContext : IAttackContext
 {
-    [SerializeField] private HoldExclamation holdExclamation; // 홀드 느낌표
+    public NoteData note { get; }
+    public Direction direction;
+    public Judgeable judgeable;
+
+    public CommonAttackNoticeContext(NoteData note, Direction direction, Judgeable judgeable)
+    {
+        this.note = note;
+        this.direction = direction;
+        this.judgeable = judgeable;
+    }
+}
+
+public class CommonAttackNoticeHandler : MonoBehaviour, IAttackHandler<CommonAttackNoticeContext>
+{
     [SerializeField] private Transform noticeParent; // 예고 표시 위치
     [SerializeField] private GameObject noticePrefab; // 공통 예고 프리팹
     [SerializeField] private Sprite[] noticeSprites; // 공격 타입별 예고 이미지 배열
     private List<GameObject> noticeInstances = new(); // 예고 인스턴스 저장
     private float noticeSpacing => 30f; // 예고 인스턴스 사이 간격
 
-    public void ShowNewNotice(AttackType attackType, Direction direction, float durationSec)
+    public void OnNotice(CommonAttackNoticeContext context)
     {
-        // HoldExclamation 호출 후 종료
-        if (attackType == AttackType.HoldStart)
-        {
-            holdExclamation.Appear(durationSec);
-            return;
-        }
-        if (attackType == AttackType.HoldFinishStrong)
-        {
-            holdExclamation.Disappear(durationSec);
-            return;
-        }
+        GameObject newNotice = AddNotice((AttackType)context.note.type, context.direction);
+        context.judgeable?.AddOnDestroy(_ => RemoveNotice(newNotice));
+    }
 
+    public void OnAttackStart(CommonAttackNoticeContext context)
+    {
+
+    }
+
+    public void OnJudge(JudgeContext context)
+    {
+
+    }
+
+    private GameObject AddNotice(AttackType attackType, Direction direction)
+    {
         // Notice 오브젝트 생성
         int currentIndex = noticeInstances.Count;
         GameObject newNotice = Instantiate(noticePrefab, noticeParent);
         Vector3 newNoticePosition = new Vector3(currentIndex * noticeSpacing, 0, 0);
         newNotice.transform.localPosition = newNoticePosition;
-        
+
         // 회전 (Direction에 따라)
         float rotationAngle = 0f;
         switch (direction)
         {
-            case Direction.Up:    rotationAngle = 0f; break;
-            case Direction.Down:  rotationAngle = 180f; break;
-            case Direction.Left:  rotationAngle = 90f; break;
+            case Direction.Up: rotationAngle = 0f; break;
+            case Direction.Down: rotationAngle = 180f; break;
+            case Direction.Left: rotationAngle = 90f; break;
             case Direction.Right: rotationAngle = -90f; break;
         }
         newNotice.transform.localRotation = Quaternion.Euler(0, 0, rotationAngle);
@@ -64,26 +78,18 @@ public class AttackNoticeController : MonoBehaviour
         }
 
         noticeInstances.Add(newNotice);
+        return newNotice;
     }
 
-    public void DestroyFirstNotice(AttackType attackType)
+    private void RemoveNotice(GameObject noticeInstance)
     {
-        if (attackType == AttackType.HoldStart)
-        {
-            return;
-        }
-        if (attackType == AttackType.HoldFinishStrong)
-        {
-            holdExclamation.ForceStop();
-            return;
-        }
+        if (noticeInstance == null) return;
+
+        noticeInstances.Remove(noticeInstance);
+        Destroy(noticeInstance);
 
         if (noticeInstances.Count > 0)
         {
-            // 가장 오래된 예고 인스턴스 제거
-            Destroy(noticeInstances[0]);
-            noticeInstances.RemoveAt(0);
-
             // 남은 예고 인스턴스 위치 재배치
             for (int i = 0; i < noticeInstances.Count; i++)
             {
@@ -92,11 +98,10 @@ public class AttackNoticeController : MonoBehaviour
         }
     }
 
-    private void DestroyAllNotices()
+    private void RemoveAll()
     {
         while (noticeInstances.Count > 0)
         {
-            // 가장 오래된 예고 인스턴스 제거
             Destroy(noticeInstances[0]);
             noticeInstances.RemoveAt(0);
         }

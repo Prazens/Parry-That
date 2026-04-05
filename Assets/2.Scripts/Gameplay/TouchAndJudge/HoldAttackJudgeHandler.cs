@@ -1,0 +1,136 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+
+public class HoldAttackJudgeContext : IAttackContext
+{
+    public NoteData note { get; }
+    public NoteData nextNote { get; }
+    public Direction direction;
+    public Judgeable judgeable;
+    public Judgeable nextJudgeable;
+
+    public HoldAttackJudgeContext(NoteData note, NoteData nextNote, Direction direction)
+    {
+        this.note = note;
+        this.nextNote = nextNote;
+        this.direction = direction;
+    }
+}
+
+public class HoldAttackJudgeHandler : MonoBehaviour, IAttackHandler<HoldAttackJudgeContext>
+{
+    [SerializeField] private JudgeSystem judgeSystem;
+    private AttackType[] relevantAttacks = new AttackType[3] { AttackType.HoldStart, AttackType.HoldFinishStrong, AttackType.HoldStop };
+    private Dictionary<AttackType, AttackType[]> relevantTouches = new()
+    {
+        { AttackType.HoldStart, new AttackType[2] { AttackType.Normal, AttackType.Strong } },
+        { AttackType.HoldFinishStrong, new AttackType[1] { AttackType.HoldStop } },
+        { AttackType.HoldStop, new AttackType[1] { AttackType.HoldStop } },
+    };
+    private bool isHolding = false;
+
+    public void OnNotice(HoldAttackJudgeContext context)
+    {
+        NoteData note = context.note;
+
+        if (note.type != (int)AttackType.HoldStart)
+            return;
+
+        NoteData nextNote = context.nextNote;
+        if (nextNote.type != (int)AttackType.HoldStop && nextNote.type != (int)AttackType.HoldFinishStrong)
+        {
+            Debug.LogError("Next of HoldStart MUST be HoldStop or HoldFinishStrong");
+            return;
+        }
+
+        Judgeable judgeable = new Judgeable((AttackType)note.type, note.arriveBeat, context.direction);
+        judgeSystem.EnqueueJudgeable(judgeable);
+        context.judgeable = judgeable;
+
+        // HoldStart 시, HoldStop까지 같이 생성
+        Judgeable nextJudgeable = new Judgeable(AttackType.HoldStop, nextNote.arriveBeat, context.direction);
+        judgeSystem.EnqueueJudgeable(nextJudgeable);
+        context.nextJudgeable = nextJudgeable;
+    }
+
+    public void OnAttackStart(HoldAttackJudgeContext context)
+    {
+
+    }
+
+    public void OnJudge(JudgeContext context)
+    {
+        Judgeable judgeable = context.judgeable;
+        AttackType attackType = judgeable.attackType;
+
+        // HoldStart에서 홀드하지 않으면 HoldStop의 EarlyMiss까지 유도
+        if (attackType == AttackType.HoldStart && !isHolding)
+        {
+            judgeSystem.touchQueue.Enqueue(new Touched(Direction.None, StageFlowManager.Instance.currentTime, AttackType.HoldStop));
+        }
+
+        // HoldStop 공격 판정이 끝나면 isHolding 해제
+        else if (attackType == AttackType.HoldStop || attackType == AttackType.HoldFinishStrong)
+        {
+            isHolding = false;
+        }
+    }
+
+    public Judgeable GetFirstJudgeable(Dictionary<Direction, Judgeable> judgeables, Touched touch)
+    {
+        AttackType touchType = touch.type;
+
+        Judgeable judgeable = null;
+        float arriveBeat = Mathf.Infinity;
+
+        // 모든 방향 중 가장 빠른 홀드 공격 탐색
+        foreach (var tempJudgeable in judgeables.Values)
+        {
+            if (tempJudgeable != null && relevantAttacks.Contains(tempJudgeable.attackType) && tempJudgeable.arriveBeat < arriveBeat)
+            {
+                judgeable = tempJudgeable;
+                arriveBeat = tempJudgeable.arriveBeat;
+            }
+        }
+
+        // 관련 없는 터치이면 무시
+        if (!relevantTouches[judgeable.attackType].Contains(touchType))
+            return null;
+
+        return judgeable;
+    }
+
+    public JudgeType Judge(Judgeable judgeable, Touched touch)
+    {
+        double touchSec = touch.touchSec;
+        AttackType touchType = touch.type;
+
+        // 관련 없는 터치이면 무시
+        if (!relevantTouches[judgeable.attackType].Contains(touchType))
+            return JudgeType.None;
+
+        float arriveSec = StageFlowManager.Instance.BeatToSec(judgeable.arriveBeat);
+        JudgeType judgeType = judgeSystem.GetJudgeType(touchSec, arriveSec);
+
+        // HoldStop이 아니면 EarlyMiss는 무시
+        if (judgeable.attackType != AttackType.HoldFinishStrong && judgeable.attackType != AttackType.HoldStop && judgeType == JudgeType.EarlyMiss)
+            judgeType = JudgeType.None;
+
+        // 판정 보정, 플레이어가 자동으로 공격 방향을 바라봄
+        if (judgeType >= JudgeType.LateBlocked && judgeType <= JudgeType.EarlyBlocked)
+        {
+            judgeType = JudgeType.Perfect;
+            touch.direction = judgeable.noteDirection;
+
+            // 홀드 시작
+            if (judgeable.attackType == AttackType.HoldStart)
+            {
+                isHolding = true;
+            }
+        }
+
+        return judgeType;
+    }
+}

@@ -10,7 +10,19 @@ public class NotePerformer : MonoBehaviour
 {
     private PlayerManager playerManager;
     [SerializeField] private StrikerManager strikerManager;
-    [SerializeField] private AttackNoticeController attackNoticeController;
+
+    [Header("Notice Handlers")]
+    [SerializeField] private IAttackHandler<IAttackContext> commonAttackNoticeHandler;
+    [SerializeField] private IAttackHandler<IAttackContext> holdAttackNoticeHandler;
+
+    [Header("Judge Handlers")]
+    [SerializeField] private JudgeSystem judgeSystem;
+    [SerializeField] private IAttackHandler<IAttackContext> normalAttackJudgeHandler;
+    [SerializeField] private IAttackHandler<IAttackContext> strongAttackJudgeHandler;
+    [SerializeField] private IAttackHandler<IAttackContext> holdAttackJudgeHandler;
+
+    private Dictionary<AttackType, IAttackHandler<IAttackContext>> attackNoticeHandlerDict;
+    private Dictionary<AttackType, IAttackHandler<IAttackContext>> attackJudgeHandlerDict;
 
     // 노트 관련
     private NoteData[] notes;
@@ -21,19 +33,46 @@ public class NotePerformer : MonoBehaviour
     {
         public int strikerIndex;
         public float arriveBeat;
-        public float nextArriveBeat;
         public AttackType attackType;
 
-        public PrepareEntry(int strikerIndex, float arriveBeat, float nextArriveBeat, AttackType attackType)
+        public PrepareEntry(int strikerIndex, float arriveBeat, AttackType attackType)
         {
             this.strikerIndex = strikerIndex;
             this.arriveBeat = arriveBeat;
-            this.nextArriveBeat = nextArriveBeat;
             this.attackType = attackType;
         }
     }
 
     private Queue<PrepareEntry> prepareQueue = new();
+
+    private void Awake()
+    {
+        attackNoticeHandlerDict = new()
+        {
+            { AttackType.Normal, commonAttackNoticeHandler },
+            { AttackType.Strong, commonAttackNoticeHandler },
+            { AttackType.HoldStart, holdAttackNoticeHandler },
+            { AttackType.HoldStop, holdAttackNoticeHandler },
+            { AttackType.HoldFinishStrong, holdAttackNoticeHandler },
+        };
+
+        attackJudgeHandlerDict = new()
+        {
+            { AttackType.Normal, normalAttackJudgeHandler },
+            { AttackType.Strong, strongAttackJudgeHandler },
+            { AttackType.HoldStart, holdAttackJudgeHandler },
+            { AttackType.HoldStop, holdAttackJudgeHandler },
+            { AttackType.HoldFinishStrong, holdAttackJudgeHandler },
+        };
+
+        judgeSystem.Judged -= OnJudge;
+        judgeSystem.Judged += OnJudge;
+    }
+
+    private void OnDestroy()
+    {
+        judgeSystem.Judged -= OnJudge;
+    }
 
     public void SetPlayer(PlayerManager player)
     {
@@ -42,34 +81,20 @@ public class NotePerformer : MonoBehaviour
 
     public void InitNotes(ChartData chart)
     {
-        if (chart == null)
+        nextNoteIndex = 0;
+        prepareQueue.Clear();
+
+        if (chart == null || chart.notes == null)
         {
             Debug.LogWarning("NotePerformer.InitNotes: Chart is null");
             notes = System.Array.Empty<NoteData>();
-            nextNoteIndex = 0;
-            prepareQueue.Clear();
+            
             return;
         }
 
-        if (StageFlowManager.Instance != null)
-        {
-            StageFlowManager.Instance.SetBPM(chart.bpm);
-        }
-
-        if (chart.notes == null)
-        {
-            notes = System.Array.Empty<NoteData>();
-            nextNoteIndex = 0;
-            prepareQueue.Clear();
-            return;
-        }
-
+        StageFlowManager.Instance?.SetBPM(chart.bpm);
         notes = (NoteData[])chart.notes.Clone();
-
         System.Array.Sort(notes, (a, b) => a.noticeBeat.CompareTo(b.noticeBeat));
-
-        nextNoteIndex = 0;
-        prepareQueue.Clear();
     }
 
     private void Update()
@@ -96,21 +121,7 @@ public class NotePerformer : MonoBehaviour
     private void PrepareForAttack()
     {
         NoteData note = notes[nextNoteIndex];
-
-        float arriveBeat = note.arriveBeat;
         AttackType attackType = (AttackType)note.type;
-
-        float nextArriveBeat = -1f;
-        for (int i = nextNoteIndex + 1; i < notes.Length; i++)
-        {
-            if (notes[i].strikerIndex == note.strikerIndex)
-            {
-                nextArriveBeat = notes[i].arriveBeat;
-                break;
-            }
-        }
-
-        prepareQueue.Enqueue(new PrepareEntry(note.strikerIndex, arriveBeat, nextArriveBeat, attackType));
 
         if (strikerManager == null || strikerManager.strikerList == null)
         {
@@ -131,26 +142,58 @@ public class NotePerformer : MonoBehaviour
             return;
         }
 
-        striker.OnNotice(arriveBeat, nextArriveBeat, attackType);
-
-        if (attackNoticeController != null)
+        // Judgeable 생성
+        List<Judgeable> judgeables = new();
+        if (attackJudgeHandlerDict.TryGetValue(attackType, out var attackJudgeHandler))
         {
-            float durationSec =
-                StageFlowManager.Instance.BeatToSec(arriveBeat) -
-                StageFlowManager.Instance.BeatToSec(note.noticeBeat);
-
-            attackNoticeController.ShowNewNotice(attackType, striker.location, durationSec);
+            if (attackJudgeHandler is NormalAttackJudgeHandler)
+            {
+                var attackContext = new NormalAttackJudgeContext(note, striker.location);
+                attackJudgeHandler.OnNotice(attackContext);
+                judgeables.Add(attackContext.judgeable);
+            }
+            else if (attackJudgeHandler is StrongAttackJudgeHandler)
+            {
+                var attackContext = new StrongAttackJudgeContext(note, striker.location);
+                attackJudgeHandler.OnNotice(attackContext);
+                judgeables.Add(attackContext.judgeable);
+            }
+            else if (attackJudgeHandler is HoldAttackJudgeHandler)
+            {
+                var attackContext = new HoldAttackJudgeContext(note, notes[nextNoteIndex + 1], striker.location);
+                attackJudgeHandler.OnNotice(attackContext);
+                judgeables.Add(attackContext.judgeable);
+                judgeables.Add(attackContext.nextJudgeable);
+            }
         }
+
+        // Notice
+        if (attackNoticeHandlerDict.TryGetValue(attackType, out var attackNoticeHandler))
+        {
+            if (attackNoticeHandler is CommonAttackNoticeHandler)
+            {
+                Judgeable judgeable = judgeables.Count >= 1 ? judgeables[0] : null;
+                attackNoticeHandler.OnNotice(new CommonAttackNoticeContext(note, striker.location, judgeable));
+            }
+            else if (attackNoticeHandler is HoldAttackNoticeHandler)
+            {
+                attackNoticeHandler.OnNotice(new HoldAttackNoticeContext(note, judgeables));
+            }
+        }
+
+        prepareQueue.Enqueue(new PrepareEntry(note.strikerIndex, note.arriveBeat, attackType));
+
+        striker.OnNotice(attackType);
     }
 
     private void HandleAttack(float currentSec)
     {
+        if (strikerManager == null || strikerManager.strikerList == null)
+            return;
+
         while (prepareQueue.Count > 0)
         {
             PrepareEntry prepareEntry = prepareQueue.Peek();
-
-            if (strikerManager == null || strikerManager.strikerList == null)
-                break;
 
             if (prepareEntry.strikerIndex < 0 || prepareEntry.strikerIndex >= strikerManager.strikerList.Count)
             {
@@ -188,16 +231,33 @@ public class NotePerformer : MonoBehaviour
                 new StrikerAttackContext(
                     currentSec,
                     prepareEntry.arriveBeat,
-                    prepareEntry.nextArriveBeat,
                     prepareEntry.attackType,
                     isLastInBurst,
                     isFinalAttack
                 )
             );
+        }
+    }
 
-            if (attackNoticeController != null)
+    public void OnJudge(JudgeContext context)
+    {
+        Judgeable judgeable = context.judgeable;
+        judgeable.strikerController.OnJudge(context);
+
+        // 터치 없이 LateMiss가 난 경우의 처리
+        if (attackJudgeHandlerDict.TryGetValue(judgeable.attackType, out var attackJudgeHandler))
+        {
+            if (attackJudgeHandler is NormalAttackJudgeHandler)
             {
-                attackNoticeController.DestroyFirstNotice(prepareEntry.attackType);
+                attackJudgeHandler.OnJudge(context);
+            }
+            else if (attackJudgeHandler is StrongAttackJudgeHandler)
+            {
+                attackJudgeHandler.OnJudge(context);
+            }
+            else if (attackJudgeHandler is HoldAttackJudgeHandler)
+            {
+                attackJudgeHandler.OnJudge(context);
             }
         }
     }
