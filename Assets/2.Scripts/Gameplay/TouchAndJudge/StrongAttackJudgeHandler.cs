@@ -16,7 +16,7 @@ public class StrongAttackJudgeContext : IAttackContext
     }
 }
 
-public class StrongAttackJudgeHandler : MonoBehaviour, IAttackHandler<StrongAttackJudgeContext>
+public class StrongAttackJudgeHandler : MonoBehaviour, IAttackJudgeHandler<StrongAttackJudgeContext>
 {
     [SerializeField] private JudgeSystem judgeSystem;
     private AttackType[] relevantAttacks = new AttackType[1] { AttackType.Strong };
@@ -30,10 +30,16 @@ public class StrongAttackJudgeHandler : MonoBehaviour, IAttackHandler<StrongAtta
         context.judgeable = judgeable;
     }
 
+    void IAttackHandler.OnNotice(IAttackContext context)
+        => OnNotice((StrongAttackJudgeContext)context);
+
     public void OnAttackStart(StrongAttackJudgeContext context)
     {
 
     }
+
+    void IAttackHandler.OnAttackStart(IAttackContext context)
+        => OnAttackStart((StrongAttackJudgeContext)context);
 
     public void OnJudge(JudgeContext context)
     {
@@ -52,7 +58,10 @@ public class StrongAttackJudgeHandler : MonoBehaviour, IAttackHandler<StrongAtta
         // 방향이 일치하는 Judgeable만 확인
         Judgeable judgeable = judgeables[touchDirection];
 
-        return relevantAttacks.Contains(judgeable.attackType) ? judgeable : null;
+        if (judgeable == null || !relevantAttacks.Contains(judgeable.attackType))
+            return null;
+
+        return judgeable;
     }
 
     public JudgeType Judge(Judgeable judgeable, Touched touch)

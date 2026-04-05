@@ -16,7 +16,7 @@ public class NormalAttackJudgeContext : IAttackContext
     }
 }
 
-public class NormalAttackJudgeHandler : MonoBehaviour, IAttackHandler<NormalAttackJudgeContext>
+public class NormalAttackJudgeHandler : MonoBehaviour, IAttackJudgeHandler<NormalAttackJudgeContext>
 {
     [SerializeField] private JudgeSystem judgeSystem;
     private AttackType[] relevantAttacks = new AttackType[1] { AttackType.Normal };
@@ -30,10 +30,16 @@ public class NormalAttackJudgeHandler : MonoBehaviour, IAttackHandler<NormalAtta
         context.judgeable = judgeable;
     }
 
+    void IAttackHandler.OnNotice(IAttackContext context)
+        => OnNotice((NormalAttackJudgeContext)context);
+
     public void OnAttackStart(NormalAttackJudgeContext context)
     {
 
     }
+
+    void IAttackHandler.OnAttackStart(IAttackContext context)
+        => OnAttackStart((NormalAttackJudgeContext)context);
 
     public void OnJudge(JudgeContext context)
     {

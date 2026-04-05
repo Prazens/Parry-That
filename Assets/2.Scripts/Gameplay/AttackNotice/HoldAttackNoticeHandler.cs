@@ -16,20 +16,10 @@ public class HoldAttackNoticeContext : IAttackContext
 
 public class HoldAttackNoticeHandler : MonoBehaviour, IAttackHandler<HoldAttackNoticeContext>
 {
-    private GameObject[] exclamations;
+    [SerializeField] private GameObject[] exclamations;
     [SerializeField] private AudioClip[] prepareSounds;
     private AudioSource audioSource;
     private Coroutine currentCoroutine = null;
-
-    private void Awake()
-    {
-        exclamations = new GameObject[3]
-        {
-            transform.GetChild(0).gameObject,
-            transform.GetChild(1).gameObject,
-            transform.GetChild(2).gameObject
-        };
-    }
 
     private void Start()
     {
@@ -61,10 +51,16 @@ public class HoldAttackNoticeHandler : MonoBehaviour, IAttackHandler<HoldAttackN
         context.judgeables?[1]?.AddOnDestroy(_ => ForceStop());
     }
 
+    void IAttackHandler.OnNotice(IAttackContext context)
+        => OnNotice((HoldAttackNoticeContext)context);
+
     public void OnAttackStart(HoldAttackNoticeContext context)
     {
 
     }
+
+    void IAttackHandler.OnAttackStart(IAttackContext context)
+        => OnAttackStart((HoldAttackNoticeContext)context);
 
     public void OnJudge(JudgeContext context)
     {

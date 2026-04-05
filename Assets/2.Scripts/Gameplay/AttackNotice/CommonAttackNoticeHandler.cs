@@ -31,10 +31,16 @@ public class CommonAttackNoticeHandler : MonoBehaviour, IAttackHandler<CommonAtt
         context.judgeable?.AddOnDestroy(_ => RemoveNotice(newNotice));
     }
 
+    void IAttackHandler.OnNotice(IAttackContext context)
+        => OnNotice((CommonAttackNoticeContext)context);
+
     public void OnAttackStart(CommonAttackNoticeContext context)
     {
 
     }
+
+    void IAttackHandler.OnAttackStart(IAttackContext context)
+        => OnAttackStart((CommonAttackNoticeContext)context);
 
     public void OnJudge(JudgeContext context)
     {

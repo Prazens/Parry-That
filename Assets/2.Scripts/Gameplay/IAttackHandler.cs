@@ -1,10 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public interface IAttackHandler<ContextType>
+public interface IAttackHandler
 {
-    public void OnNotice(ContextType context);
-    public void OnAttackStart(ContextType context);
-    public void OnJudge(JudgeContext context);
+    void OnNotice(IAttackContext context);
+    void OnAttackStart(IAttackContext context);
+    void OnJudge(JudgeContext context);
+}
+
+public interface IAttackHandler<T> : IAttackHandler where T : IAttackContext
+{
+    public void OnNotice(T context);
+    public void OnAttackStart(T context);
+    new public void OnJudge(JudgeContext context);
 }

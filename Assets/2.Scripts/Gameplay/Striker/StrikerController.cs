@@ -100,13 +100,13 @@ public class StrikerController : MonoBehaviour
 
     public void ClearProjectiles()
     {
-        while (judgeSystem.CountJudgeable(location) > 0)
-        {
-            GameObject projectile = judgeSystem.DequeueJudgeable(location).judgeableObject;
-            if (projectile != null)
-            {
-                Destroy(projectile); // Projectile 삭제
-            }
-        }
+        //while (judgeSystem.CountJudgeable(location) > 0)
+        //{
+        //    GameObject projectile = judgeSystem.DequeueJudgeable(location).judgeableObject;
+        //    if (projectile != null)
+        //    {
+        //        Destroy(projectile); // Projectile 삭제
+        //    }
+        //}
     }
 }

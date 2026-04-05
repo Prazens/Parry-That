@@ -111,7 +111,7 @@ public sealed class MeleeStrikerVisual : StrikerVisual
     protected override void ActHoldStart(Judgeable judgeable)
     {
         animator.SetBool("isHolding", true);
-        dynamicUIManager.CutInDisplay(StageFlowManager.Instance.BeatToSec(judgeable.nextArriveBeat));
+        //dynamicUIManager.CutInDisplay(StageFlowManager.Instance.BeatToSec(judgeable.nextArriveBeat));
 
         isHolding = true;
     }

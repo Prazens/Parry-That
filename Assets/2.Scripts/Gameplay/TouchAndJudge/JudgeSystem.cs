@@ -21,11 +21,12 @@ public class JudgeSystem : MonoBehaviour
 {
     public event Action<JudgeContext> Judged;
 
-    [SerializeField] IAttackJudgeHandler<IAttackContext> normalAttackJudgeHandler;
-    [SerializeField] IAttackJudgeHandler<IAttackContext> strongAttackJudgeHandler;
-    [SerializeField] IAttackJudgeHandler<IAttackContext> holdAttackJudgeHandler;
+    [Header("Attack Judge Handlers")]
+    [SerializeField] private NormalAttackJudgeHandler normalAttackJudgeHandler;
+    [SerializeField] private StrongAttackJudgeHandler strongAttackJudgeHandler;
+    [SerializeField] private HoldAttackJudgeHandler holdAttackJudgeHandler;
 
-    private Dictionary<AttackType, IAttackJudgeHandler<IAttackContext>> attackJudgeHandlerDict;
+    private Dictionary<AttackType, IAttackJudgeHandler> attackJudgeHandlerDict;
 
     public PlayerManager playerManager;
     public StrikerManager strikerManager;
@@ -154,7 +155,10 @@ public class JudgeSystem : MonoBehaviour
         Dictionary<Direction, Judgeable> firstJudgeables = new();
         foreach (var kvp in judgeableQueues)
         {
-            firstJudgeables[kvp.Key] = kvp.Value.Peek();
+            if (kvp.Value.Count > 0)
+                firstJudgeables[kvp.Key] = kvp.Value.Peek();
+            else
+                firstJudgeables[kvp.Key] = null;
         }
 
         Judgeable firstJudgeable = null;
@@ -169,6 +173,12 @@ public class JudgeSystem : MonoBehaviour
                 firstJudgeable = tempJudgeable;
                 firstArriveBeat = tempJudgeable.arriveBeat;
             }
+        }
+
+        if (firstJudgeable == null)
+        {
+            JudgeManage(null, JudgeType.None, touch);
+            return;
         }
 
         // 판정 결과 받기
@@ -213,7 +223,7 @@ public class JudgeSystem : MonoBehaviour
     public void JudgeManage(Judgeable judgeable, JudgeType judgeType, Touched touch)
     {
         // 노트가 처리되지 않은 경우
-        if (judgeType == JudgeType.None)
+        if (judgeable == null || judgeType == JudgeType.None)
         {
             lastNonMissJudge = 0;
 

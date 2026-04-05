@@ -18,7 +18,7 @@ AnimatorStateTransition:
     m_ConditionEvent: attackType
     m_EventTreshold: 0
   - m_ConditionMode: 6
-    m_ConditionEvent: randomSelecter
+    m_ConditionEvent: randomSelector
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -3925613812076412209}
@@ -83,7 +83,7 @@ AnimatorStateTransition:
     m_ConditionEvent: attackType
     m_EventTreshold: 0
   - m_ConditionMode: 6
-    m_ConditionEvent: randomSelecter
+    m_ConditionEvent: randomSelector
     m_EventTreshold: 1
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 9027786682236547947}
@@ -117,7 +117,7 @@ AnimatorStateTransition:
     m_ConditionEvent: attackType
     m_EventTreshold: 0
   - m_ConditionMode: 6
-    m_ConditionEvent: randomSelecter
+    m_ConditionEvent: randomSelector
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -7225292690908752946}
@@ -322,7 +322,7 @@ AnimatorStateTransition:
     m_ConditionEvent: attackType
     m_EventTreshold: 0
   - m_ConditionMode: 6
-    m_ConditionEvent: randomSelecter
+    m_ConditionEvent: randomSelector
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -1191942435675122241}
@@ -356,7 +356,7 @@ AnimatorStateTransition:
     m_ConditionEvent: attackType
     m_EventTreshold: 0
   - m_ConditionMode: 6
-    m_ConditionEvent: randomSelecter
+    m_ConditionEvent: randomSelector
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1943478869274261105}
@@ -523,7 +523,7 @@ AnimatorStateTransition:
     m_ConditionEvent: attackType
     m_EventTreshold: 0
   - m_ConditionMode: 6
-    m_ConditionEvent: randomSelecter
+    m_ConditionEvent: randomSelector
     m_EventTreshold: 1
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -3852627677589766452}
@@ -686,7 +686,7 @@ AnimatorStateTransition:
     m_ConditionEvent: attackType
     m_EventTreshold: 0
   - m_ConditionMode: 6
-    m_ConditionEvent: randomSelecter
+    m_ConditionEvent: randomSelector
     m_EventTreshold: 1
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -2205990516720093632}
@@ -862,7 +862,7 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: randomSelecter
+  - m_Name: randomSelector
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -932,7 +932,7 @@ AnimatorStateTransition:
     m_ConditionEvent: attackType
     m_EventTreshold: 0
   - m_ConditionMode: 6
-    m_ConditionEvent: randomSelecter
+    m_ConditionEvent: randomSelector
     m_EventTreshold: 1
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -4354072295820681168}

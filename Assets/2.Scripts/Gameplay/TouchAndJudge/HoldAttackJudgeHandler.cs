@@ -19,7 +19,7 @@ public class HoldAttackJudgeContext : IAttackContext
     }
 }
 
-public class HoldAttackJudgeHandler : MonoBehaviour, IAttackHandler<HoldAttackJudgeContext>
+public class HoldAttackJudgeHandler : MonoBehaviour, IAttackJudgeHandler<HoldAttackJudgeContext>
 {
     [SerializeField] private JudgeSystem judgeSystem;
     private AttackType[] relevantAttacks = new AttackType[3] { AttackType.HoldStart, AttackType.HoldFinishStrong, AttackType.HoldStop };
@@ -39,7 +39,7 @@ public class HoldAttackJudgeHandler : MonoBehaviour, IAttackHandler<HoldAttackJu
             return;
 
         NoteData nextNote = context.nextNote;
-        if (nextNote.type != (int)AttackType.HoldStop && nextNote.type != (int)AttackType.HoldFinishStrong)
+        if (nextNote == null || (nextNote.type != (int)AttackType.HoldStop && nextNote.type != (int)AttackType.HoldFinishStrong))
         {
             Debug.LogError("Next of HoldStart MUST be HoldStop or HoldFinishStrong");
             return;
@@ -55,10 +55,16 @@ public class HoldAttackJudgeHandler : MonoBehaviour, IAttackHandler<HoldAttackJu
         context.nextJudgeable = nextJudgeable;
     }
 
+    void IAttackHandler.OnNotice(IAttackContext context)
+        => OnNotice((HoldAttackJudgeContext)context);
+
     public void OnAttackStart(HoldAttackJudgeContext context)
     {
 
     }
+
+    void IAttackHandler.OnAttackStart(IAttackContext context)
+        => OnAttackStart((HoldAttackJudgeContext)context);
 
     public void OnJudge(JudgeContext context)
     {
@@ -96,7 +102,7 @@ public class HoldAttackJudgeHandler : MonoBehaviour, IAttackHandler<HoldAttackJu
         }
 
         // 관련 없는 터치이면 무시
-        if (!relevantTouches[judgeable.attackType].Contains(touchType))
+        if (judgeable == null || !relevantTouches[judgeable.attackType].Contains(touchType))
             return null;
 
         return judgeable;

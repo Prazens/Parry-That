@@ -83,7 +83,7 @@ public sealed class RangeStrikerVisual : StrikerVisual
     {
         holdSpriteAnimator?.SetTrigger("holdStart");
  
-        dynamicUIManager.CutInDisplay(StageFlowManager.Instance.BeatToSec(judgeable.nextArriveBeat));
+        //dynamicUIManager.CutInDisplay(StageFlowManager.Instance.BeatToSec(judgeable.nextArriveBeat));
  
         isHolding = true;
     }

@@ -10,19 +10,19 @@ public class NotePerformer : MonoBehaviour
 {
     private PlayerManager playerManager;
     [SerializeField] private StrikerManager strikerManager;
-
-    [Header("Notice Handlers")]
-    [SerializeField] private IAttackHandler<IAttackContext> commonAttackNoticeHandler;
-    [SerializeField] private IAttackHandler<IAttackContext> holdAttackNoticeHandler;
-
-    [Header("Judge Handlers")]
     [SerializeField] private JudgeSystem judgeSystem;
-    [SerializeField] private IAttackHandler<IAttackContext> normalAttackJudgeHandler;
-    [SerializeField] private IAttackHandler<IAttackContext> strongAttackJudgeHandler;
-    [SerializeField] private IAttackHandler<IAttackContext> holdAttackJudgeHandler;
 
-    private Dictionary<AttackType, IAttackHandler<IAttackContext>> attackNoticeHandlerDict;
-    private Dictionary<AttackType, IAttackHandler<IAttackContext>> attackJudgeHandlerDict;
+    [Header("Attack Notice Handlers")]
+    [SerializeField] private CommonAttackNoticeHandler commonAttackNoticeHandler;
+    [SerializeField] private HoldAttackNoticeHandler holdAttackNoticeHandler;
+
+    [Header("Attack Judge Handlers")]
+    [SerializeField] private NormalAttackJudgeHandler normalAttackJudgeHandler;
+    [SerializeField] private StrongAttackJudgeHandler strongAttackJudgeHandler;
+    [SerializeField] private HoldAttackJudgeHandler holdAttackJudgeHandler;
+
+    private Dictionary<AttackType, IAttackHandler> attackNoticeHandlerDict;
+    private Dictionary<AttackType, IAttackHandler> attackJudgeHandlerDict;
 
     // 노트 관련
     private NoteData[] notes;
@@ -146,22 +146,23 @@ public class NotePerformer : MonoBehaviour
         List<Judgeable> judgeables = new();
         if (attackJudgeHandlerDict.TryGetValue(attackType, out var attackJudgeHandler))
         {
-            if (attackJudgeHandler is NormalAttackJudgeHandler)
+            if (attackJudgeHandler is NormalAttackJudgeHandler normalAttackJudgeHandler)
             {
                 var attackContext = new NormalAttackJudgeContext(note, striker.location);
-                attackJudgeHandler.OnNotice(attackContext);
+                normalAttackJudgeHandler.OnNotice(attackContext);
                 judgeables.Add(attackContext.judgeable);
             }
-            else if (attackJudgeHandler is StrongAttackJudgeHandler)
+            else if (attackJudgeHandler is StrongAttackJudgeHandler strongAttackJudgeHandler)
             {
                 var attackContext = new StrongAttackJudgeContext(note, striker.location);
-                attackJudgeHandler.OnNotice(attackContext);
+                strongAttackJudgeHandler.OnNotice(attackContext);
                 judgeables.Add(attackContext.judgeable);
             }
-            else if (attackJudgeHandler is HoldAttackJudgeHandler)
+            else if (attackJudgeHandler is HoldAttackJudgeHandler holdAttackJudgeHandler)
             {
-                var attackContext = new HoldAttackJudgeContext(note, notes[nextNoteIndex + 1], striker.location);
-                attackJudgeHandler.OnNotice(attackContext);
+                NoteData nextNote = nextNoteIndex + 1 < notes.Length ? notes[nextNoteIndex + 1] : null;
+                var attackContext = new HoldAttackJudgeContext(note, nextNote, striker.location);
+                holdAttackJudgeHandler.OnNotice(attackContext);
                 judgeables.Add(attackContext.judgeable);
                 judgeables.Add(attackContext.nextJudgeable);
             }
@@ -170,14 +171,14 @@ public class NotePerformer : MonoBehaviour
         // Notice
         if (attackNoticeHandlerDict.TryGetValue(attackType, out var attackNoticeHandler))
         {
-            if (attackNoticeHandler is CommonAttackNoticeHandler)
+            if (attackNoticeHandler is CommonAttackNoticeHandler commonAttackNoticeHandler)
             {
                 Judgeable judgeable = judgeables.Count >= 1 ? judgeables[0] : null;
-                attackNoticeHandler.OnNotice(new CommonAttackNoticeContext(note, striker.location, judgeable));
+                commonAttackNoticeHandler.OnNotice(new CommonAttackNoticeContext(note, striker.location, judgeable));
             }
-            else if (attackNoticeHandler is HoldAttackNoticeHandler)
+            else if (attackNoticeHandler is HoldAttackNoticeHandler holdAttackNoticeHandler)
             {
-                attackNoticeHandler.OnNotice(new HoldAttackNoticeContext(note, judgeables));
+                holdAttackNoticeHandler.OnNotice(new HoldAttackNoticeContext(note, judgeables));
             }
         }
 
@@ -242,22 +243,22 @@ public class NotePerformer : MonoBehaviour
     public void OnJudge(JudgeContext context)
     {
         Judgeable judgeable = context.judgeable;
-        judgeable.strikerController.OnJudge(context);
+        //judgeable.strikerController.OnJudge(context);
 
         // 터치 없이 LateMiss가 난 경우의 처리
         if (attackJudgeHandlerDict.TryGetValue(judgeable.attackType, out var attackJudgeHandler))
         {
-            if (attackJudgeHandler is NormalAttackJudgeHandler)
+            if (attackJudgeHandler is NormalAttackJudgeHandler normalAttackJudgeHandler)
             {
-                attackJudgeHandler.OnJudge(context);
+                normalAttackJudgeHandler.OnJudge(context);
             }
-            else if (attackJudgeHandler is StrongAttackJudgeHandler)
+            else if (attackJudgeHandler is StrongAttackJudgeHandler strongAttackJudgeHandler)
             {
-                attackJudgeHandler.OnJudge(context);
+                strongAttackJudgeHandler.OnJudge(context);
             }
-            else if (attackJudgeHandler is HoldAttackJudgeHandler)
+            else if (attackJudgeHandler is HoldAttackJudgeHandler holdAttackJudgeHandler)
             {
-                attackJudgeHandler.OnJudge(context);
+                holdAttackJudgeHandler.OnJudge(context);
             }
         }
     }
