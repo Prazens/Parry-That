@@ -57,6 +57,17 @@ public class NormalAttackJudgeHandler : MonoBehaviour, IAttackJudgeHandler<Norma
         Judgeable judgeable = null;
         float arriveBeat = Mathf.Infinity;
 
+        // 강패링이면 방향이 일치하는 Judgeable만 확인
+        if (touch.type == AttackType.Strong)
+        {
+            judgeable = judgeables[touch.direction];
+
+            if (judgeable == null || !relevantAttacks.Contains(judgeable.attackType))
+                return null;
+
+            return judgeable;
+        }
+
         // 모든 방향 중 가장 빠른 약공격 탐색
         foreach (var tempJudgeable in judgeables.Values)
         {
@@ -94,7 +105,7 @@ public class NormalAttackJudgeHandler : MonoBehaviour, IAttackJudgeHandler<Norma
         }
 
         // 플레이어가 자동으로 공격 방향을 바라봄
-        if (judgeType >= JudgeType.LateBlocked && judgeType <= JudgeType.EarlyBlocked)
+        else if (judgeType >= JudgeType.LateBlocked && judgeType <= JudgeType.EarlyBlocked)
         {
             touch.direction = judgeable.noteDirection;
         }
