@@ -10,8 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 030148ca4f1b0e6419176c7fa6452b9d, type: 3}
-  m_Name: Ending
+  m_Name: Stage4Epilogue
   m_EditorClassIdentifier: Assembly-CSharp::CutsceneData
+  stageId: 4
+  category: 1
   textSet:
   - "\uB9C8\uC655\uC774 \uC4F0\uB7EC\uC84C\uB2E4! \uC6A9\uC0AC\uB2D8 \uAD49\uC7A5\uD558\uC2ED\uB2C8\uB2E4!"
   - "\uB610 \uD070\uC18C\uB9AC\uCCD0 \uBD10\uB77C \uB9C8\uC655! (\uCFE8\uB7ED) \uB204\uAC00

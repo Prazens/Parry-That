@@ -1,17 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-//summary: CutSceneData SO로부터 받은 데이터를 바탕으로 컷씬을 진행해주는 코드
+// summary: CutSceneData SO로부터 받은 데이터를 바탕으로 컷씬을 진행해주는 코드
 public class CutSceneManager : MonoBehaviour
 {
-    [SerializeField] private CutSceneData[] datas;
+    [Header("Optional Direct Override")]
     [SerializeField] private CutSceneData data;
 
+    [Header("References")]
     [SerializeField] private Canvas mainCanvas;
     [SerializeField] private RectTransform cutScenesRoot;
     [SerializeField] private Font prologueFont;
@@ -20,43 +20,28 @@ public class CutSceneManager : MonoBehaviour
     [Header("Timing")]
     [SerializeField] private float fadeDuration = 0.3f;
     [SerializeField] private float typingDelay = 0.03f;
+    [SerializeField] private float stepEndDelay = 0.3f;
 
     private Text cutSceneText;
-    private int currentIndex; //컷씬이 진행된 횟수를 나타내는 인덱스
+    private int currentIndex;
 
-    private bool isTyping; //대사가 나오는 중인지 확인하는 변수
-
-    private bool isStepRunning; //클릭 후 나올 모든 액션이 끝났는지 확인하는 변수
-
+    private bool isTyping;
+    private bool isStepRunning;
 
     private AudioSource typingSound;
     private DatabaseManager databaseManager;
+    private CutSceneLevelManager cutSceneLevelManager;
 
-    //SO 기반으로 생성된 컷씬들
-    private readonly List<GameObject> spawnedPanels = new();
+    private readonly List<GameObject> spawnedPanels = new List<GameObject>();
 
-    //컴포넌트 연결 및 컷씬 데이터 설정
     private void Start()
     {
         typingSound = GetComponent<AudioSource>();
         databaseManager = FindObjectOfType<DatabaseManager>();
-        
-        //스테이지에 따라 컷씬 데이터 연결
-        if (data == null)
-        {
-            int stageId = StageSelection.SelectedStageId;
+        cutSceneLevelManager = FindObjectOfType<CutSceneLevelManager>();
 
-            if (datas != null && stageId >= 0 && stageId < datas.Length)
-            {
-                data = datas[stageId];
-            }
-            else
-            {
-                data = null;
-            }
-        }
-        
-        //컷씬이 없는 스테이지면 넘어감
+        ResolveCutSceneData();
+
         if (data == null)
         {
             EndCutScene();
@@ -69,7 +54,7 @@ public class CutSceneManager : MonoBehaviour
 
         currentIndex = 0;
 
-        if (data.clickSteps.Count > 0)
+        if (data.clickSteps != null && data.clickSteps.Count > 0)
         {
             StartCoroutine(ExecuteClickStep(0));
         }
@@ -77,14 +62,19 @@ public class CutSceneManager : MonoBehaviour
 
     private void Update()
     {
-        //클릭 입력 확인
-        if (!(Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began))) return;
-        //입력 무시 조건
-        if (isStepRunning || isTyping) return;
-        
+        if (!IsClickInputDown())
+        {
+            return;
+        }
+
+        if (isStepRunning || isTyping)
+        {
+            return;
+        }
+
         currentIndex++;
 
-        if (data == null || currentIndex >= data.clickSteps.Count)
+        if (data == null || data.clickSteps == null || currentIndex >= data.clickSteps.Count)
         {
             EndCutScene();
             return;
@@ -92,55 +82,104 @@ public class CutSceneManager : MonoBehaviour
 
         StartCoroutine(ExecuteClickStep(currentIndex));
     }
-    
-    //클릭 시 나오는 액션들 (액션+대기시간)
+
+    private void ResolveCutSceneData()
+    {
+        if (data != null)
+        {
+            return;
+        }
+
+        if (!CutSceneSelection.HasValidSelection())
+        {
+            data = null;
+            return;
+        }
+
+        if (cutSceneLevelManager == null)
+        {
+            Debug.LogError("CutSceneManager: CutSceneLevelManager를 찾지 못함");
+            data = null;
+            return;
+        }
+
+        data = cutSceneLevelManager.GetCutSceneData(
+            CutSceneSelection.SelectedStageId,
+            CutSceneSelection.SelectedCategory
+        );
+    }
+
+    private bool IsClickInputDown()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            return true;
+        }
+
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     private IEnumerator ExecuteClickStep(int index)
     {
+        if (data == null || data.clickSteps == null || index < 0 || index >= data.clickSteps.Count)
+        {
+            yield break;
+        }
+
         isStepRunning = true;
 
-        var step = data.clickSteps[index];
-
-        foreach (var action in step.actions)
+        CutSceneClickStep step = data.clickSteps[index];
+        if (step == null || step.actions == null)
         {
+            isStepRunning = false;
+            yield break;
+        }
+
+        for (int actionIndex = 0; actionIndex < step.actions.Count; actionIndex++)
+        {
+            CutSceneAction action = step.actions[actionIndex];
+            if (action == null)
+            {
+                continue;
+            }
+
             switch (action.actionType)
             {
-                //패널 보이기
                 case CutSceneActionType.ShowPanel:
                     SetPanelActive(action.index, true);
                     yield return new WaitForSeconds(action.waitseconds);
                     break;
-                    
-                //패널 숨기기
+
                 case CutSceneActionType.HidePanel:
                     SetPanelActive(action.index, false);
                     yield return new WaitForSeconds(action.waitseconds);
                     break;
 
-                //패널 페이드인
                 case CutSceneActionType.FadeIn:
-                    StartCoroutine(FadePanel(action.index, true));
+                    yield return StartCoroutine(FadePanel(action.index, true));
                     yield return new WaitForSeconds(action.waitseconds);
                     break;
 
-                //패널 페이드아웃
                 case CutSceneActionType.FadeOut:
-                    StartCoroutine(FadePanel(action.index, false));
+                    yield return StartCoroutine(FadePanel(action.index, false));
                     yield return new WaitForSeconds(action.waitseconds);
                     break;
 
-                //이전 대사 지운 후 다음 대사 출력
                 case CutSceneActionType.ShowTextReset:
-                    StartCoroutine(TypeText(data.textSet[action.index], true));
+                    yield return StartCoroutine(ShowTextByIndex(action.index, true));
                     yield return new WaitForSeconds(action.waitseconds);
                     break;
 
-                //이전 대사에 붙여서 다음 대사 출력
                 case CutSceneActionType.ShowTextAppend:
-                    StartCoroutine(TypeText(data.textSet[action.index], false));
+                    yield return StartCoroutine(ShowTextByIndex(action.index, false));
                     yield return new WaitForSeconds(action.waitseconds);
                     break;
 
-                //애니메이터 트리거(대기시간을 애니메이션 시간으로 활용 가능)
                 case CutSceneActionType.TriggerAnimator:
                     TriggerAnimator(action.index, action.animatorTrigger);
                     yield return new WaitForSeconds(action.waitseconds);
@@ -148,72 +187,109 @@ public class CutSceneManager : MonoBehaviour
             }
         }
 
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(stepEndDelay);
         isStepRunning = false;
     }
 
-    //SO 데이터를 바탕으로 스프라이트 및 애니메이터를 가진 패널 오브젝트 생성
+    private IEnumerator ShowTextByIndex(int textIndex, bool reset)
+    {
+        if (data == null || data.textSet == null)
+        {
+            yield break;
+        }
+
+        if (textIndex < 0 || textIndex >= data.textSet.Length)
+        {
+            Debug.LogWarning($"CutSceneManager: textSet 인덱스 범위 초과 ({textIndex})");
+            yield break;
+        }
+
+        yield return StartCoroutine(TypeText(data.textSet[textIndex], reset));
+    }
+
     private void CreatePanelsFromSO()
     {
-        if (data == null || data.panels == null) return;
-        if (cutScenesRoot == null)
+        if (data == null || data.panels == null)
         {
-            Debug.LogError("CutSceneManager: cutScenesRoot가 비어있음 (Canvas/CutScenes 연결 필요)");
             return;
         }
 
-        for (int i = 0; i < data.panels.Count; i++)
+        if (cutScenesRoot == null)
         {
-            var panel = data.panels[i];
-            GameObject panelObject;
+            Debug.LogError("CutSceneManager: cutScenesRoot가 비어있음");
+            return;
+        }
 
-            if (panel.type == CutScenePanelType.Animator)
+        for (int panelIndex = 0; panelIndex < data.panels.Count; panelIndex++)
+        {
+            CutScenePanels panel = data.panels[panelIndex];
+            if (panel == null)
             {
-                if (panel.animatorcontroller == null)
-                {
-                    Debug.LogWarning($"CutSceneManager: panels[{i}] AnimatorController가 null");
-                    continue;
-                }
-
-                panelObject = new GameObject("CutsceneAnimator");
-                panelObject.transform.SetParent(cutScenesRoot, false);
-
-                Image image = panelObject.AddComponent<Image>();
-                image.sprite = panel.sprite; // 필요 없으면 이 줄/필드도 제거 가능
-
-                Animator animator = panelObject.AddComponent<Animator>();
-                animator.runtimeAnimatorController = panel.animatorcontroller;
-            }
-            else
-            {
-                panelObject = new GameObject("CutsceneSprite");
-                panelObject.transform.SetParent(cutScenesRoot, false);
-
-                Image image = panelObject.AddComponent<Image>();
-                image.sprite = panel.sprite;
+                spawnedPanels.Add(null);
+                continue;
             }
 
-            RectTransform rectTransform = panelObject.GetComponent<RectTransform>();
-            if (rectTransform == null)
-                rectTransform = panelObject.AddComponent<RectTransform>();
-
-            rectTransform.anchorMin = panel.anchorMin;
-            rectTransform.anchorMax = panel.anchorMax;
-            rectTransform.pivot     = panel.pivot;
-
-            rectTransform.anchoredPosition = panel.anchoredPosition;
-            rectTransform.sizeDelta        = panel.size;
-            rectTransform.localScale       = panel.scale;
-
-            panelObject.SetActive(false);
+            GameObject panelObject = CreatePanelObject(panelIndex, panel);
             spawnedPanels.Add(panelObject);
         }
     }
 
+    private GameObject CreatePanelObject(int panelIndex, CutScenePanels panel)
+    {
+        GameObject panelObject;
+
+        if (panel.type == CutScenePanelType.Animator)
+        {
+            if (panel.animatorcontroller == null)
+            {
+                Debug.LogWarning($"CutSceneManager: panels[{panelIndex}] AnimatorController가 null");
+                return null;
+            }
+
+            panelObject = new GameObject($"CutsceneAnimator_{panelIndex}");
+            panelObject.transform.SetParent(cutScenesRoot, false);
+
+            RectTransform rectTransform = panelObject.AddComponent<RectTransform>();
+            ApplyPanelTransform(rectTransform, panel);
+
+            Image image = panelObject.AddComponent<Image>();
+            image.sprite = panel.sprite;
+
+            Animator animator = panelObject.AddComponent<Animator>();
+            animator.runtimeAnimatorController = panel.animatorcontroller;
+        }
+        else
+        {
+            panelObject = new GameObject($"CutsceneSprite_{panelIndex}");
+            panelObject.transform.SetParent(cutScenesRoot, false);
+
+            RectTransform rectTransform = panelObject.AddComponent<RectTransform>();
+            ApplyPanelTransform(rectTransform, panel);
+
+            Image image = panelObject.AddComponent<Image>();
+            image.sprite = panel.sprite;
+        }
+
+        panelObject.SetActive(false);
+        return panelObject;
+    }
+
+    private void ApplyPanelTransform(RectTransform rectTransform, CutScenePanels panel)
+    {
+        rectTransform.anchorMin = panel.anchorMin;
+        rectTransform.anchorMax = panel.anchorMax;
+        rectTransform.pivot = panel.pivot;
+        rectTransform.anchoredPosition = panel.anchoredPosition;
+        rectTransform.sizeDelta = panel.size;
+        rectTransform.localScale = panel.scale;
+    }
+
     private void PlayBGM()
     {
-        if (data == null || data.bgm == null)
+        if (data == null || data.bgm == null || bgm == null)
+        {
             return;
+        }
 
         bgm.clip = data.bgm;
         bgm.loop = data.loopBgm;
@@ -221,59 +297,92 @@ public class CutSceneManager : MonoBehaviour
         bgm.Play();
     }
 
-    //패널 활성화 및 비활성화
     private void SetPanelActive(int index, bool active)
     {
-        if (!IsValidPanel(index)) return;
-        spawnedPanels[index].SetActive(active);
+        if (!IsValidPanel(index))
+        {
+            return;
+        }
+
+        GameObject panelObject = spawnedPanels[index];
+        if (panelObject == null)
+        {
+            return;
+        }
+
+        panelObject.SetActive(active);
     }
 
-    //패널 페이드인 및 페이드아웃
     private IEnumerator FadePanel(int index, bool fadeIn)
     {
-        if (!IsValidPanel(index)) yield break;
-
-        var image = spawnedPanels[index].GetComponent<Image>();
-        if (image == null)
+        if (!IsValidPanel(index))
         {
-            spawnedPanels[index].SetActive(fadeIn);
             yield break;
         }
 
-        spawnedPanels[index].SetActive(true);
+        GameObject panelObject = spawnedPanels[index];
+        if (panelObject == null)
+        {
+            yield break;
+        }
 
-        float start = fadeIn ? 0f : 1f;
-        float end = fadeIn ? 1f : 0f;
-        float time = 0f;
+        Image image = panelObject.GetComponent<Image>();
+        if (image == null)
+        {
+            panelObject.SetActive(fadeIn);
+            yield break;
+        }
 
-        var color = image.color;
-        color.a = start;
+        panelObject.SetActive(true);
+
+        float startAlpha = fadeIn ? 0f : 1f;
+        float endAlpha = fadeIn ? 1f : 0f;
+        float elapsedTime = 0f;
+
+        Color color = image.color;
+        color.a = startAlpha;
         image.color = color;
 
-        while (time < fadeDuration)
+        while (elapsedTime < fadeDuration)
         {
-            time += Time.deltaTime;
-            color.a = Mathf.Lerp(start, end, time / fadeDuration);
+            elapsedTime += Time.deltaTime;
+            color.a = Mathf.Lerp(startAlpha, endAlpha, elapsedTime / fadeDuration);
             image.color = color;
             yield return null;
         }
 
-        //페이드아웃인 경우 비활성화
-        if (!fadeIn) 
+        color.a = endAlpha;
+        image.color = color;
+
+        if (!fadeIn)
         {
-            spawnedPanels[index].SetActive(false);
+            panelObject.SetActive(false);
         }
     }
 
-    //애니메이터 트리거
     private void TriggerAnimator(int index, string trigger)
     {
-        if (!IsValidPanel(index)) return;
-
-        Animator animator = spawnedPanels[index].GetComponent<Animator>();
-        if (animator == null || string.IsNullOrEmpty(trigger))
+        if (!IsValidPanel(index))
         {
-            print(index);
+            return;
+        }
+
+        GameObject panelObject = spawnedPanels[index];
+        if (panelObject == null)
+        {
+            return;
+        }
+
+        Animator animator = panelObject.GetComponent<Animator>();
+        if (animator == null)
+        {
+            Debug.LogWarning($"CutSceneManager: panels[{index}] Animator가 없음");
+            return;
+        }
+
+        if (string.IsNullOrEmpty(trigger))
+        {
+            Debug.LogWarning($"CutSceneManager: panels[{index}] trigger가 비어있음");
             return;
         }
 
@@ -281,61 +390,94 @@ public class CutSceneManager : MonoBehaviour
     }
 
     private bool IsValidPanel(int index)
-        => index >= 0 && index < spawnedPanels.Count;
+    {
+        return index >= 0 && index < spawnedPanels.Count;
+    }
 
-    //텍스트 출력
     private IEnumerator TypeText(string text, bool reset)
     {
         isTyping = true;
 
-        if (reset) cutSceneText.text = "";
+        if (cutSceneText == null)
+        {
+            isTyping = false;
+            yield break;
+        }
 
-        int typingSoundDelay = 0;
+        if (reset)
+        {
+            cutSceneText.text = string.Empty;
+        }
+
+        if (string.IsNullOrEmpty(text))
+        {
+            isTyping = false;
+            yield break;
+        }
+
+        int typingSoundDelayCounter = 0;
 
         for (int characterIndex = 0; characterIndex < text.Length; characterIndex++)
         {
             cutSceneText.text += text[characterIndex];
 
-            // 타이핑 사운드
             if (typingSound != null)
             {
-                if (typingSoundDelay >= 3 && text[characterIndex] != ' ')
+                if (typingSoundDelayCounter >= 3 && text[characterIndex] != ' ')
                 {
                     typingSound.Play();
-                    typingSoundDelay = 0;
+                    typingSoundDelayCounter = 0;
                 }
             }
 
-            typingSoundDelay++;
+            typingSoundDelayCounter++;
             yield return new WaitForSeconds(typingDelay);
         }
 
         isTyping = false;
     }
 
-    //컷씬 종료 시 Stage씬 불러옴
     public void EndCutScene()
     {
-        if (StageSelection.SelectedStageId == 6) SceneManager.LoadScene("testMain");
-        else SceneManager.LoadScene("Stage");
+        if (bgm != null && bgm.isPlaying)
+        {
+            bgm.Stop();
+        }
+
+        //에필로그면 로비로
+        if (CutSceneSelection.SelectedCategory == CutSceneCategory.Epilogue)
+        {
+            SceneManager.LoadScene("testMain");
+        }
+        //프롤로그면 스테이지로
+        else
+        {
+            SceneManager.LoadScene("Stage");
+        }
     }
 
-    //텍스트 UI 오브젝트 생성
     private void CreateTextUI()
     {
+        if (mainCanvas == null)
+        {
+            Debug.LogError("CutSceneManager: mainCanvas가 비어있음");
+            return;
+        }
+
         GameObject textObject = new GameObject("CutSceneText");
         textObject.transform.SetParent(mainCanvas.transform, false);
+
+        RectTransform rectTransform = textObject.AddComponent<RectTransform>();
+        rectTransform.anchorMin = new Vector2(0.1f, 0.1f);
+        rectTransform.anchorMax = new Vector2(0.9f, 0.3f);
+        rectTransform.offsetMin = Vector2.zero;
+        rectTransform.offsetMax = Vector2.zero;
 
         cutSceneText = textObject.AddComponent<Text>();
         cutSceneText.font = prologueFont;
         cutSceneText.fontSize = 60;
         cutSceneText.color = Color.white;
         cutSceneText.alignment = TextAnchor.UpperCenter;
-
-        RectTransform rectTransform = textObject.GetComponent<RectTransform>();
-        rectTransform.anchorMin = new Vector2(0.1f, 0.1f);
-        rectTransform.anchorMax = new Vector2(0.9f, 0.3f);
-        rectTransform.offsetMin = Vector2.zero;
-        rectTransform.offsetMax = Vector2.zero;
+        cutSceneText.text = string.Empty;
     }
 }

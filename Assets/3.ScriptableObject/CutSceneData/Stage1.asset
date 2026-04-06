@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 030148ca4f1b0e6419176c7fa6452b9d, type: 3}
   m_Name: Stage1
   m_EditorClassIdentifier: Assembly-CSharp::CutsceneData
+  stageId: 1
+  category: 0
   textSet:
   - '    '
   - '    '
@@ -274,3 +276,6 @@ MonoBehaviour:
       index: 10
       waitseconds: 0
       animatorTrigger: 
+  bgm: {fileID: 0}
+  loopBgm: 1
+  bgmVolume: 1

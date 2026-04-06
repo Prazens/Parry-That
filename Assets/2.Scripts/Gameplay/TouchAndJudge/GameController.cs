@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -146,12 +147,19 @@ public class GameController : MonoBehaviour
 
     private void OnSwipeDown()
     {
-        if (stageFlowManager.currentStageData.StageId == 4)
+        if (stageFlowManager.is_over) 
         {
-            StageSelection.SetSelection(6, 0);
-            SceneManager.LoadScene("CutScene");
+            SceneManager.LoadScene("testMain"); //게임 오버 시에는 로비로
         }
-        else SceneManager.LoadScene("testMain");
+        else
+        {
+            if (stageFlowManager.currentStageData.Category == StageCategory.Boss) //보스 클리어 시 에필로그
+            {
+                CutSceneSelection.SetSelection(stageFlowManager.currentStageData.StageId, CutSceneCategory.Epilogue);
+                SceneManager.LoadScene("CutScene");
+            }
+            else SceneManager.LoadScene("testMain");
+        }
         Time.timeScale = 1f;
     }
 }

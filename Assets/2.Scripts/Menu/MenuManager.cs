@@ -173,6 +173,7 @@ public class MenuManager : Singleton<MenuManager>
         else if (currentState == MenuState.StageSelect)
         {
             StageSelection.SetSelection(stageIndex[0], (Difficulty)stageIndex[1]);
+            CutSceneSelection.SetSelection(stageIndex[0], CutSceneCategory.Prologue);
             SceneManager.LoadScene("CutScene");
         }
     }

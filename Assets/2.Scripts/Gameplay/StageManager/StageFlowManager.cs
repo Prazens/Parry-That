@@ -72,7 +72,6 @@ public class StageFlowManager : MonoBehaviour
         if (isDaehwa) return;
         if (!isActive) return;
         if (isPaused) return;
-        if (is_over) return;
 
         // 음악이 재생 중일 때는 오디오 소스의 시간을 직접 참조하여 음악과 동기화
         if (stageAudioManager != null && stageAudioManager.musicSource.isPlaying)
@@ -404,7 +403,6 @@ public class StageFlowManager : MonoBehaviour
         {
             currentTime = stageDuration;
             isActive = false;
-            is_over = true;
             button_active = false;
 
             if (stageResultManager != null)

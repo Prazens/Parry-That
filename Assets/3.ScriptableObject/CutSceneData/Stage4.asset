@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 030148ca4f1b0e6419176c7fa6452b9d, type: 3}
   m_Name: Stage4
   m_EditorClassIdentifier: Assembly-CSharp::CutsceneData
+  stageId: 4
+  category: 0
   textSet:
   - "\uC6A9\uC0AC\uB2D8. \uC774 \uBB3C\uBC94\uB4E4 \uC0DD\uAC01\uBCF4\uB2E4 \uB108\uBB34
     \uAC15\uD55C \uAC83 \uAC19\uC9C0 \uC54A\uB098\uC694?"
@@ -446,3 +448,6 @@ MonoBehaviour:
       index: 18
       waitseconds: 0.1
       animatorTrigger: 
+  bgm: {fileID: 0}
+  loopBgm: 1
+  bgmVolume: 1

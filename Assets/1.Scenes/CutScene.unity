@@ -916,6 +916,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1103753729}
+  - component: {fileID: 1103753731}
   - component: {fileID: 1103753728}
   - component: {fileID: 1103753730}
   m_Layer: 0
@@ -937,14 +938,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85d05aa2f31f3d14eb79583a55c17c43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  datas:
-  - {fileID: 11400000, guid: 82264cd2e14f52e45822869b048e95fd, type: 2}
-  - {fileID: 11400000, guid: 45ab11cca9ea233479ebb1df764395df, type: 2}
-  - {fileID: 11400000, guid: fba50d26fd9239645ba82d299cc6ed43, type: 2}
-  - {fileID: 11400000, guid: 95390f218ef435b488284b78d526ebbf, type: 2}
-  - {fileID: 11400000, guid: fba253d75b1cf7741be8b0d013be21ca, type: 2}
-  - {fileID: 11400000, guid: fba253d75b1cf7741be8b0d013be21ca, type: 2}
-  - {fileID: 11400000, guid: f88a9d5a18e0d314b8f08023174aaada, type: 2}
   data: {fileID: 0}
   mainCanvas: {fileID: 1862990865}
   cutScenesRoot: {fileID: 1530312601}
@@ -952,6 +945,7 @@ MonoBehaviour:
   bgm: {fileID: 57570335}
   fadeDuration: 0.3
   typingDelay: 0.03
+  stepEndDelay: 0.3
 --- !u!4 &1103753729
 Transform:
   m_ObjectHideFlags: 0
@@ -1063,6 +1057,25 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1103753731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1103753727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8eb3bcc47a772a245a14966438685768, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cutScenes:
+  - {fileID: 11400000, guid: 82264cd2e14f52e45822869b048e95fd, type: 2}
+  - {fileID: 11400000, guid: 45ab11cca9ea233479ebb1df764395df, type: 2}
+  - {fileID: 11400000, guid: fba50d26fd9239645ba82d299cc6ed43, type: 2}
+  - {fileID: 11400000, guid: 95390f218ef435b488284b78d526ebbf, type: 2}
+  - {fileID: 11400000, guid: fba253d75b1cf7741be8b0d013be21ca, type: 2}
+  - {fileID: 11400000, guid: f88a9d5a18e0d314b8f08023174aaada, type: 2}
 --- !u!1 &1303342785
 GameObject:
   m_ObjectHideFlags: 0
