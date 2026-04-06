@@ -30,6 +30,7 @@ public class HoldAttackJudgeHandler : MonoBehaviour, IAttackJudgeHandler<HoldAtt
         { AttackType.HoldStop, new AttackType[1] { AttackType.HoldStop } },
     };
     private bool isHolding = false;
+    private List<AttackType> touchAllowOnlyList = new() { AttackType.HoldStop };
 
     public void OnNotice(HoldAttackJudgeContext context)
     {
@@ -81,6 +82,7 @@ public class HoldAttackJudgeHandler : MonoBehaviour, IAttackJudgeHandler<HoldAtt
         else if (attackType == AttackType.HoldStop || attackType == AttackType.HoldFinishStrong)
         {
             isHolding = false;
+            judgeSystem.AllowOnly(false, touchAllowOnlyList);
         }
     }
 
@@ -134,6 +136,7 @@ public class HoldAttackJudgeHandler : MonoBehaviour, IAttackJudgeHandler<HoldAtt
             if (judgeable.attackType == AttackType.HoldStart)
             {
                 isHolding = true;
+                judgeSystem.AllowOnly(true, touchAllowOnlyList);
             }
         }
 

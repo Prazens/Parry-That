@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public struct JudgeContext
@@ -55,6 +56,8 @@ public class JudgeSystem : MonoBehaviour
                                     { "공노트", "늦은 MISS", "늦은 BLOCKED", "늦은 PARRIED",
                                       "PERFECT", "빠른 PARRIED", "빠른 BLOCKED", "빠른 MISS" };
 
+    private Dictionary<AttackType, int> touchBlockCounts = new(); // Value가 1 이상이면 터치를 무시
+
     private void Awake()
     {
         if (dynamicUIManager == null)
@@ -68,6 +71,11 @@ public class JudgeSystem : MonoBehaviour
             { AttackType.HoldStop, holdAttackJudgeHandler },
             { AttackType.HoldFinishStrong, holdAttackJudgeHandler },
         };
+
+        foreach (AttackType type in Enum.GetValues(typeof(AttackType)))
+        {
+            touchBlockCounts[type] = 0;
+        }
     }
 
     void Update()
@@ -144,8 +152,38 @@ public class JudgeSystem : MonoBehaviour
         return judgeableQueues[dir].Count;
     }
 
+    public void BlockTouch(bool setBlock, List<AttackType> touchTypes)
+    {
+        foreach (AttackType type in touchTypes)
+        {
+            if (setBlock)
+                touchBlockCounts[type]++;
+            else if (touchBlockCounts[type] > 0)
+                touchBlockCounts[type]--;
+        }
+    }
+
+    public void AllowOnly(bool setAllow, List<AttackType> touchTypes)
+    {
+        foreach (AttackType type in touchBlockCounts.Keys.ToList())
+        {
+            if (!touchTypes.Contains(type))
+            {
+                // 허용하지 않는 타입의 block count를 올림
+                if (setAllow)
+                    touchBlockCounts[type]++;
+                else if (touchBlockCounts[type] > 0)
+                    touchBlockCounts[type]--;
+            }
+        }
+    }
+
     public void Judge(Touched touch)
     {
+        // 터치 입력 차단된 type이면 즉시 리턴
+        if (touchBlockCounts.ContainsKey(touch.type) && touchBlockCounts[touch.type] > 0)
+            return;
+
         double timeDiff = touch.touchSec - lastNonMissJudge;
         // 간접 미스 방지
         if (touch.type == AttackType.Strong && timeDiff < 0.01d)
