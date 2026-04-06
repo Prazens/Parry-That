@@ -4,7 +4,7 @@ using UnityEngine;
 
 public sealed class RangeStrikerVisual : StrikerVisual
 {
-    [SerializeField] private List<Projectile> projectilePrefabs; // 투사체 프리팹
+    [SerializeField] private List<CommonProjectile> projectilePrefabs; // 투사체 프리팹
 
     public override float preAttackDelay => 0.5f;
     public override float disappearDuration => 1.0f;
@@ -38,7 +38,7 @@ public sealed class RangeStrikerVisual : StrikerVisual
             Debug.LogWarning($"{name}.FireProjectile: projectile prefab not exists for attackType {type}");
             return null;
         }
-        Projectile selectedProjectile = projectilePrefabs[(int)attackType];
+        CommonProjectile selectedProjectile = projectilePrefabs[(int)attackType];
 
         Vector3 projectilePos = transform.position;
         switch (location)
@@ -51,7 +51,7 @@ public sealed class RangeStrikerVisual : StrikerVisual
                 break;
         }
         // 투사체 생성
-        Projectile projectile = Instantiate(selectedProjectile, projectilePos, Quaternion.identity);
+        CommonProjectile projectile = Instantiate(selectedProjectile, projectilePos, Quaternion.identity);
         projectile.Setup(location, projectilePos, targetPosition, arriveSec);
 
         return projectile.gameObject;

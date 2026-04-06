@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Projectile : MonoBehaviour
+public class CommonProjectile : MonoBehaviour
 {
     private Vector3 startPosition; // 시작 위치
     private Vector3 targetPosition; // 목표 위치
@@ -42,8 +42,11 @@ public class Projectile : MonoBehaviour
 
     void Update()
     {
-        float currentSec = StageFlowManager.Instance.currentTime;
+        LerpPosition(StageFlowManager.Instance.currentTime);
+    }
 
+    private void LerpPosition(float currentSec)
+    {
         if (!hasReachedTarget)
         {
             float fractionOfJourney = (arriveSec - currentSec) / duration;
