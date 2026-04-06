@@ -4,7 +4,7 @@ using UnityEngine;
 
 public sealed class RangeStrikerVisual : StrikerVisual
 {
-    [SerializeField] private List<projectile> projectilePrefabs; // 투사체 프리팹
+    [SerializeField] private List<Projectile> projectilePrefabs; // 투사체 프리팹
 
     public override float preAttackDelay => 0.5f;
     public override float disappearDuration => 1.0f;
@@ -38,7 +38,7 @@ public sealed class RangeStrikerVisual : StrikerVisual
             Debug.LogWarning($"{name}.FireProjectile: projectile prefab not exists for attackType {type}");
             return null;
         }
-        projectile selectedProjectile = projectilePrefabs[(int)attackType];
+        Projectile selectedProjectile = projectilePrefabs[(int)attackType];
 
         Vector3 projectilePos = transform.position;
         switch (location)
@@ -51,30 +51,8 @@ public sealed class RangeStrikerVisual : StrikerVisual
                 break;
         }
         // 투사체 생성
-        projectile projectile = Instantiate(selectedProjectile, projectilePos, Quaternion.identity);
-        switch (location)
-        {
-            case Direction.Up:
-                projectile.transform.rotation = Quaternion.Euler(0, 0, 0);
-                break;
-            case Direction.Down:
-                projectile.transform.rotation = Quaternion.Euler(0, 0, 180);
-                break;
-            case Direction.Left:
-                projectile.transform.rotation = Quaternion.Euler(0, 0, 90);
-                break;
-            case Direction.Right:
-                projectile.transform.rotation = Quaternion.Euler(0, 0, 270);
-                break;
-            default:
-                break;
-        }
-
-        // 투사체에 타겟 설정
-        projectile.target = controller.playerManager.transform; // 플레이어를 타겟으로 설정
-        projectile.owner = controller; // 소유자로 현재 스트라이커 설정
-        projectile.arriveTime = arriveSec;
-        projectile.type = type;
+        Projectile projectile = Instantiate(selectedProjectile, projectilePos, Quaternion.identity);
+        projectile.Setup(location, projectilePos, targetPosition, arriveSec);
 
         return projectile.gameObject;
     }

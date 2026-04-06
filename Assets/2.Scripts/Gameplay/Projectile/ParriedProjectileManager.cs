@@ -6,122 +6,94 @@ public class ParriedProjectileManager : MonoBehaviour
 {
     public GameObject[] prefabUp; 
     public GameObject[] prefabDown; 
-    public Transform parriedTusacheParent; 
+    public GameObject[] prefabBoss; // 0~1 : 약, 2~3 : 강
+    public Transform parriedprojectileParent;
 
-    public void ParryTusache(Direction targetDirection, int type, int fixRandom = 0)
+    public void ParryProjectile(Direction targetDirection, AttackType attackType, int fixRandom = 0)
     {
-        // Debug.Log("패링된 투사체 함수 호출됨");
-
         GameObject prefabToSpawn = null;
 
         // 랜덤으로 사용할 프리팹 선택
+        int randomIndex = 0;
+        if (attackType == AttackType.Normal)
+        {
+            randomIndex = Random.Range(0, 2);
+            if (fixRandom > 0) randomIndex = fixRandom - 1;
+        }
+        else if (attackType == AttackType.Strong)
+        {
+            randomIndex = Random.Range(2, 4);
+            if (fixRandom > 0) randomIndex = fixRandom + 1;
+        }
+
         if (targetDirection == Direction.Up)
         {
-            if (type == 0) // 약공격
-            {
-                int randomIndex = UnityEngine.Random.Range(0, 2);
-                if(fixRandom > 0) randomIndex = fixRandom - 1;
-                prefabToSpawn = prefabUp[randomIndex];
-            }
-            else if (type == 1) // 강공격
-            {
-                int randomIndex = UnityEngine.Random.Range(2, 4);
-                if (fixRandom > 0) randomIndex = fixRandom + 1;
-                prefabToSpawn = prefabUp[randomIndex];
-            }
+            prefabToSpawn = prefabUp[randomIndex];
         }
         else if (targetDirection == Direction.Down)
         {
-            if (type == 0) // 약공격
-            {
-                int randomIndex = UnityEngine.Random.Range(0, 2);
-                if (fixRandom > 0) randomIndex = fixRandom - 1;
-                prefabToSpawn = prefabDown[randomIndex];
-            }
-            else if (type == 1) // 강공격
-            {
-                int randomIndex = UnityEngine.Random.Range(2, 4);
-                if (fixRandom > 0) randomIndex = fixRandom + 1;
-                prefabToSpawn = prefabDown[randomIndex];
-            }
+            prefabToSpawn = prefabDown[randomIndex];
         }
 
-        if (prefabToSpawn != null)
+        if (prefabToSpawn == null)
+            return;
+
+        GameObject spawnedObject = Instantiate(prefabToSpawn, parriedprojectileParent);
+        GameObject InGameScreen = GameObject.Find("InGameScreen");
+
+        // 사이즈 및 위치 조절  -- 해상도 관련 문제 해결 시 수정 필요
+        if (targetDirection == Direction.Up)
         {
-            GameObject spawnedObject = Instantiate(prefabToSpawn, parriedTusacheParent);
-            GameObject InGameScreen = GameObject.Find("InGameScreen");
-            if (transform != null)
-            {
-                // 사이즈 및 위치 조절  -- 해상도 관련 문제 해결 시 수정 필요
-                if (targetDirection == Direction.Up)
-                {
-                    Vector3 desiredPosition = new Vector3(0, -0.4f, 1);
-                    Vector3 desiredScale = new Vector3(0.3f, 0.32f, 1);
+            Vector3 desiredPosition = new Vector3(0, -0.4f, 1);
+            Vector3 desiredScale = new Vector3(0.3f, 0.32f, 1);
 
-                    SetWorldPositionAndScale(spawnedObject, desiredPosition, desiredScale);
-                }
-                else if (targetDirection == Direction.Down)
-                {
-                    Vector3 desiredPosition = new Vector3(0, 0, 1);
-                    Vector3 desiredScale = new Vector3(0.3f, 0.32f, 1);
-
-                    SetWorldPositionAndScale(spawnedObject, desiredPosition, desiredScale);
-                }
-                
-            }
-            else
-            {
-                // // Debug.LogError("생성된 오브젝트에 Transform이 없음");
-            }
-
-            Animator animator = spawnedObject.GetComponent<Animator>();
-            if (animator != null)
-            {
-                string animationTriggerName = prefabToSpawn.name;
-                animator.Play(animationTriggerName);
-
-                float animationLength = animator.GetCurrentAnimatorStateInfo(0).length;
-                StartCoroutine(DestroyAfterAnimation(spawnedObject, animationLength));
-            }
-            else
-            {
-                // // Debug.LogError("Animator가 없음");
-            }
+            SetWorldPositionAndScale(spawnedObject, desiredPosition, desiredScale);
         }
-        else
+        else if (targetDirection == Direction.Down)
         {
-            // // Debug.LogError("프리팹 선택 못함");
+            Vector3 desiredPosition = new Vector3(0, 0, 1);
+            Vector3 desiredScale = new Vector3(0.3f, 0.32f, 1);
+
+            SetWorldPositionAndScale(spawnedObject, desiredPosition, desiredScale);
+        }
+
+        Animator animator = spawnedObject.GetComponent<Animator>();
+        if (animator != null)
+        {
+            string animationTriggerName = prefabToSpawn.name;
+            animator.Play(animationTriggerName);
+
+            float animationLength = animator.GetCurrentAnimatorStateInfo(0).length;
+            StartCoroutine(DestroyAfterAnimation(spawnedObject, animationLength));
         }
     }
 
     // 애니메이션 종료 후 오브젝트 삭제
-    private System.Collections.IEnumerator DestroyAfterAnimation(GameObject obj, float delay)
+    private IEnumerator DestroyAfterAnimation(GameObject obj, float delay)
     {
         yield return new WaitForSeconds(delay);
         Destroy(obj);
     }
 
-    void SetWorldPositionAndScale(GameObject worldObject, Vector3 position, Vector3 scale)
+    private void SetWorldPositionAndScale(GameObject worldObject, Vector3 position, Vector3 scale)
     {
         if (worldObject == null)
         {
-            // Debug.LogError("월드 오브젝트가 유효하지 않습니다.");
             return;
         }
         worldObject.transform.position = position;
         worldObject.transform.localScale = scale;
     }
-    public GameObject[] prefabBoss; // 0~1 : 약, 2~3 : 강
 
-    public void ParryTusacheBoss(int type, Transform bossRoot)
+    public void ParryProjectileBoss(AttackType attackType, Transform bossRoot)
     {
         GameObject prefabToSpawn = null;
-        if (type == 0) prefabToSpawn = prefabBoss[UnityEngine.Random.Range(0, 2)];
-        else prefabToSpawn = prefabBoss[UnityEngine.Random.Range(2, 4)];
+        if (attackType == AttackType.Normal) prefabToSpawn = prefabBoss[Random.Range(0, 2)];
+        else prefabToSpawn = prefabBoss[Random.Range(2, 4)];
 
         if (prefabToSpawn == null) return;
 
-        GameObject go = Instantiate(prefabToSpawn, parriedTusacheParent);
+        GameObject go = Instantiate(prefabToSpawn, parriedprojectileParent);
         // 화면 공간이 아니라 월드 중심(보스 본체 pivot) 근처로 배치
         SetWorldPositionAndScale(go, bossRoot.position /*+ 오프셋 가능*/, new Vector3(0.3f, 0.32f, 1));
 
@@ -133,9 +105,6 @@ public class ParriedProjectileManager : MonoBehaviour
         }
     }
 }
-
-
-
 
 
 /*
