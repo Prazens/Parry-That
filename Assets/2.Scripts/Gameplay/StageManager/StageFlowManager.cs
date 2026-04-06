@@ -16,6 +16,8 @@ public class StageFlowManager : MonoBehaviour
     public static bool isActive = false;
     public bool is_over = false;
     public bool isDaehwa = false;
+    public bool isTutorial = false; //튜토리얼 패널이 띄워져 있으면 true, 아니면 false
+    private bool tutorialPanelShown = false;
 
     private float phaseEndTime = -1f;
     public int currentPhaseIndex { get; private set; } = 0;
@@ -26,7 +28,7 @@ public class StageFlowManager : MonoBehaviour
 
     [Header("Managers")]
     [SerializeField] private StageSetupManager stageSetupManager;
-    [SerializeField] private StageChartLoader stageChartLoader;
+    [SerializeField] private StageDataLoader stageDataLoader;
     [SerializeField] private StageAudioManager stageAudioManager;
     [SerializeField] private StaticUIManager staticUIManager;
     [SerializeField] private DynamicUIManager dynamicUIManager;
@@ -72,13 +74,15 @@ public class StageFlowManager : MonoBehaviour
         if (isDaehwa) return;
         if (!isActive) return;
         if (isPaused) return;
+        if (isTutorial) return;
+
 
         // 음악이 재생 중일 때는 오디오 소스의 시간을 직접 참조하여 음악과 동기화
         if (stageAudioManager != null && stageAudioManager.musicSource.isPlaying)
         {
             currentTime = stageAudioManager.musicSource.time + stageAudioManager.bgmOffset;
         }
-        else
+        else if (!stageAudioManager.musicPlayed)
         {
             currentTime += Time.deltaTime;
         }
@@ -100,6 +104,7 @@ public class StageFlowManager : MonoBehaviour
                 else
                 {
                     // 튜토리얼은 즉시 재생
+                    stageAudioManager.bgmOffset = 0f;
                     stageAudioManager.musicSource.Play();
                     stageAudioManager.musicPlayed = true;
                 }
@@ -210,6 +215,8 @@ public class StageFlowManager : MonoBehaviour
         is_over = false;
         isPaused = false;
         isDaehwa = false;
+        isTutorial = false;
+        tutorialPanelShown = false;
         button_active = true;
         victorySequenceTriggered = false;
         victoryStarted = false;
@@ -296,6 +303,7 @@ public class StageFlowManager : MonoBehaviour
             EndStage();
             return;
         }
+        
 
         IReadOnlyList<StagePhase> phases = currentStageData.Phases;
         if (phases == null)
@@ -332,12 +340,35 @@ public class StageFlowManager : MonoBehaviour
             return;
         }
 
-        bool hasChart = stageChartLoader != null && stageChartLoader.HasCurrentPhaseChart(currentStageData);
-        bool hasDialogue = stageChartLoader != null && stageChartLoader.HasCurrentPhaseDialogue(currentStageData);
+        bool hasTutorialPanel = !tutorialPanelShown && stageDataLoader != null && stageDataLoader.HasCurrentPhaseTutorialPanel(currentStageData);
+        bool hasChart = stageDataLoader != null && stageDataLoader.HasCurrentPhaseChart(currentStageData);
+        bool hasDialogue = stageDataLoader != null && stageDataLoader.HasCurrentPhaseDialogue(currentStageData);
 
-        if (!hasChart && !hasDialogue)
+        if (!hasTutorialPanel && !hasChart && !hasDialogue)
         {
             GoToNextPhase();
+            return;
+        }
+
+        if (hasTutorialPanel)
+        {
+            tutorialPanelShown = true;
+            isTutorial = true;
+            isActive = false;
+            isDaehwa = false;
+            phaseEndTime = -1f;
+
+            if (stageAudioManager != null)
+            {
+                stageAudioManager.AudioPause();
+            }
+
+            if (staticUIManager != null && stageDataLoader != null)
+            {
+                GameObject tutorialPanelPrefab = stageDataLoader.GetCurrentPhaseTutorialPanel(currentStageData);
+                staticUIManager.ShowTutorialPanel(tutorialPanelPrefab);
+            }
+
             return;
         }
 
@@ -345,10 +376,10 @@ public class StageFlowManager : MonoBehaviour
         {
             phaseEndTime = -1f;
 
-            if (stageChartLoader != null)
+            if (stageDataLoader != null)
             {
-                phaseEndTime = stageChartLoader.PhaseEndTime(currentStageData);
-                stageChartLoader.LoadChartsFromStageData(currentStageData);
+                phaseEndTime = stageDataLoader.PhaseEndTime(currentStageData);
+                stageDataLoader.LoadChartsFromStageData(currentStageData);
             }
 
             if (strikerManager != null)
@@ -361,6 +392,7 @@ public class StageFlowManager : MonoBehaviour
 
             isDaehwa = false;
             isActive = true;
+            isTutorial = false;
             return;
         }
 
@@ -418,6 +450,28 @@ public class StageFlowManager : MonoBehaviour
         }
     }
 
+    public void CloseTutorialPanel()
+    {
+        if (!isTutorial)
+            return;
+
+        isTutorial = false;
+
+        if (staticUIManager != null)
+        {
+            staticUIManager.HideTutorialPanel();
+            print(1);
+        }
+
+        if (stageAudioManager != null)
+        {
+            stageAudioManager.AudioUnPause();
+            print(2);
+        }
+
+        StartCurrentPhase();
+    }
+
     private IEnumerator RunCurrentPhaseDialogue()
     {
         isDaehwa = true;
@@ -425,9 +479,9 @@ public class StageFlowManager : MonoBehaviour
 
         DialogueData dialogue = null;
 
-        if (stageChartLoader != null)
+        if (stageDataLoader != null)
         {
-            dialogue = stageChartLoader.GetCurrentPhaseDialogue(currentStageData);
+            dialogue = stageDataLoader.GetCurrentPhaseDialogue(currentStageData);
         }
 
         if (dialogue != null)
@@ -444,10 +498,10 @@ public class StageFlowManager : MonoBehaviour
 
     private void ApplyDialogueAudioPolicyBeforeDialogue()
     {
-        if (stageChartLoader == null)
+        if (stageDataLoader == null)
             return;
 
-        DialogueAudioPolicy policy = stageChartLoader.GetDialogueAudioPolicy(currentStageData);
+        DialogueAudioPolicy policy = stageDataLoader.GetDialogueAudioPolicy(currentStageData);
 
         switch (policy)
         {
@@ -476,10 +530,10 @@ public class StageFlowManager : MonoBehaviour
 
     private void ApplyDialogueAudioPolicyAfterDialogue()
     {
-        if (stageChartLoader == null)
+        if (stageDataLoader == null)
             return;
 
-        DialogueAudioPolicy policy = stageChartLoader.GetDialogueAudioPolicy(currentStageData);
+        DialogueAudioPolicy policy = stageDataLoader.GetDialogueAudioPolicy(currentStageData);
 
         switch (policy)
         {
@@ -501,6 +555,7 @@ public class StageFlowManager : MonoBehaviour
     private void GoToNextPhase()
     {
         phaseEndTime = -1f;
+        tutorialPanelShown = false;
         currentPhaseIndex++;
         StartCurrentPhase();
     }

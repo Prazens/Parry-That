@@ -370,11 +370,12 @@ MonoBehaviour:
   stageDuration: 60
   is_over: 0
   isDaehwa: 0
+  isTutorial: 0
   strikerManager: {fileID: 2036327256}
   dialogueManager: {fileID: 1515393733}
   bossController: {fileID: 0}
   stageSetupManager: {fileID: 700077782}
-  stageChartLoader: {fileID: 461089627}
+  stageDataLoader: {fileID: 461089627}
   stageAudioManager: {fileID: 2139028259}
   staticUIManager: {fileID: 1385202995}
   dynamicUIManager: {fileID: 1305503427}
@@ -1035,7 +1036,7 @@ GameObject:
   - component: {fileID: 461089626}
   - component: {fileID: 461089627}
   m_Layer: 0
-  m_Name: StageChartLoader
+  m_Name: StageDataLoader
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
