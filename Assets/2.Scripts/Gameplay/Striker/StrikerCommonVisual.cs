@@ -13,8 +13,6 @@ public class StrikerCommonVisual : MonoBehaviour
     private float spawnMoveDuration => 1.0f;
     public float disappearDuration => 1.0f;
 
-    private int prepareCount = 0;
-
     private void Awake()
     {
         if (animator == null)
@@ -29,19 +27,12 @@ public class StrikerCommonVisual : MonoBehaviour
 
     public void OnNotice()
     {
-        animator.SetBool("isPreparing", true);
-        prepareCount++;
+        animator.SetTrigger("Prepare");
     }
 
     public void OnAttackStart()
     {
         animator.SetTrigger("Attack");
-        prepareCount--;
-        if (prepareCount <= 0)
-        {
-            prepareCount = 0;
-            animator.SetBool("isPreparing", false);
-        }
     }
 
     public void OnJudge()

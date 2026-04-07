@@ -67,7 +67,7 @@ public class MeleeProjectile : Projectile
         StartCoroutine(LerpPosition(targetPosition, startPosition, arriveSec + duration * 0.5f));
         animator.SetBool("movingBack", true);
 
-        yield return new WaitForSeconds(duration * 1.5f - animLength);
+        yield return new WaitForSeconds(duration * 1.5f - animLength - attackMotionStartTimeOffset);
         Destroy(gameObject);
     }
 

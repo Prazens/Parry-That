@@ -237,6 +237,7 @@ MonoBehaviour:
   projectilePrefabs:
   - {fileID: 2507512290859885132, guid: e22b3a0e2c5d2be4abcd5ef1eb3cf917, type: 3}
   - {fileID: 2507512290859885132, guid: e22b3a0e2c5d2be4abcd5ef1eb3cf917, type: 3}
+  _preAttackDelay: 0.5
 --- !u!82 &9120506532451307555
 AudioSource:
   m_ObjectHideFlags: 0
@@ -347,7 +348,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 1619256992334318428}
   particleSystemGreen: {fileID: 165418590215597304}
-  _preAttackDelay: 0.5
 --- !u!114 &8368580590027548322
 MonoBehaviour:
   m_ObjectHideFlags: 0
