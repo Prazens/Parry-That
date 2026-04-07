@@ -2,19 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HoldAttackNoticeContext : IAttackContext
-{
-    public NoteData note { get; }
-    public List<Judgeable> judgeables = new();
-
-    public HoldAttackNoticeContext(NoteData note, List<Judgeable> judgeables)
-    {
-        this.note = note;
-        this.judgeables = judgeables;
-    }
-}
-
-public class HoldAttackNoticeHandler : MonoBehaviour, IAttackHandler<HoldAttackNoticeContext>
+public class HoldAttackNoticeHandler : MonoBehaviour, IAttackHandler<AttackNoticeContext>
 {
     [SerializeField] private GameObject[] exclamations;
     [SerializeField] private AudioClip[] prepareSounds;
@@ -30,7 +18,7 @@ public class HoldAttackNoticeHandler : MonoBehaviour, IAttackHandler<HoldAttackN
         ForceStop();
     }
 
-    public void OnNotice(HoldAttackNoticeContext context)
+    public void OnNotice(AttackNoticeContext context)
     {
         var flow = StageFlowManager.Instance;
         float noticeBeat = context.note.noticeBeat;
@@ -41,25 +29,25 @@ public class HoldAttackNoticeHandler : MonoBehaviour, IAttackHandler<HoldAttackN
         if (attackType == AttackType.HoldStart)
         {
             Appear(durationSec);
+            if (context.judgeables.Count >= 2)
+                context.judgeables[1].AddOnDestroy(_ => ForceStop());
         }
         else if (attackType == AttackType.HoldFinishStrong)
         {
             Disappear(durationSec);
         }
-
-        context.judgeables?[1]?.AddOnDestroy(_ => ForceStop());
     }
 
     void IAttackHandler.OnNotice(IAttackContext context)
-        => OnNotice((HoldAttackNoticeContext)context);
+        => OnNotice((AttackNoticeContext)context);
 
-    public void OnAttackStart(HoldAttackNoticeContext context)
+    public void OnAttackStart(AttackNoticeContext context)
     {
 
     }
 
     void IAttackHandler.OnAttackStart(IAttackContext context)
-        => OnAttackStart((HoldAttackNoticeContext)context);
+        => OnAttackStart((AttackNoticeContext)context);
 
     public void OnJudge(JudgeContext context)
     {

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CommonProjectile : MonoBehaviour
+public class CommonProjectile : Projectile
 {
     private Vector3 startPosition; // 시작 위치
     private Vector3 targetPosition; // 목표 위치
@@ -13,8 +13,13 @@ public class CommonProjectile : MonoBehaviour
     private float arriveSec; // 도착 시각
     private float duration;
 
-    public void Setup(Direction location, Vector3 startPos, Vector3 targetPos, float arriveSec)
+    public override void Setup(ProjectileSetupContext context)
     {
+        Direction location = context.location;
+        Vector3 startPos = context.startPos;
+        Vector3 targetPos = context.targetPos;
+        float arriveSec = context.arriveSec;
+
         switch (location)
         {
             case Direction.Up:
@@ -40,6 +45,35 @@ public class CommonProjectile : MonoBehaviour
         duration = arriveSec - StageFlowManager.Instance.currentTime;
     }
 
+    public override void OnJudge(JudgeContext context)
+    {
+        JudgeType judgeType = context.judgeType;
+
+        if (context.isMiss)
+            return;
+
+        Destroy(gameObject);
+        if (!context.isParried)
+            return;
+
+        // 위로 반격
+        ParriedProjectileManager parriedProjectileManager = FindAnyObjectByType<ParriedProjectileManager>();
+        if (parriedProjectileManager == null)
+            return;
+
+        Judgeable judgeable = context.judgeable;
+        int fixRandom;
+        if (judgeable.noteDirection == Direction.Up || judgeable.noteDirection == Direction.Right)
+        {
+            fixRandom = 1;
+        }
+        else
+        {
+            fixRandom = 2;
+        }
+        parriedProjectileManager.ParryProjectile(Direction.Up, judgeable.attackType, fixRandom);
+    }
+
     void Update()
     {
         LerpPosition(StageFlowManager.Instance.currentTime);
@@ -60,7 +94,9 @@ public class CommonProjectile : MonoBehaviour
         }
         else
         {
-            transform.position = targetPosition + finalVelocity * (arriveSec - currentSec);
+            transform.position = targetPosition + finalVelocity * (currentSec - arriveSec);
+            if (currentSec - arriveSec > 5f)
+                Destroy(gameObject);
         }
     }
 }

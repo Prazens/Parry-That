@@ -22,7 +22,6 @@ public class StageFlowManager : MonoBehaviour
 
     [SerializeField] private StrikerManager strikerManager;
     [SerializeField] private DialogueManager dialogueManager;
-    [SerializeField] public BossController bossController;
 
     [Header("Managers")]
     [SerializeField] private StageSetupManager stageSetupManager;
@@ -114,7 +113,7 @@ public class StageFlowManager : MonoBehaviour
         {
             if (strikerManager != null)
             {
-                strikerManager.strikerList.Clear();
+                strikerManager.ClearImmediately();
             }
 
             isActive = false;
@@ -227,20 +226,9 @@ public class StageFlowManager : MonoBehaviour
             stageAudioManager.musicPlayed = false;
         }
 
-        if (bossController != null)
-        {
-            bossController.clearHp();
-        }
-
         if (strikerManager != null)
         {
-            strikerManager.ClearStrikers();
-            strikerManager.charts = null;
-        }
-
-        if (judgeSystem != null)
-        {
-            judgeSystem.Initialize();
+            strikerManager.ClearImmediately();
         }
 
         if (staticUIManager != null)
@@ -260,7 +248,7 @@ public class StageFlowManager : MonoBehaviour
 
         if (strikerManager != null)
         {
-            strikerManager.ClearStrikers();
+            strikerManager.ClearImmediately();
         }
 
         if (stageAudioManager != null && stageAudioManager.musicSource != null)
@@ -353,8 +341,7 @@ public class StageFlowManager : MonoBehaviour
 
             if (strikerManager != null)
             {
-                strikerManager.ClearStrikers();
-                strikerManager.InitStriker(0);
+                strikerManager.ClearImmediately();
             }
 
             ApplyDialogueAudioPolicyAfterDialogue();

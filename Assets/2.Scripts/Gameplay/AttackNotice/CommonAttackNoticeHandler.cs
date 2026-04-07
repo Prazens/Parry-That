@@ -3,21 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CommonAttackNoticeContext : IAttackContext
-{
-    public NoteData note { get; }
-    public Direction direction;
-    public Judgeable judgeable;
-
-    public CommonAttackNoticeContext(NoteData note, Direction direction, Judgeable judgeable)
-    {
-        this.note = note;
-        this.direction = direction;
-        this.judgeable = judgeable;
-    }
-}
-
-public class CommonAttackNoticeHandler : MonoBehaviour, IAttackHandler<CommonAttackNoticeContext>
+public class CommonAttackNoticeHandler : MonoBehaviour, IAttackHandler<AttackNoticeContext>
 {
     [SerializeField] private Transform noticeParent; // 예고 표시 위치
     [SerializeField] private GameObject noticePrefab; // 공통 예고 프리팹
@@ -25,22 +11,22 @@ public class CommonAttackNoticeHandler : MonoBehaviour, IAttackHandler<CommonAtt
     private List<GameObject> noticeInstances = new(); // 예고 인스턴스 저장
     private float noticeSpacing => 30f; // 예고 인스턴스 사이 간격
 
-    public void OnNotice(CommonAttackNoticeContext context)
+    public void OnNotice(AttackNoticeContext context)
     {
-        GameObject newNotice = AddNotice((AttackType)context.note.type, context.direction);
-        context.judgeable?.AddOnDestroy(_ => RemoveNotice(newNotice));
+        GameObject newNotice = AddNotice((AttackType)context.note.type, (Direction)(context.note.strikerIndex + 1));
+        context.judgeables?[0]?.AddOnDestroy(_ => RemoveNotice(newNotice));
     }
 
     void IAttackHandler.OnNotice(IAttackContext context)
-        => OnNotice((CommonAttackNoticeContext)context);
+        => OnNotice((AttackNoticeContext)context);
 
-    public void OnAttackStart(CommonAttackNoticeContext context)
+    public void OnAttackStart(AttackNoticeContext context)
     {
 
     }
 
     void IAttackHandler.OnAttackStart(IAttackContext context)
-        => OnAttackStart((CommonAttackNoticeContext)context);
+        => OnAttackStart((AttackNoticeContext)context);
 
     public void OnJudge(JudgeContext context)
     {

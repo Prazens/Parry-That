@@ -3,110 +3,150 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// 공격 시 필요한 정보를 담는 구조체.
-/// </summary>
-public struct StrikerAttackContext
+public class StrikerAttackContext : IAttackContext
 {
-    public float currentSec;
-    public float arriveBeat;
-    public AttackType attackType;
-    public bool isLastInBurst;
-    public bool isFinalAttack;
+    public NoteData note { get; }
+    public List<Judgeable> judgeables;
 
-    public StrikerAttackContext(float currentSec, float arriveBeat, AttackType attackType, bool isLastInBurst, bool isFinalAttack)
+    public StrikerAttackContext(NoteData note, List<Judgeable> judgeables)
     {
-        this.currentSec = currentSec;
-        this.arriveBeat = arriveBeat;
-        this.attackType = attackType;
-        this.isLastInBurst = isLastInBurst;
-        this.isFinalAttack = isFinalAttack;
+        this.note = note;
+        this.judgeables = judgeables;
     }
 }
 
 /// <summary>
 /// 각 Striker의 세부 컴포넌트들을 연결하는 핵심 로직.
 /// </summary>
-public class StrikerController : MonoBehaviour
+public class StrikerController : MonoBehaviour, IAttackHandler<StrikerAttackContext>
 {
     [Header("Striker Components")]
-    [SerializeField] private StrikerVisual visual;
+    [SerializeField] private StrikerCommonVisual commonVisual;
+    [SerializeField] private StrikerHoldVisual holdVisual;
     [SerializeField] private StrikerSound sound;
 
-    public StrikerVisual Visual => visual;
+    [Header("Projectiles")]
+    [SerializeField] private List<Projectile> projectilePrefabs;
+
+    public StrikerCommonVisual Visual => commonVisual;
     public StrikerSound Sound => sound;
 
-    // References
-    public StrikerManager manager;
-    public JudgeSystem judgeSystem;
-    public PlayerManager playerManager; // Player 정보 저장
+    [SerializeField] private float _preAttackDelay = 0.5f;
+    public float preAttackDelay => _preAttackDelay; // 공격 명령으로부터 판정까지 걸리는 시간
 
-    public Direction location; // 위치 방향
+    private Vector3[] spawnPositions; // 0: 리더, 1~4: 방향별 투사체
+    private Vector3[] targetPositions; // 0: 플레이어, 1~4: 방향별 보정된 판정 위치
 
-    public BossController boss;
-    public bool isBossMinion = false;
-
-    public void Initialize(PlayerManager targetPlayer, Direction location)
+    public void Init(Vector3[] spawnPositions, Vector3[] targetPositions, DynamicUIManager dynamicUIManager)
     {
-        playerManager = targetPlayer;
-        this.location = location;
+        this.spawnPositions = spawnPositions;
+        this.targetPositions = targetPositions;
 
-        visual.Init(this, location, transform.position, playerManager.transform.position);
-    }
-    
-    public void OnNotice(AttackType attackType)
-    {
-        sound.PlayPrepareSound(attackType);
+        commonVisual.Init(spawnPositions[0]);
+        holdVisual?.Init(spawnPositions[0], targetPositions[(int)Direction.Up], dynamicUIManager);
     }
 
-    public void OnAttackStart(StrikerAttackContext context)
+    public void OnNotice(StrikerAttackContext context)
     {
-        GameObject projectile = visual.OnAttackStart(context);
-    }
-
-    public void OnJudge(JudgeContext context)
-    {
-        Judgeable judgeable = context.judgeable;
-        bool isHit = context.isParried;
-
-        visual.OnJudge(judgeable, isHit);
-        sound.PlayHoldSound(judgeable.attackType);
-
-        if (isHit)
+        if (IsHoldAttack(context))
         {
-            OnHit(judgeable.attackType);
+            holdVisual?.OnNotice(context);
+        }
+        else
+        {
+            commonVisual.OnNotice();
+            sound.PlayPrepareSound((AttackType)context.note.type);
         }
     }
 
-    private void OnHit(AttackType attackType)
+    void IAttackHandler.OnNotice(IAttackContext context)
+        => OnNotice((StrikerAttackContext)context);
+
+    public void OnAttackStart(StrikerAttackContext context)
     {
-        visual.OnHit(attackType);
-        sound.PlayParrySound(attackType);
+        if (IsHoldAttack(context))
+        {
+            holdVisual?.OnAttackStart(context);
+        }
+        else
+        {
+            commonVisual.OnAttackStart();
+            Projectile projectile = FireProjectile(context.note.strikerIndex + 1, StageFlowManager.Instance.BeatToSec(context.note.arriveBeat), context.note.type);
+            if (context.judgeables.Count > 0)
+                context.judgeables[0].AddOnDestroy(projectile.OnJudge);
+        }
+    }
+
+    void IAttackHandler.OnAttackStart(IAttackContext context)
+        => OnAttackStart((StrikerAttackContext)context);
+
+    public void OnJudge(JudgeContext context)
+    {
+        if (IsHoldAttack(context))
+        {
+            holdVisual?.OnJudge(context);
+            if (context.isMiss)
+            {
+                sound.Stop();
+            }
+        }
+        else
+        {
+            commonVisual.OnJudge();
+        }
+
+        if (context.isParried)
+        {
+            OnHit(context);
+        }
+    }
+
+    private void OnHit(JudgeContext context)
+    {
+        if (IsHoldAttack(context))
+        {
+            holdVisual?.OnHit();
+            sound.PlayHoldSound(context.judgeable.attackType);
+        }
+        else
+        {
+            commonVisual.OnHit();
+            sound.PlayParrySound(context.judgeable.attackType);
+        }
     }
 
     public void OnClear()
     {
-        visual.OnClear();
+        commonVisual.OnClear();
     }
 
-    private void PrepareForAttack()
+    private Projectile FireProjectile(int direction, float arriveSec, int attackType)
     {
-        // 보스 로직
-        //if (isBossMinion && boss != null)
-        //{
-        //    boss.OnMinionPrepare(location, (int)noteType, arriveBeat);
-        //}
+        if (attackType < 0 || attackType >= projectilePrefabs.Count)
+        {
+            Debug.LogWarning($"{name}.FireProjectile: projectile prefab not exists for attackType {attackType}");
+            return null;
+        }
+        Projectile selectedProjectile = projectilePrefabs[attackType];
+
+        Vector3 projectilePos = spawnPositions[direction];
+
+        // 투사체 생성
+        Projectile projectile = Instantiate(selectedProjectile, projectilePos, Quaternion.identity);
+        projectile.Setup(new ProjectileSetupContext((Direction)direction, projectilePos, targetPositions[direction], arriveSec, (AttackType)attackType));
+
+        return projectile;
     }
 
-    public void ClearProjectiles()
+    private bool IsHoldAttack(StrikerAttackContext context)
     {
-        //while (judgeSystem.CountJudgeable(location) > 0)
-        //{
-        //    GameObject projectile = judgeSystem.DequeueJudgeable(location).judgeableObject;
-        //    if (projectile != null)
-        //    {
-        //        Destroy(projectile); // Projectile 삭제
-        //    }
-        //}
+        AttackType attackType = (AttackType)context.note.type;
+        return attackType == AttackType.HoldStart || attackType == AttackType.HoldFinishStrong || attackType == AttackType.HoldStop;
+    }
+
+    private bool IsHoldAttack(JudgeContext context)
+    {
+        AttackType attackType = context.judgeable.attackType;
+        return attackType == AttackType.HoldStart || attackType == AttackType.HoldFinishStrong || attackType == AttackType.HoldStop;
     }
 }

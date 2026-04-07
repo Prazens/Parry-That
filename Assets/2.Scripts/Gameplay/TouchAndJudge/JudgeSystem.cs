@@ -9,15 +9,20 @@ public struct JudgeContext
     public Judgeable judgeable;
     public JudgeType judgeType;
     public bool isParried;
+    public bool isMiss;
 
     public JudgeContext(Judgeable judgeable, JudgeType judgeType)
     {
         this.judgeable = judgeable;
         this.judgeType = judgeType;
         this.isParried = judgeType >= JudgeType.LateParried && judgeType <= JudgeType.EarlyParried;
+        this.isMiss = judgeType == JudgeType.LateMiss || judgeType == JudgeType.EarlyMiss;
     }
 }
 
+/// <summary>
+/// 터치 입력을 전달받아 판정 및 점수 등 후처리.
+/// </summary>
 public class JudgeSystem : MonoBehaviour
 {
     public event Action<JudgeContext> Judged;
@@ -108,7 +113,7 @@ public class JudgeSystem : MonoBehaviour
             touchQueue.Clear();
     }
 
-    public void Initialize()
+    public void Initialize(ChartData chart)
     {
         combo = 0;
         score = 0;
@@ -116,13 +121,11 @@ public class JudgeSystem : MonoBehaviour
 
         judgeDetails = new List<int[]>();
 
-        if (strikerManager == null || strikerManager.charts == null)
+        if (chart == null)
         {
             judgeDetails.Add(new int[8] { 0, 0, 0, 0, 0, 0, 0, 0 });
             return;
         }
-
-        ChartData chart = strikerManager.charts;
 
         int totalNoteCount = chart.notes != null ? chart.notes.Length : 0;
 
@@ -313,32 +316,7 @@ public class JudgeSystem : MonoBehaviour
         // 패링 성공 시 처리
         else if (judgeType >= JudgeType.LateParried && judgeType <= JudgeType.EarlyParried)
         {
-            // 옮길 예정
-
-            //// 투사체가 있는 공격이라면 되돌려 보냄
-            //if (parriedProjectileManager != null && judgeable.judgeableObject != null)
-            //    //&& judgeable.attackType != AttackType.StreamStart)
-            //{
-            //    // 보스 스트라이커 - 위로 반격
-            //    if (targetStriker.boss != null)
-            //    {
-            //        int fixRandom;
-            //        if (judgeable.noteDirection == Direction.Up || judgeable.noteDirection == Direction.Right)
-            //        {
-            //            fixRandom = 1;
-            //        }
-            //        else
-            //        {
-            //            fixRandom = 2;
-            //        }
-            //        parriedProjectileManager.ParryTusache(Direction.Up, (int)judgeable.attackType, fixRandom);
-            //    }
-            //    // 일반 스트라이커 - 날아온 방향으로 반격
-            //    else
-            //    {
-            //        parriedProjectileManager.ParryTusache(judgeable.noteDirection, (int)judgeable.attackType);
-            //    }
-            //}
+            dynamicUIManager?.ShowParticle(Direction.Up, judgeType == JudgeType.Perfect);
         }
 
         // 대상 노트 제거
@@ -385,13 +363,9 @@ public class JudgeSystem : MonoBehaviour
         if (judgeableQueue.Peek() == judgeable)
         {
             judgeableQueue.Dequeue();
-            //if (judgeable.judgeableObject != null)
-            //{
-            //    Destroy(judgeable.judgeableObject);
-            //}
 
             Judged?.Invoke(context);
-            judgeable.Destroy();
+            judgeable.Destroy(context);
         }
     }
 }

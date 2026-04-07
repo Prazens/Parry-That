@@ -3,23 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class HoldAttackJudgeContext : IAttackContext
-{
-    public NoteData note { get; }
-    public NoteData nextNote { get; }
-    public Direction direction;
-    public Judgeable judgeable;
-    public Judgeable nextJudgeable;
-
-    public HoldAttackJudgeContext(NoteData note, NoteData nextNote, Direction direction)
-    {
-        this.note = note;
-        this.nextNote = nextNote;
-        this.direction = direction;
-    }
-}
-
-public class HoldAttackJudgeHandler : MonoBehaviour, IAttackJudgeHandler<HoldAttackJudgeContext>
+public class HoldAttackJudgeHandler : MonoBehaviour, IAttackJudgeHandler<AttackJudgeContext>
 {
     [SerializeField] private JudgeSystem judgeSystem;
     private AttackType[] relevantAttacks = new AttackType[3] { AttackType.HoldStart, AttackType.HoldFinishStrong, AttackType.HoldStop };
@@ -32,7 +16,7 @@ public class HoldAttackJudgeHandler : MonoBehaviour, IAttackJudgeHandler<HoldAtt
     private bool isHolding = false;
     private List<AttackType> touchAllowOnlyList = new() { AttackType.HoldStop };
 
-    public void OnNotice(HoldAttackJudgeContext context)
+    public void OnNotice(AttackJudgeContext context)
     {
         NoteData note = context.note;
 
@@ -46,26 +30,26 @@ public class HoldAttackJudgeHandler : MonoBehaviour, IAttackJudgeHandler<HoldAtt
             return;
         }
 
-        Judgeable judgeable = new Judgeable((AttackType)note.type, note.arriveBeat, context.direction);
+        Judgeable judgeable = new Judgeable((AttackType)note.type, note.arriveBeat, (Direction)(note.strikerIndex + 1));
         judgeSystem.EnqueueJudgeable(judgeable);
-        context.judgeable = judgeable;
+        context.judgeables.Add(judgeable);
 
         // HoldStart 시, HoldStop까지 같이 생성
-        Judgeable nextJudgeable = new Judgeable(AttackType.HoldStop, nextNote.arriveBeat, context.direction);
+        Judgeable nextJudgeable = new Judgeable(AttackType.HoldStop, nextNote.arriveBeat, (Direction)(nextNote.strikerIndex + 1));
         judgeSystem.EnqueueJudgeable(nextJudgeable);
-        context.nextJudgeable = nextJudgeable;
+        context.judgeables.Add(nextJudgeable);
     }
 
     void IAttackHandler.OnNotice(IAttackContext context)
-        => OnNotice((HoldAttackJudgeContext)context);
+        => OnNotice((AttackJudgeContext)context);
 
-    public void OnAttackStart(HoldAttackJudgeContext context)
+    public void OnAttackStart(AttackJudgeContext context)
     {
 
     }
 
     void IAttackHandler.OnAttackStart(IAttackContext context)
-        => OnAttackStart((HoldAttackJudgeContext)context);
+        => OnAttackStart((AttackJudgeContext)context);
 
     public void OnJudge(JudgeContext context)
     {
@@ -79,7 +63,7 @@ public class HoldAttackJudgeHandler : MonoBehaviour, IAttackJudgeHandler<HoldAtt
         }
 
         // HoldStop 공격 판정이 끝나면 isHolding 해제
-        else if (attackType == AttackType.HoldStop || attackType == AttackType.HoldFinishStrong)
+        else if (attackType == AttackType.HoldFinishStrong || attackType == AttackType.HoldStop)
         {
             isHolding = false;
             judgeSystem.AllowOnly(false, touchAllowOnlyList);

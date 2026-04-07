@@ -7,8 +7,8 @@ using UnityEngine;
 /// </summary>
 public class StageChartLoader : MonoBehaviour
 {
-    [SerializeField] private StrikerManager strikerManager;
     [SerializeField] private NotePerformer notePerformer;
+    [SerializeField] private JudgeSystem judgeSystem;
 
     public void LoadChartsFromStageData(StageData stageData)
     {
@@ -16,15 +16,15 @@ public class StageChartLoader : MonoBehaviour
 
         if (chartJson == null)
         {
-            strikerManager.charts = null;
-            notePerformer.InitNotes(null);
+            notePerformer.InitChart(null);
+            judgeSystem.Initialize(null);
             return;
         }
 
         ChartData loadedChart = JsonReader.ReadJson<ChartData>(chartJson);
 
-        strikerManager.charts = loadedChart;
-        notePerformer.InitNotes(loadedChart);
+        notePerformer.InitChart(loadedChart);
+        judgeSystem.Initialize(loadedChart);
     }
 
     public TextAsset GetCurrentPhaseChart(StageData stageData)

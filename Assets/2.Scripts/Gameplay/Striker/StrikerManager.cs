@@ -3,152 +3,75 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 스테이지에 있는 모든 Striker의 초기화, 등장 및 퇴장 등을 관리.
+/// Striker의 인스턴스 관리.
 /// </summary>
 public class StrikerManager : MonoBehaviour
 {
-    [SerializeField] private List<GameObject> strikerPrefabs;
-    public Transform[] spawnPositions;
+    [SerializeField] private List<StrikerController> strikerPrefabs;
+    private StrikerController strikerInstance;
+    [SerializeField] private Transform[] _spawnPositions; // 0: 리더, 1~4: 방향별 투사체
+    private Vector3[] spawnPositions;
+    private float spawnPosOffset => 0f; // 기본 위치보다 offset만큼 위에서 등장하여 기본 위치로 이동
+    private float targetPosOffset => 1.2f; // 플레이어 판정 위치 보정값
 
+    // Refs
     private PlayerManager playerManager;
-
-    private NotePerformer notePerformer;
-    private JudgeSystem judgeSystem;
     private DynamicUIManager dynamicUIManager;
-
-    public ChartData charts;
-
     [SerializeField] public TutorialManager tutorialManager;
 
-    public List<StrikerController> strikerList = new();
-    private List<int> strikerStatus = new();
+    private void Awake()
+    {
+        spawnPositions = new Vector3[5];
+        for (int i = 0; i < _spawnPositions.Length; i++)
+        {
+            spawnPositions[i] = _spawnPositions[i].position;
+        }
+    }
 
-    public BossController bossController;
-
-    public void SetReferences(PlayerManager playerManager, NotePerformer notePerformer, JudgeSystem judgeSystem, DynamicUIManager dynamicUIManager)
+    public void SetReferences(PlayerManager playerManager, DynamicUIManager dynamicUIManager)
     {
         this.playerManager = playerManager;
-        this.notePerformer = notePerformer;
-        this.judgeSystem = judgeSystem;
         this.dynamicUIManager = dynamicUIManager;
     }
 
-    private void Update()
+    public StrikerController GetStrikerInstance()
     {
-        if (StageFlowManager.Instance == null) return;
-        if (playerManager == null) return;
-        if (charts == null) return;
-        if (strikerList == null || strikerStatus == null) return;
-
-        int processCount = charts.strikers.Length;
-        if (strikerList.Count < processCount) processCount = strikerList.Count;
-        if (strikerStatus.Count < processCount) processCount = strikerStatus.Count;
-
-        if (processCount <= 0) return;
-
-        float currentTime = StageFlowManager.Instance.currentTime;
-
-        for (int i = 0; i < processCount; i++)
-        {
-            StrikerController striker = strikerList[i];
-            if (striker == null) continue;
-
-            StrikerData strikerData = charts.strikers[i];
-
-            //스트라이커 등장 및 퇴장
-            float appearTimeSeconds = StageFlowManager.Instance.BeatToSec(strikerData.appearTime);
-            float disappearTimeSeconds = StageFlowManager.Instance.BeatToSec(strikerData.disappearTime);
-            if (currentTime >= appearTimeSeconds && strikerStatus[i] == 0)
-            {
-                strikerStatus[i] = 1;
-                striker.gameObject.SetActive(true);
-            }
-            else if (currentTime >= disappearTimeSeconds && strikerStatus[i] == 1)
-            {
-                striker.OnClear();
-                strikerStatus[i] = 2;
-            }
-        }
+        return strikerInstance;
     }
 
-    public void InitStriker(int idx)
+    public void AppearStriker(int strikerType)
     {
-        if (StageFlowManager.Instance != null) {
-            bossController = StageFlowManager.Instance.bossController;
-        }
-        else
-            bossController = null;
+        if (strikerType < 0 || strikerType >= strikerPrefabs.Count) return;
 
-        ClearStrikers();
-
-        int strikerCount = charts.strikers.Length;
-
-        strikerStatus = new List<int>(new int[strikerCount]);
-        strikerList   = new List<StrikerController>(new StrikerController[strikerCount]);
-
-        for (int i = 0; i < strikerCount; i++)
-        {
-            bool activated = charts.strikers[i].appearTime == 0;
-            if (activated) strikerStatus[i] = 1;
-            SpawnStriker(i, activated);
-        }
+        ClearImmediately();
+        SpawnStriker(strikerPrefabs[strikerType]);
     }
 
-    private void SpawnStriker(int chartIndex, bool isActivated)
+    public void DisappearStriker()
     {
-        if (chartIndex < 0 || chartIndex >= charts.strikers.Length) return;
-        if (spawnPositions == null || spawnPositions.Length == 0) return;
+        strikerInstance?.OnClear();
+    }
 
-        int positionIndex = charts.strikers[chartIndex].direction - 1;
-        int prefabIndex = charts.strikers[chartIndex].strikerType;
-
-        if (positionIndex < 0 || positionIndex >= spawnPositions.Length) return;
-        if (prefabIndex < 0 || prefabIndex >= strikerPrefabs.Count) return;
-
-        GameObject selectedStriker = strikerPrefabs[prefabIndex];
-        GameObject strikerInstance = Instantiate(selectedStriker, spawnPositions[positionIndex].position, Quaternion.identity);
+    private void SpawnStriker(StrikerController strikerPrefab)
+    {
+        Vector3 spawnPosition = spawnPositions[0] + spawnPosOffset * Vector3.up;
+        strikerInstance = Instantiate(strikerPrefab, spawnPosition, Quaternion.identity);
         if (strikerInstance == null) return;
-        StrikerController striker = strikerInstance.GetComponent<StrikerController>();
-
-        strikerList[chartIndex] = striker;
-
-        if (striker != null)
+        
+        Vector3[] targetPositions = new Vector3[5];
+        for (int i = 0; i < targetPositions.Length; i++)
         {
-            striker.Visual.dynamicUIManager = dynamicUIManager;
-            striker.manager = this;
-            striker.judgeSystem = judgeSystem;
-
-            if (bossController != null)
-            {
-                bossController.RegisterStriker(striker);
-            }
-
-            striker.Initialize(playerManager, (Direction)(positionIndex + 1));
+            targetPositions[i] = playerManager.transform.position + targetPosOffset * DirTool.TranstoVec((Direction)i);
         }
-
-        if (!isActivated)
-        {
-            striker.gameObject.SetActive(false);
-        }
+        
+        strikerInstance.Init(spawnPositions, targetPositions, dynamicUIManager);
     }
 
-    public void ClearStrikers()
+    public void ClearImmediately()
     {
-        foreach (StrikerController striker in strikerList)
+        if (strikerInstance != null)
         {
-            if (striker != null)
-            {
-                striker.ClearProjectiles();
-                Destroy(striker);
-            }
-        }
-
-        strikerList.Clear();
-
-        var remains = FindObjectsOfType<StrikerController>();
-        foreach (var remain in remains)
-        {
-            Destroy(remain.gameObject);
+            Destroy(strikerInstance.gameObject);
         }
     }
 }

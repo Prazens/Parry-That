@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MeleeProjectile : MonoBehaviour
+public class MeleeProjectile : Projectile
 {
     [SerializeField] protected Animator animator;
     [SerializeField] private AnimatorOverrideController[] directionOverrides;
@@ -14,15 +14,25 @@ public class MeleeProjectile : MonoBehaviour
     private float arriveSec; // 도착 시각
     private float duration;
 
-    public void Setup(Direction location, Vector3 startPos, Vector3 targetPos, float arriveSec, AttackType attackType)
+    private float attackMotionStartTimeOffset => 0.3f;
+    private float bladeDistanceOffset => 0.5f;
+
+    public override void Setup(ProjectileSetupContext context)
     {
+        Direction location = context.location;
+        Vector3 startPos = context.startPos;
+        Vector3 targetPos = context.targetPos;
+        float arriveSec = context.arriveSec;
+        AttackType attackType = context.attackType;
+
         animator.runtimeAnimatorController = directionOverrides[(int)location - 1];
         bladeAnimator.SetInteger("bladeDirection", (int)location);
 
         transform.position = startPos;
 
         startPosition = startPos;
-        targetPosition = targetPos;
+        Vector3 dirVec = (targetPos - startPos).normalized;
+        targetPosition = targetPos - dirVec * bladeDistanceOffset;
         this.arriveSec = arriveSec;
         duration = arriveSec - StageFlowManager.Instance.currentTime;
 
@@ -32,10 +42,16 @@ public class MeleeProjectile : MonoBehaviour
         StartCoroutine(ActAttack());
     }
 
+    public override void OnJudge(JudgeContext context)
+    {
+        
+    }
+
     private IEnumerator ActAttack()
     {
         // 출발
         StartCoroutine(LerpPosition(startPosition, targetPosition, arriveSec));
+        yield return new WaitForSeconds(attackMotionStartTimeOffset);
 
         int randomNum = Random.Range(0, 2);
         animator.SetInteger("randomSelector", randomNum);
@@ -48,8 +64,11 @@ public class MeleeProjectile : MonoBehaviour
         float animLength = animator.GetCurrentAnimatorStateInfo(0).length;
         yield return new WaitForSeconds(animLength);
 
-        StartCoroutine(LerpPosition(targetPosition, startPosition, arriveSec + duration));
+        StartCoroutine(LerpPosition(targetPosition, startPosition, arriveSec + duration * 0.5f));
         animator.SetBool("movingBack", true);
+
+        yield return new WaitForSeconds(duration * 1.5f - animLength);
+        Destroy(gameObject);
     }
 
     private IEnumerator LerpPosition(Vector3 start, Vector3 end, float endSec)
@@ -60,7 +79,7 @@ public class MeleeProjectile : MonoBehaviour
 
         while (flow.currentTime < endSec)
         {
-            fractionOfJourney = (arriveSec - flow.currentTime) / duration;
+            fractionOfJourney = (endSec - flow.currentTime) / duration;
             transform.position = Vector3.Lerp(end, start, fractionOfJourney);
             yield return null;
         }

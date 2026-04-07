@@ -22,6 +22,12 @@ public class StrikerSound : MonoBehaviour
             audioSource = GetComponent<AudioSource>();
     }
 
+    public void Stop()
+    {
+        if (audioSource == null) return;
+        audioSource.Stop();
+    }
+
     public void PlayPrepareSound(AttackType type)
     {
         if (type == AttackType.Normal)
@@ -90,9 +96,8 @@ public class StrikerSound : MonoBehaviour
 
     public void PlayHoldFinish()
     {
-        if (audioSource == null) return;
-        audioSource.Stop();
-        if (holdingEnd == null) return;
+        Stop();
+        if (audioSource == null || holdingEnd == null) return;
         audioSource.PlayOneShot(holdingEnd, GetEffectivePlayerVolume());
     }
 

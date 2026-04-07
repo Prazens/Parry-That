@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6433468795391492344}
   - component: {fileID: 7642428754496660755}
   - component: {fileID: -5035865612886772569}
-  - component: {fileID: 3315650271521731410}
+  - component: {fileID: 4661586022337567276}
   - component: {fileID: 1523450611889353992}
   m_Layer: 0
   m_Name: drummon
@@ -100,7 +100,7 @@ Animator:
   m_GameObject: {fileID: 2602888780548359756}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: f3253d8b5c83030469b01a6d3177d740, type: 2}
+  m_Controller: {fileID: 22100000, guid: 82dfed5911fa49345b2f051019eb641e, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -123,14 +123,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ca8d74e906aa3e4cb9f4bd3bd267403, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  visual: {fileID: 3315650271521731410}
+  commonVisual: {fileID: 4661586022337567276}
+  holdVisual: {fileID: 0}
   sound: {fileID: 1523450611889353992}
-  manager: {fileID: 0}
-  judgeSystem: {fileID: 0}
-  playerManager: {fileID: 0}
-  location: 0
-  boss: {fileID: 0}
-  isBossMinion: 0
+  projectilePrefabs:
+  - {fileID: 177280460932711409, guid: 4b1fc64b6f20804459cae34d57b7e7a0, type: 3}
+  - {fileID: 6048303595349202864, guid: 873bca72101daef41a84215eae8c8992, type: 3}
 --- !u!82 &-5035865612886772569
 AudioSource:
   m_ObjectHideFlags: 0
@@ -227,7 +225,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &3315650271521731410
+--- !u!114 &4661586022337567276
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -236,16 +234,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2602888780548359756}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 498fead4434da9041baf1bdd4e45867c, type: 3}
+  m_Script: {fileID: 11500000, guid: 5ee657d85d7f57641b70e83ce3e212b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dynamicUIManager: {fileID: 0}
   animator: {fileID: 6433468795391492344}
-  holdSpriteAnimator: {fileID: 0}
   particleSystemGreen: {fileID: 724184849821279184}
-  projectilePrefabs:
-  - {fileID: 4389016233614457998, guid: 4b1fc64b6f20804459cae34d57b7e7a0, type: 3}
-  - {fileID: 4823659980016708117, guid: 873bca72101daef41a84215eae8c8992, type: 3}
+  _preAttackDelay: 0.5
 --- !u!114 &1523450611889353992
 MonoBehaviour:
   m_ObjectHideFlags: 0

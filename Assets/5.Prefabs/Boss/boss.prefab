@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5795627354663216070}
   - component: {fileID: 1985185278001262575}
-  - component: {fileID: 3275435173074459220}
   - component: {fileID: 7657989550637156508}
   m_Layer: 0
   m_Name: boss
@@ -87,25 +86,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &3275435173074459220
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 205060887376973189}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 433c0a2019a444b419afb3a3387931a6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHp: 0
-  hp: 0
-  parryFX: {fileID: 0}
-  strikerManager: {fileID: 0}
-  stageFlowManager: {fileID: 0}
-  bossAnimator: {fileID: 7657989550637156508}
-  hpBarPrefab: {fileID: 8497898252444216346, guid: 89cb566f97c8d124381826ff7e0c4402, type: 3}
 --- !u!95 &7657989550637156508
 Animator:
   serializedVersion: 5

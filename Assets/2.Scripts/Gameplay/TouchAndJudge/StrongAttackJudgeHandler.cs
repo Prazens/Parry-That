@@ -3,43 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class StrongAttackJudgeContext : IAttackContext
-{
-    public NoteData note { get; }
-    public Direction direction;
-    public Judgeable judgeable;
-
-    public StrongAttackJudgeContext(NoteData note, Direction direction)
-    {
-        this.note = note;
-        this.direction = direction;
-    }
-}
-
-public class StrongAttackJudgeHandler : MonoBehaviour, IAttackJudgeHandler<StrongAttackJudgeContext>
+public class StrongAttackJudgeHandler : MonoBehaviour, IAttackJudgeHandler<AttackJudgeContext>
 {
     [SerializeField] private JudgeSystem judgeSystem;
     private AttackType[] relevantAttacks = new AttackType[1] { AttackType.Strong };
     private AttackType[] relevantTouches = new AttackType[1] { AttackType.Strong };
 
-    public void OnNotice(StrongAttackJudgeContext context)
+    public void OnNotice(AttackJudgeContext context)
     {
         NoteData note = context.note;
-        Judgeable judgeable = new Judgeable((AttackType)note.type, note.arriveBeat, context.direction);
+        Judgeable judgeable = new Judgeable((AttackType)note.type, note.arriveBeat, (Direction)(note.strikerIndex + 1));
         judgeSystem.EnqueueJudgeable(judgeable);
-        context.judgeable = judgeable;
+        context.judgeables.Add(judgeable);
     }
 
     void IAttackHandler.OnNotice(IAttackContext context)
-        => OnNotice((StrongAttackJudgeContext)context);
+        => OnNotice((AttackJudgeContext)context);
 
-    public void OnAttackStart(StrongAttackJudgeContext context)
+    public void OnAttackStart(AttackJudgeContext context)
     {
 
     }
 
     void IAttackHandler.OnAttackStart(IAttackContext context)
-        => OnAttackStart((StrongAttackJudgeContext)context);
+        => OnAttackStart((AttackJudgeContext)context);
 
     public void OnJudge(JudgeContext context)
     {
