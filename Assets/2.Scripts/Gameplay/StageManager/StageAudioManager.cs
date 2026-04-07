@@ -23,6 +23,8 @@ public class StageAudioManager : MonoBehaviour
     private void Awake()
     {
         bgmOffset = PlayerPrefs.GetFloat("bgmOffset", 0f);
+        savedMusicTime = 0f;
+
         if (musicSource != null)
         {
             musicSource.volume = PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("bgmVolume", 1);
@@ -48,13 +50,13 @@ public class StageAudioManager : MonoBehaviour
     }
 
     // 튜토리얼에서 노래 n초 전으로 되돌리는 용도의 함수 (기존 StageManager.RestartAudio 그대로)
-    public void RestartAudio(float RollBackTime)
+    public void RestartAudioFromSavedTime()
     {
         if (musicSource == null) return;
 
         if (musicSource.isPlaying)
         {
-            float newTime = Mathf.Max(musicSource.time - RollBackTime, 0f);
+            float newTime = Mathf.Max(savedMusicTime, 0f);
             musicSource.Stop();
             musicSource.time = newTime;
             musicSource.Play();

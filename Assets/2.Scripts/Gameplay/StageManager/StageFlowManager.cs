@@ -117,6 +117,13 @@ public class StageFlowManager : MonoBehaviour
 
         if (phaseEndTime >= 0f && currentTime >= phaseEndTime)
         {
+            TutorialManager tutorialManager = FindObjectOfType<TutorialManager>();
+            if (tutorialManager != null && tutorialManager.ShouldRestartCurrentPhase())
+            {
+                RestartPhase();
+                return;
+            }
+
             if (strikerManager != null)
             {
                 strikerManager.strikerList.Clear();
@@ -389,6 +396,12 @@ public class StageFlowManager : MonoBehaviour
             }
 
             ApplyDialogueAudioPolicyAfterDialogue();
+            
+            TutorialManager tutorialManager = FindObjectOfType<TutorialManager>();
+            if (tutorialManager != null && currentStageData.Category == StageCategory.Tutorial)
+            {
+                tutorialManager.OnPhaseStarted();
+            }
 
             isDaehwa = false;
             isActive = true;
@@ -399,6 +412,33 @@ public class StageFlowManager : MonoBehaviour
         isActive = false;
         isDaehwa = true;
         StartCoroutine(RunCurrentPhaseDialogue());
+    }
+
+    public void RestartPhase()
+    {
+        isActive = false;
+        isDaehwa = false;
+        isTutorial = false;
+        phaseEndTime = -1f;
+
+        if (strikerManager != null)
+        {
+            strikerManager.ClearStrikers();
+        }
+
+        if (judgeSystem != null)
+        {
+            judgeSystem.Initialize();
+        }
+
+        if (stageAudioManager != null)
+        {
+            stageAudioManager.RestartAudioFromSavedTime();
+        }
+
+        currentTime = stageAudioManager.musicSource.time + stageAudioManager.bgmOffset;
+
+        StartCurrentPhase();
     }
 
     public void GameOver()

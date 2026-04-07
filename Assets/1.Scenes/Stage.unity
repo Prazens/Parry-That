@@ -2420,6 +2420,7 @@ MonoBehaviour:
   DescriptionFont: {fileID: 12800000, guid: 7006438c118bb1748b904fe654b08d95, type: 3}
   stageFlowManager: {fileID: 25638220}
   stageAudioManager: {fileID: 2139028259}
+  judgeSystem: {fileID: 768575891}
   VictoryAnime: {fileID: 1635102681}
 --- !u!4 &1355106858
 Transform:

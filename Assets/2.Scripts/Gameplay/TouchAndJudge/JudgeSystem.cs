@@ -293,7 +293,7 @@ public class JudgeSystem : MonoBehaviour
             dynamicUIManager?.DisplayHP(playerManager.hp, false);
 
             // 피격 → 사망
-            if (playerManager.hp <= 0 && !TutorialManager.isTutorial)
+            if (playerManager.hp <= 0 && StageFlowManager.Instance.currentStageData.Category != StageCategory.Tutorial)
             {
                 dynamicUIManager?.HideAll();
                 StageFlowManager.Instance?.GameOver();

@@ -145,7 +145,7 @@ public class StaticUIManager : MonoBehaviour
 
     public void Setup_UI()
     {
-        if (TutorialManager.isTutorial)
+        if (StageFlowManager.Instance.currentStageData.Category == StageCategory.Tutorial)
         {
             pauseButton.SetActive(false);
             skipButton.SetActive(true);
