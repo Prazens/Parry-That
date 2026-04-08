@@ -1837,10 +1837,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   noticeParent: {fileID: 416215217}
-  noticePrefab: {fileID: 6564652604273379325, guid: 37a0fd3627a8c4f468ec75e41a80536b, type: 3}
-  noticeSprites:
-  - {fileID: 21300000, guid: 11d16bb018030644eacac1e7f94a8229, type: 3}
-  - {fileID: 21300000, guid: a6b410b903896f345bf35f430e915692, type: 3}
+  noticePrefabs:
+  - {fileID: 8944649101897603530, guid: a1a040d1248466342a2fead969259d6e, type: 3}
+  - {fileID: 1927632040026857286, guid: be06d8ff60b227b44b4cc35980d907d1, type: 3}
 --- !u!114 &966445858
 MonoBehaviour:
   m_ObjectHideFlags: 0

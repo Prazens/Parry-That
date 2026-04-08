@@ -6,15 +6,19 @@ using UnityEngine.UI;
 public class CommonAttackNoticeHandler : MonoBehaviour, IAttackHandler<AttackNoticeContext>
 {
     [SerializeField] private Transform noticeParent; // 예고 표시 위치
-    [SerializeField] private GameObject noticePrefab; // 공통 예고 프리팹
-    [SerializeField] private Sprite[] noticeSprites; // 공격 타입별 예고 이미지 배열
-    private List<GameObject> noticeInstances = new(); // 예고 인스턴스 저장
-    private float noticeSpacing => 30f; // 예고 인스턴스 사이 간격
+    [SerializeField] private NoticeAnim[] noticePrefabs; // 공격 타입별 예고 프리팹 배열
+    private List<NoticeAnim> noticeInstances = new(); // 예고 인스턴스 저장
+
+    [SerializeField] private float noticeScale = 1f;
+    [SerializeField] private float noticeSpacing = 30f; // 예고 인스턴스 사이 간격
 
     public void OnNotice(AttackNoticeContext context)
     {
-        GameObject newNotice = AddNotice((AttackType)context.note.type, (Direction)(context.note.strikerIndex + 1));
-        context.judgeables?[0]?.AddOnDestroy(_ => RemoveNotice(newNotice));
+        NoticeAnim newNotice = AddNotice((AttackType)context.note.type, (Direction)(context.note.strikerIndex + 1));
+        if (context.judgeables.Count > 0)
+        {
+            context.judgeables[0].AddOnDestroy(context => RemoveNotice(newNotice, context.isMiss));
+        }
     }
 
     void IAttackHandler.OnNotice(IAttackContext context)
@@ -33,11 +37,13 @@ public class CommonAttackNoticeHandler : MonoBehaviour, IAttackHandler<AttackNot
 
     }
 
-    private GameObject AddNotice(AttackType attackType, Direction direction)
+    private NoticeAnim AddNotice(AttackType attackType, Direction direction)
     {
         // Notice 오브젝트 생성
+        NoticeAnim newNotice = Instantiate(noticePrefabs[(int)attackType], noticeParent);
+        
+        // 위치 설정
         int currentIndex = noticeInstances.Count;
-        GameObject newNotice = Instantiate(noticePrefab, noticeParent);
         Vector3 newNoticePosition = new Vector3(currentIndex * noticeSpacing, 0, 0);
         newNotice.transform.localPosition = newNoticePosition;
 
@@ -52,33 +58,35 @@ public class CommonAttackNoticeHandler : MonoBehaviour, IAttackHandler<AttackNot
         }
         newNotice.transform.localRotation = Quaternion.Euler(0, 0, rotationAngle);
 
-        // Sprite 변경 (AttackType에 따라)
-        Image image = newNotice.GetComponent<Image>();
-        if (image != null)
-        {
-            // attackType이 noticeSprites 범위 내에 있는지 확인
-            if (attackType >= 0 && (int)attackType < noticeSprites.Length)
-            {
-                // 배열에서 해당 타입에 맞는 스프라이트 적용
-                image.sprite = noticeSprites[(int)attackType];
-            }
-            else
-            {
-                // 기본값
-                image.sprite = noticeSprites[0];
-            }
-        }
+        // Scale
+        newNotice.transform.localScale = new Vector3(noticeScale, noticeScale, 1);
+
+        // 생성 애니메이션
+        newNotice.Init();
+        newNotice.SpawnSignal(StageFlowManager.Instance.bpm);
 
         noticeInstances.Add(newNotice);
         return newNotice;
     }
 
-    private void RemoveNotice(GameObject noticeInstance)
+    private void RemoveNotice(NoticeAnim noticeInstance, bool isMiss)
     {
         if (noticeInstance == null) return;
 
+        if (!isMiss)
+        {
+            noticeInstance.HitSignal(StageFlowManager.Instance.bpm, Relocation);
+        }
+        else
+        {
+            noticeInstance.MissSignal(Relocation);
+        }
+    }
+
+    private void Relocation(NoticeAnim noticeInstance)
+    {
         noticeInstances.Remove(noticeInstance);
-        Destroy(noticeInstance);
+        Destroy(noticeInstance.gameObject);
 
         if (noticeInstances.Count > 0)
         {

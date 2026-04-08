@@ -1,6 +1,8 @@
-
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.UI;
+using System;
+
 public enum SignalType { Tap, Swipe, GhostSwipe }
 
 public class NoticeAnim : MonoBehaviour
@@ -9,7 +11,7 @@ public class NoticeAnim : MonoBehaviour
     public SignalType signalType;
 
     [Header("시각 요소")]
-    public SpriteRenderer spriteRenderer;
+    public Image image;
     public ParticleSystem spawnParticle;
     public ParticleSystem hitParticle;
 
@@ -19,14 +21,14 @@ public class NoticeAnim : MonoBehaviour
     private Vector3 originalScale;
     private Color originalColor;
     private Quaternion originalRotation; // 🔥 회전 초기화를 위해 추가
-    private Sequence currentAnim; 
+    private Sequence currentAnim;
 
-    private void Awake()
+    public void Init()
     {
         originalScale = transform.localScale;
         originalRotation = transform.rotation; // 시작 시점의 회전 저장
-        if (spriteRenderer != null)
-            originalColor = spriteRenderer.color;
+        if (image != null)
+            originalColor = image.color;
     }
 
     // 1. 생성 연출 (호출 시 무조건 초기화)
@@ -40,10 +42,10 @@ public class NoticeAnim : MonoBehaviour
         gameObject.SetActive(true);
         transform.localScale = Vector3.zero;
         transform.rotation = originalRotation; // 회전값 원상복구
-        spriteRenderer.color = originalColor; // 투명도/색상 원상복구
-        
+        image.color = originalColor; // 투명도/색상 원상복구
+
         // All In 1 Sprite의 특정 속성(예: HitEffect)을 쓴다면 여기서 0으로 초기화
-        // spriteRenderer.material.SetFloat("_HitEffectBlend", 0f);
+        // image.material.SetFloat("_HitEffectBlend", 0f);
 
         if (spawnParticle != null) spawnParticle.Play();
 
@@ -76,11 +78,11 @@ public class NoticeAnim : MonoBehaviour
         
         // 살짝 커지며 강조 (색상을 흰색으로 강조)
         currentAnim.Append(transform.DOScale(originalScale * 1.2f, beatDuration * 0.2f).SetEase(Ease.OutQuad))
-                   .Join(spriteRenderer.DOColor(Color.white, beatDuration * 0.2f));
+                   .Join(image.DOColor(Color.white, beatDuration * 0.2f));
     }
 
     // 3. 패링 성공 연출 (Hit)
-    public void HitSignal(float bpm)
+    public void HitSignal(float bpm, Action<NoticeAnim> onDestroy)
     {
         float beatDuration = 60f / bpm;
         if (currentAnim != null) currentAnim.Kill(); 
@@ -89,12 +91,12 @@ public class NoticeAnim : MonoBehaviour
 
         currentAnim = DOTween.Sequence();
         currentAnim.Append(transform.DOScale(originalScale * 1.5f, beatDuration * 0.15f).SetEase(Ease.OutExpo))
-                   .Join(spriteRenderer.DOFade(0f, beatDuration * 0.15f))
-                   .OnComplete(() => gameObject.SetActive(false));
+                   .Join(image.DOFade(0f, beatDuration * 0.15f))
+                   .OnComplete(() => onDestroy?.Invoke(this));
     }
 
     // 4. Miss 연출 (Fail)
-    public void MissSignal()
+    public void MissSignal(Action<NoticeAnim> onDestroy)
     {
         if (currentAnim != null) currentAnim.Kill();
 
@@ -102,7 +104,7 @@ public class NoticeAnim : MonoBehaviour
         // 힘없이 회전하며 아래로 낙하
         currentAnim.Append(transform.DOMoveY(transform.position.y - 2f, 0.5f).SetEase(Ease.InQuad))
                    .Join(transform.DORotate(new Vector3(0, 0, 15f), 0.5f, RotateMode.LocalAxisAdd))
-                   .Join(spriteRenderer.DOFade(0f, 0.5f))
-                   .OnComplete(() => gameObject.SetActive(false));
+                   .Join(image.DOFade(0f, 0.5f))
+                   .OnComplete(() => onDestroy?.Invoke(this));
     }
 }
