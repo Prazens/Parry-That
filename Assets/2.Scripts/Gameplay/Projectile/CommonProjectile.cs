@@ -62,15 +62,11 @@ public class CommonProjectile : Projectile
             return;
 
         Judgeable judgeable = context.judgeable;
-        int fixRandom;
-        if (judgeable.noteDirection == Direction.Up || judgeable.noteDirection == Direction.Right)
-        {
+        int fixRandom = 0;
+        if (judgeable.noteDirection == Direction.Left)
             fixRandom = 1;
-        }
-        else
-        {
+        else if (judgeable.noteDirection == Direction.Right)
             fixRandom = 2;
-        }
         parriedProjectileManager.ParryProjectile(Direction.Up, judgeable.attackType, fixRandom);
     }
 
