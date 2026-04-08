@@ -54,7 +54,7 @@ public class StrikerController : MonoBehaviour, IAttackHandler<StrikerAttackCont
         }
         else
         {
-            commonVisual.OnNotice();
+            commonVisual.OnNotice(context);
             sound.PlayPrepareSound((AttackType)context.note.type);
         }
     }
@@ -70,7 +70,7 @@ public class StrikerController : MonoBehaviour, IAttackHandler<StrikerAttackCont
         }
         else
         {
-            commonVisual.OnAttackStart();
+            commonVisual.OnAttackStart(context);
             Projectile projectile = FireProjectile(context.note.strikerIndex + 1, StageFlowManager.Instance.BeatToSec(context.note.arriveBeat), context.note.type);
             if (context.judgeables.Count > 0)
                 context.judgeables[0].AddOnDestroy(projectile.OnJudge);
@@ -92,7 +92,7 @@ public class StrikerController : MonoBehaviour, IAttackHandler<StrikerAttackCont
         }
         else
         {
-            commonVisual.OnJudge();
+            commonVisual.OnJudge(context);
         }
 
         if (context.isParried)
@@ -105,12 +105,12 @@ public class StrikerController : MonoBehaviour, IAttackHandler<StrikerAttackCont
     {
         if (IsHoldAttack(context))
         {
-            holdVisual?.OnHit();
+            holdVisual?.OnHit(context);
             sound.PlayHoldSound(context.judgeable.attackType);
         }
         else
         {
-            commonVisual.OnHit();
+            commonVisual.OnHit(context);
             sound.PlayParrySound(context.judgeable.attackType);
         }
     }

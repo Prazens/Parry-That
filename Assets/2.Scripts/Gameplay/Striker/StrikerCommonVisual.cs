@@ -10,8 +10,16 @@ public class StrikerCommonVisual : MonoBehaviour
     [SerializeField] private ParticleSystem particleSystemGreen; // 초록색 파티클 시스템
 
     // Animation Durations
-    private float spawnMoveDuration => 1.0f;
-    public float disappearDuration => 1.0f;
+    [SerializeField] private float spawnMoveDuration = 1.0f;
+    [SerializeField] private float disappearDuration = 1.0f;
+
+    [Header("Valid Animations")]
+    [SerializeField] private bool hasPrepareAnim = true;
+    [SerializeField] private bool hasPrepareDirection = false;
+    [SerializeField] private bool hasAttackAnim = true;
+    [SerializeField] private bool hasAttackDirection = false;
+    [SerializeField] private bool hasDamagedAnim = true;
+    [SerializeField] private bool hasDamagedDirection = false;
 
     private void Awake()
     {
@@ -25,31 +33,52 @@ public class StrikerCommonVisual : MonoBehaviour
         StartCoroutine(LerpPosition(transform.position, defaultPosition, StageFlowManager.Instance.currentTime + spawnMoveDuration));
     }
 
-    public void OnNotice()
+    public void OnNotice(StrikerAttackContext context)
     {
-        animator.SetTrigger("Prepare");
+        if (hasPrepareAnim)
+        {
+            SetDirection(hasPrepareDirection, context.note.strikerIndex + 1);
+            animator.SetTrigger("Prepare");
+        }
     }
 
-    public void OnAttackStart()
+    public void OnAttackStart(StrikerAttackContext context)
     {
-        animator.SetTrigger("Attack");
+        if (hasAttackAnim)
+        {
+            SetDirection(hasAttackDirection, context.note.strikerIndex + 1);
+            animator.SetTrigger("Attack");
+        }
     }
 
-    public void OnJudge()
+    public void OnJudge(JudgeContext context)
     {
 
     }
 
-    public void OnHit()
+    public void OnHit(JudgeContext context)
     {
-        animator.SetTrigger("Damaged");
+        if (hasDamagedAnim)
+        {
+            SetDirection(hasDamagedDirection, (int)context.judgeable.noteDirection);
+            animator.SetTrigger("Damaged");
+        }
     }
 
     public void OnClear()
     {
+        SetDirection(false, 0);
         animator.SetBool("isClear", true);
-        particleSystemGreen?.Play();
+        if (particleSystemGreen != null) particleSystemGreen.Play();
         Destroy(gameObject, disappearDuration);
+    }
+
+    private void SetDirection(bool hasDirection, int direction = 0)
+    {
+        if (hasDirection)
+            animator.SetFloat("Direction", direction);
+        else
+            animator.SetFloat("Direction", 0f);
     }
 
     private IEnumerator LerpPosition(Vector3 start, Vector3 end, float endSec)

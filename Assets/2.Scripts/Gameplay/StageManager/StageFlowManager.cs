@@ -136,6 +136,14 @@ public class StageFlowManager : MonoBehaviour
             return;
         }
 
+        if (stageAudioManager != null && stageAudioManager.musicSource != null && currentTime >= stageAudioManager.musicSource.clip.length - 0.05f)
+        {
+            if (strikerManager != null && strikerManager.isBossStage)
+            {
+                strikerManager.ClearBoss();
+            }
+        }
+
         if (currentTime >= stageDuration)
         {
             if (!victorySequenceTriggered)
@@ -209,9 +217,9 @@ public class StageFlowManager : MonoBehaviour
 
         if (stageSetupManager != null)
         {
+            stageSetupManager.SpawnPlayer();
             stageSetupManager.ApplyStageModules();
             stageSetupManager.SetCutIn(currentStageData);
-            stageSetupManager.SpawnPlayer();
         }
 
         if (stageAudioManager != null && stageAudioManager.musicSource != null && stageAudioManager.musicSource.clip != null)

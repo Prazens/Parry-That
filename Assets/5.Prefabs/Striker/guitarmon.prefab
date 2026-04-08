@@ -348,6 +348,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 1619256992334318428}
   particleSystemGreen: {fileID: 165418590215597304}
+  spawnMoveDuration: 1
+  disappearDuration: 1
+  hasPrepareAnim: 0
+  hasPrepareDirection: 0
+  hasAttackAnim: 0
+  hasAttackDirection: 0
+  hasDamagedAnim: 0
+  hasDamagedDirection: 0
 --- !u!114 &8368580590027548322
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -17,6 +17,7 @@ public enum DialogueAudioPolicy
     ResetAndReplay = 2,   // 음악 정지 후 처음부터 다시, currentTime도 리셋
 }
 
+// Legacy
 [Serializable]
 public class BossSpawnEntry
 {
@@ -85,8 +86,8 @@ public class StageData : ScriptableObject
     [SerializeField] private GameObject cutInUpPrefab;
     [SerializeField] private GameObject cutInDownPrefab;
 
-    [Header("Boss Spawns (Boss stage only)")]
-    [SerializeField] private List<BossSpawnEntry> bossSpawnPrefabs = new List<BossSpawnEntry>();
+    [Header("Boss Striker (Boss stage only)")]
+    [SerializeField] private int bossStrikerType = 0;
 
     public string SaveKey => $"{stageId}_{difficulty}";
 
@@ -103,5 +104,5 @@ public class StageData : ScriptableObject
     public GameObject CutInUpPrefab => cutInUpPrefab;
     public GameObject CutInDownPrefab => cutInDownPrefab;
 
-    public IReadOnlyList<BossSpawnEntry> BossSpawnPrefabs => bossSpawnPrefabs;
+    public int BossStrikerType => bossStrikerType;
 }
