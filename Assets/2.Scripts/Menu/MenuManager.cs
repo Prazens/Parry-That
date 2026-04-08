@@ -36,7 +36,7 @@ public class MenuManager : Singleton<MenuManager>
     public InfoDisplayUI infoDisplayUI;
     public SettingUI settingUI;
     public DiffButtonUI diffButtonUI;
-
+    public StageTitleAnim stageTitleAnim;
     public enum MenuState
     {
         Title,
@@ -77,6 +77,7 @@ public class MenuManager : Singleton<MenuManager>
 
         diskSwipeUI.InitScrollView(stageIndex[0], stageIndex[1]);
         infoDisplayUI.InitUI(stageIndex);
+
 
         diffButtonUI.InitUI(stageIndex[1]);
         if (StageDBManager.Instance.diffNumbers[stageIndex[0]] == 1 || !JudgeStageUnlock(stageIndex[0], 1))
@@ -146,7 +147,6 @@ public class MenuManager : Singleton<MenuManager>
             stageIndex[0] = index;
             
             if (StageDBManager.Instance.diffNumbers[stageIndex[0]] == 1 || !JudgeStageUnlock(stageIndex[0], 1))
-            // 해당 스테이지에 난이도가 1개이거나, 현재 선택된 스테이지의 하드가 잠겨있으면 (-> 스테이지 자체가 잠겨있는 경우도 포함) 난이도 버튼 숨김
             {
                 diffButtonUI.SetVisibility(false);
             }
@@ -170,6 +170,13 @@ public class MenuManager : Singleton<MenuManager>
         {
             StageSelection.SetSelection(stageIndex[0], (Difficulty)stageIndex[1]);
             infoDisplayUI.DisplayInfo(new int[] { StageSelection.SelectedStageId, (int)StageSelection.SelectedDifficulty });
+            
+            // 🔥 스테이지가 변경되었으니 타이틀 애니메이션 교체 실행!
+            // InfoDisplayUI에서 하던 이름 텍스트 변경을 이 멋진 연출이 대신하게 됩니다.
+            if (stageTitleAnim != null)
+            {
+                stageTitleAnim.ChangeTitle(StageDBManager.Instance.StageName[stageIndex[0]]);
+            }
         }
     }
 
@@ -184,6 +191,10 @@ public class MenuManager : Singleton<MenuManager>
             
             infoDisplayUI.InitUI(stageIndex);
             diskSwipeUI.StartPreviewSound(stageIndex[0]);
+            if (stageTitleAnim != null)
+        {
+            stageTitleAnim.ChangeTitle(StageDBManager.Instance.StageName[stageIndex[0]]);
+        }
             // if (stageIndex[1] >= 1)
             // {
             //     diffButtonUI.InitUI(stageIndex[1]);
