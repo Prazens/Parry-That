@@ -375,7 +375,7 @@ MonoBehaviour:
   dialogueManager: {fileID: 1515393733}
   bossController: {fileID: 0}
   stageSetupManager: {fileID: 700077782}
-  stageDataLoader: {fileID: 461089627}
+  stageChartLoader: {fileID: 0}
   stageAudioManager: {fileID: 2139028259}
   staticUIManager: {fileID: 1385202995}
   dynamicUIManager: {fileID: 1305503427}
@@ -1036,7 +1036,7 @@ GameObject:
   - component: {fileID: 461089626}
   - component: {fileID: 461089627}
   m_Layer: 0
-  m_Name: StageDataLoader
+  m_Name: StageChartLoader
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

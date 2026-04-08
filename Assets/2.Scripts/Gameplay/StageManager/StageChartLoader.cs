@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// StageData에서 현재 페이즈의 데이터(차트/대사/튜토리얼 패널/오디오 정책)를 읽는다.
 /// </summary>
-public class StageDataLoader : MonoBehaviour
+public class StageChartLoader : MonoBehaviour
 {
     [SerializeField] private StrikerManager strikerManager;
     [SerializeField] private NotePerformer notePerformer;

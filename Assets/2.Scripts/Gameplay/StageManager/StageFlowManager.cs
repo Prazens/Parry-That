@@ -28,7 +28,7 @@ public class StageFlowManager : MonoBehaviour
 
     [Header("Managers")]
     [SerializeField] private StageSetupManager stageSetupManager;
-    [SerializeField] private StageDataLoader stageDataLoader;
+    [SerializeField] private StageChartLoader stageChartLoader;
     [SerializeField] private StageAudioManager stageAudioManager;
     [SerializeField] private StaticUIManager staticUIManager;
     [SerializeField] private DynamicUIManager dynamicUIManager;
@@ -347,9 +347,9 @@ public class StageFlowManager : MonoBehaviour
             return;
         }
 
-        bool hasTutorialPanel = !tutorialPanelShown && stageDataLoader != null && stageDataLoader.HasCurrentPhaseTutorialPanel(currentStageData);
-        bool hasChart = stageDataLoader != null && stageDataLoader.HasCurrentPhaseChart(currentStageData);
-        bool hasDialogue = stageDataLoader != null && stageDataLoader.HasCurrentPhaseDialogue(currentStageData);
+        bool hasTutorialPanel = !tutorialPanelShown && stageChartLoader != null && stageChartLoader.HasCurrentPhaseTutorialPanel(currentStageData);
+        bool hasChart = stageChartLoader != null && stageChartLoader.HasCurrentPhaseChart(currentStageData);
+        bool hasDialogue = stageChartLoader != null && stageChartLoader.HasCurrentPhaseDialogue(currentStageData);
 
         if (!hasTutorialPanel && !hasChart && !hasDialogue)
         {
@@ -370,9 +370,9 @@ public class StageFlowManager : MonoBehaviour
                 stageAudioManager.AudioPause();
             }
 
-            if (staticUIManager != null && stageDataLoader != null)
+            if (staticUIManager != null && stageChartLoader != null)
             {
-                GameObject tutorialPanelPrefab = stageDataLoader.GetCurrentPhaseTutorialPanel(currentStageData);
+                GameObject tutorialPanelPrefab = stageChartLoader.GetCurrentPhaseTutorialPanel(currentStageData);
                 staticUIManager.ShowTutorialPanel(tutorialPanelPrefab);
             }
 
@@ -383,10 +383,10 @@ public class StageFlowManager : MonoBehaviour
         {
             phaseEndTime = -1f;
 
-            if (stageDataLoader != null)
+            if (stageChartLoader != null)
             {
-                phaseEndTime = stageDataLoader.PhaseEndTime(currentStageData);
-                stageDataLoader.LoadChartsFromStageData(currentStageData);
+                phaseEndTime = stageChartLoader.PhaseEndTime(currentStageData);
+                stageChartLoader.LoadChartsFromStageData(currentStageData);
             }
 
             if (strikerManager != null)
@@ -519,9 +519,9 @@ public class StageFlowManager : MonoBehaviour
 
         DialogueData dialogue = null;
 
-        if (stageDataLoader != null)
+        if (stageChartLoader != null)
         {
-            dialogue = stageDataLoader.GetCurrentPhaseDialogue(currentStageData);
+            dialogue = stageChartLoader.GetCurrentPhaseDialogue(currentStageData);
         }
 
         if (dialogue != null)
@@ -538,10 +538,10 @@ public class StageFlowManager : MonoBehaviour
 
     private void ApplyDialogueAudioPolicyBeforeDialogue()
     {
-        if (stageDataLoader == null)
+        if (stageChartLoader == null)
             return;
 
-        DialogueAudioPolicy policy = stageDataLoader.GetDialogueAudioPolicy(currentStageData);
+        DialogueAudioPolicy policy = stageChartLoader.GetDialogueAudioPolicy(currentStageData);
 
         switch (policy)
         {
@@ -570,10 +570,10 @@ public class StageFlowManager : MonoBehaviour
 
     private void ApplyDialogueAudioPolicyAfterDialogue()
     {
-        if (stageDataLoader == null)
+        if (stageChartLoader == null)
             return;
 
-        DialogueAudioPolicy policy = stageDataLoader.GetDialogueAudioPolicy(currentStageData);
+        DialogueAudioPolicy policy = stageChartLoader.GetDialogueAudioPolicy(currentStageData);
 
         switch (policy)
         {
