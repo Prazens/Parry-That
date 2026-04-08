@@ -81,6 +81,8 @@ public class JudgeSystem : MonoBehaviour
         {
             touchBlockCounts[type] = 0;
         }
+
+        judgeDetails.Add(new int[8] { 0, 0, 0, 0, 0, 0, 0, 0 }); // 0: total, 1~7: 판정별 count
     }
 
     void Update()
@@ -113,24 +115,18 @@ public class JudgeSystem : MonoBehaviour
             touchQueue.Clear();
     }
 
-    public void Initialize(ChartData chart)
+    public void InitChart(ChartData chart)
     {
-        combo = 0;
-        score = 0;
-        lastNonMissJudge = 0;
-
-        judgeDetails = new List<int[]>();
-
         if (chart == null)
-        {
-            judgeDetails.Add(new int[8] { 0, 0, 0, 0, 0, 0, 0, 0 });
             return;
-        }
+
+        if (judgeDetails.Count == 0 || judgeDetails[0] == null || judgeDetails[0].Length == 0)
+            return;
 
         int totalNoteCount = chart.notes != null ? chart.notes.Length : 0;
 
         // 전체
-        judgeDetails.Add(new int[8] { totalNoteCount, 0, 0, 0, 0, 0, 0, 0 });
+        judgeDetails[0][0] += totalNoteCount;
         
         // Striker별 or 방향별은 일단 제거함 (사용처 없음)
     }

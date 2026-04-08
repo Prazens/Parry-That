@@ -102,7 +102,8 @@ public class StageResultManager : MonoBehaviour
         }
 
         // 3개 조건: judgeDetails[0][1] == 0 (기존 코드 그대로)
-        if (details[1] == 0)
+        // + EarlyMiss([7]) 추가됨
+        if (details[1] == 0 && details[7] == 0)
         {
             currentStars = 3;
         }

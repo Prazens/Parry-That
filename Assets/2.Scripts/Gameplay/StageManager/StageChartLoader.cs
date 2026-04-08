@@ -17,14 +17,14 @@ public class StageChartLoader : MonoBehaviour
         if (chartJson == null)
         {
             notePerformer.InitChart(null);
-            judgeSystem.Initialize(null);
+            judgeSystem.InitChart(null);
             return;
         }
 
         ChartData loadedChart = JsonReader.ReadJson<ChartData>(chartJson);
 
         notePerformer.InitChart(loadedChart);
-        judgeSystem.Initialize(loadedChart);
+        judgeSystem.InitChart(loadedChart);
     }
 
     public TextAsset GetCurrentPhaseChart(StageData stageData)

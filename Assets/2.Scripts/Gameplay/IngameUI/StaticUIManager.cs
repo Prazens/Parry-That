@@ -255,7 +255,7 @@ public class StaticUIManager : MonoBehaviour
         if (judgeDetails == null || judgeDetails.Count == 0 || judgeDetails[0] == null) return;
 
         int[] d = judgeDetails[0];
-        if (d.Length < 7) return;
+        if (d.Length < 8) return;
 
         TextMeshProUGUI perfectText = FindText("ParfectText");
         if (perfectText == null) perfectText = FindText("PerfectText");
@@ -268,7 +268,7 @@ public class StaticUIManager : MonoBehaviour
         if (guardText != null) guardText.text = (d[2] + d[6]).ToString("D4");
 
         TextMeshProUGUI hitText = FindText("HitText");
-        if (hitText != null) hitText.text = d[1].ToString("D4");
+        if (hitText != null) hitText.text = (d[1] + d[7]).ToString("D4");
     }
 
     public IEnumerator ResumeCountDown()
