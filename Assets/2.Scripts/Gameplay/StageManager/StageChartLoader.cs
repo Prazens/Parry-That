@@ -118,6 +118,6 @@ public class StageChartLoader : MonoBehaviour
             }
         }
 
-        return lastDisappearBeat * 60f / chart.bpm;
+        return lastDisappearBeat * 60f / chart.bpm + 1f;
     }
 }

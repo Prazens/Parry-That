@@ -258,40 +258,8 @@ public class StageFlowManager : MonoBehaviour
 
     public void RestartStage()
     {
-        victorySequenceTriggered = false;
-        victoryStarted = false;
-
         Time.timeScale = 1f;
-
-        if (strikerManager != null)
-        {
-            strikerManager.ClearImmediately();
-        }
-
-        if (stageAudioManager != null && stageAudioManager.musicSource != null)
-        {
-            if (stageAudioManager.musicSource.isPlaying)
-            {
-                stageAudioManager.musicSource.Stop();
-            }
-        }
-
-        if (staticUIManager != null)
-        {
-            staticUIManager.ToggleOverlay(false);
-            staticUIManager.ToggleClearPanel(false);
-            staticUIManager.ToggleGameOverPanel(false);
-            staticUIManager.TogglePausePanel(false);
-            staticUIManager.UpdatePauseButtonSprite(false);
-            staticUIManager.ResetVictoryAnimation();
-        }
-
-        if (dynamicUIManager != null)
-        {
-            dynamicUIManager.CutInDisplay(0f, true);
-        }
-
-        StartStage();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     private void StartCurrentPhase()
