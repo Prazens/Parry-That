@@ -140,8 +140,8 @@ Material:
     - _GreyscaleBlend: 1
     - _GreyscaleLuminosity: 0
     - _GreyscaleOutline: 0
-    - _HandDrawnAmount: 3.9
-    - _HandDrawnSpeed: 5
+    - _HandDrawnAmount: 10
+    - _HandDrawnSpeed: 7
     - _HitEffectBlend: 1
     - _HitEffectGlow: 5
     - _HologramBlend: 1
