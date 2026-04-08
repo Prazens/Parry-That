@@ -31,8 +31,6 @@ public class TitleUI : MonoBehaviour
 
     [Header("Camera")]
     public GameObject mainCamera;
-
-    public bool isActivated = false;
     
     private Tween textPulseTween; 
     
@@ -63,14 +61,12 @@ public class TitleUI : MonoBehaviour
         titleText.gameObject.SetActive(true);
         titleText.color = new Color(titleText.color.r, titleText.color.g, titleText.color.b, 1f);
         textPulseTween = titleText.DOFade(0.3f, 1f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine);
-        
-        isActivated = false;
     }
 
     void Update()
     {
         // 🔥 스와이프 전일 때, '저음(Bass)' 스펙트럼을 분석하여 발광시킴
-        if (!isActivated && bgmSource != null && bgmSource.isPlaying)
+        if (StageDBManager.Instance.isFirstLaunch && bgmSource != null && bgmSource.isPlaying)
         {
             // 1. 소리 주파수 분석
             bgmSource.GetSpectrumData(spectrumData, 0, FFTWindow.Rectangular);
@@ -98,10 +94,10 @@ public class TitleUI : MonoBehaviour
 
     public void OnSwipeUp()
     {
-        if (!isActivated)
+        if (StageDBManager.Instance.isFirstLaunch)
         {
-            isActivated = true;
-            
+            StageDBManager.Instance.isFirstLaunch = false;
+
             if (textPulseTween != null) textPulseTween.Kill();
             titleText.gameObject.SetActive(false);
 

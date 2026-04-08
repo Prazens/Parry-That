@@ -93,8 +93,8 @@ public class MenuSwipeDetecter : Singleton<MenuSwipeDetecter>
         }
 
         // 타이틀 화면에서 : 스테이지 선택 화면으로 전환
-        if (MenuManager.Instance.currentState == MenuManager.MenuState.Title
-            || MenuManager.Instance.titleUI.isActivated == false)
+        else if (MenuManager.Instance.currentState == MenuManager.MenuState.Title
+                 && StageDBManager.Instance.isFirstLaunch == true)
         {
             MenuManager.Instance.titleUI.OnSwipeUp();
         }

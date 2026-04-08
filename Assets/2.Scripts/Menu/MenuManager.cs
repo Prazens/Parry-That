@@ -79,7 +79,7 @@ public class MenuManager : Singleton<MenuManager>
         infoDisplayUI.InitUI(stageIndex);
 
         diffButtonUI.InitUI(stageIndex[1]);
-        if (StageDBManager.Instance.diffNumbers[stageIndex[0]] == 1)
+        if (StageDBManager.Instance.diffNumbers[stageIndex[0]] == 1 || !JudgeStageUnlock(stageIndex[0], 1))
         {
             diffButtonUI.SetVisibility(false);
         }
@@ -107,7 +107,6 @@ public class MenuManager : Singleton<MenuManager>
         {
             titleUI.InitUI();
             sword.InitUI();
-            StageDBManager.Instance.isFirstLaunch = false;
             titleUI.transform.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;  
             transform.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, height);  
         }
@@ -245,6 +244,7 @@ public class MenuManager : Singleton<MenuManager>
         if (!JudgeStageUnlock(stageIndex[0], stageIndex[1]))
         {
             // 잠긴 스테이지
+            Debug.Log("잠긴 스테이지입니다.");
             return;
         }
 
