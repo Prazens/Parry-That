@@ -374,7 +374,7 @@ MonoBehaviour:
   strikerManager: {fileID: 2036327256}
   dialogueManager: {fileID: 1515393733}
   stageSetupManager: {fileID: 700077782}
-  stageChartLoader: {fileID: 0}
+  stageChartLoader: {fileID: 461089627}
   stageAudioManager: {fileID: 2139028259}
   staticUIManager: {fileID: 1385202995}
   dynamicUIManager: {fileID: 1305503427}

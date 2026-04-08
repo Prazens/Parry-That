@@ -410,12 +410,7 @@ public class StageFlowManager : MonoBehaviour
 
         if (strikerManager != null)
         {
-            strikerManager.ClearStrikers();
-        }
-
-        if (judgeSystem != null)
-        {
-            judgeSystem.Initialize();
+            strikerManager.ClearImmediately();
         }
 
         if (stageAudioManager != null)
