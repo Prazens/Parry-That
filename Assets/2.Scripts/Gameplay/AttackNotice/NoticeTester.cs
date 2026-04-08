@@ -28,13 +28,13 @@ public class SignalTester : MonoBehaviour
         // W: 성공 (Hit)
         if (Input.GetKeyDown(KeyCode.W))
         {
-            targetSignal.HitSignal(testBPM);
+            targetSignal.HitSignal(testBPM, notice => notice.gameObject.SetActive(false));
         }
 
         // E: 실패 (Miss)
         if (Input.GetKeyDown(KeyCode.E))
         {
-            targetSignal.MissSignal();
+            targetSignal.MissSignal(notice => notice.gameObject.SetActive(false));
         }
     }
 }
