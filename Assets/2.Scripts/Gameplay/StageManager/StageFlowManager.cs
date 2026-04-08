@@ -17,6 +17,7 @@ public class StageFlowManager : MonoBehaviour
     public bool is_over = false;
     public bool isDaehwa = false;
     public bool isTutorial = false; //튜토리얼 패널이 띄워져 있으면 true, 아니면 false
+    public bool isClear = false;
     private bool tutorialPanelShown = false;
 
     private float phaseEndTime = -1f;
@@ -74,6 +75,7 @@ public class StageFlowManager : MonoBehaviour
         if (!isActive) return;
         if (isPaused) return;
         if (isTutorial) return;
+        if (isClear) return;
 
 
         // 음악이 재생 중일 때는 오디오 소스의 시간을 직접 참조하여 음악과 동기화
@@ -81,7 +83,7 @@ public class StageFlowManager : MonoBehaviour
         {
             currentTime = stageAudioManager.musicSource.time + stageAudioManager.bgmOffset;
         }
-        else if (!stageAudioManager.musicPlayed)
+        else
         {
             currentTime += Time.deltaTime;
         }
@@ -222,6 +224,7 @@ public class StageFlowManager : MonoBehaviour
         isPaused = false;
         isDaehwa = false;
         isTutorial = false;
+        isClear = false;
         tutorialPanelShown = false;
         button_active = true;
         victorySequenceTriggered = false;
@@ -406,6 +409,7 @@ public class StageFlowManager : MonoBehaviour
         isActive = false;
         isDaehwa = false;
         isTutorial = false;
+        isClear = false;
         phaseEndTime = -1f;
 
         if (strikerManager != null)
@@ -458,6 +462,7 @@ public class StageFlowManager : MonoBehaviour
             currentTime = stageDuration;
             isActive = false;
             button_active = false;
+            isClear = true;
 
             if (stageResultManager != null)
             {

@@ -35,7 +35,7 @@ public class GameController : MonoBehaviour
     {
         if (stageFlowManager == null) return;
 
-        if (stageFlowManager.is_over || stageFlowManager.isPaused)
+        if (stageFlowManager.is_over || stageFlowManager.isPaused || stageFlowManager.isClear)
         {
             if (isTouchAvailable)
             {
