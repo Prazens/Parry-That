@@ -7,7 +7,9 @@
     },
     "type_map": {
         "weak": 0,
-        "strong": 1
+        "strong": 1,
+        "holdready": 2,
+        "holdhit": 3
     },
     "signal_map": {
         "ready": 0,
@@ -19,18 +21,98 @@
             "type": "weak",
             "signal": "ready"
         },
-        "84": {
+        "61": {
             "direction": "up",
             "type": "weak",
             "signal": "hit"
         },
-        "67": {
+        "62": {
             "direction": "up",
             "type": "strong",
             "signal": "ready"
         },
-        "91": {
+        "63": {
             "direction": "up",
+            "type": "strong",
+            "signal": "hit"
+        },
+        "64": {
+            "direction": "up",
+            "type": "holdready",
+            "signal": "ready"
+        },
+        "65": {
+            "direction": "up",
+            "type": "holdready",
+            "signal": "hit"
+        },
+        "66": {
+            "direction": "up",
+            "type": "holdhit",
+            "signal": "ready"
+        },
+        "67": {
+            "direction": "up",
+            "type": "holdhit",
+            "signal": "hit"
+        },
+        "72": {
+            "direction": "down",
+            "type": "weak",
+            "signal": "ready"
+        },
+        "73": {
+            "direction": "down",
+            "type": "weak",
+            "signal": "hit"
+        },
+        "74": {
+            "direction": "down",
+            "type": "strong",
+            "signal": "ready"
+        },
+        "75": {
+            "direction": "down",
+            "type": "strong",
+            "signal": "hit"
+        },
+        "84": {
+            "direction": "left",
+            "type": "weak",
+            "signal": "ready"
+        },
+        "85": {
+            "direction": "left",
+            "type": "weak",
+            "signal": "hit"
+        },
+        "86": {
+            "direction": "left",
+            "type": "strong",
+            "signal": "ready"
+        },
+        "87": {
+            "direction": "left",
+            "type": "strong",
+            "signal": "hit"
+        },
+        "96": {
+            "direction": "right",
+            "type": "weak",
+            "signal": "ready"
+        },
+        "97": {
+            "direction": "right",
+            "type": "weak",
+            "signal": "hit"
+        },
+        "98": {
+            "direction": "right",
+            "type": "strong",
+            "signal": "ready"
+        },
+        "99": {
+            "direction": "right",
             "type": "strong",
             "signal": "hit"
         }
