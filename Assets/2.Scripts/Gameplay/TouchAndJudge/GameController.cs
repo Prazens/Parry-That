@@ -35,7 +35,7 @@ public class GameController : MonoBehaviour
     {
         if (stageFlowManager == null) return;
 
-        if (stageFlowManager.is_over)
+        if (stageFlowManager.is_over || stageFlowManager.isPaused)
         {
             if (isTouchAvailable)
             {
@@ -47,15 +47,15 @@ public class GameController : MonoBehaviour
             }
         }
 
-        if (stageFlowManager.isPaused)
+        if (stageFlowManager.isTutorial)
         {
             if (isTouchAvailable)
             {
-                DetectSwipe();
+                DetectTouch();
             }
             else
             {
-                DetectMouseSwipe();
+                DetectMouseClick();
             }
         }
     }
@@ -110,6 +110,33 @@ public class GameController : MonoBehaviour
 
             ProcessSwipe();
             isSwiping = false;
+        }
+    }
+
+    private void DetectTouch()
+    {
+        if (Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);
+
+            if (touch.phase == TouchPhase.Began)
+            {
+                if (stageFlowManager != null && stageFlowManager.isTutorial)
+                {
+                    stageFlowManager.CloseTutorialPanel();
+                }
+            }
+        }
+    }
+
+    private void DetectMouseClick()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (stageFlowManager != null && stageFlowManager.isTutorial)
+            {
+                stageFlowManager.CloseTutorialPanel();
+            }
         }
     }
 

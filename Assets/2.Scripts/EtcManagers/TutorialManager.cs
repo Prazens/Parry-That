@@ -11,13 +11,14 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private Font DescriptionFont;
     [SerializeField] private StageFlowManager stageFlowManager;
     [SerializeField] private StageAudioManager stageAudioManager;
+    [SerializeField] private JudgeSystem judgeSystem;
 
     [SerializeField] private GameObject VictoryAnime;
 
     private DatabaseManager databaseManager;
     private PlayerManager playerManager;
+    private bool restartPhase = false;
 
-    public static bool isTutorial = false;
 
     private SpriteRenderer spriteRenderer;
     private Image animeSpriteImg;
@@ -28,7 +29,6 @@ public class TutorialManager : MonoBehaviour
     private void Awake()
     {
         databaseManager = FindObjectOfType<DatabaseManager>();
-        isTutorial = true;
 
         spriteRenderer = VictoryAnime.GetComponent<SpriteRenderer>();
         animeSpriteImg = VictoryAnime.GetComponent<Image>();
@@ -66,6 +66,19 @@ public class TutorialManager : MonoBehaviour
         {
             stageAudioManager.AudioPause();
         }
+
+        if (judgeSystem != null)
+        {
+            judgeSystem.Judged += OnJudged;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (judgeSystem != null)
+        {
+            judgeSystem.Judged -= OnJudged;
+        }
     }
 
     private void Update()
@@ -74,6 +87,24 @@ public class TutorialManager : MonoBehaviour
         {
             animeSpriteImg.sprite = spriteRenderer.sprite;
         }
+    }
+
+    private void OnJudged(JudgeContext context)
+    {
+        if (context.judgeType == JudgeType.LateMiss || context.judgeType == JudgeType.EarlyMiss)
+        {
+            restartPhase = true;
+        }
+    }
+
+    public void OnPhaseStarted()
+    {
+        restartPhase = false;
+    }
+
+    public bool ShouldRestartCurrentPhase()
+    {
+        return restartPhase;
     }
 
     public void SetDescriptionText(string text)
@@ -87,7 +118,6 @@ public class TutorialManager : MonoBehaviour
     public void SkipOn()
     {
         DatabaseManager.isTutorialDone = true;
-        isTutorial = false;
 
         databaseManager.SaveTutorialDone();
 

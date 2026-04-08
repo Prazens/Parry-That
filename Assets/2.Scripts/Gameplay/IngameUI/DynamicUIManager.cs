@@ -74,7 +74,7 @@ public class DynamicUIManager : MonoBehaviour
         // -------------------------
         // HUD 기본 세팅 (원래 코드 그대로)
         // -------------------------
-        if (TutorialManager.isTutorial)
+        if (StageFlowManager.Instance.currentStageData.Category == StageCategory.Tutorial)
         {
             if (hpDisplay != null) hpDisplay.SetActive(false);
             if (scoreDisplay != null) scoreDisplay.SetActive(false);
@@ -153,7 +153,7 @@ public class DynamicUIManager : MonoBehaviour
 
     public void DisplayHP(int hp, bool heal = false)
     {
-        if (TutorialManager.isTutorial) return;
+        if (StageFlowManager.Instance.currentStageData.Category == StageCategory.Tutorial) return;
         if (hpDisplay == null) return;
 
         if (!heal)

@@ -16,6 +16,8 @@ public class StageFlowManager : MonoBehaviour
     public static bool isActive = false;
     public bool is_over = false;
     public bool isDaehwa = false;
+    public bool isTutorial = false; //튜토리얼 패널이 띄워져 있으면 true, 아니면 false
+    private bool tutorialPanelShown = false;
 
     private float phaseEndTime = -1f;
     public int currentPhaseIndex { get; private set; } = 0;
@@ -71,13 +73,15 @@ public class StageFlowManager : MonoBehaviour
         if (isDaehwa) return;
         if (!isActive) return;
         if (isPaused) return;
+        if (isTutorial) return;
+
 
         // 음악이 재생 중일 때는 오디오 소스의 시간을 직접 참조하여 음악과 동기화
         if (stageAudioManager != null && stageAudioManager.musicSource.isPlaying)
         {
             currentTime = stageAudioManager.musicSource.time + stageAudioManager.bgmOffset;
         }
-        else
+        else if (!stageAudioManager.musicPlayed)
         {
             currentTime += Time.deltaTime;
         }
@@ -99,6 +103,7 @@ public class StageFlowManager : MonoBehaviour
                 else
                 {
                     // 튜토리얼은 즉시 재생
+                    stageAudioManager.bgmOffset = 0f;
                     stageAudioManager.musicSource.Play();
                     stageAudioManager.musicPlayed = true;
                 }
@@ -111,6 +116,13 @@ public class StageFlowManager : MonoBehaviour
 
         if (phaseEndTime >= 0f && currentTime >= phaseEndTime)
         {
+            TutorialManager tutorialManager = FindObjectOfType<TutorialManager>();
+            if (tutorialManager != null && tutorialManager.ShouldRestartCurrentPhase())
+            {
+                RestartPhase();
+                return;
+            }
+
             if (strikerManager != null)
             {
                 strikerManager.ClearImmediately();
@@ -209,6 +221,8 @@ public class StageFlowManager : MonoBehaviour
         is_over = false;
         isPaused = false;
         isDaehwa = false;
+        isTutorial = false;
+        tutorialPanelShown = false;
         button_active = true;
         victorySequenceTriggered = false;
         victoryStarted = false;
@@ -284,6 +298,7 @@ public class StageFlowManager : MonoBehaviour
             EndStage();
             return;
         }
+        
 
         IReadOnlyList<StagePhase> phases = currentStageData.Phases;
         if (phases == null)
@@ -320,12 +335,35 @@ public class StageFlowManager : MonoBehaviour
             return;
         }
 
+        bool hasTutorialPanel = !tutorialPanelShown && stageChartLoader != null && stageChartLoader.HasCurrentPhaseTutorialPanel(currentStageData);
         bool hasChart = stageChartLoader != null && stageChartLoader.HasCurrentPhaseChart(currentStageData);
         bool hasDialogue = stageChartLoader != null && stageChartLoader.HasCurrentPhaseDialogue(currentStageData);
 
-        if (!hasChart && !hasDialogue)
+        if (!hasTutorialPanel && !hasChart && !hasDialogue)
         {
             GoToNextPhase();
+            return;
+        }
+
+        if (hasTutorialPanel)
+        {
+            tutorialPanelShown = true;
+            isTutorial = true;
+            isActive = false;
+            isDaehwa = false;
+            phaseEndTime = -1f;
+
+            if (stageAudioManager != null)
+            {
+                stageAudioManager.AudioPause();
+            }
+
+            if (staticUIManager != null && stageChartLoader != null)
+            {
+                GameObject tutorialPanelPrefab = stageChartLoader.GetCurrentPhaseTutorialPanel(currentStageData);
+                staticUIManager.ShowTutorialPanel(tutorialPanelPrefab);
+            }
+
             return;
         }
 
@@ -345,15 +383,49 @@ public class StageFlowManager : MonoBehaviour
             }
 
             ApplyDialogueAudioPolicyAfterDialogue();
+            
+            TutorialManager tutorialManager = FindObjectOfType<TutorialManager>();
+            if (tutorialManager != null && currentStageData.Category == StageCategory.Tutorial)
+            {
+                tutorialManager.OnPhaseStarted();
+            }
 
             isDaehwa = false;
             isActive = true;
+            isTutorial = false;
             return;
         }
 
         isActive = false;
         isDaehwa = true;
         StartCoroutine(RunCurrentPhaseDialogue());
+    }
+
+    public void RestartPhase()
+    {
+        isActive = false;
+        isDaehwa = false;
+        isTutorial = false;
+        phaseEndTime = -1f;
+
+        if (strikerManager != null)
+        {
+            strikerManager.ClearStrikers();
+        }
+
+        if (judgeSystem != null)
+        {
+            judgeSystem.Initialize();
+        }
+
+        if (stageAudioManager != null)
+        {
+            stageAudioManager.RestartAudioFromSavedTime();
+        }
+
+        currentTime = stageAudioManager.musicSource.time + stageAudioManager.bgmOffset;
+
+        StartCurrentPhase();
     }
 
     public void GameOver()
@@ -403,6 +475,28 @@ public class StageFlowManager : MonoBehaviour
                 staticUIManager.ToggleOverlay(true);
             }
         }
+    }
+
+    public void CloseTutorialPanel()
+    {
+        if (!isTutorial)
+            return;
+
+        isTutorial = false;
+
+        if (staticUIManager != null)
+        {
+            staticUIManager.HideTutorialPanel();
+            print(1);
+        }
+
+        if (stageAudioManager != null)
+        {
+            stageAudioManager.AudioUnPause();
+            print(2);
+        }
+
+        StartCurrentPhase();
     }
 
     private IEnumerator RunCurrentPhaseDialogue()
@@ -488,6 +582,7 @@ public class StageFlowManager : MonoBehaviour
     private void GoToNextPhase()
     {
         phaseEndTime = -1f;
+        tutorialPanelShown = false;
         currentPhaseIndex++;
         StartCurrentPhase();
     }

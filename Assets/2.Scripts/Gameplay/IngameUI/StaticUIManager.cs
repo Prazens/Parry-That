@@ -38,6 +38,7 @@ public class StaticUIManager : MonoBehaviour
     private GameObject clearPanel;
     private GameObject gameOverPanel;
     private GameObject pausePanel;
+    private GameObject tutorialPanel;
 
     private Image pauseButtonImage;
     private Sprite originalPauseButtonSprite;
@@ -144,7 +145,7 @@ public class StaticUIManager : MonoBehaviour
 
     public void Setup_UI()
     {
-        if (TutorialManager.isTutorial)
+        if (StageFlowManager.Instance.currentStageData.Category == StageCategory.Tutorial)
         {
             pauseButton.SetActive(false);
             skipButton.SetActive(true);
@@ -164,6 +165,25 @@ public class StaticUIManager : MonoBehaviour
             TogglePausePanel(false);
             UpdatePauseButtonSprite(false);
         }
+    }
+
+    public void ShowTutorialPanel(GameObject tutorialPanelPrefab)
+    {
+        if (tutorialPanelPrefab == null) return;
+        if (canvasRoot == null) return;
+
+        HideTutorialPanel();
+
+        tutorialPanel = Instantiate(tutorialPanelPrefab, canvasRoot);
+        tutorialPanel.SetActive(true);
+    }
+
+    public void HideTutorialPanel()
+    {
+        if (tutorialPanel == null) return;
+
+        Destroy(tutorialPanel);
+        tutorialPanel = null;
     }
 
     public void ToggleClearPanel(bool isOn)

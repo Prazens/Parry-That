@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// StageManager.StartStage()에서 하던 "차트 로딩 + strikerManager.charts에 전달"만 분리.
+/// StageData에서 현재 페이즈의 데이터(차트/대사/튜토리얼 패널/오디오 정책)를 읽는다.
 /// </summary>
 public class StageChartLoader : MonoBehaviour
 {
@@ -27,36 +27,64 @@ public class StageChartLoader : MonoBehaviour
         judgeSystem.InitChart(loadedChart);
     }
 
-    public TextAsset GetCurrentPhaseChart(StageData stageData)
+    private StagePhase GetCurrentPhase(StageData stageData)
     {
-        if (stageData == null) return null;
+        if (stageData == null)
+            return null;
 
-        var phases = stageData.Phases;
-        if (phases == null || phases.Count == 0) return null;
+        IReadOnlyList<StagePhase> phases = stageData.Phases;
+        if (phases == null || phases.Count == 0)
+            return null;
+
+        if (StageFlowManager.Instance == null)
+            return null;
 
         int index = StageFlowManager.Instance.currentPhaseIndex;
-        if (index < 0 || index >= phases.Count) return null;
+        if (index < 0 || index >= phases.Count)
+            return null;
 
-        StagePhase phase = phases[index];
-        if (phase == null) return null;
+        return phases[index];
+    }
+
+    public GameObject GetCurrentPhaseTutorialPanel(StageData stageData)
+    {
+        StagePhase phase = GetCurrentPhase(stageData);
+        if (phase == null)
+            return null;
+
+        return phase.TutorialPanelPrefab;
+    }
+
+    public TextAsset GetCurrentPhaseChart(StageData stageData)
+    {
+        StagePhase phase = GetCurrentPhase(stageData);
+        if (phase == null)
+            return null;
 
         return phase.ChartJson;
     }
 
     public DialogueData GetCurrentPhaseDialogue(StageData stageData)
     {
-        if (stageData == null) return null;
-
-        var phases = stageData.Phases;
-        if (phases == null || phases.Count == 0) return null;
-
-        int index = StageFlowManager.Instance.currentPhaseIndex;
-        if (index < 0 || index >= phases.Count) return null;
-
-        StagePhase phase = phases[index];
-        if (phase == null) return null;
+        StagePhase phase = GetCurrentPhase(stageData);
+        if (phase == null)
+            return null;
 
         return phase.Dialogue;
+    }
+
+    public DialogueAudioPolicy GetDialogueAudioPolicy(StageData stageData)
+    {
+        StagePhase phase = GetCurrentPhase(stageData);
+        if (phase == null)
+            return DialogueAudioPolicy.KeepPlaying;
+
+        return phase.DialogueAudioPolicy;
+    }
+
+    public bool HasCurrentPhaseTutorialPanel(StageData stageData)
+    {
+        return GetCurrentPhaseTutorialPanel(stageData) != null;
     }
 
     public bool HasCurrentPhaseChart(StageData stageData)
@@ -71,47 +99,25 @@ public class StageChartLoader : MonoBehaviour
 
     public float PhaseEndTime(StageData stageData)
     {
-        if (stageData == null) return 0f;
-
-        int index = StageFlowManager.Instance.currentPhaseIndex;
-
-        var phases = stageData.Phases;
-        if (phases == null || index < 0 || index >= phases.Count)
+        TextAsset chartJson = GetCurrentPhaseChart(stageData);
+        if (chartJson == null)
             return 0f;
 
-        StagePhase phase = phases[index];
-        if (phase == null || phase.ChartJson == null)
-            return 0f;
-
-        ChartData chart = JsonReader.ReadJson<ChartData>(phase.ChartJson);
+        ChartData chart = JsonReader.ReadJson<ChartData>(chartJson);
         if (chart == null || chart.strikers == null || chart.strikers.Length == 0)
             return 0f;
 
         float lastDisappearBeat = 0f;
-        for (int i = 0; i < chart.strikers.Length; i++)
+
+        for (int index = 0; index < chart.strikers.Length; index++)
         {
-            if (chart.strikers[i] != null && chart.strikers[i].disappearTime > lastDisappearBeat)
+            if (chart.strikers[index] != null &&
+                chart.strikers[index].disappearTime > lastDisappearBeat)
             {
-                lastDisappearBeat = chart.strikers[i].disappearTime;
+                lastDisappearBeat = chart.strikers[index].disappearTime;
             }
         }
 
-        return lastDisappearBeat * 60f / chart.bpm; // musicOffset
-    }
-
-    public DialogueAudioPolicy GetDialogueAudioPolicy(StageData stageData)
-    {
-        if (stageData == null) return DialogueAudioPolicy.KeepPlaying;
-
-        var phases = stageData.Phases;
-        if (phases == null || phases.Count == 0) return DialogueAudioPolicy.KeepPlaying;
-
-        int index = StageFlowManager.Instance.currentPhaseIndex;
-        if (index < 0 || index >= phases.Count) return DialogueAudioPolicy.KeepPlaying;
-
-        StagePhase phase = phases[index];
-        if (phase == null) return DialogueAudioPolicy.KeepPlaying;
-
-        return phase.DialogueAudioPolicy;
+        return lastDisappearBeat * 60f / chart.bpm;
     }
 }

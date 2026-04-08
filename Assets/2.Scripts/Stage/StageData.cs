@@ -39,6 +39,10 @@ public class BossSpawnEntry
 [Serializable]
 public class StagePhase
 {
+    [Header("Tutorial Panel")]
+    [Tooltip("이 페이즈 전에 띄울 가이드 패널. 없으면 패널 없이 진행 가능")]
+    [SerializeField] private GameObject tutorialPanelPrefab;
+
     [Header("Phase Chart")]
     [Tooltip("이 페이즈에서 재생할 채보. 없으면 채보 없이 진행 가능")]
     [SerializeField] private TextAsset chartJson;
@@ -51,6 +55,7 @@ public class StagePhase
     [Tooltip("대사 시작 시 음악/시간 처리 방식")]
     [SerializeField] private DialogueAudioPolicy dialogueAudioPolicy = DialogueAudioPolicy.KeepPlaying;
 
+    public GameObject TutorialPanelPrefab => tutorialPanelPrefab;
     public TextAsset ChartJson => chartJson;
     public DialogueData Dialogue => dialogue;
     public DialogueAudioPolicy DialogueAudioPolicy => dialogueAudioPolicy;
