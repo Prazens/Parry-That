@@ -22,7 +22,7 @@ public class InfoDisplayUI : MonoBehaviour
     public void DisplayInfo(int[] stageIndex)
     {
         // 튜토리얼과 에필로그에는 필요한 정보만 출력
-        if (stageIndex[0] == 0 || stageIndex[0] == StageDBManager.Instance.stageNumbers - 1)
+        if (stageIndex[0] == 0)
         {
             transform.GetChild(2).gameObject.SetActive(false);
             fireEffect.SetActive(false);
@@ -42,10 +42,10 @@ public class InfoDisplayUI : MonoBehaviour
 
         // 상세 정보 표시
         txtStageName.text = StageDBManager.Instance.StageName[stageIndex[0]];
-        txtStageScore.text = string.Format("{0:#,##0}", StageDBManager.Instance.highScores[stageIndex[0], stageIndex[1]]);
+        txtStageScore.text = string.Format("{0:#,##0}", StageDBManager.Instance.highScores[stageIndex[0]][stageIndex[1]]);
         for (int i = 0; i < 3; i++)
         {
-            if (i >= StageDBManager.Instance.starRatings[stageIndex[0], stageIndex[1]])
+            if (i >= StageDBManager.Instance.starRatings[stageIndex[0]][stageIndex[1]])
             {
                 stars[i].SetActive(false);
             }
@@ -54,7 +54,7 @@ public class InfoDisplayUI : MonoBehaviour
                 stars[i].SetActive(true);
             }
         }
-        if (StageDBManager.Instance.starRatings[stageIndex[0], stageIndex[1]] == 4)
+        if (StageDBManager.Instance.starRatings[stageIndex[0]][stageIndex[1]] == 4)
         {
             Debug.Log("잘못된 별 개수");
         }

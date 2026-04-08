@@ -63,7 +63,7 @@ public class StageDialogManager : Singleton<StageDialogManager>
     [Header("테스트용 대화 데이터")]
     public DialogueData testDialogueData;
 
-    private void Start()
+    protected override void OnAwake()
     {
         InitDialog();
 

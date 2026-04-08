@@ -1,9 +1,34 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using static MenuManager;
+
+
+// 직렬화를 위한 Wrapper 클래스
+[System.Serializable]
+public class StageDiskSprites
+{
+    public Sprite notClearedNormal;
+    public Sprite notClearedHard;
+    public Sprite clearedNormal;
+    public Sprite clearedHard;
+
+    public Sprite this[int difficulty, bool isCleared]
+    {
+        get
+        {
+            return difficulty switch
+            {
+                0 => isCleared ? clearedNormal : notClearedNormal,
+                1 => isCleared ? clearedHard : notClearedHard,
+                _ => null
+            };
+        }
+    }
+}
 
 /// <summary>
 /// 디스크 스와이프 UI 관리
@@ -26,53 +51,48 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
     [SerializeField] private Color brightColor = new Color(1f, 1f, 1f, 1f);
 
     [Space]
-    [SerializeField] private List<Sprite> unpackedStageDiskSprites;  // 스프라이트 리스트
-    // [SerializeField] private Sprite tutorialDiskSprite;  // 튜토리얼 디스크 스프라이트
-    // [SerializeField] private Sprite epilogueDiskSprite;  // 에필로그 디스크 스프라이트
-    private List<List<List<Sprite>>> stageDiskSprites;  // [stageIndex][isCleared][difficulty] 스프라이트 목록, 튜토리얼과 에필로그 미포함
+    [SerializeField] private GameObject stageDiskPrefab;  // 스테이지 디스크 프리팹
+    [SerializeField] private List<StageDiskSprites> stageDiskSprites;  // 스프라이트 리스트, [stageIndex][difficulty, isCleared]
+    // private List<List<List<Sprite>>> stageDiskSprites;  // [stageIndex][isCleared][difficulty] 스프라이트 목록, 튜토리얼과 에필로그 미포함
     // 없는 난이도는 자리는 있지만 null로 남겨두어야 함
 
     [SerializeField] private List<AudioClip> previewSounds;  // 디스크 선택시 재생할 미리듣기 사운드 목록
     [SerializeField] private AudioSource currentPreviewSound;
 
+    [Space]
+    [SerializeField] private float rotationSpeed = 6f;  // 디스크 회전 속도
+
     private RectTransform[] stageDisks;  // 튜토리얼과 에필로그 포함
     private float[] itemPositions;
-    public bool isDragging = false;
-    private int targetIndex = 0;
+    private bool isDragging = false;
+    private bool canRotate = true;  // 디스크 회전 허용 여부
+
+    // targetIndex에 접근할 때마다 해당 스테이지가 잠금 해제되어 있는지 확인하도록 하기 위해 프로퍼티로 감싸서 사용
+    private int _targetIndex = 0;  // 프로퍼티용 내부 변수, 같은 클래스에서라도 직접 접근하지 말 것
+    private int targetIndex
+    {
+        get => _targetIndex;
+        set
+        {
+            if (value != _targetIndex)
+            {
+                // Debug.Log($"Attempting to set targetIndex to {value}, checking unlock status...");
+                canRotate = MenuManager.Instance.JudgeStageUnlock(value, MenuManager.Instance.stageIndex[1]);
+                // stageDisks[_targetIndex].localRotation = Quaternion.Euler(0, 0, 0);
+                
+                stageDisks[_targetIndex].DOLocalRotate(new Vector3(0, 0, 0), 2f / rotationSpeed).SetEase(Ease.OutQuad);
+                _targetIndex = value;
+            }
+        }
+    }
+
     private float itemWidth;
     private float centerPos; // 화면의 정중앙 좌표
     private float interval;
 
-    //private void Start()  // 임시
-    //{
-    //    InitScrollView();
-    //}
-
     public void InitScrollView(int initialIndex, int difficulty)
     {
-        stageDiskSprites = new List<List<List<Sprite>>>();
-        int stageCount = StageDBManager.Instance.stageNumbers - 2;
-        for (int i = 0; i < stageCount; i++)
-        {
-            stageDiskSprites.Add(new List<List<Sprite>>());
-            for (int j = 0; j < 2; j++)  // 클리어 여부에 따른 스프라이트 구분
-            {
-                stageDiskSprites[i].Add(new List<Sprite>());
-                for (int k = 0; k < StageDBManager.MAX_DIFFS; k++)  // 난이도에 따른 스프라이트 구분
-                {
-                    int spriteIndex = (i * 2 * StageDBManager.MAX_DIFFS)
-                        + (j * StageDBManager.MAX_DIFFS) + k;
-                    if (spriteIndex < unpackedStageDiskSprites.Count)
-                    {
-                        stageDiskSprites[i][j].Add(unpackedStageDiskSprites[spriteIndex]);
-                    }
-                    else
-                    {
-                        Debug.LogError($"Not enough sprites in unpackedStageDiskSprites for stage {i}, clear {j}, difficulty {k}");
-                    }
-                }
-            }
-        }// 🔥 수정: 스크립트에서 동적으로 생성하던 코드 삭제하고 달려있는 컴포넌트 찾기
+        // 🔥 수정: 스크립트에서 동적으로 생성하던 코드 삭제하고 달려있는 컴포넌트 찾기
         if (currentPreviewSound == null)
         {
             currentPreviewSound = GetComponent<AudioSource>();
@@ -82,13 +102,13 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
             }
         }
 
-        // 아이템 위치 및 패딩 설정, 나중에는 instantiate로 동적 생성 시켜야 함
+        // 아이템 생성, 위치 및 패딩 설정
 
-        int childCount = contentPanel.childCount;
+        int childCount = StageDBManager.Instance.stageNumbers;
         stageDisks = new RectTransform[childCount];
         for (int i = 0; i < childCount; i++)
         {
-            stageDisks[i] = contentPanel.GetChild(i).GetComponent<RectTransform>();
+            stageDisks[i] = Instantiate(stageDiskPrefab, contentPanel).GetComponent<RectTransform>();
         }
 
         if (childCount == 0) return;
@@ -111,25 +131,29 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
         
         centerPos = viewPortWidth / 2f;  // 화면 정중앙 x좌표 (ViewPort 기준)
         GoToStage(initialIndex);
-        if (difficulty > 0)
-        {
-            UpdateDifficulty(difficulty);
-        }
+        UpdateDifficulty(difficulty);
     }
 
-
+    /// <summary>
+    /// 난이도 변경에 따라 디스크 스프라이트와 잠금 상태 업데이트
+    /// </summary>
+    /// <param name="difficulty"></param>
     public void UpdateDifficulty(int difficulty)
     {
         // 난이도에 따라 아이템 갱신
 
         for (int i = 0; i < stageDiskSprites.Count; i++)
         {
-            Debug.Log($"Updating stage {i + 1} disk sprite for difficulty {difficulty}");
-            stageDisks[i + 1].GetComponent<Image>().sprite = stageDiskSprites
-                [i]
-                [StageDBManager.Instance.starRatings[StageSelection.SelectedStageId, (int)StageSelection.SelectedDifficulty] == 0 ? 0 : 1]
-                [Mathf.Min(difficulty, StageDBManager.Instance.diffNumbers[i + 1] - 1)];
+            Debug.Log($"Updating stage {i} disk sprite for difficulty {difficulty}");
+            stageDisks[i].GetComponent<Image>().sprite = stageDiskSprites[i]
+                [difficulty,  // 그냥 난이도가 1개일 경우, 다른 난이도에도 같은 스프라이트가 들어가도록 함
+                 StageDBManager.Instance.stageCompletion[i][difficulty]];
+
+            // 스테이지 잠김 여부에 따라 아이템 활성화
+            stageDisks[i].GetChild(0).gameObject.SetActive(!MenuManager.Instance.JudgeStageUnlock(i, difficulty));
+            
         }
+        canRotate = MenuManager.Instance.JudgeStageUnlock(targetIndex, difficulty);
     }
 
     /// <summary>
@@ -151,6 +175,9 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
         UpdateScaleAndColor();
     }
 
+    /// <summary>
+    /// 스와이프 대신 버튼으로 이동
+    /// </summary>
     public void GoLeft()
     {
         if (targetIndex > 0)
@@ -160,6 +187,9 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
         }
     }
 
+    /// <summary>
+    /// 스와이프 대신 버튼으로 이동
+    /// </summary>
     public void GoRight()
     {
         if (targetIndex < stageDisks.Length - 1)
@@ -171,9 +201,9 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
 
     private void Update()
     {
-        if (!isDragging && MenuManager.Instance.currentState == MenuManager.MenuState.StageSelect)
+        if (!isDragging && MenuManager.Instance.currentState == MenuManager.MenuState.StageSelect && canRotate)
         {
-            stageDisks[targetIndex].Rotate(0, 0, 1.7f * Time.deltaTime);  // CD 회전, 임시로 하드코딩 된 값
+            stageDisks[targetIndex].Rotate(0, 0, rotationSpeed * Time.deltaTime);  // CD 회전, 임시로 하드코딩 된 값
         }
     }
 
@@ -238,11 +268,6 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
         currentPreviewSound.loop = true;
         currentPreviewSound.Stop();
 
-
-        if (targetIndex == StageDBManager.Instance.stageNumbers - 1 || targetIndex < 0)  // 에필로그는 미리듣기 없음
-        {
-            yield break;
-        }
         currentPreviewSound.clip = previewSounds[targetIndex];
         currentPreviewSound.volume = PlayerPrefs.GetFloat("bgmVolume", 1f) * PlayerPrefs.GetFloat("masterVolume", 1f);
         currentPreviewSound.Play();

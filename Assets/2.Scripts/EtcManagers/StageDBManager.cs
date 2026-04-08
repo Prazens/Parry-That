@@ -1,4 +1,32 @@
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+
+// 직렬화를 위한 Wrapper 클래스들
+
+[System.Serializable]
+public class IntArr
+{
+    public int[] v;
+
+    public int this[int index]
+    {
+        get => v[index];
+        set => v[index] = value;
+    }
+}
+
+[System.Serializable]
+public class BoolArr
+{
+    public bool[] v;
+
+    public bool this[int index]
+    {
+        get => v[index];
+        set => v[index] = value;
+    }
+}
 
 public class StageDBManager : Singleton<StageDBManager>
 {
@@ -7,17 +35,20 @@ public class StageDBManager : Singleton<StageDBManager>
     
     public string[] StageName;
     public int[] diffNumbers;  // Number of difficulties per stage
-    public int[,] highScores;  // [stageIndex, difficultyIndex]
-    public int[,] starRatings;  // [stageIndex, difficultyIndex]
-    public bool[,] stageCompletion;  // [stageIndex, difficultyIndex]
+    public List<IntArr> highScores;  // [stageIndex][difficultyIndex]
+    public List<IntArr> starRatings;  // [stageIndex][difficultyIndex]
+    public List<BoolArr> stageCompletion;  // [stageIndex][difficultyIndex], 스테이지 해금에도 이 값이 사용됨
 
     public bool isFirstLaunch = true;
 
-    private void Awake()
+    protected override void OnAwake()
     {
+        Debug.Log("StageDBManager Awake");
+
         DontDestroyOnLoad(gameObject);
 
         // InitDatabase(10);
+        // 나중에 JSON이나 ScriptableObject로 관리하는 방안 고려
         TestInitDatabase();
     }
 
@@ -40,9 +71,16 @@ public class StageDBManager : Singleton<StageDBManager>
         stageNumbers = totalStages;
         StageName = new string[stageNumbers];
         diffNumbers = new int[stageNumbers];
-        highScores = new int[stageNumbers, MAX_DIFFS];
-        starRatings = new int[stageNumbers, MAX_DIFFS];
-        stageCompletion = new bool[stageNumbers, MAX_DIFFS];
+        highScores = new List<IntArr>();
+        starRatings = new List<IntArr>();
+        stageCompletion = new List<BoolArr>();
+
+        for (int i = 0; i < stageNumbers; i++)
+        {
+            highScores.Add(new IntArr { v = new int[MAX_DIFFS] });
+            starRatings.Add(new IntArr { v = new int[MAX_DIFFS] });
+            stageCompletion.Add(new BoolArr { v = new bool[MAX_DIFFS] });
+        }
 
         LoadStageData();
     }
@@ -53,11 +91,12 @@ public class StageDBManager : Singleton<StageDBManager>
         {
             for (int diff = 0; diff < diffNumbers[stage]; diff++)
             {
-                PlayerPrefs.SetInt($"Stage_{stage}_{diff}_Score", highScores[stage, diff]);
-                PlayerPrefs.SetInt($"Stage_{stage}_{diff}_Star", starRatings[stage, diff]);
-                PlayerPrefs.SetInt($"Stage_{stage}_{diff}_Completion", stageCompletion[stage, diff] ? 1 : 0);
+                PlayerPrefs.SetInt($"Stage_{stage}_{diff}_Score", highScores[stage][diff]);
+                PlayerPrefs.SetInt($"Stage_{stage}_{diff}_Star", starRatings[stage][diff]);
+                PlayerPrefs.SetInt($"Stage_{stage}_{diff}_Completion", stageCompletion[stage][diff] ? 1 : 0);
             }
         }
+        PlayerPrefs.Save();
     }
 
     public void LoadStageData()
@@ -68,9 +107,9 @@ public class StageDBManager : Singleton<StageDBManager>
             {
                 for (int diff = 0; diff < diffNumbers[stage]; diff++)
                 {
-                    highScores[stage, diff] = PlayerPrefs.GetInt($"Stage_{stage}_{diff}_Score", 0);
-                    starRatings[stage, diff] = PlayerPrefs.GetInt($"Stage_{stage}_{diff}_Star", 0);
-                    stageCompletion[stage, diff] = PlayerPrefs.GetInt($"Stage_{stage}_{diff}_Completion", 0) == 1;
+                    highScores[stage][diff] = PlayerPrefs.GetInt($"Stage_{stage}_{diff}_Score", 0);
+                    starRatings[stage][diff] = PlayerPrefs.GetInt($"Stage_{stage}_{diff}_Star", 0);
+                    stageCompletion[stage][diff] = PlayerPrefs.GetInt($"Stage_{stage}_{diff}_Completion", 0) == 1;
                 }
             }
         }
@@ -84,59 +123,100 @@ public class StageDBManager : Singleton<StageDBManager>
 
     public void TestInitDatabase()
     {
-        stageNumbers = 6;
-        StageName = new string[6] {
+        // 스테이지 이름과 난이도 수를 하드코딩하여 초기화
+        // JSON이나 ScriptableObject로 관리하는 방안 고려
+        stageNumbers = 8;
+        StageName = new string[8] {
             "Tutorial",
             "1.The First Beat",
             "2.Echoing Strikes",
             "3.Beat Master",
             "4.Final Encore",
-            "Epilogue"
+            "5.Schizophrenia",
+            "6.Hallucination",
+            "7.Neurosis"
+
         };
-        diffNumbers = new int[6]
+        diffNumbers = new int[8]
         {
             1,  // Tutorial
             2,  // Stage 1
             2,  // Stage 2
             2,  // Stage 3
             2,  // Stage 4
-            1   // Epilogue
+            2,  // Stage 5
+            2,  // Stage 6
+            2   // Stage 7
         };
-        highScores = new int[6, MAX_DIFFS];
-        starRatings = new int[6, MAX_DIFFS];
-        stageCompletion = new bool[6, MAX_DIFFS];
+        highScores = new List<IntArr>();
+        starRatings = new List<IntArr>();
+        stageCompletion = new List<BoolArr>();
 
-        TestLoadStageData();
+        for (int i = 0; i < stageNumbers; i++)
+        {
+            highScores.Add(new IntArr { v = new int[MAX_DIFFS] });
+            starRatings.Add(new IntArr { v = new int[MAX_DIFFS] });
+            stageCompletion.Add(new BoolArr { v = new bool[MAX_DIFFS] });
+        }
+
+        stageCompletion[0][0] = true;  // 튜토리얼은 기본적으로 클리어된 상태로 시작
+        highScores[0][0] = 1;
+
+        LoadStageData();
     }
 
-    public void TestSaveStageData()
+    // public void TestSaveStageData()
+    // {
+    //     for (int stage = 0; stage < stageNumbers; stage++)
+    //     {
+    //         for (int diff = 0; diff < diffNumbers[stage]; diff++)
+    //         {
+    //             int oldIndex = SceneLinkage.ConvertToOldIndex(stage, diff);
+    //             PlayerPrefs.SetInt($"Stage{oldIndex}", highScores[stage][diff]);
+    //             PlayerPrefs.SetInt($"Stage{oldIndex}_Star", starRatings[stage][diff]);
+    //             PlayerPrefs.SetInt($"Stage{oldIndex}Done", stageCompletion[stage][diff] ? 1 : 0);
+    //         }
+    //     }
+    // }
+
+    // public void TestLoadStageData()
+    // {
+    //     if (PlayerPrefs.HasKey("Score1"))
+    //     {
+    //         for (int stage = 0; stage < stageNumbers; stage++)
+    //         {
+    //             for (int diff = 0; diff < diffNumbers[stage]; diff++)
+    //             {
+    //                 int oldIndex = SceneLinkage.ConvertToOldIndex(stage, diff);
+    //                 highScores[stage][diff] = PlayerPrefs.GetInt($"Stage{oldIndex}", 0);
+    //                 starRatings[stage][diff] = PlayerPrefs.GetInt($"Stage{oldIndex}_Star", 0);
+    //                 stageCompletion[stage][diff] = PlayerPrefs.GetInt($"Stage{oldIndex}Done", 0) == 1;
+    //             }
+    //         }
+    //     }
+    // }
+
+    [ContextMenu("Clear Data")]
+    public void DebugClearData()
     {
-        for (int stage = 0; stage < stageNumbers; stage++)
-        {
-            for (int diff = 0; diff < diffNumbers[stage]; diff++)
-            {
-                int oldIndex = SceneLinkage.ConvertToOldIndex(stage, diff);
-                PlayerPrefs.SetInt($"Stage{oldIndex}", highScores[stage, diff]);
-                PlayerPrefs.SetInt($"Stage{oldIndex}_Star", starRatings[stage, diff]);
-                PlayerPrefs.SetInt($"Stage{oldIndex}Done", stageCompletion[stage, diff] ? 1 : 0);
-            }
-        }
+        ClearData();
     }
 
-    public void TestLoadStageData()
+    [ContextMenu("Save Data")]
+    public void DebugSaveData()
     {
-        if (PlayerPrefs.HasKey("Score1"))
-        {
-            for (int stage = 0; stage < stageNumbers; stage++)
-            {
-                for (int diff = 0; diff < diffNumbers[stage]; diff++)
-                {
-                    int oldIndex = SceneLinkage.ConvertToOldIndex(stage, diff);
-                    highScores[stage, diff] = PlayerPrefs.GetInt($"Stage{oldIndex}", 0);
-                    starRatings[stage, diff] = PlayerPrefs.GetInt($"Stage{oldIndex}_Star", 0);
-                    stageCompletion[stage, diff] = PlayerPrefs.GetInt($"Stage{oldIndex}Done", 0) == 1;
-                }
-            }
-        }
+        SaveStageData();
+    }
+
+    [ContextMenu("Load Data")]
+    public void DebugLoadData()
+    {
+        LoadStageData();
+    }
+
+    [ContextMenu("Refresh Disk Swipe UI")]
+    public void DebugRefreshDiskSwipeUI()
+    {
+        MenuManager.Instance.diskSwipeUI.UpdateDifficulty((int)StageSelection.SelectedDifficulty);
     }
 }

@@ -42,5 +42,8 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         {
             Destroy(gameObject); // 중복 생성 방지
         }
+        OnAwake();
     }
+
+    protected virtual void OnAwake() { }
 }

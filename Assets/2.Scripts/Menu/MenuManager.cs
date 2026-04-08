@@ -120,13 +120,34 @@ public class MenuManager : Singleton<MenuManager>
         }
     }
 
+    public bool JudgeStageUnlock(int index, int difficulty)
+    {
+        if (index == 0 || (index == 1 && difficulty == 0))
+        // 튜토리얼과 1스테이지 이지는 항상 잠금 해제된 상태로 시작
+        {
+            return true;
+        }
+
+        if (difficulty == 0)
+        {
+            return StageDBManager.Instance.stageCompletion[index - 1][0];
+        }
+        else if (difficulty == 1)
+        {
+            return StageDBManager.Instance.stageCompletion[index][0];
+        }
+        return false;
+    }
+
     public void UpdateCurStage(int index, int difficulty = 0)
     {
         bool needUpdate = false;
-        if (stageIndex[0] != index)
+        if (stageIndex[0] != index)  // 스테이지 인덱스가 바뀌었을 때만 업데이트
         {
             stageIndex[0] = index;
-            if (StageDBManager.Instance.diffNumbers[stageIndex[0]] == 1)
+            
+            if (StageDBManager.Instance.diffNumbers[stageIndex[0]] == 1 || !JudgeStageUnlock(stageIndex[0], 1))
+            // 해당 스테이지에 난이도가 1개이거나, 현재 선택된 스테이지의 하드가 잠겨있으면 (-> 스테이지 자체가 잠겨있는 경우도 포함) 난이도 버튼 숨김
             {
                 diffButtonUI.SetVisibility(false);
             }
@@ -138,7 +159,7 @@ public class MenuManager : Singleton<MenuManager>
             needUpdate = true;
         }
 
-        if (stageIndex[1] != difficulty)
+        if (stageIndex[1] != difficulty)  // 난이도 인덱스가 바뀌었을 때만 업데이트
         {
             stageIndex[1] = difficulty;
             diskSwipeUI.UpdateDifficulty(stageIndex[1]);
@@ -221,6 +242,12 @@ public class MenuManager : Singleton<MenuManager>
     /// </summary>
     public void StartStage()
     {
+        if (!JudgeStageUnlock(stageIndex[0], stageIndex[1]))
+        {
+            // 잠긴 스테이지
+            return;
+        }
+
         float dur = 2f;
         BlackOverlayObj.SetActive(true);
 
