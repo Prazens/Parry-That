@@ -18,9 +18,12 @@ public class CutSceneManager : MonoBehaviour
     [SerializeField] private AudioSource bgm;
 
     [Header("Timing")]
-    [SerializeField] private float fadeDuration = 0.3f;
+    [SerializeField] private float fadeInDuration = 0.15f;
+    [SerializeField] private float fadeOutDuration = 0.3f;
     [SerializeField] private float typingDelay = 0.03f;
     [SerializeField] private float stepEndDelay = 0.3f;
+
+    private float fadeDuration;
 
     private Text cutSceneText;
     private int currentIndex;
@@ -140,11 +143,63 @@ public class CutSceneManager : MonoBehaviour
             yield break;
         }
 
-        for (int actionIndex = 0; actionIndex < step.actions.Count; actionIndex++)
+        int actionIndex = 0;
+
+        while (actionIndex < step.actions.Count)
         {
             CutSceneAction action = step.actions[actionIndex];
             if (action == null)
             {
+                actionIndex++;
+                continue;
+            }
+
+            // 연속된 FadeIn/FadeOut 액션을 동시에 실행
+            if (action.actionType == CutSceneActionType.FadeIn)
+            {
+                while (actionIndex < step.actions.Count)
+                {
+                    CutSceneAction fadeAction = step.actions[actionIndex];
+                    if (fadeAction == null)
+                    {
+                        actionIndex++;
+                        continue;
+                    }
+
+                    if (fadeAction.actionType != CutSceneActionType.FadeIn)
+                    {
+                        break;
+                    }
+
+                    StartCoroutine(FadePanel(fadeAction.index, true));
+                    actionIndex++;
+                }
+
+                yield return new WaitForSeconds(fadeDuration);
+                continue;
+            }
+
+            if (action.actionType == CutSceneActionType.FadeOut)
+            {
+                while (actionIndex < step.actions.Count)
+                {
+                    CutSceneAction fadeAction = step.actions[actionIndex];
+                    if (fadeAction == null)
+                    {
+                        actionIndex++;
+                        continue;
+                    }
+
+                    if (fadeAction.actionType != CutSceneActionType.FadeOut)
+                    {
+                        break;
+                    }
+
+                    StartCoroutine(FadePanel(fadeAction.index, false));
+                    actionIndex++;
+                }
+
+                yield return new WaitForSeconds(fadeDuration);
                 continue;
             }
 
@@ -157,16 +212,6 @@ public class CutSceneManager : MonoBehaviour
 
                 case CutSceneActionType.HidePanel:
                     SetPanelActive(action.index, false);
-                    yield return new WaitForSeconds(action.waitseconds);
-                    break;
-
-                case CutSceneActionType.FadeIn:
-                    yield return StartCoroutine(FadePanel(action.index, true));
-                    yield return new WaitForSeconds(action.waitseconds);
-                    break;
-
-                case CutSceneActionType.FadeOut:
-                    yield return StartCoroutine(FadePanel(action.index, false));
                     yield return new WaitForSeconds(action.waitseconds);
                     break;
 
@@ -185,6 +230,8 @@ public class CutSceneManager : MonoBehaviour
                     yield return new WaitForSeconds(action.waitseconds);
                     break;
             }
+
+            actionIndex++;
         }
 
         yield return new WaitForSeconds(stepEndDelay);
@@ -338,6 +385,7 @@ public class CutSceneManager : MonoBehaviour
         float startAlpha = fadeIn ? 0f : 1f;
         float endAlpha = fadeIn ? 1f : 0f;
         float elapsedTime = 0f;
+        fadeDuration = fadeIn ? fadeInDuration : fadeOutDuration;
 
         Color color = image.color;
         color.a = startAlpha;
