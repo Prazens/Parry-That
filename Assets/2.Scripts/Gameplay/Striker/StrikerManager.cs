@@ -11,13 +11,16 @@ public class StrikerManager : MonoBehaviour
     private StrikerController strikerInstance;
     [SerializeField] private Transform[] _spawnPositions; // 0: 리더, 1~4: 방향별 투사체
     private Vector3[] spawnPositions;
-    private float spawnPosOffset => 3f; // 기본 위치보다 offset만큼 위에서 등장하여 기본 위치로 이동
-    private float targetPosOffset => 1.2f; // 플레이어 판정 위치 보정값
+    [SerializeField] private float spawnPosOffset = 3f; // 기본 위치보다 offset만큼 위에서 등장하여 기본 위치로 이동
+    [SerializeField] private float targetPosOffset = 1.2f; // 플레이어 판정 위치 보정값
 
     // Refs
     private PlayerManager playerManager;
     private DynamicUIManager dynamicUIManager;
     [SerializeField] public TutorialManager tutorialManager;
+
+    // Boss
+    public bool isBossStage = false; // 보스면 최초 생성된 스트라이커 계속 유지
 
     private void Awake()
     {
@@ -42,6 +45,7 @@ public class StrikerManager : MonoBehaviour
     public void AppearStriker(int strikerType)
     {
         if (strikerType < 0 || strikerType >= strikerPrefabs.Count) return;
+        if (isBossStage && strikerInstance != null) return;
 
         ClearImmediately();
         SpawnStriker(strikerPrefabs[strikerType]);
@@ -49,11 +53,18 @@ public class StrikerManager : MonoBehaviour
 
     public void DisappearStriker()
     {
+        if (isBossStage) return;
         strikerInstance?.OnClear();
     }
 
     private void SpawnStriker(StrikerController strikerPrefab)
     {
+        if (isBossStage)
+        {
+            spawnPositions[0] = Vector3.zero;
+            spawnPosOffset = 0f;
+        }
+
         Vector3 spawnPosition = spawnPositions[0] + spawnPosOffset * Vector3.up;
         strikerInstance = Instantiate(strikerPrefab, spawnPosition, Quaternion.identity);
         if (strikerInstance == null) return;
@@ -69,9 +80,18 @@ public class StrikerManager : MonoBehaviour
 
     public void ClearImmediately()
     {
-        if (strikerInstance != null)
+        if (!isBossStage && strikerInstance != null)
         {
             Destroy(strikerInstance.gameObject);
         }
+    }
+
+    public void ClearBoss()
+    {
+        if (!isBossStage || strikerInstance == null) return;
+
+        strikerInstance.OnClear();
+        var chibi = strikerInstance.transform.Find("boss_chibi");
+        chibi?.gameObject.SetActive(true);
     }
 }

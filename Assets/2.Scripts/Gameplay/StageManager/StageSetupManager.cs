@@ -28,8 +28,6 @@ public class StageSetupManager : MonoBehaviour
     private GameObject guideboxTop;
     private GameObject guideboxBottom;
 
-    private readonly List<GameObject> spawnedBossObjects = new List<GameObject>();
-
     public void SpawnPlayer()
     {
         if (playerPrefab == null)
@@ -123,20 +121,6 @@ public class StageSetupManager : MonoBehaviour
             return;
         }
 
-        // -------------------------
-        // 공통: 기존 스폰 보스 전부 정리
-        // -------------------------
-        //for (int i = 0; i < spawnedBossObjects.Count; i++)
-        //{
-        //    if (spawnedBossObjects[i] != null)
-        //    {
-        //        Destroy(spawnedBossObjects[i]);
-        //    }
-        //}
-        //spawnedBossObjects.Clear();
-
-        //stageFlowManager.bossController = null;
-
         // 선택값 없으면 Normal 취급
         if (!StageSelection.HasValidSelection())
         {
@@ -182,42 +166,12 @@ public class StageSetupManager : MonoBehaviour
         }
 
         // =========================
-        // Boss (BossSpawnPrefabs 전부 스폰, 루트 생성)
+        // Boss (시작 시 생성)
         // =========================
-        //BossController resolvedBossController = null;
-
-        //if (stageData.Category == StageCategory.Boss)
-        //{
-        //    if (stageData.BossSpawnPrefabs != null && stageData.BossSpawnPrefabs.Count > 0)
-        //    {
-        //        for (int i = 0; i < stageData.BossSpawnPrefabs.Count; i++)
-        //        {
-        //            var entry = stageData.BossSpawnPrefabs[i];
-        //            if (entry == null || entry.prefab == null) continue;
-
-        //            // 부모 없음: 씬 루트에 생성
-        //            GameObject obj = Instantiate(entry.prefab);
-        //            spawnedBossObjects.Add(obj);
-
-        //            // 로컬이 아니라 월드 기준으로 적용 (부모가 없으니까)
-        //            Transform t = obj.transform;
-        //            t.position = entry.localPosition;
-        //            t.rotation = Quaternion.Euler(entry.localEulerAngles);
-        //            t.localScale = entry.localScale;
-
-        //            if (resolvedBossController == null)
-        //            {
-        //                resolvedBossController = obj.GetComponent<BossController>();
-        //            }
-        //        }
-        //    }
-
-        //    if (resolvedBossController == null)
-        //    {
-        //        Debug.LogWarning("[StageSetupManager] Boss stage but no spawned prefab has BossController.");
-        //    }
-        //}
-
-        //stageFlowManager.bossController = resolvedBossController;
+        if (stageData.Category == StageCategory.Boss)
+        {
+            strikerManager.isBossStage = true;
+            strikerManager.AppearStriker(stageData.BossStrikerType);
+        }
     }
 }

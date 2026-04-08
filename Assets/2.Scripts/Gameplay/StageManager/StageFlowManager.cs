@@ -81,7 +81,7 @@ public class StageFlowManager : MonoBehaviour
         {
             currentTime = stageAudioManager.musicSource.time + stageAudioManager.bgmOffset;
         }
-        else if (!stageAudioManager.musicPlayed)
+        else
         {
             currentTime += Time.deltaTime;
         }
@@ -132,6 +132,14 @@ public class StageFlowManager : MonoBehaviour
             isDaehwa = true;
             StartCoroutine(RunCurrentPhaseDialogue());
             return;
+        }
+
+        if (stageAudioManager != null && stageAudioManager.musicSource != null && currentTime >= stageAudioManager.musicSource.clip.length - 0.05f)
+        {
+            if (strikerManager != null && strikerManager.isBossStage)
+            {
+                strikerManager.ClearBoss();
+            }
         }
 
         if (currentTime >= stageDuration)
@@ -207,9 +215,9 @@ public class StageFlowManager : MonoBehaviour
 
         if (stageSetupManager != null)
         {
+            stageSetupManager.SpawnPlayer();
             stageSetupManager.ApplyStageModules();
             stageSetupManager.SetCutIn(currentStageData);
-            stageSetupManager.SpawnPlayer();
         }
 
         if (stageAudioManager != null && stageAudioManager.musicSource != null && stageAudioManager.musicSource.clip != null)
