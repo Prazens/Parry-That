@@ -162,11 +162,7 @@ public class GameController : MonoBehaviour
 
     private void OnSwipeUp()
     {
-        if (stageFlowManager != null && stageFlowManager.is_over)
-        {
-            stageFlowManager.RestartStage();
-        }
-        if (stageFlowManager != null && stageFlowManager.isPaused)
+        if (stageFlowManager != null)
         {
             stageFlowManager.RestartStage();
         }
