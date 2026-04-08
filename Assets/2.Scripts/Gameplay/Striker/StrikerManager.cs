@@ -11,7 +11,7 @@ public class StrikerManager : MonoBehaviour
     private StrikerController strikerInstance;
     [SerializeField] private Transform[] _spawnPositions; // 0: 리더, 1~4: 방향별 투사체
     private Vector3[] spawnPositions;
-    private float spawnPosOffset => 0f; // 기본 위치보다 offset만큼 위에서 등장하여 기본 위치로 이동
+    private float spawnPosOffset => 3f; // 기본 위치보다 offset만큼 위에서 등장하여 기본 위치로 이동
     private float targetPosOffset => 1.2f; // 플레이어 판정 위치 보정값
 
     // Refs

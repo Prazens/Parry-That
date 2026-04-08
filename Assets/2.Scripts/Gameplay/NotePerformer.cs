@@ -130,7 +130,8 @@ public class NotePerformer : MonoBehaviour
 
             // Judgeable 생성
             List<Judgeable> judgeables = new();
-            if (attackJudgeHandlerDict.TryGetValue(attackType, out var attackJudgeHandler))
+            if (attackJudgeHandlerDict.TryGetValue(attackType, out var attackJudgeHandler)
+                && attackJudgeHandler != null)
             {
                 NoteData nextNote = nextNoteIndex + 1 < notes.Length ? notes[nextNoteIndex + 1] : null;
                 var attackContext = new AttackJudgeContext(note, nextNote, judgeables);
@@ -138,13 +139,17 @@ public class NotePerformer : MonoBehaviour
             }
 
             // Notice
-            if (attackNoticeHandlerDict.TryGetValue(attackType, out var attackNoticeHandler))
+            if (attackNoticeHandlerDict.TryGetValue(attackType, out var attackNoticeHandler)
+                && attackNoticeHandler != null)
             {
                 attackNoticeHandler.OnNotice(new AttackNoticeContext(note, judgeables));
             }
 
             StrikerController striker = strikerManager.GetStrikerInstance();
-            striker.OnNotice(new StrikerAttackContext(note, judgeables));
+            if (striker != null)
+            {
+                striker.OnNotice(new StrikerAttackContext(note, judgeables));
+            }
 
             nextNoteIndex++;
             prepareQueue.Enqueue(new PrepareEntry(note, judgeables));
@@ -158,6 +163,9 @@ public class NotePerformer : MonoBehaviour
             PrepareEntry prepareEntry = prepareQueue.Peek();
 
             StrikerController striker = strikerManager.GetStrikerInstance();
+            if (striker == null)
+                break;
+
             if (currentSec < StageFlowManager.Instance.BeatToSec(prepareEntry.note.arriveBeat) - striker.preAttackDelay)
                 break;
 
@@ -172,10 +180,14 @@ public class NotePerformer : MonoBehaviour
         Judgeable judgeable = context.judgeable;
 
         StrikerController striker = strikerManager.GetStrikerInstance();
-        striker.OnJudge(context);
+        if (striker != null)
+        {
+            striker.OnJudge(context);
+        }
 
         // 터치 없이 LateMiss가 난 경우의 처리
-        if (attackJudgeHandlerDict.TryGetValue(judgeable.attackType, out var attackJudgeHandler))
+        if (attackJudgeHandlerDict.TryGetValue(judgeable.attackType, out var attackJudgeHandler)
+            && attackJudgeHandler != null)
         {
             attackJudgeHandler.OnJudge(context);
         }
