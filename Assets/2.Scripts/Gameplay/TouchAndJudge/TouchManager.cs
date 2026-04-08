@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Touched
 {
@@ -80,6 +81,11 @@ public class TouchManager : MonoBehaviour
 
     private void MouseChecker()
     {
+        if (Input.GetMouseButtonDown(0) && EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
+
         Vector3 mousePos = Input.mousePosition;
 
         if (Input.GetMouseButtonDown(0))
@@ -112,6 +118,12 @@ public class TouchManager : MonoBehaviour
         }
 
         tempTouchs = Input.GetTouch(0);
+
+        if (tempTouchs.phase == TouchPhase.Began && EventSystem.current.IsPointerOverGameObject(tempTouchs.fingerId))
+        {
+            return;
+        }
+
         Vector3 touchPos = Camera.main.ScreenToWorldPoint(tempTouchs.position);
 
         switch (tempTouchs.phase)
