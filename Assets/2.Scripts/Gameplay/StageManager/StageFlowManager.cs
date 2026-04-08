@@ -24,7 +24,7 @@ public class StageFlowManager : MonoBehaviour
     public int currentPhaseIndex { get; private set; } = 0;
 
     [SerializeField] private StrikerManager strikerManager;
-    [SerializeField] private DialogueManager dialogueManager;
+    [SerializeField] private StageDialogManager dialogueManager;
 
     [Header("Managers")]
     [SerializeField] private StageSetupManager stageSetupManager;
@@ -511,17 +511,15 @@ public class StageFlowManager : MonoBehaviour
             dialogue = stageChartLoader.GetCurrentPhaseDialogue(currentStageData);
         }
 
-        if (dialogue != null)
+        if (dialogue != null && dialogueManager != null)
         {
-            foreach (DialogueLine line in dialogue.Lines)
-            {
-                yield return StartCoroutine(dialogueManager.ShowDialogue(line));
-            }
+            dialogueManager.StartDialog(dialogue);
+            yield return new WaitUntil(() => !dialogueManager.isDialogPlaying);
         }
 
-        isDaehwa = false;
-        GoToNextPhase();
-    }
+            isDaehwa = false;
+            GoToNextPhase();
+        }
 
     private void ApplyDialogueAudioPolicyBeforeDialogue()
     {

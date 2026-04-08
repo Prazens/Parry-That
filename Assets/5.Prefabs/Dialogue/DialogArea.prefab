@@ -28,7 +28,7 @@ RectTransform:
   m_GameObject: {fileID: 5521409921631940739}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.7777779, y: 1.7777779, z: 1.7777779}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2277182256168828794}
@@ -61,7 +61,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.44025147, g: 0, b: 0.36300793, a: 0}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -124,7 +124,6 @@ MonoBehaviour:
   dialogPrefab: {fileID: 1494779288754446227, guid: ff4bf744faa58a44ca80d9a3397b9d12, type: 3}
   dialogPrefabR: {fileID: 1494779288754446227, guid: 94a873882554c914f87af9620cb6ba1c, type: 3}
   dialogList: {fileID: 2277182256168828794}
-  testDialogueData: {fileID: 11400000, guid: e6dce96cc3cb1c840b21b8e8f14e0361, type: 2}
 --- !u!1 &5865132998742790062
 GameObject:
   m_ObjectHideFlags: 0
