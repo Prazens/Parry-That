@@ -87,7 +87,6 @@ public class NotePerformer : MonoBehaviour
 
         StageFlowManager.Instance?.SetBPM(chart.bpm);
         strikerData = chart.strikers[0];
-        strikerManager.ClearImmediately();
         notes = (NoteData[])chart.notes.Clone();
     }
 
@@ -113,7 +112,7 @@ public class NotePerformer : MonoBehaviour
             strikerManager.AppearStriker(strikerData.strikerType);
             strikerStatus = 1;
         }
-        else if (currentSec >= disappearSec && strikerStatus != 0)
+        else if (currentSec >= disappearSec)
         {
             strikerManager.DisappearStriker();
             strikerStatus = 0;
