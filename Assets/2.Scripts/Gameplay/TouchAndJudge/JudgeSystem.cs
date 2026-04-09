@@ -332,23 +332,24 @@ public class JudgeSystem : MonoBehaviour
 
             case JudgeType.LateBlocked:
             case JudgeType.EarlyBlocked:
-                score += 300;
-                combo = 0;
+                score += 300 + combo * 500;
+                combo += 1;
                 break;
 
             case JudgeType.LateParried:
             case JudgeType.EarlyParried:
-                score += 9000;
+                score += 9000 + combo * 500;
                 combo += 1;
                 break;
 
             case JudgeType.Perfect:
-                score += 30000;
+                score += 30000 + combo * 500;
                 combo += 1;
                 break;
         }
 
         dynamicUIManager?.DisplayScore(score);
+        dynamicUIManager?.DisplayCombo(combo);
     }
 
     private void FinishJudge(JudgeContext context)

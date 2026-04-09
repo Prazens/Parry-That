@@ -14,6 +14,7 @@ public class DynamicUIManager : MonoBehaviour
     // HUD
     // -------------------------
     public GameObject scoreDisplay;
+    public GameObject comboDisplay;
     public GameObject judgeDisplayPrefab;
     public Sprite[] judgeImages = new Sprite[4];
 
@@ -22,7 +23,7 @@ public class DynamicUIManager : MonoBehaviour
     public GameObject heartDisplayPrefab;
     public Sprite[] heartImages = new Sprite[2];
 
-    private Vector3[] initialPosition = new Vector3[2];
+    private Vector3[] initialPosition = new Vector3[3];
 
     // -------------------------
     // FX
@@ -89,12 +90,20 @@ public class DynamicUIManager : MonoBehaviour
             scoreDisplay.SetActive(true);
         }
 
+        if (comboDisplay != null)
+        {
+            comboDisplay.GetComponent<TextMeshProUGUI>().text = "0";
+            initialPosition[1] = comboDisplay.transform.position;
+            comboDisplay.SetActive(true);
+        }
+
         if (hpDisplay != null)
         {
-            initialPosition[1] = hpDisplay.transform.position;
+            initialPosition[2] = hpDisplay.transform.position;
         }
 
         DisplayScore(0);
+        DisplayCombo(0);
 
         if (heartDisplayPrefab != null && hpDisplay != null)
         {
@@ -150,6 +159,17 @@ public class DynamicUIManager : MonoBehaviour
         StartCoroutine(BounceUp(scoreDisplay));
     }
 
+    public void DisplayCombo(int combo)
+    {
+        if (comboDisplay == null) return;
+
+        comboDisplay.GetComponent<TextMeshProUGUI>().text = Convert.ToString(combo) + " Combo";
+
+        StopCoroutine("BounceUp");
+        comboDisplay.transform.position = initialPosition[1];
+        StartCoroutine(BounceUp(comboDisplay));
+    }
+
     public void DisplayHP(int hp, bool heal = false)
     {
         if (StageFlowManager.Instance.currentStageData.Category == StageCategory.Tutorial) return;
@@ -168,7 +188,7 @@ public class DynamicUIManager : MonoBehaviour
         }
 
         StopCoroutine("BounceUp");
-        hpDisplay.transform.position = initialPosition[1];
+        hpDisplay.transform.position = initialPosition[2];
         StartCoroutine(BounceUp(hpDisplay));
     }
 
