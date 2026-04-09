@@ -19,12 +19,9 @@ public class TutorialManager : MonoBehaviour
     private PlayerManager playerManager;
     private bool restartPhase = false;
 
-
     private SpriteRenderer spriteRenderer;
     private Image animeSpriteImg;
     private Animator animator;
-
-    private Text gameDescriptionText;
 
     private void Awake()
     {
@@ -39,25 +36,6 @@ public class TutorialManager : MonoBehaviour
 
     private void Start()
     {
-        GameObject gameDescription = new GameObject("GameDescription");
-        gameDescription.transform.SetParent(mainCanvas.transform, false);
-
-        gameDescriptionText = gameDescription.AddComponent<Text>();
-        gameDescriptionText.font = DescriptionFont;
-        gameDescriptionText.fontSize = 65;
-        gameDescriptionText.color = Color.white;
-        gameDescriptionText.alignment = TextAnchor.MiddleCenter;
-
-        RectTransform gameDescriptionRect = gameDescription.GetComponent<RectTransform>();
-        gameDescriptionRect.anchorMin = new Vector2(0.05f, 0.25f);
-        gameDescriptionRect.anchorMax = new Vector2(0.95f, 0.35f);
-        gameDescriptionRect.offsetMin = Vector2.zero;
-        gameDescriptionRect.offsetMax = Vector2.zero;
-
-        gameDescriptionText.text = "";
-
-        gameDescription.SetActive(true);
-
         playerManager = GameObject.Find("Player(Clone)").GetComponent<PlayerManager>();
 
         StageFlowManager.isActive = false;
@@ -105,14 +83,6 @@ public class TutorialManager : MonoBehaviour
     public bool ShouldRestartCurrentPhase()
     {
         return restartPhase;
-    }
-
-    public void SetDescriptionText(string text)
-    {
-        if (gameDescriptionText != null)
-        {
-            gameDescriptionText.text = text;
-        }
     }
 
     public void SkipOn()
