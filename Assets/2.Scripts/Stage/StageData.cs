@@ -19,7 +19,7 @@ public enum DialogueAudioPolicy
 
 // Legacy
 [Serializable]
-public class BossSpawnEntry
+public class BackgroundPrefabs //배경 프리팹
 {
     [Tooltip("Spawn할 프리팹")]
     public GameObject prefab;
@@ -86,6 +86,9 @@ public class StageData : ScriptableObject
     [SerializeField] private GameObject cutInUpPrefab;
     [SerializeField] private GameObject cutInDownPrefab;
 
+    [Header("Background Prefab")] //스테이지 배경 및 장식 프리팹
+    [SerializeField] private List<BackgroundPrefabs> backgroundPrefabs = new List<BackgroundPrefabs>(); 
+
     [Header("Boss Striker (Boss stage only)")]
     [SerializeField] private int bossStrikerType = 0;
 
@@ -103,6 +106,8 @@ public class StageData : ScriptableObject
 
     public GameObject CutInUpPrefab => cutInUpPrefab;
     public GameObject CutInDownPrefab => cutInDownPrefab;
+
+    public IReadOnlyList<BackgroundPrefabs> SpawnPrefabs => backgroundPrefabs;
 
     public int BossStrikerType => bossStrikerType;
 }
