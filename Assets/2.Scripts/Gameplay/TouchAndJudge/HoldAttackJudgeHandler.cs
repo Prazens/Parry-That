@@ -30,12 +30,12 @@ public class HoldAttackJudgeHandler : MonoBehaviour, IAttackJudgeHandler<AttackJ
             return;
         }
 
-        Judgeable judgeable = new Judgeable((AttackType)note.type, note.arriveBeat, (Direction)(note.strikerIndex + 1));
+        Judgeable judgeable = new Judgeable((AttackType)note.type, note.arriveBeat, Direction.Up);
         judgeSystem.EnqueueJudgeable(judgeable);
         context.judgeables.Add(judgeable);
 
         // HoldStart 시, HoldStop까지 같이 생성
-        Judgeable nextJudgeable = new Judgeable(AttackType.HoldStop, nextNote.arriveBeat, (Direction)(nextNote.strikerIndex + 1));
+        Judgeable nextJudgeable = new Judgeable(AttackType.HoldStop, nextNote.arriveBeat, Direction.Up);
         judgeSystem.EnqueueJudgeable(nextJudgeable);
         context.judgeables.Add(nextJudgeable);
     }

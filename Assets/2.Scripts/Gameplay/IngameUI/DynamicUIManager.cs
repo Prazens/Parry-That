@@ -47,8 +47,7 @@ public class DynamicUIManager : MonoBehaviour
     [SerializeField] private RectTransform cutInParent; // Canvas 아래에 있는 컨테이너
     [SerializeField] private GameObject[] cutScenes; // 0: Up, 1: Down
 
-    public bool isStop1 = false;
-    public bool isStop2 = false;
+    public bool isStopEaseIn = false;
 
     private void Awake()
     {
@@ -357,17 +356,8 @@ public class DynamicUIManager : MonoBehaviour
 
         while (elapsedTime < duration + 0.12f)
         {
-            if (isStop1)
+            if (isStopEaseIn)
             {
-                elapsedTime = 0f;
-                isStop1 = false;
-                break;
-            }
-
-            if (isStop2)
-            {
-                elapsedTime = 0f;
-                isStop2 = false;
                 break;
             }
 
@@ -396,7 +386,7 @@ public class DynamicUIManager : MonoBehaviour
 
         Vector2 currentPos = uiElement.anchoredPosition;
 
-        // 구버전 그대로: elapsedTime 리셋 안 함
+        elapsedTime = 0f;
         while (elapsedTime < 0.3f)
         {
             float t = elapsedTime / 0.3f;
@@ -419,12 +409,8 @@ public class DynamicUIManager : MonoBehaviour
     {
         if (cutScenes == null || cutScenes.Length < 2) return;
 
-        if (isHide)
-        {
-            isStop1 = true;
-            isStop2 = true;
-        }
-        else
+        isStopEaseIn = isHide;
+        if (!isHide)
         {
             float duration = targetTimeSeconds - StageFlowManager.Instance.currentTime;
             StartCoroutine(EaseInEffect(cutScenes[0], Direction.Up, duration));

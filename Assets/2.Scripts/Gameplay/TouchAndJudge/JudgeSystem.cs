@@ -264,7 +264,7 @@ public class JudgeSystem : MonoBehaviour
         {
             lastNonMissJudge = 0;
 
-            if (touch != null)
+            if (touch != null && touch.type != AttackType.HoldStop)
             {
                 playerManager.Operate(touch.direction, touch.type);
                 playerManager.PlayerParrySound(touch.type);
@@ -274,7 +274,7 @@ public class JudgeSystem : MonoBehaviour
         }
 
         // 플레이어의 조작이 없는 경우 제외
-        if (touch != null)
+        if (touch != null || judgeable.attackType == AttackType.HoldStop)
         {
             playerManager.Operate(judgeable.noteDirection, judgeable.attackType);
         }

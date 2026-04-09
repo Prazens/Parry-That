@@ -20,6 +20,7 @@ public class StrikerHoldVisual : MonoBehaviour
     private Vector3 targetPosition;
 
     private int holdLayerIndex;
+    private float bladeDistanceOffset => 0.5f;
     private float backToBaseTime => 0.25f; // 공격 끝난 후 Base Layer로 복귀 시간
 
     private void Awake()
@@ -30,7 +31,8 @@ public class StrikerHoldVisual : MonoBehaviour
     public void Init(Vector3 spawnPosition, Vector3 targetPosition, DynamicUIManager dynamicUIManager)
     {
         this.spawnPosition = spawnPosition;
-        this.targetPosition = targetPosition;
+        Vector3 dirVec = (targetPosition - spawnPosition).normalized;
+        this.targetPosition = targetPosition - dirVec * bladeDistanceOffset;
         this.dynamicUIManager = dynamicUIManager;
     }
 
@@ -38,13 +40,7 @@ public class StrikerHoldVisual : MonoBehaviour
     {
         if (context.note.type == (int)AttackType.HoldStart)
         {
-            animator.SetLayerWeight(holdLayerIndex, 1f);
-            animator.SetTrigger("HoldStart");
-
-            if (isMoveAttack)
-            {
-                StartCoroutine(LerpPosition(spawnPosition, targetPosition, StageFlowManager.Instance.BeatToSec(context.note.arriveBeat)));
-            }
+            StartCoroutine(WaitAndHoldStart(StageFlowManager.Instance.BeatToSec(context.note.arriveBeat)));
 
             if (context.judgeables.Count >= 2)
             {
@@ -92,6 +88,18 @@ public class StrikerHoldVisual : MonoBehaviour
     public void OnHit(JudgeContext context)
     {
         
+    }
+
+    private IEnumerator WaitAndHoldStart(float arriveSec)
+    {
+        yield return new WaitForSeconds((arriveSec - StageFlowManager.Instance.currentTime) * 0.5f);
+        animator.SetLayerWeight(holdLayerIndex, 1f);
+        animator.SetTrigger("HoldStart");
+
+        if (isMoveAttack)
+        {
+            StartCoroutine(LerpPosition(spawnPosition, targetPosition, arriveSec));
+        }
     }
 
     private void ShowCutIn(JudgeContext context, float targetSec)

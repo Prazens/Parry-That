@@ -97,6 +97,9 @@ public class PlayerManager : MonoBehaviour
             randomNum = UnityEngine.Random.Range(0, 2);
         }
 
+        bladeAnimator.ResetTrigger("bladeHoldFinish");
+        playerAnimator.ResetTrigger("playerHoldFinish");
+
         playerAnimator.SetInteger("attackType", (int)type);
         playerAnimator.SetInteger("parryDirection", (int)direction);
 
