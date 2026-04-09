@@ -2,13 +2,13 @@
   "bpm": 162.000162000162,
   "strikers": [
     {
-      "strikerType": 0,
+      "strikerType": 1,
       "direction": 1,
       "appearTime": 180.0,
-      "disappearTime": 215
+      "disappearTime": 231
     },
     {
-      "strikerType": 0,
+      "strikerType": 1,
       "direction": 2,
       "appearTime": 180.0,
       "disappearTime": 213.0
