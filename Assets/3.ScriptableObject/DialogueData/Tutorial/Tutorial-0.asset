@@ -14,30 +14,67 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lines:
   - speakerTag: 1
-    expressionTag: 0
-    text: "\uBA54\uB871"
+    expressionTag: 2
+    text: "\uC5B4\uB514 \uC788\uB290\uB0D0 \uB9C8\uC655!!!"
     textRevealDuration: 1
-    waitAfterReveal: 4
-    waitBeforeReveal: 1
+    waitAfterReveal: 1
+    waitBeforeReveal: 0
     speakerNameOverride: 
   - speakerTag: 2
     expressionTag: 0
-    text: 11111
+    text: "\uC9C4\uC815\uD558\uC138\uC694! \uC9C0\uAE08 \uC6A9\uC0AC\uB2D8\uC740
+      \uD55C\uC8FC\uBA39\uAC70\uB9AC\uB3C4 \uC548 \uB418\uC2ED\uB2C8\uB2E4! \uBB34\uAE30\uB97C
+      \uB4DC\uB9B4 \uD14C\uB2C8\uAE4C, \uC6B0\uC120 \uC794\uCC59\uC774\uB4E4\uC744
+      \uC0C1\uB300\uB85C \uC5F0\uC2B5\uBD80\uD130 \uD558\uC2DC\uC8E0!"
     textRevealDuration: 1
-    waitAfterReveal: 4
-    waitBeforeReveal: 1
+    waitAfterReveal: 2
+    waitBeforeReveal: 0
+    speakerNameOverride: 
+  - speakerTag: 1
+    expressionTag: 2
+    text: "\uADF8\uB7F4 \uC2DC\uAC04\uC774 \uC5C6\uC5B4! \uB0B4 \uC2DC\uD5D8\uC744
+      \uB9DD\uCCE4\uB2E4\uACE0!!"
+    textRevealDuration: 1
+    waitAfterReveal: 2
+    waitBeforeReveal: 0
+    speakerNameOverride: 
+  - speakerTag: 2
+    expressionTag: 0
+    text: "\uC81C\uBC1C \uC9C4\uC815\uD558\uC2ED\uC2DC\uC624! \uC5B4\uCC28\uD53C
+      \uACF5\uBD80\uB3C4 \uC548 \uD558\uC168\uC796\uC2B5\uB2C8\uAE4C!"
+    textRevealDuration: 1
+    waitAfterReveal: 2
+    waitBeforeReveal: 0
     speakerNameOverride: 
   - speakerTag: 1
     expressionTag: 0
-    text: 22222
+    text: "(\u2026\uB9DE\uAE34 \uD55C\uB370 \uAE30\uBD84 \uB098\uC058\uB124.)"
     textRevealDuration: 1
-    waitAfterReveal: 4
-    waitBeforeReveal: 1
+    waitAfterReveal: 2
+    waitBeforeReveal: 0
     speakerNameOverride: 
-  - speakerTag: 1
-    expressionTag: 0
-    text: 33333
+  - speakerTag: 2
+    expressionTag: 3
+    text: "\uC800 \uB140\uC11D\uB4E4\uC740 \uC81C \uC9C1\uC7A5 \uD6C4\uBC30\uC600\uB294\uB370,
+      \uB9C8\uC655\uC774 \uD0C0\uB77D\uC2DC\uCF1C \uBC84\uB838\uC2B5\uB2C8\uB2E4."
     textRevealDuration: 1
-    waitAfterReveal: 4
-    waitBeforeReveal: 1
+    waitAfterReveal: 2
+    waitBeforeReveal: 0
+    speakerNameOverride: 
+  - speakerTag: 2
+    expressionTag: 0
+    text: "\uBB3C\uBC94\uC774 \uB744\uC6B0\uB294 \uB290\uB08C\uD45C\uC758 \uB9AC\uB4EC\uC744
+      \uB530\uB77C\uC11C \uACF5\uACA9\uC744 \uBC1B\uC544\uCE58\uC138\uC694!"
+    textRevealDuration: 1
+    waitAfterReveal: 2
+    waitBeforeReveal: 0
+    speakerNameOverride: 
+  - speakerTag: 2
+    expressionTag: 0
+    text: "\uB178\uB780\uC0C9 \uB290\uB08C\uD45C\uAC00 \uB72C \uACF5\uACA9\uC740
+      \uD130\uCE58\uB9CC\uC73C\uB85C \uCDA9\uBD84\uD788 \uBC1B\uC544\uCE60 \uC218
+      \uC788\uC5B4\uC694!"
+    textRevealDuration: 1
+    waitAfterReveal: 2
+    waitBeforeReveal: 0
     speakerNameOverride: 

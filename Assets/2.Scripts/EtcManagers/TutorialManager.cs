@@ -89,7 +89,10 @@ public class TutorialManager : MonoBehaviour
     {
         DatabaseManager.isTutorialDone = true;
 
-        databaseManager.SaveTutorialDone();
+        if (databaseManager != null)
+        {
+            databaseManager.SaveTutorialDone();
+        }
 
         SceneManager.LoadScene("testMain");
     }

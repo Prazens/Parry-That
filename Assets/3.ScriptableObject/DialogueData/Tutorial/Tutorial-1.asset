@@ -14,9 +14,49 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lines:
   - speakerTag: 2
+    expressionTag: 1
+    text: "\uC798\uD558\uC168\uC2B5\uB2C8\uB2E4! \uC815\uD655\uD55C \uD0C0\uC774\uBC0D\uC5D0
+      \uBC1B\uC544\uCE58\uBA74 \uC800\uB4E4\uC774 \uCE58\uC720\uAC00 \uB420 \uAC81\uB2C8\uB2E4!"
+    textRevealDuration: 1
+    waitAfterReveal: 1
+    waitBeforeReveal: 0
+    speakerNameOverride: 
+  - speakerTag: 1
     expressionTag: 0
-    text: "\u3147\u3147\u3134\u3147"
-    textRevealDuration: 2
-    waitAfterReveal: 0.5
+    text: "\uACF5\uACA9\uC744 \uBC1B\uC544\uCE58\uBA74 \uC7E4\uB124\uAC00 \uB2E4\uCE58\uB294\uAC70
+      \uC544\uB2C8\uC57C?"
+    textRevealDuration: 1
+    waitAfterReveal: 1
+    waitBeforeReveal: 0
+    speakerNameOverride: 
+  - speakerTag: 2
+    expressionTag: 0
+    text: "\uC880 \uB9DE\uC544\uC57C \uC815\uC2E0\uC744 \uCC28\uB9AC\uC9C0 \uC54A\uC744\uAE4C\uC694?"
+    textRevealDuration: 1
+    waitAfterReveal: 1
+    waitBeforeReveal: 0
+    speakerNameOverride: 
+  - speakerTag: 1
+    expressionTag: 0
+    text: "\uADF8\uB7F0\uAC00..??"
+    textRevealDuration: 1
+    waitAfterReveal: 1
+    waitBeforeReveal: 0
+    speakerNameOverride: 
+  - speakerTag: 2
+    expressionTag: 0
+    text: "\uC544\uBB34\uD2BC, \uC774\uC81C \uB354 \uAC15\uD55C \uACF5\uACA9\uB3C4
+      \uAC19\uC774 \uC624\uB2C8 \uC6A9\uC0AC\uB2D8\uBD80\uD130 \uAC71\uC815\uD558\uC138\uC694!"
+    textRevealDuration: 1
+    waitAfterReveal: 1
+    waitBeforeReveal: 0
+    speakerNameOverride: 
+  - speakerTag: 2
+    expressionTag: 0
+    text: "\uBE68\uAC04\uC0C9 \uB290\uB08C\uD45C\uAC00 \uB72C \uACF5\uACA9\uC740
+      \uADF8 \uBC29\uD5A5\uC73C\uB85C \uC2A4\uC640\uC774\uD504\uD574\uC11C \uBC1B\uC544\uCCD0\uC57C
+      \uD574\uC694!"
+    textRevealDuration: 1
+    waitAfterReveal: 1
     waitBeforeReveal: 0
     speakerNameOverride: 
