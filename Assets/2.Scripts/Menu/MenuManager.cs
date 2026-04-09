@@ -37,6 +37,7 @@ public class MenuManager : Singleton<MenuManager>
     public SettingUI settingUI;
     public DiffButtonUI diffButtonUI;
     public StageTitleAnim stageTitleAnim;
+    
     public enum MenuState
     {
         Title,
@@ -50,6 +51,11 @@ public class MenuManager : Singleton<MenuManager>
 
     public float height;
 
+    [Header("Stage 5~7 Material Effect")]
+    public Image targetSpriteImage; // 인스펙터에서 매터리얼이 적용된 이미지 할당
+    private Material targetMatInstance; 
+    private Tween matTween;
+    private bool isCurrentlySpecialRange = false;
     private void Start()
     {
         InitUI(); 
@@ -118,6 +124,16 @@ public class MenuManager : Singleton<MenuManager>
             sword.InitUI(true);
             SwordUpEnd();
         }
+        // 🔥 [추가된 부분] 매터리얼 복제 및 초기 상태 세팅
+        if (targetSpriteImage != null)
+        {
+            targetMatInstance = new Material(targetSpriteImage.material);
+            targetSpriteImage.material = targetMatInstance;
+
+            isCurrentlySpecialRange = (stageIndex[0] >= 5 && stageIndex[0] <= 7);
+            float initialTol = isCurrentlySpecialRange ? 0f : 1f;
+            targetMatInstance.SetFloat("_ColorChangeTolerance", initialTol);
+        }
     }
 
     public bool JudgeStageUnlock(int index, int difficulty)
@@ -176,6 +192,23 @@ public class MenuManager : Singleton<MenuManager>
             if (stageTitleAnim != null)
             {
                 stageTitleAnim.ChangeTitle(StageDBManager.Instance.StageName[stageIndex[0]]);
+            }
+        }
+        // 🔥 [추가된 부분] 5~7 스테이지 구간 진입/이탈 감지 및 DOTween 애니메이션
+        if (targetMatInstance != null)
+        {
+            bool isSpecial = (index >= 5 && index <= 7);
+            
+            // 상태가 변했을 때만 애니메이션 실행 (1->0 또는 0->1)
+            if (isSpecial != isCurrentlySpecialRange)
+            {
+                isCurrentlySpecialRange = isSpecial;
+                matTween?.Kill(); // 기존에 진행 중이던 애니메이션 즉시 정지
+                
+                float targetTol = isSpecial ? 0f : 1f;
+                
+                // 0.5초 동안 _ColorChangeTol 값을 부드럽게 전환
+                matTween = targetMatInstance.DOFloat(targetTol, "_ColorChangeTolerance", 0.5f).SetEase(Ease.InOutQuad);
             }
         }
     }
