@@ -112,7 +112,7 @@ public class NotePerformer : MonoBehaviour
             strikerManager.AppearStriker(strikerData.strikerType);
             strikerStatus = 1;
         }
-        else if (currentSec >= disappearSec)
+        else if (currentSec >= disappearSec && strikerStatus != 0)
         {
             strikerManager.DisappearStriker();
             strikerStatus = 0;
