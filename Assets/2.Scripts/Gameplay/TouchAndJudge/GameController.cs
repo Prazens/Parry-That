@@ -8,6 +8,10 @@ public class GameController : MonoBehaviour
 {
     [SerializeField] private StageFlowManager stageFlowManager; // StageFlowManager 연결
 
+    private bool canCloseTutorialPanel = false;
+    private float tutorialTimer;
+    private float tutorialInputBlockTime = 1.5f;
+
     void Start()
     {
         StartStage();
@@ -18,6 +22,9 @@ public class GameController : MonoBehaviour
         if (stageFlowManager != null)
         {
             stageFlowManager.FirstStartStage(); // 스테이지 시작
+
+            canCloseTutorialPanel = false;
+            tutorialTimer = 0f;
         }
         else
         {
@@ -35,6 +42,16 @@ public class GameController : MonoBehaviour
     {
         if (stageFlowManager == null) return;
 
+        if (stageFlowManager.isTutorial && !canCloseTutorialPanel)
+        {
+            tutorialTimer += Time.deltaTime;
+
+            if (tutorialTimer >= tutorialInputBlockTime)
+            {
+                canCloseTutorialPanel = true;
+            }
+        }
+
         if (stageFlowManager.is_over || stageFlowManager.isPaused || stageFlowManager.isClear)
         {
             if (isTouchAvailable)
@@ -47,7 +64,7 @@ public class GameController : MonoBehaviour
             }
         }
 
-        if (stageFlowManager.isTutorial)
+        if (stageFlowManager.isTutorial && canCloseTutorialPanel)
         {
             if (isTouchAvailable)
             {
