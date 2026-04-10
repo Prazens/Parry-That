@@ -34,7 +34,7 @@ public class SignalTester : MonoBehaviour
         // E: 실패 (Miss)
         if (Input.GetKeyDown(KeyCode.E))
         {
-            targetSignal.MissSignal(notice => notice.gameObject.SetActive(false));
+            targetSignal.MissSignal(testBPM, notice => notice.gameObject.SetActive(false));
         }
     }
 }

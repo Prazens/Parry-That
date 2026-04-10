@@ -79,7 +79,7 @@ public class CommonAttackNoticeHandler : MonoBehaviour, IAttackHandler<AttackNot
         }
         else
         {
-            noticeInstance.MissSignal(Relocation);
+            noticeInstance.MissSignal(StageFlowManager.Instance.bpm, Relocation);
         }
     }
 
