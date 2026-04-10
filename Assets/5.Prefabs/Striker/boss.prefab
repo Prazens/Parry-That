@@ -391,7 +391,7 @@ MonoBehaviour:
   prepareSoundGhost: {fileID: 8300000, guid: 25b48916752e18f4382a11bb09a89234, type: 3}
   parrySoundNormal: {fileID: 8300000, guid: 96972401467906a42b50272645414fee, type: 3}
   parrySoundStrong: {fileID: 8300000, guid: 20353a13f678ac34f83635b7b2503a29, type: 3}
-  parrySoundGhost: {fileID: 0}
+  parrySoundGhost: {fileID: 8300000, guid: 20353a13f678ac34f83635b7b2503a29, type: 3}
   holdingSound: {fileID: 8300000, guid: c7a8e0bf3f24efd4b8143a12facac75b, type: 3}
   holdingEnd: {fileID: 8300000, guid: 8004143a0058a1c40b4ae89f9b27d841, type: 3}
 --- !u!1 &4857575601524838741
