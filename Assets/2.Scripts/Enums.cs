@@ -11,16 +11,13 @@ public enum Direction
     Right = 4
 }
 
-// 너무 헷갈려서 만듬
 public enum AttackType
 {
     Normal = 0,
     Strong = 1,
     HoldStart = 2,
-    HoldFinishStrong = 3,
-    HoldStop = 4,  // 홀드 끝에서 스와이프하지 않고 그냥 손을 뗐을 경우
-    StreamStart = 5,
-    StreamFinish = 6,
+    HoldStop = 3,
+    Ghost = 4,
 }
 
 public enum JudgeType

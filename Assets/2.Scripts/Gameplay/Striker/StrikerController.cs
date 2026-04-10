@@ -141,12 +141,12 @@ public class StrikerController : MonoBehaviour, IAttackHandler<StrikerAttackCont
     private bool IsHoldAttack(StrikerAttackContext context)
     {
         AttackType attackType = (AttackType)context.note.type;
-        return attackType == AttackType.HoldStart || attackType == AttackType.HoldFinishStrong || attackType == AttackType.HoldStop;
+        return attackType == AttackType.HoldStart || attackType == AttackType.HoldStop;
     }
 
     private bool IsHoldAttack(JudgeContext context)
     {
         AttackType attackType = context.judgeable.attackType;
-        return attackType == AttackType.HoldStart || attackType == AttackType.HoldFinishStrong || attackType == AttackType.HoldStop;
+        return attackType == AttackType.HoldStart || attackType == AttackType.HoldStop;
     }
 }

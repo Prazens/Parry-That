@@ -74,7 +74,6 @@ public class JudgeSystem : MonoBehaviour
             { AttackType.Strong, strongAttackJudgeHandler },
             { AttackType.HoldStart, holdAttackJudgeHandler },
             { AttackType.HoldStop, holdAttackJudgeHandler },
-            { AttackType.HoldFinishStrong, holdAttackJudgeHandler },
         };
 
         foreach (AttackType type in Enum.GetValues(typeof(AttackType)))

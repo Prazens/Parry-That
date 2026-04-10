@@ -6,11 +6,10 @@ using UnityEngine;
 public class HoldAttackJudgeHandler : MonoBehaviour, IAttackJudgeHandler<AttackJudgeContext>
 {
     [SerializeField] private JudgeSystem judgeSystem;
-    private AttackType[] relevantAttacks = new AttackType[3] { AttackType.HoldStart, AttackType.HoldFinishStrong, AttackType.HoldStop };
+    private AttackType[] relevantAttacks = new AttackType[2] { AttackType.HoldStart, AttackType.HoldStop };
     private Dictionary<AttackType, AttackType[]> relevantTouches = new()
     {
         { AttackType.HoldStart, new AttackType[2] { AttackType.Normal, AttackType.Strong } },
-        { AttackType.HoldFinishStrong, new AttackType[1] { AttackType.HoldStop } },
         { AttackType.HoldStop, new AttackType[1] { AttackType.HoldStop } },
     };
     private bool isHolding = false;
@@ -24,9 +23,9 @@ public class HoldAttackJudgeHandler : MonoBehaviour, IAttackJudgeHandler<AttackJ
             return;
 
         NoteData nextNote = context.nextNote;
-        if (nextNote == null || (nextNote.type != (int)AttackType.HoldStop && nextNote.type != (int)AttackType.HoldFinishStrong))
+        if (nextNote == null || nextNote.type != (int)AttackType.HoldStop)
         {
-            Debug.LogError("Next of HoldStart MUST be HoldStop or HoldFinishStrong");
+            Debug.LogError("Next of HoldStart MUST be HoldStop");
             return;
         }
 
@@ -35,7 +34,7 @@ public class HoldAttackJudgeHandler : MonoBehaviour, IAttackJudgeHandler<AttackJ
         context.judgeables.Add(judgeable);
 
         // HoldStart 시, HoldStop까지 같이 생성
-        Judgeable nextJudgeable = new Judgeable(AttackType.HoldStop, nextNote.arriveBeat, Direction.Up);
+        Judgeable nextJudgeable = new Judgeable((AttackType)nextNote.type, nextNote.arriveBeat, Direction.Up);
         judgeSystem.EnqueueJudgeable(nextJudgeable);
         context.judgeables.Add(nextJudgeable);
     }
@@ -63,7 +62,7 @@ public class HoldAttackJudgeHandler : MonoBehaviour, IAttackJudgeHandler<AttackJ
         }
 
         // HoldStop 공격 판정이 끝나면 isHolding 해제
-        else if (attackType == AttackType.HoldFinishStrong || attackType == AttackType.HoldStop)
+        else if (attackType == AttackType.HoldStop)
         {
             isHolding = false;
             judgeSystem.AllowOnly(false, touchAllowOnlyList);
@@ -107,7 +106,7 @@ public class HoldAttackJudgeHandler : MonoBehaviour, IAttackJudgeHandler<AttackJ
         JudgeType judgeType = judgeSystem.GetJudgeType(touchSec, arriveSec);
 
         // HoldStop이 아니면 EarlyMiss는 무시
-        if (judgeable.attackType != AttackType.HoldFinishStrong && judgeable.attackType != AttackType.HoldStop && judgeType == JudgeType.EarlyMiss)
+        if (judgeable.attackType != AttackType.HoldStop && judgeType == JudgeType.EarlyMiss)
             judgeType = JudgeType.None;
 
         // 판정 보정, 플레이어가 자동으로 공격 방향을 바라봄
