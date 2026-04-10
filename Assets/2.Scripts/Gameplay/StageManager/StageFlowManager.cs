@@ -125,11 +125,6 @@ public class StageFlowManager : MonoBehaviour
                 return;
             }
 
-            if (strikerManager != null)
-            {
-                strikerManager.ClearImmediately();
-            }
-
             isActive = false;
             isDaehwa = true;
             StartCoroutine(RunCurrentPhaseDialogue());
@@ -356,11 +351,6 @@ public class StageFlowManager : MonoBehaviour
                 stageChartLoader.LoadChartsFromStageData(currentStageData);
             }
 
-            if (strikerManager != null)
-            {
-                strikerManager.ClearImmediately();
-            }
-
             ApplyDialogueAudioPolicyAfterDialogue();
             
             TutorialManager tutorialManager = FindObjectOfType<TutorialManager>();
@@ -387,11 +377,6 @@ public class StageFlowManager : MonoBehaviour
         isTutorial = false;
         isClear = false;
         phaseEndTime = -1f;
-
-        if (strikerManager != null)
-        {
-            strikerManager.ClearImmediately();
-        }
 
         if (stageAudioManager != null)
         {

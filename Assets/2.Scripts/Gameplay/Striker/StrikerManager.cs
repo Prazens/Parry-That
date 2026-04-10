@@ -47,7 +47,6 @@ public class StrikerManager : MonoBehaviour
         if (strikerType < 0 || strikerType >= strikerPrefabs.Count) return;
         if (isBossStage && strikerInstance != null) return;
 
-        ClearImmediately();
         SpawnStriker(strikerPrefabs[strikerType]);
     }
 

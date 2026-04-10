@@ -28,6 +28,8 @@ public class StageSetupManager : MonoBehaviour
     private GameObject guideboxTop;
     private GameObject guideboxBottom;
 
+    private readonly List<GameObject> spawnedBackgroundObjects = new List<GameObject>();
+
     public void SpawnPlayer()
     {
         if (playerPrefab == null)
@@ -121,6 +123,16 @@ public class StageSetupManager : MonoBehaviour
             return;
         }
 
+        // 기존 배경 프리팹 정리
+        for (int i = 0; i < spawnedBackgroundObjects.Count; i++)
+        {
+            if (spawnedBackgroundObjects[i] != null)
+            {
+                Destroy(spawnedBackgroundObjects[i]);
+            }
+        }
+        spawnedBackgroundObjects.Clear();
+
         // 선택값 없으면 Normal 취급
         if (!StageSelection.HasValidSelection())
         {
@@ -145,6 +157,48 @@ public class StageSetupManager : MonoBehaviour
             strikerManager.tutorialManager = null;
 
             return;
+        }
+
+        // =========================
+        // Background Prefabs
+        // =========================
+        if (stageData.SpawnPrefabs != null && stageData.SpawnPrefabs.Count > 0)
+        {
+            for (int i = 0; i < stageData.SpawnPrefabs.Count; i++)
+            {
+                BackgroundPrefabs entry = stageData.SpawnPrefabs[i];
+                if (entry == null || entry.prefab == null) continue;
+
+                Transform parent = null;
+
+                if (!string.IsNullOrEmpty(entry.attachPointName))
+                {
+                    GameObject attachObject = GameObject.Find(entry.attachPointName);
+                    if (attachObject != null)
+                    {
+                        parent = attachObject.transform;
+                    }
+                }
+
+                GameObject spawnedObject;
+
+                if (parent != null)
+                {
+                    spawnedObject = Instantiate(entry.prefab, parent);
+                    spawnedObject.transform.localPosition = entry.localPosition;
+                    spawnedObject.transform.localRotation = Quaternion.Euler(entry.localEulerAngles);
+                    spawnedObject.transform.localScale = entry.localScale;
+                }
+                else
+                {
+                    spawnedObject = Instantiate(entry.prefab);
+                    spawnedObject.transform.position = entry.localPosition;
+                    spawnedObject.transform.rotation = Quaternion.Euler(entry.localEulerAngles);
+                    spawnedObject.transform.localScale = entry.localScale;
+                }
+
+                spawnedBackgroundObjects.Add(spawnedObject);
+            }
         }
 
         // =========================
