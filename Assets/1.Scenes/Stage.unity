@@ -971,6 +971,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1f0e4df5da6897a48a467eefba139635, type: 2}
   - {fileID: 11400000, guid: a13d304f79a42d3429c8264374132f8b, type: 2}
   - {fileID: 11400000, guid: 1a4966be0f413b245a744a78b52a81ec, type: 2}
+  - {fileID: 11400000, guid: 05ac734945554794197c700bde7579ce, type: 2}
+  - {fileID: 11400000, guid: 5849cf40688e04640847d4010ccddaf8, type: 2}
+  - {fileID: 11400000, guid: e812a340b690c3a42b57f7ae91353271, type: 2}
+  - {fileID: 11400000, guid: 48d3ae8f28d89e548808c91c31283405, type: 2}
+  - {fileID: 11400000, guid: e4673aac82753a14bbfb50571e48f93e, type: 2}
 --- !u!4 &229550950
 Transform:
   m_ObjectHideFlags: 0
@@ -1138,12 +1143,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 408684722}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1561746455}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &416215216
 GameObject:
@@ -1600,7 +1605,7 @@ MonoBehaviour:
   strikerManager: {fileID: 2036327256}
   stageLevelManager: {fileID: 229550949}
   stageFlowManager: {fileID: 25638220}
-  gameController: {fileID: 1205292737}
+  touchManager: {fileID: 175453782}
   judgeSystem: {fileID: 164575969}
   notePerformer: {fileID: 1208626409}
   dynamicUIManager: {fileID: 1579364280}
@@ -3288,6 +3293,38 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &1561746454
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1561746455}
+  m_Layer: 0
+  m_Name: ProjectileParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1561746455
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1561746454}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 408684723}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1579364278
 GameObject:
   m_ObjectHideFlags: 0
@@ -3332,6 +3369,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85b6987df95275d449eb3fec360a26bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvasRoot: {fileID: 1305503426}
   scoreDisplay: {fileID: 94105586}
   comboDisplay: {fileID: 1981557760}
   judgeDisplayPrefab: {fileID: 2130270614330469501, guid: 5a8cce8052826fa4e9b56476920ccb06, type: 3}
@@ -4080,6 +4118,7 @@ MonoBehaviour:
   - {fileID: 7564874379782612299, guid: ca118a5abd416034f8223e0fd31a9210, type: 3}
   - {fileID: 7642428754496660755, guid: 476c6ea8cc9a9ed42b39b647c93a7700, type: 3}
   - {fileID: 7642428754496660755, guid: ee308c25cb1d49e4f972ef62bca12f91, type: 3}
+  projectileParent: {fileID: 1561746455}
   _spawnPositions:
   - {fileID: 1797063815}
   - {fileID: 1464855110}
@@ -4249,6 +4288,6 @@ SceneRoots:
   - {fileID: 16481654}
   - {fileID: 1394439256}
   - {fileID: 1305503426}
-  - {fileID: 408684723}
   - {fileID: 176193419}
   - {fileID: 1453652008}
+  - {fileID: 1561746455}

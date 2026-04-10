@@ -9,6 +9,7 @@ public class StrikerManager : MonoBehaviour
 {
     [SerializeField] private List<StrikerController> strikerPrefabs;
     private StrikerController strikerInstance;
+    [SerializeField] private Transform projectileParent;
     [SerializeField] private Transform[] _spawnPositions; // 0: 리더, 1~4: 방향별 투사체
     private Vector3[] spawnPositions;
     [SerializeField] private float spawnPosOffset = 3f; // 기본 위치보다 offset만큼 위에서 등장하여 기본 위치로 이동
@@ -74,7 +75,7 @@ public class StrikerManager : MonoBehaviour
             targetPositions[i] = playerManager.transform.position + targetPosOffset * DirTool.TranstoVec((Direction)i);
         }
         
-        strikerInstance.Init(spawnPositions, targetPositions, dynamicUIManager);
+        strikerInstance.Init(spawnPositions, targetPositions, projectileParent, dynamicUIManager);
     }
 
     public void ClearImmediately()

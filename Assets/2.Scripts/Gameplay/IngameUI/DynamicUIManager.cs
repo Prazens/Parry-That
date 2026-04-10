@@ -10,6 +10,8 @@ public class DynamicUIManager : MonoBehaviour
 {
     public static DynamicUIManager Instance { get; private set; }
 
+    [SerializeField] private Transform canvasRoot;
+
     // -------------------------
     // HUD
     // -------------------------
@@ -215,7 +217,7 @@ public class DynamicUIManager : MonoBehaviour
         }
 
         GameObject judgeDisplay = Instantiate(judgeDisplayPrefab);
-        judgeDisplay.transform.SetParent(transform);
+        judgeDisplay.transform.SetParent(canvasRoot);
         judgeDisplay.transform.localScale = new Vector3(0.12f, 0.12f, 0f);
         judgeDisplay.transform.position = new Vector3(Screen.width / 2, Screen.height / 2) + generatePosition;
 

@@ -11,7 +11,7 @@ public class StageSetupManager : MonoBehaviour
     [SerializeField] private StrikerManager strikerManager;
     [SerializeField] private StageLevelManager stageLevelManager;
     [SerializeField] private StageFlowManager stageFlowManager;
-    [SerializeField] private GameController gameController;
+    [SerializeField] private TouchManager touchManager;
     [SerializeField] private JudgeSystem judgeSystem;
     [SerializeField] private NotePerformer notePerformer;
 
@@ -55,17 +55,8 @@ public class StageSetupManager : MonoBehaviour
 
         playerManager.stageFlowManager = StageFlowManager.Instance;
 
-        if (gameController != null)
-        {
-            TouchManager touchManager = gameController.GetComponent<TouchManager>();
-            if (touchManager != null) touchManager.playerManager = playerManager;
-
-            if (judgeSystem != null) judgeSystem.playerManager = playerManager;
-        }
-        else
-        {
-            Debug.LogWarning("[StageSetupManager] gameController is not assigned.");
-        }
+        if (touchManager != null) touchManager.playerManager = playerManager;
+        if (judgeSystem != null) judgeSystem.playerManager = playerManager;
 
         if (strikerManager != null)
         {

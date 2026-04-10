@@ -26,6 +26,7 @@ public class StrikerController : MonoBehaviour, IAttackHandler<StrikerAttackCont
     [SerializeField] private StrikerSound sound;
 
     [Header("Projectiles")]
+    private Transform projectileParent;
     [SerializeField] private List<Projectile> projectilePrefabs;
 
     public StrikerCommonVisual Visual => commonVisual;
@@ -37,10 +38,11 @@ public class StrikerController : MonoBehaviour, IAttackHandler<StrikerAttackCont
     private Vector3[] spawnPositions; // 0: 리더, 1~4: 방향별 투사체
     private Vector3[] targetPositions; // 0: 플레이어, 1~4: 방향별 보정된 판정 위치
 
-    public void Init(Vector3[] spawnPositions, Vector3[] targetPositions, DynamicUIManager dynamicUIManager)
+    public void Init(Vector3[] spawnPositions, Vector3[] targetPositions, Transform projectileParent, DynamicUIManager dynamicUIManager)
     {
         this.spawnPositions = spawnPositions;
         this.targetPositions = targetPositions;
+        this.projectileParent = projectileParent;
 
         commonVisual.Init(spawnPositions[0]);
         holdVisual?.Init(spawnPositions[0], targetPositions[(int)Direction.Up], dynamicUIManager);
@@ -137,7 +139,7 @@ public class StrikerController : MonoBehaviour, IAttackHandler<StrikerAttackCont
         Vector3 reverseTargetPos = targetPositions[reverseDir];
 
         // 투사체 생성
-        Projectile projectile = Instantiate(selectedProjectile, startPos, Quaternion.identity);
+        Projectile projectile = Instantiate(selectedProjectile, startPos, Quaternion.identity, projectileParent);
         projectile.Setup(new ProjectileSetupContext((AttackType)attackType, arriveSec, (Direction)direction, startPos, targetPos, reverseStartPos, reverseTargetPos));
 
         return projectile;

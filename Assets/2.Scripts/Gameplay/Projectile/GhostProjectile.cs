@@ -13,37 +13,23 @@ public class GhostProjectile : Projectile
     private bool hasReachedTarget = false; // 목표 위치 도달 여부
     private Vector3 finalVelocity; // 도착 시의 마지막 속도 저장
 
+    private Direction location;
     private float arriveSec; // 도착 시각
     private float duration;
 
+    private bool hasStoppedFake = false;
     private float stopFakeRatio => 0.5f; // 진짜 방향으로 순간이동할 타이밍
 
     public override void Setup(ProjectileSetupContext context)
     {
         arriveSec = context.arriveSec;
-        Direction location = context.location;
+        location = context.location;
         startPosition = context.startPos;
         targetPosition = context.targetPos;
         reverseStartPosition = context.reverseStartPos;
         reverseTargetPosition = context.reverseTargetPos;
 
-        switch (location)
-        {
-            case Direction.Down:
-                transform.rotation = Quaternion.Euler(0, 0, 0);
-                break;
-            case Direction.Up:
-                transform.rotation = Quaternion.Euler(0, 0, 180);
-                break;
-            case Direction.Right:
-                transform.rotation = Quaternion.Euler(0, 0, 90);
-                break;
-            case Direction.Left:
-                transform.rotation = Quaternion.Euler(0, 0, 270);
-                break;
-            default:
-                break;
-        }
+        Rotate(DirTool.ReverseDir(location));
         transform.position = reverseStartPosition;
 
         duration = arriveSec - StageFlowManager.Instance.currentTime;
@@ -88,6 +74,11 @@ public class GhostProjectile : Projectile
             }
             else
             {
+                if (!hasStoppedFake)
+                {
+                    Rotate(location);
+                    hasStoppedFake = true;
+                }
                 transform.position = Vector3.Lerp(targetPosition, startPosition, fractionOfJourney);
             }
 
@@ -102,6 +93,27 @@ public class GhostProjectile : Projectile
             transform.position = targetPosition + finalVelocity * (currentSec - arriveSec);
             if (currentSec - arriveSec > 5f)
                 Destroy(gameObject);
+        }
+    }
+
+    private void Rotate(Direction location)
+    {
+        switch (location)
+        {
+            case Direction.Up:
+                transform.rotation = Quaternion.Euler(0, 0, 0);
+                break;
+            case Direction.Down:
+                transform.rotation = Quaternion.Euler(0, 0, 180);
+                break;
+            case Direction.Left:
+                transform.rotation = Quaternion.Euler(0, 0, 90);
+                break;
+            case Direction.Right:
+                transform.rotation = Quaternion.Euler(0, 0, 270);
+                break;
+            default:
+                break;
         }
     }
 }

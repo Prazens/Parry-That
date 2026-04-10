@@ -54,35 +54,8 @@ public class StaticUIManager : MonoBehaviour
         if (initialized) return;
         initialized = true;
 
-        if (canvasRoot == null || canvasPause == null)
-        {
-            Debug.LogError("[StaticUIManager] canvasRoot/canvasPause is not assigned.");
-            return;
-        }
-
-        if (overlayObject == null && overlayPrefab != null)
-        {
-            overlayObject = Instantiate(overlayPrefab, canvasPause);
-            overlayObject.SetActive(false);
-        }
-
-        if (clearPanel == null && clearPanelPrefab != null)
-        {
-            clearPanel = Instantiate(clearPanelPrefab, canvasRoot);
-            clearPanel.SetActive(false);
-        }
-
-        if (gameOverPanel == null && gameOverPanelPrefab != null)
-        {
-            gameOverPanel = Instantiate(gameOverPanelPrefab, canvasRoot);
-            gameOverPanel.SetActive(false);
-        }
-
-        if (pausePanel == null && pausePanelPrefab != null)
-        {
-            pausePanel = Instantiate(pausePanelPrefab, canvasPause);
-            pausePanel.SetActive(false);
-        }
+        CreatePanels();
+        CreateOverlay();
 
         CachePauseButton();
         CacheVictory();
@@ -126,13 +99,13 @@ public class StaticUIManager : MonoBehaviour
 
         if (clearPanel == null && clearPanelPrefab != null)
         {
-            clearPanel = Instantiate(clearPanelPrefab, canvasRoot);
+            clearPanel = Instantiate(clearPanelPrefab, canvasPause);
             clearPanel.SetActive(false);
         }
 
         if (gameOverPanel == null && gameOverPanelPrefab != null)
         {
-            gameOverPanel = Instantiate(gameOverPanelPrefab, canvasRoot);
+            gameOverPanel = Instantiate(gameOverPanelPrefab, canvasPause);
             gameOverPanel.SetActive(false);
         }
 

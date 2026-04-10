@@ -6,7 +6,7 @@ using UnityEngine;
 public class StrongAttackJudgeHandler : MonoBehaviour, IAttackJudgeHandler<AttackJudgeContext>
 {
     [SerializeField] private JudgeSystem judgeSystem;
-    private AttackType[] relevantAttacks = new AttackType[1] { AttackType.Strong };
+    private AttackType[] relevantAttacks = new AttackType[2] { AttackType.Strong, AttackType.Ghost };
     private AttackType[] relevantTouches = new AttackType[1] { AttackType.Strong };
 
     public void OnNotice(AttackJudgeContext context)
