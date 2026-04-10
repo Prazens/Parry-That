@@ -38,8 +38,6 @@ public class TutorialManager : MonoBehaviour
     {
         playerManager = GameObject.Find("Player(Clone)").GetComponent<PlayerManager>();
 
-        StageFlowManager.isActive = false;
-
         if (stageAudioManager != null)
         {
             stageAudioManager.AudioPause();

@@ -24,7 +24,9 @@ public class NotePerformer : MonoBehaviour
     private Dictionary<AttackType, IAttackHandler> attackJudgeHandlerDict;
 
     // 차트/노트 관련
-    private StrikerData strikerData; // 페이즈 당 하나의 스트라이커로 가정
+    private int strikerType;
+    private float strikerStartBeat;
+    private float strikerEndBeat;
     private int strikerStatus;
     private NoteData[] notes;
     private int nextNoteIndex = 0;
@@ -34,6 +36,7 @@ public class NotePerformer : MonoBehaviour
     {
         public NoteData note;
         public List<Judgeable> judgeables;
+
         public PrepareEntry(NoteData note, List<Judgeable> judgeables)
         {
             this.note = note;
@@ -80,20 +83,23 @@ public class NotePerformer : MonoBehaviour
 
         if (chart == null || chart.notes == null)
         {
-            Debug.LogWarning("NotePerformer.InitNotes: Chart is null");
+            Debug.LogWarning("NotePerformer.InitChart: Chart is null");
             notes = System.Array.Empty<NoteData>();
             return;
         }
 
         StageFlowManager.Instance?.SetBPM(chart.bpm);
-        strikerData = chart.strikers[0];
+
+        strikerType = chart.strikerType;
+        strikerStartBeat = chart.startBeat;
+        strikerEndBeat = chart.endBeat;
         notes = (NoteData[])chart.notes.Clone();
     }
 
     private void Update()
     {
         if (StageFlowManager.Instance == null) return;
-        if (strikerData == null || notes == null || notes.Length == 0) return;
+        if (notes == null || notes.Length == 0) return;
 
         float currentSec = StageFlowManager.Instance.currentTime;
 
@@ -104,12 +110,12 @@ public class NotePerformer : MonoBehaviour
 
     private void SetStrikerAppear(float currentSec)
     {
-        float appearSec = StageFlowManager.Instance.BeatToSec(strikerData.appearTime);
-        float disappearSec = StageFlowManager.Instance.BeatToSec(strikerData.disappearTime);
+        float appearSec = StageFlowManager.Instance.BeatToSec(strikerStartBeat);
+        float disappearSec = StageFlowManager.Instance.BeatToSec(strikerEndBeat);
 
         if (currentSec >= appearSec && currentSec < disappearSec && strikerStatus == 0)
         {
-            strikerManager.AppearStriker(strikerData.strikerType);
+            strikerManager.AppearStriker(strikerType);
             strikerStatus = 1;
         }
         else if (currentSec >= disappearSec && strikerStatus != 0)
@@ -127,8 +133,8 @@ public class NotePerformer : MonoBehaviour
             NoteData note = notes[nextNoteIndex];
             AttackType attackType = (AttackType)note.type;
 
-            // Judgeable 생성
             List<Judgeable> judgeables = new();
+
             if (attackJudgeHandlerDict.TryGetValue(attackType, out var attackJudgeHandler)
                 && attackJudgeHandler != null)
             {
@@ -137,7 +143,6 @@ public class NotePerformer : MonoBehaviour
                 attackJudgeHandler.OnNotice(attackContext);
             }
 
-            // Notice
             if (attackNoticeHandlerDict.TryGetValue(attackType, out var attackNoticeHandler)
                 && attackNoticeHandler != null)
             {
@@ -169,7 +174,6 @@ public class NotePerformer : MonoBehaviour
                 break;
 
             striker.OnAttackStart(new StrikerAttackContext(prepareEntry.note, prepareEntry.judgeables));
-
             prepareQueue.Dequeue();
         }
     }
@@ -177,6 +181,8 @@ public class NotePerformer : MonoBehaviour
     public void OnJudge(JudgeContext context)
     {
         Judgeable judgeable = context.judgeable;
+        if (judgeable == null)
+            return;
 
         StrikerController striker = strikerManager.GetStrikerInstance();
         if (striker != null)
@@ -184,7 +190,6 @@ public class NotePerformer : MonoBehaviour
             striker.OnJudge(context);
         }
 
-        // 터치 없이 LateMiss가 난 경우의 처리
         if (attackJudgeHandlerDict.TryGetValue(judgeable.attackType, out var attackJudgeHandler)
             && attackJudgeHandler != null)
         {

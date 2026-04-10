@@ -87,8 +87,6 @@ public class JudgeSystem : MonoBehaviour
 
     void Update()
     {
-        if (!StageFlowManager.isActive) return;
-
         // 방향별 스트라이커 공격 Queue를 순회하며 LateMiss 여부 확인하여 처리
         foreach (var judgeableQueue in judgeableQueues.Values)
         {

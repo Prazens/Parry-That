@@ -1,40 +1,29 @@
 {
   "bpm": 120,
-  "strikers": [
-    {
-      "strikerType": 1,
-      "direction": 1,
-      "appearTime": 3,
-      "disappearTime": 19
-    },
-    {
-      "strikerType": 1,
-      "direction": 2,
-      "appearTime": 5,
-      "disappearTime": 19
-    }
-  ],
+  "strikerType": 1,
+  "startBeat": 3,
+  "endBeat": 19,
   "notes": [
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 4,
       "arriveBeat": 12,
       "type": 0
     },
     {
-      "strikerIndex": 1,
+      "direction": 2,
       "noticeBeat": 6,
       "arriveBeat": 14,
       "type": 0
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 8,
       "arriveBeat": 16,
       "type": 0
     },
     {
-      "strikerIndex": 1,
+      "direction": 2,
       "noticeBeat": 10,
       "arriveBeat": 18,
       "type": 0

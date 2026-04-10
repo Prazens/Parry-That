@@ -1,0 +1,128 @@
+{
+  "bpm": 170,
+  "strikerType": 4,
+  "startBeat": 220.604666667,
+  "endBeat": 288.104666667,
+  "notes": [
+    {
+      "direction": 1,
+      "noticeBeat": 222.104666667,
+      "arriveBeat": 224.104666667,
+      "type": 2
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 238.104666667,
+      "arriveBeat": 240.104666667,
+      "type": 3
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 244.104666667,
+      "arriveBeat": 248.104666667,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 244.604666667,
+      "arriveBeat": 248.604666667,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 245.104666667,
+      "arriveBeat": 249.104666667,
+      "type": 1
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 246.104666667,
+      "arriveBeat": 250.104666667,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 247.104666667,
+      "arriveBeat": 251.104666667,
+      "type": 1
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 254.104666667,
+      "arriveBeat": 256.104666667,
+      "type": 2
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 270.104666667,
+      "arriveBeat": 272.104666667,
+      "type": 3
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 272.104666667,
+      "arriveBeat": 276.104666667,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 273.104666667,
+      "arriveBeat": 277.104666667,
+      "type": 1
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 274.104666667,
+      "arriveBeat": 278.104666667,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 274.604666667,
+      "arriveBeat": 278.604666667,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 275.104666667,
+      "arriveBeat": 279.104666667,
+      "type": 1
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 280.104666667,
+      "arriveBeat": 284.104666667,
+      "type": 0
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 281.104666667,
+      "arriveBeat": 285.104666667,
+      "type": 1
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 282.104666667,
+      "arriveBeat": 286.104666667,
+      "type": 0
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 282.604666667,
+      "arriveBeat": 286.604666667,
+      "type": 0
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 283.104666667,
+      "arriveBeat": 287.104666667,
+      "type": 1
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 287.104666667,
+      "arriveBeat": 288.104666667,
+      "type": 1
+    }
+  ]
+}

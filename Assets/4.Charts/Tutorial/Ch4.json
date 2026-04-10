@@ -1,28 +1,17 @@
 {
   "bpm": 120,
-  "strikers": [
-    {
-      "strikerType": 1,
-      "direction": 3,
-      "appearTime": 3,
-      "disappearTime": 11
-    },
-    {
-      "strikerType": 1,
-      "direction": 4,
-      "appearTime": 5,
-      "disappearTime": 11
-    }
-  ],
+  "strikerType": 1,
+  "startBeat": 3,
+  "endBeat": 11,
   "notes": [
     {
-      "strikerIndex": 0,
+      "direction": 3,
       "noticeBeat": 4,
       "arriveBeat": 8,
       "type": 1
     },
     {
-      "strikerIndex": 1,
+      "direction": 4,
       "noticeBeat": 6,
       "arriveBeat": 10,
       "type": 1

@@ -104,20 +104,9 @@ public class StageChartLoader : MonoBehaviour
             return 0f;
 
         ChartData chart = JsonReader.ReadJson<ChartData>(chartJson);
-        if (chart == null || chart.strikers == null || chart.strikers.Length == 0)
+        if (chart == null)
             return 0f;
 
-        float lastDisappearBeat = 0f;
-
-        for (int index = 0; index < chart.strikers.Length; index++)
-        {
-            if (chart.strikers[index] != null &&
-                chart.strikers[index].disappearTime > lastDisappearBeat)
-            {
-                lastDisappearBeat = chart.strikers[index].disappearTime;
-            }
-        }
-
-        return lastDisappearBeat * 60f / chart.bpm + 0.05f;
+        return chart.endBeat * 60f / chart.bpm + 0.05f;
     }
 }

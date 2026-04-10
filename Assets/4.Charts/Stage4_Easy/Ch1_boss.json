@@ -1,634 +1,611 @@
 {
   "bpm": 227.99990880003648,
-  "strikers": [
-    {
-      "strikerType": 2,
-      "direction": 1,
-      "appearTime": 4.0,
-      "disappearTime": 408.0
-    },
-    {
-      "strikerType": 2,
-      "direction": 2,
-      "appearTime": 4.0,
-      "disappearTime": 408.0
-    },
-    {
-      "strikerType": 2,
-      "direction": 3,
-      "appearTime": 4.0,
-      "disappearTime": 408.0
-    },
-    {
-      "strikerType": 2,
-      "direction": 4,
-      "appearTime": 4.0,
-      "disappearTime": 408.0
-    }
-  ],
+  "strikerType": 2,
+  "startBeat": 4.0,
+  "endBeat": 408.0,
   "notes": [
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 8.0,
       "arriveBeat": 16.0,
       "type": 0
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 9.0,
       "arriveBeat": 17.0,
       "type": 1
     },
     {
-      "strikerIndex": 1,
+      "direction": 2,
       "noticeBeat": 12.0,
       "arriveBeat": 20.0,
       "type": 1
     },
     {
-      "strikerIndex": 1,
+      "direction": 2,
       "noticeBeat": 24.0,
       "arriveBeat": 28.0,
       "type": 0
     },
     {
-      "strikerIndex": 1,
+      "direction": 2,
       "noticeBeat": 25.0,
       "arriveBeat": 29.0,
       "type": 1
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 26.0,
       "arriveBeat": 30.0,
       "type": 1
     },
     {
-      "strikerIndex": 2,
+      "direction": 3,
       "noticeBeat": 32.0,
       "arriveBeat": 36.0,
       "type": 1
     },
     {
-      "strikerIndex": 3,
+      "direction": 4,
       "noticeBeat": 34.0,
       "arriveBeat": 38.0,
       "type": 1
     },
     {
-      "strikerIndex": 1,
+      "direction": 2,
       "noticeBeat": 40.0,
       "arriveBeat": 48.0,
       "type": 0
     },
     {
-      "strikerIndex": 1,
+      "direction": 2,
       "noticeBeat": 41.0,
       "arriveBeat": 49.0,
       "type": 1
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 41.5,
       "arriveBeat": 49.5,
       "type": 1
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 56.0,
       "arriveBeat": 60.0,
       "type": 0
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 57.0,
       "arriveBeat": 61.0,
       "type": 0
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 58.0,
       "arriveBeat": 62.0,
       "type": 1
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 74.0,
       "arriveBeat": 78.0,
       "type": 0
     },
     {
-      "strikerIndex": 1,
+      "direction": 2,
       "noticeBeat": 79.5,
       "arriveBeat": 83.5,
       "type": 1
     },
     {
-      "strikerIndex": 2,
+      "direction": 3,
       "noticeBeat": 85.0,
       "arriveBeat": 89.0,
       "type": 0
     },
     {
-      "strikerIndex": 3,
+      "direction": 4,
       "noticeBeat": 86.0,
       "arriveBeat": 90.0,
       "type": 1
     },
     {
-      "strikerIndex": 1,
+      "direction": 2,
       "noticeBeat": 91.0,
       "arriveBeat": 95.0,
       "type": 0
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 96.0,
       "arriveBeat": 100.0,
       "type": 1
     },
     {
-      "strikerIndex": 1,
+      "direction": 2,
       "noticeBeat": 97.5,
       "arriveBeat": 101.5,
       "type": 1
     },
     {
-      "strikerIndex": 1,
+      "direction": 2,
       "noticeBeat": 98.5,
       "arriveBeat": 102.5,
       "type": 0
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 99.0,
       "arriveBeat": 103.0,
       "type": 1
     },
     {
-      "strikerIndex": 3,
+      "direction": 4,
       "noticeBeat": 105.0,
       "arriveBeat": 109.0,
       "type": 1
     },
     {
-      "strikerIndex": 3,
+      "direction": 4,
       "noticeBeat": 105.5,
       "arriveBeat": 109.5,
       "type": 0
     },
     {
-      "strikerIndex": 2,
+      "direction": 3,
       "noticeBeat": 111.5,
       "arriveBeat": 115.5,
       "type": 1
     },
     {
-      "strikerIndex": 1,
+      "direction": 2,
       "noticeBeat": 112.5,
       "arriveBeat": 116.5,
       "type": 1
     },
     {
-      "strikerIndex": 1,
+      "direction": 2,
       "noticeBeat": 114.0,
       "arriveBeat": 118.0,
       "type": 0
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 118.0,
       "arriveBeat": 122.0,
       "type": 0
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 126.0,
       "arriveBeat": 130.0,
       "type": 1
     },
     {
-      "strikerIndex": 2,
+      "direction": 3,
       "noticeBeat": 128.0,
       "arriveBeat": 132.0,
       "type": 1
     },
     {
-      "strikerIndex": 3,
+      "direction": 4,
       "noticeBeat": 129.5,
       "arriveBeat": 133.5,
       "type": 1
     },
     {
-      "strikerIndex": 2,
+      "direction": 3,
       "noticeBeat": 131.0,
       "arriveBeat": 135.0,
       "type": 1
     },
     {
-      "strikerIndex": 2,
+      "direction": 3,
       "noticeBeat": 136.0,
       "arriveBeat": 144.0,
       "type": 0
     },
     {
-      "strikerIndex": 3,
+      "direction": 4,
       "noticeBeat": 138.0,
       "arriveBeat": 146.0,
       "type": 1
     },
     {
-      "strikerIndex": 3,
+      "direction": 4,
       "noticeBeat": 140.0,
       "arriveBeat": 148.0,
       "type": 0
     },
     {
-      "strikerIndex": 3,
+      "direction": 4,
       "noticeBeat": 141.0,
       "arriveBeat": 149.0,
       "type": 0
     },
     {
-      "strikerIndex": 1,
+      "direction": 2,
       "noticeBeat": 142.0,
       "arriveBeat": 150.0,
       "type": 1
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 154.0,
       "arriveBeat": 162.0,
       "type": 0
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 156.0,
       "arriveBeat": 164.0,
       "type": 0
     },
     {
-      "strikerIndex": 1,
+      "direction": 2,
       "noticeBeat": 157.0,
       "arriveBeat": 165.0,
       "type": 1
     },
     {
-      "strikerIndex": 1,
+      "direction": 2,
       "noticeBeat": 158.0,
       "arriveBeat": 166.0,
       "type": 0
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 168.0,
       "arriveBeat": 176.0,
       "type": 0
     },
     {
-      "strikerIndex": 2,
+      "direction": 3,
       "noticeBeat": 170.0,
       "arriveBeat": 178.0,
       "type": 1
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 180.0,
       "arriveBeat": 184.0,
       "type": 2
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 188.0,
       "arriveBeat": 192.0,
       "type": 3
     },
     {
-      "strikerIndex": 1,
+      "direction": 2,
       "noticeBeat": 193.0,
       "arriveBeat": 197.0,
       "type": 0
     },
     {
-      "strikerIndex": 1,
+      "direction": 2,
       "noticeBeat": 194.0,
       "arriveBeat": 198.0,
       "type": 0
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 204.0,
       "arriveBeat": 208.0,
       "type": 1
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 205.0,
       "arriveBeat": 209.0,
       "type": 0
     },
     {
-      "strikerIndex": 2,
+      "direction": 3,
       "noticeBeat": 210.0,
       "arriveBeat": 214.0,
       "type": 0
     },
     {
-      "strikerIndex": 3,
+      "direction": 4,
       "noticeBeat": 212.0,
       "arriveBeat": 216.0,
       "type": 0
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 216.0,
       "arriveBeat": 220.0,
       "type": 0
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 216.5,
       "arriveBeat": 220.5,
       "type": 0
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 217.0,
       "arriveBeat": 221.0,
       "type": 0
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 224.0,
       "arriveBeat": 228.0,
       "type": 1
     },
     {
-      "strikerIndex": 1,
+      "direction": 2,
       "noticeBeat": 225.0,
       "arriveBeat": 229.0,
       "type": 1
     },
     {
-      "strikerIndex": 1,
+      "direction": 2,
       "noticeBeat": 226,
       "arriveBeat": 230.0,
       "type": 0
     },
     {
-      "strikerIndex": 1,
+      "direction": 2,
       "noticeBeat": 226.5,
       "arriveBeat": 230.5,
       "type": 0
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 234.0,
       "arriveBeat": 238.0,
       "type": 0
     },
     {
-      "strikerIndex": 1,
+      "direction": 2,
       "noticeBeat": 239.5,
       "arriveBeat": 243.5,
       "type": 1
     },
     {
-      "strikerIndex": 2,
+      "direction": 3,
       "noticeBeat": 242.0,
       "arriveBeat": 246.0,
       "type": 0
     },
     {
-      "strikerIndex": 3,
+      "direction": 4,
       "noticeBeat": 247.0,
       "arriveBeat": 251.0,
       "type": 0
     },
     {
-      "strikerIndex": 1,
+      "direction": 2,
       "noticeBeat": 251.0,
       "arriveBeat": 255.0,
       "type": 0
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 256.0,
       "arriveBeat": 260.0,
       "type": 1
     },
     {
-      "strikerIndex": 1,
+      "direction": 2,
       "noticeBeat": 257.5,
       "arriveBeat": 261.5,
       "type": 1
     },
     {
-      "strikerIndex": 1,
+      "direction": 2,
       "noticeBeat": 258.5,
       "arriveBeat": 262.5,
       "type": 0
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 259.0,
       "arriveBeat": 263.0,
       "type": 1
     },
     {
-      "strikerIndex": 3,
+      "direction": 4,
       "noticeBeat": 266.0,
       "arriveBeat": 270.0,
       "type": 1
     },
     {
-      "strikerIndex": 2,
+      "direction": 3,
       "noticeBeat": 268.0,
       "arriveBeat": 272.0,
       "type": 1
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 278.0,
       "arriveBeat": 282.0,
       "type": 0
     },
     {
-      "strikerIndex": 1,
+      "direction": 2,
       "noticeBeat": 279.0,
       "arriveBeat": 283.0,
       "type": 1
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 285.0,
       "arriveBeat": 289.0,
       "type": 0
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 286.0,
       "arriveBeat": 290.0,
       "type": 1
     },
     {
-      "strikerIndex": 2,
+      "direction": 3,
       "noticeBeat": 288.0,
       "arriveBeat": 292.0,
       "type": 1
     },
     {
-      "strikerIndex": 3,
+      "direction": 4,
       "noticeBeat": 291,
       "arriveBeat": 295,
       "type": 1
     },
     {
-      "strikerIndex": 2,
+      "direction": 3,
       "noticeBeat": 306.0,
       "arriveBeat": 309.0,
       "type": 0
     },
     {
-      "strikerIndex": 3,
+      "direction": 4,
       "noticeBeat": 309.5,
       "arriveBeat": 313.5,
       "type": 1
     },
     {
-      "strikerIndex": 3,
+      "direction": 4,
       "noticeBeat": 312.0,
       "arriveBeat": 316.0,
       "type": 0
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 320.0,
       "arriveBeat": 324.0,
       "type": 0
     },
     {
-      "strikerIndex": 1,
+      "direction": 2,
       "noticeBeat": 321.0,
       "arriveBeat": 325.0,
       "type": 1
     },
     {
-      "strikerIndex": 1,
+      "direction": 2,
       "noticeBeat": 322.0,
       "arriveBeat": 326.0,
       "type": 0
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 323.0,
       "arriveBeat": 327.0,
       "type": 1
     },
     {
-      "strikerIndex": 2,
+      "direction": 3,
       "noticeBeat": 328.0,
       "arriveBeat": 336.0,
       "type": 0
     },
     {
-      "strikerIndex": 3,
+      "direction": 4,
       "noticeBeat": 330.0,
       "arriveBeat": 338.0,
       "type": 1
     },
     {
-      "strikerIndex": 3,
+      "direction": 4,
       "noticeBeat": 332.0,
       "arriveBeat": 340.0,
       "type": 0
     },
     {
-      "strikerIndex": 3,
+      "direction": 4,
       "noticeBeat": 333.0,
       "arriveBeat": 341.0,
       "type": 0
     },
     {
-      "strikerIndex": 1,
+      "direction": 2,
       "noticeBeat": 334.0,
       "arriveBeat": 342.0,
       "type": 1
     },
     {
-      "strikerIndex": 1,
+      "direction": 2,
       "noticeBeat": 346.0,
       "arriveBeat": 350.0,
       "type": 1
     },
     {
-      "strikerIndex": 1,
+      "direction": 2,
       "noticeBeat": 347.0,
       "arriveBeat": 351.0,
       "type": 0
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 352.0,
       "arriveBeat": 356.0,
       "type": 1
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 352.5,
       "arriveBeat": 356.5,
       "type": 0
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 353.0,
       "arriveBeat": 357.0,
       "type": 0
     },
     {
-      "strikerIndex": 1,
+      "direction": 2,
       "noticeBeat": 354.0,
       "arriveBeat": 358.0,
       "type": 1
     },
     {
-      "strikerIndex": 1,
+      "direction": 2,
       "noticeBeat": 354.5,
       "arriveBeat": 358.5,
       "type": 0
     },
     {
-      "strikerIndex": 1,
+      "direction": 2,
       "noticeBeat": 355.0,
       "arriveBeat": 359.0,
       "type": 0
     },
     {
-      "strikerIndex": 2,
+      "direction": 3,
       "noticeBeat": 362.0,
       "arriveBeat": 370.0,
       "type": 1
     },
     {
-      "strikerIndex": 3,
+      "direction": 4,
       "noticeBeat": 364.0,
       "arriveBeat": 372.0,
       "type": 1
     },
     {
-      "strikerIndex": 3,
+      "direction": 4,
       "noticeBeat": 364.5,
       "arriveBeat": 372.5,
       "type": 0
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 372.0,
       "arriveBeat": 376.0,
       "type": 2
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 380.0,
       "arriveBeat": 384.0,
       "type": 3

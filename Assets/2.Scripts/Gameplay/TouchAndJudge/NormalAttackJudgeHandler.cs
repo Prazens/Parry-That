@@ -12,7 +12,7 @@ public class NormalAttackJudgeHandler : MonoBehaviour, IAttackJudgeHandler<Attac
     public void OnNotice(AttackJudgeContext context)
     {
         NoteData note = context.note;
-        Judgeable judgeable = new Judgeable((AttackType)note.type, note.arriveBeat, (Direction)(note.strikerIndex + 1));
+        Judgeable judgeable = new Judgeable((AttackType)note.type, note.arriveBeat, (Direction)note.direction);
         judgeSystem.EnqueueJudgeable(judgeable);
         context.judgeables.Add(judgeable);
     }

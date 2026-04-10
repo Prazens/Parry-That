@@ -37,7 +37,7 @@ public class StrikerCommonVisual : MonoBehaviour
     {
         if (hasPrepareAnim)
         {
-            SetDirection(hasPrepareDirection, context.note.strikerIndex + 1);
+            SetDirection(hasPrepareDirection, context.note.direction);
             animator.SetTrigger("Prepare");
         }
     }
@@ -46,7 +46,7 @@ public class StrikerCommonVisual : MonoBehaviour
     {
         if (hasAttackAnim)
         {
-            SetDirection(hasAttackDirection, context.note.strikerIndex + 1);
+            SetDirection(hasAttackDirection, context.note.direction);
             animator.SetTrigger("Attack");
         }
     }
