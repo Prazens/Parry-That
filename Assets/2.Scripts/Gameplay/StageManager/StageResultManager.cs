@@ -15,7 +15,6 @@ using UnityEngine;
 /// </summary>
 public class StageResultManager : MonoBehaviour
 {
-    [SerializeField] private GameController gameController;
     [SerializeField] private JudgeSystem judgeSystem; // ScoreManager 삭제 예정이므로 JudgeSystem에서 읽는 전제
 
     public int LatestStarCount { get; private set; } = 0;
