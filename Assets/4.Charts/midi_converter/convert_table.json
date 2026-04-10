@@ -9,7 +9,8 @@
         "weak": 0,
         "strong": 1,
         "holdready": 2,
-        "holdhit": 3
+        "holdhit": 3,
+        "ghost": 4
     },
     "signal_map": {
         "ready": 0,
@@ -56,6 +57,16 @@
             "type": "holdhit",
             "signal": "hit"
         },
+        "70": {
+            "direction": "up",
+            "type": "ghost",
+            "signal": "ready"
+        },
+        "71": {
+            "direction": "up",
+            "type": "ghost",
+            "signal": "hit"
+        },
         "72": {
             "direction": "down",
             "type": "weak",
@@ -74,6 +85,16 @@
         "75": {
             "direction": "down",
             "type": "strong",
+            "signal": "hit"
+        },
+        "82": {
+            "direction": "down",
+            "type": "ghost",
+            "signal": "ready"
+        },
+        "83": {
+            "direction": "down",
+            "type": "ghost",
             "signal": "hit"
         },
         "84": {
@@ -96,6 +117,16 @@
             "type": "strong",
             "signal": "hit"
         },
+        "94": {
+            "direction": "left",
+            "type": "ghost",
+            "signal": "ready"
+        },
+        "95": {
+            "direction": "left",
+            "type": "ghost",
+            "signal": "hit"
+        },
         "96": {
             "direction": "right",
             "type": "weak",
@@ -114,6 +145,16 @@
         "99": {
             "direction": "right",
             "type": "strong",
+            "signal": "hit"
+        },
+        "106": {
+            "direction": "right",
+            "type": "ghost",
+            "signal": "ready"
+        },
+        "107": {
+            "direction": "right",
+            "type": "ghost",
             "signal": "hit"
         }
     }

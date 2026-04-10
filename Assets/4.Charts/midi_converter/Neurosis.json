@@ -1,0 +1,986 @@
+{
+  "bpm": 160.0,
+  "strikerType": 4,
+  "startBeat": 4.0,
+  "endBeat": 296.0,
+  "notes": [
+    {
+      "direction": 1,
+      "noticeBeat": 16.4140625,
+      "arriveBeat": 17.9140625,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 16.6640625,
+      "arriveBeat": 18.1640625,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 16.9140625,
+      "arriveBeat": 18.4140625,
+      "type": 0
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 20.4140625,
+      "arriveBeat": 21.9140625,
+      "type": 0
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 20.6640625,
+      "arriveBeat": 22.1640625,
+      "type": 0
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 20.9140625,
+      "arriveBeat": 22.4140625,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 24.4140625,
+      "arriveBeat": 25.9140625,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 24.6640625,
+      "arriveBeat": 26.1640625,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 24.9140625,
+      "arriveBeat": 26.4140625,
+      "type": 0
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 28.4140625,
+      "arriveBeat": 29.9140625,
+      "type": 0
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 28.6640625,
+      "arriveBeat": 30.1640625,
+      "type": 0
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 28.9140625,
+      "arriveBeat": 30.4140625,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 32.4140625,
+      "arriveBeat": 36.4140625,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 33.1640625,
+      "arriveBeat": 37.1640625,
+      "type": 1
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 33.4140625,
+      "arriveBeat": 37.4140625,
+      "type": 1
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 33.6640625,
+      "arriveBeat": 37.6640625,
+      "type": 1
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 34.9140625,
+      "arriveBeat": 38.9140625,
+      "type": 1
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 35.6640625,
+      "arriveBeat": 39.6640625,
+      "type": 1
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 42.1640625,
+      "arriveBeat": 46.1640625,
+      "type": 1
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 42.9140625,
+      "arriveBeat": 46.9140625,
+      "type": 1
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 43.6640625,
+      "arriveBeat": 47.6640625,
+      "type": 1
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 48.4140625,
+      "arriveBeat": 52.4140625,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 49.1640625,
+      "arriveBeat": 53.1640625,
+      "type": 1
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 49.4140625,
+      "arriveBeat": 53.4140625,
+      "type": 1
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 49.6640625,
+      "arriveBeat": 53.6640625,
+      "type": 1
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 50.9140625,
+      "arriveBeat": 54.9140625,
+      "type": 1
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 51.6640625,
+      "arriveBeat": 55.6640625,
+      "type": 1
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 56.4140625,
+      "arriveBeat": 60.4140625,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 57.1640625,
+      "arriveBeat": 61.1640625,
+      "type": 1
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 57.4140625,
+      "arriveBeat": 61.4140625,
+      "type": 1
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 57.6640625,
+      "arriveBeat": 61.6640625,
+      "type": 1
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 58.9140625,
+      "arriveBeat": 62.9140625,
+      "type": 1
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 59.6640625,
+      "arriveBeat": 63.6640625,
+      "type": 1
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 64.4140625,
+      "arriveBeat": 68.4140625,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 65.1640625,
+      "arriveBeat": 69.1640625,
+      "type": 4
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 65.4140625,
+      "arriveBeat": 69.4140625,
+      "type": 4
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 65.6640625,
+      "arriveBeat": 69.6640625,
+      "type": 4
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 66.9140625,
+      "arriveBeat": 70.9140625,
+      "type": 4
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 67.6640625,
+      "arriveBeat": 71.6640625,
+      "type": 4
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 74.1640625,
+      "arriveBeat": 78.1640625,
+      "type": 4
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 74.9140625,
+      "arriveBeat": 78.9140625,
+      "type": 4
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 75.6640625,
+      "arriveBeat": 79.6640625,
+      "type": 4
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 80.4140625,
+      "arriveBeat": 84.4140625,
+      "type": 0
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 81.1640625,
+      "arriveBeat": 85.1640625,
+      "type": 4
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 81.4140625,
+      "arriveBeat": 85.4140625,
+      "type": 4
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 81.6640625,
+      "arriveBeat": 85.6640625,
+      "type": 4
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 82.9140625,
+      "arriveBeat": 86.9140625,
+      "type": 4
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 83.6640625,
+      "arriveBeat": 87.6640625,
+      "type": 4
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 88.4140625,
+      "arriveBeat": 92.4140625,
+      "type": 0
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 89.1640625,
+      "arriveBeat": 93.1640625,
+      "type": 4
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 89.4140625,
+      "arriveBeat": 93.4140625,
+      "type": 4
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 89.6640625,
+      "arriveBeat": 93.6640625,
+      "type": 4
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 90.9140625,
+      "arriveBeat": 94.9140625,
+      "type": 4
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 91.6640625,
+      "arriveBeat": 95.6640625,
+      "type": 4
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 96.1640625,
+      "arriveBeat": 100.1640625,
+      "type": 1
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 96.9140625,
+      "arriveBeat": 100.9140625,
+      "type": 1
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 97.6640625,
+      "arriveBeat": 101.6640625,
+      "type": 1
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 98.4140625,
+      "arriveBeat": 102.4140625,
+      "type": 4
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 104.1640625,
+      "arriveBeat": 108.1640625,
+      "type": 1
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 104.9140625,
+      "arriveBeat": 108.9140625,
+      "type": 4
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 105.6640625,
+      "arriveBeat": 109.6640625,
+      "type": 1
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 106.4140625,
+      "arriveBeat": 110.4140625,
+      "type": 4
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 112.1640625,
+      "arriveBeat": 116.1640625,
+      "type": 1
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 112.9140625,
+      "arriveBeat": 116.9140625,
+      "type": 4
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 113.6640625,
+      "arriveBeat": 117.6640625,
+      "type": 1
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 114.4140625,
+      "arriveBeat": 118.4140625,
+      "type": 4
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 120.1640625,
+      "arriveBeat": 124.1640625,
+      "type": 4
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 120.9140625,
+      "arriveBeat": 124.9140625,
+      "type": 4
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 121.6640625,
+      "arriveBeat": 125.6640625,
+      "type": 4
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 122.4140625,
+      "arriveBeat": 126.4140625,
+      "type": 4
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 128.1640625,
+      "arriveBeat": 132.1640625,
+      "type": 4
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 128.9140625,
+      "arriveBeat": 132.9140625,
+      "type": 4
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 129.6640625,
+      "arriveBeat": 133.6640625,
+      "type": 4
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 130.4140625,
+      "arriveBeat": 134.4140625,
+      "type": 4
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 136.1640625,
+      "arriveBeat": 140.1640625,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 136.9140625,
+      "arriveBeat": 140.9140625,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 137.6640625,
+      "arriveBeat": 141.6640625,
+      "type": 1
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 138.1640625,
+      "arriveBeat": 142.1640625,
+      "type": 1
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 144.1640625,
+      "arriveBeat": 148.1640625,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 144.9140625,
+      "arriveBeat": 148.9140625,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 145.6640625,
+      "arriveBeat": 149.6640625,
+      "type": 4
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 146.1640625,
+      "arriveBeat": 150.1640625,
+      "type": 4
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 152.1640625,
+      "arriveBeat": 156.1640625,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 152.9140625,
+      "arriveBeat": 156.9140625,
+      "type": 0
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 153.6640625,
+      "arriveBeat": 157.6640625,
+      "type": 4
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 154.1640625,
+      "arriveBeat": 158.1640625,
+      "type": 4
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 160.1640625,
+      "arriveBeat": 169.1640625,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 160.9140625,
+      "arriveBeat": 171.1640625,
+      "type": 1
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 162.1640625,
+      "arriveBeat": 173.1640625,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 162.9140625,
+      "arriveBeat": 175.1640625,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 163.6640625,
+      "arriveBeat": 177.1640625,
+      "type": 1
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 164.1640625,
+      "arriveBeat": 179.1640625,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 164.9140625,
+      "arriveBeat": 181.1640625,
+      "type": 1
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 166.1640625,
+      "arriveBeat": 183.1640625,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 166.9140625,
+      "arriveBeat": 185.1640625,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 167.4140625,
+      "arriveBeat": 187.1640625,
+      "type": 1
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 168.1640625,
+      "arriveBeat": 189.1640625,
+      "type": 4
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 170.1640625,
+      "arriveBeat": 191.1640625,
+      "type": 4
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 172.1640625,
+      "arriveBeat": 193.1640625,
+      "type": 4
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 174.1640625,
+      "arriveBeat": 196.1640625,
+      "type": 4
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 176.1640625,
+      "arriveBeat": 196.6640625,
+      "type": 4
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 178.1640625,
+      "arriveBeat": 197.6640625,
+      "type": 4
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 180.1640625,
+      "arriveBeat": 198.0,
+      "type": 4
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 182.1640625,
+      "arriveBeat": 198.328125,
+      "type": 4
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 184.1640625,
+      "arriveBeat": 198.6640625,
+      "type": 4
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 186.1640625,
+      "arriveBeat": 199.0,
+      "type": 4
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 188.1640625,
+      "arriveBeat": 201.1640625,
+      "type": 4
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 190.1640625,
+      "arriveBeat": 204.1640625,
+      "type": 4
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 192.1640625,
+      "arriveBeat": 204.6640625,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 192.6640625,
+      "arriveBeat": 205.6640625,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 193.6640625,
+      "arriveBeat": 206.0,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 194.0,
+      "arriveBeat": 206.328125,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 194.328125,
+      "arriveBeat": 206.6640625,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 194.6640625,
+      "arriveBeat": 207.0,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 195.0,
+      "arriveBeat": 209.1640625,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 197.1640625,
+      "arriveBeat": 212.1640625,
+      "type": 1
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 200.1640625,
+      "arriveBeat": 212.6640625,
+      "type": 0
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 200.6640625,
+      "arriveBeat": 213.6640625,
+      "type": 0
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 201.6640625,
+      "arriveBeat": 214.0,
+      "type": 0
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 202.0,
+      "arriveBeat": 214.328125,
+      "type": 0
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 202.328125,
+      "arriveBeat": 214.6640625,
+      "type": 0
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 202.6640625,
+      "arriveBeat": 215.0,
+      "type": 0
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 203.0,
+      "arriveBeat": 220.1640625,
+      "type": 0
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 205.1640625,
+      "arriveBeat": 221.0,
+      "type": 1
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 208.1640625,
+      "arriveBeat": 221.6640625,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 208.6640625,
+      "arriveBeat": 222.1640625,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 209.6640625,
+      "arriveBeat": 224.0,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 210.0,
+      "arriveBeat": 234.1640625,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 210.328125,
+      "arriveBeat": 240.0,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 210.6640625,
+      "arriveBeat": 256.0,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 211.0,
+      "arriveBeat": 256.828125,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 213.1640625,
+      "arriveBeat": 258.328125,
+      "type": 1
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 216.1640625,
+      "arriveBeat": 259.6640625,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 217.0,
+      "arriveBeat": 260.1640625,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 217.6640625,
+      "arriveBeat": 261.6640625,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 218.1640625,
+      "arriveBeat": 263.1640625,
+      "type": 4
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 222.328125,
+      "arriveBeat": 264.1640625,
+      "type": 2
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 232.5,
+      "arriveBeat": 265.6640625,
+      "type": 3
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 238.1640625,
+      "arriveBeat": 267.1640625,
+      "type": 2
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 254.1640625,
+      "arriveBeat": 268.828125,
+      "type": 3
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 256.1640625,
+      "arriveBeat": 270.328125,
+      "type": 1
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 257.6640625,
+      "arriveBeat": 271.6640625,
+      "type": 1
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 259.1640625,
+      "arriveBeat": 272.828125,
+      "type": 1
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 260.828125,
+      "arriveBeat": 274.328125,
+      "type": 1
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 262.328125,
+      "arriveBeat": 275.6640625,
+      "type": 1
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 263.6640625,
+      "arriveBeat": 276.1640625,
+      "type": 1
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 264.828125,
+      "arriveBeat": 277.6640625,
+      "type": 4
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 266.328125,
+      "arriveBeat": 279.1640625,
+      "type": 4
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 267.6640625,
+      "arriveBeat": 280.1640625,
+      "type": 4
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 268.1640625,
+      "arriveBeat": 281.6640625,
+      "type": 0
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 269.6640625,
+      "arriveBeat": 283.1640625,
+      "type": 0
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 271.1640625,
+      "arriveBeat": 284.828125,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 272.1640625,
+      "arriveBeat": 286.328125,
+      "type": 1
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 273.6640625,
+      "arriveBeat": -1,
+      "type": 1
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 275.1640625,
+      "arriveBeat": -1,
+      "type": 1
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 276.828125,
+      "arriveBeat": -1,
+      "type": 1
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 278.328125,
+      "arriveBeat": -1,
+      "type": 1
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 279.6640625,
+      "arriveBeat": -1,
+      "type": 1
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 280.828125,
+      "arriveBeat": -1,
+      "type": 4
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 282.328125,
+      "arriveBeat": -1,
+      "type": 4
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 284.1640625,
+      "arriveBeat": -1,
+      "type": 0
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 285.6640625,
+      "arriveBeat": -1,
+      "type": 0
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 287.1640625,
+      "arriveBeat": -1,
+      "type": 0
+    }
+  ]
+}

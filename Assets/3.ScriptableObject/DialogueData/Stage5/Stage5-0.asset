@@ -15,8 +15,15 @@ MonoBehaviour:
   lines:
   - speakerTag: 1
     expressionTag: 0
-    text: "\uC73C\uC545 \uB108\uBB34 \uC5B4\uB824\uC6CC!!"
-    textRevealDuration: 2
-    waitAfterReveal: 5
+    text: "\uC5EC\uAE30\uAC00 \uADF8 \uB140\uC11D\uC758 \uC18C\uAD74\uC778\uAC00..!"
+    textRevealDuration: 1.5
+    waitAfterReveal: 2
     waitBeforeReveal: 0
+    speakerNameOverride: 
+  - speakerTag: 1
+    expressionTag: 0
+    text: "\uC73C\uC545 \uB108\uBB34 \uC5B4\uB824\uC6CC!!"
+    textRevealDuration: 1
+    waitAfterReveal: 3
+    waitBeforeReveal: 1
     speakerNameOverride: 

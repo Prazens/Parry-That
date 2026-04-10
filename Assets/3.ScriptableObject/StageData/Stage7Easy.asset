@@ -15,10 +15,15 @@ MonoBehaviour:
   stageId: 7
   difficulty: 0
   category: 1
-  phases: []
+  phases:
+  - tutorialPanelPrefab: {fileID: 0}
+    chartJson: {fileID: 4900000, guid: 95d6ea87c6bd9074bb6372022f97207a, type: 3}
+    dialogue: {fileID: 0}
+    dialogueAudioPolicy: 0
   bgm: {fileID: 8300000, guid: 762403defbb49324bb759cae0b05eb65, type: 3}
   overrideBgmOffset: 0
   bgmOffset: 0
   cutInUpPrefab: {fileID: 0}
   cutInDownPrefab: {fileID: 0}
-  bossSpawnPrefabs: []
+  backgroundPrefabs: []
+  bossStrikerType: 0
