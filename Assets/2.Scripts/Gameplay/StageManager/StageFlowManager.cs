@@ -72,31 +72,28 @@ public class StageFlowManager : MonoBehaviour
 
     private void Update()
     {
-        if (isDaehwa) return;
-        if (!isActive) return;
         if (isPaused) return;
         if (isTutorial) return;
         if (isClear) return;
 
-
-        // 음악이 재생 중일 때는 오디오 소스의 시간을 직접 참조하여 음악과 동기화
-        if (stageAudioManager != null && stageAudioManager.musicSource.isPlaying)
+        if (stageAudioManager != null && stageAudioManager.musicSource != null && stageAudioManager.musicSource.isPlaying)
         {
             currentTime = stageAudioManager.musicSource.time + stageAudioManager.bgmOffset;
         }
         else
         {
-            currentTime += Time.deltaTime;
+            if (!isDaehwa)
+                currentTime += Time.deltaTime;
+            else if (!stageAudioManager.musicPlayed)
+                currentTime += Time.deltaTime; // 시작 전 대사면 offset까지는 흐르게
         }
 
         if (stageAudioManager != null && stageAudioManager.musicSource != null && !stageAudioManager.musicPlayed)
         {
             if (stageAudioManager.musicSource.clip != null)
             {
-                // 튜토리얼이 아닐 때만 오프셋을 적용하여 재생
                 if (currentStageData != null && currentStageData.Category != StageCategory.Tutorial)
                 {
-                    // currentTime이 bgmOffset에 도달하면 음악 재생
                     if (currentTime >= stageAudioManager.bgmOffset)
                     {
                         stageAudioManager.musicSource.Play();
@@ -105,7 +102,6 @@ public class StageFlowManager : MonoBehaviour
                 }
                 else
                 {
-                    // 튜토리얼은 즉시 재생
                     stageAudioManager.bgmOffset = 0f;
                     stageAudioManager.musicSource.Play();
                     stageAudioManager.musicPlayed = true;
@@ -116,6 +112,9 @@ public class StageFlowManager : MonoBehaviour
                 stageAudioManager.musicPlayed = true;
             }
         }
+
+        if (isDaehwa) return;
+        if (!isActive) return;
 
         if (phaseEndTime >= 0f && currentTime >= phaseEndTime)
         {
