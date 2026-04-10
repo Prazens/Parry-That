@@ -20,8 +20,8 @@ public class StageFlowManager : MonoBehaviour
     public bool isClear = false;
     private bool tutorialPanelShown = false;
 
-    private float phaseStartTime = -1f;
-    private float phaseEndTime = -1f;
+    private float phaseStartTime = 0f;
+    private float phaseEndTime = 0f;
     public int currentPhaseIndex { get; private set; } = 0;
 
     [SerializeField] private StrikerManager strikerManager;
@@ -112,9 +112,6 @@ public class StageFlowManager : MonoBehaviour
                 stageAudioManager.musicPlayed = true;
             }
         }
-
-        if (isDaehwa) return;
-        if (!isActive) return;
 
         if (phaseEndTime >= 0f && currentTime >= phaseEndTime)
         {
