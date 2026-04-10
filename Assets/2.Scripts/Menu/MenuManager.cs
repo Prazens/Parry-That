@@ -292,6 +292,8 @@ public class MenuManager : Singleton<MenuManager>
             return;
         }
 
+        diskSwipeUI.scrollRect.horizontal = false; // 스테이지 시작 시 디스크 스와이프 잠금
+
         float dur = 2f;
         BlackOverlayObj.SetActive(true);
 
