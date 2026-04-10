@@ -166,7 +166,7 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
 
     public void StartPreviewSound(int stageIndex)
     {
-        if (stageIndex <= 0 || stageIndex >= previewSounds.Count)  // 튜토리얼 프리뷰 재생 못하게 하드코딩
+        if (stageIndex < 0 || stageIndex >= previewSounds.Count)
         {
             MenuAudioManager.Instance.Stop(AudioTag.BGM);  // 사운드 멈춤
             return;
