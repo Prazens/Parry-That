@@ -17,12 +17,13 @@ public class StageFlowManager : MonoBehaviour
     public bool isDaehwa = false;
     public bool isTutorial = false;
     public bool isClear = false;
-    private bool tutorialPanelShown = false;
+    private bool tutorialPanelsCompleted = false;
     private bool currentChartClear = false;
 
     private float phaseStartTime = -1f;
     private float phaseEndTime = -1f;
     public int currentPhaseIndex { get; private set; } = 0;
+    private int currentTutorialPanelIndex = 0;
 
     [SerializeField] private StrikerManager strikerManager;
     [SerializeField] private StageDialogManager dialogueManager;
@@ -232,10 +233,11 @@ public class StageFlowManager : MonoBehaviour
         isDaehwa = false;
         isTutorial = false;
         isClear = false;
-        tutorialPanelShown = false;
+        tutorialPanelsCompleted = false;
         button_active = true;
         victorySequenceTriggered = false;
         victoryStarted = false;
+        currentTutorialPanelIndex = 0;
 
         Time.timeScale = 1f;
 
@@ -305,25 +307,30 @@ public class StageFlowManager : MonoBehaviour
         }
 
         StagePhase phase = phases[currentPhaseIndex];
+
         if (phase == null)
         {
             GoToNextPhase();
             return;
         }
 
-        bool hasTutorialPanel = !tutorialPanelShown && stageChartLoader != null && stageChartLoader.HasCurrentPhaseTutorialPanel(currentStageData);
+        bool hasTutorialPanels = stageChartLoader != null &&
+                        stageChartLoader.HasTutorialPanel(
+                            currentStageData,
+                            currentTutorialPanelIndex,
+                            tutorialPanelsCompleted);
+
         bool hasChart = !currentChartClear && stageChartLoader != null && stageChartLoader.HasCurrentPhaseChart(currentStageData);
         bool hasDialogue = stageChartLoader != null && stageChartLoader.HasCurrentPhaseDialogue(currentStageData);
 
-        if (!hasTutorialPanel && !hasChart && !hasDialogue)
+        if (!hasTutorialPanels && !hasChart && !hasDialogue)
         {
             GoToNextPhase();
             return;
         }
 
-        if (hasTutorialPanel)
+        if (hasTutorialPanels)
         {
-            tutorialPanelShown = true;
             isTutorial = true;
             isDaehwa = false;
             phaseEndTime = -1f;
@@ -333,9 +340,9 @@ public class StageFlowManager : MonoBehaviour
                 stageAudioManager.AudioPause();
             }
 
-            if (staticUIManager != null && stageChartLoader != null)
+            if (staticUIManager != null)
             {
-                GameObject tutorialPanelPrefab = stageChartLoader.GetCurrentPhaseTutorialPanel(currentStageData);
+                GameObject tutorialPanelPrefab = phase.TutorialPanelPrefabs[currentTutorialPanelIndex];
                 staticUIManager.ShowTutorialPanel(tutorialPanelPrefab);
             }
 
@@ -439,12 +446,38 @@ public class StageFlowManager : MonoBehaviour
         if (!isTutorial)
             return;
 
-        isTutorial = false;
-
         if (staticUIManager != null)
         {
             staticUIManager.HideTutorialPanel();
         }
+
+        IReadOnlyList<StagePhase> phases = currentStageData != null ? currentStageData.Phases : null;
+        StagePhase phase = null;
+
+        if (phases != null && currentPhaseIndex >= 0 && currentPhaseIndex < phases.Count)
+        {
+            phase = phases[currentPhaseIndex];
+        }
+
+        currentTutorialPanelIndex++;
+
+        bool hasMorePanels = phase != null &&
+                            phase.HasTutorialPanels &&
+                            currentTutorialPanelIndex < phase.TutorialPanelPrefabs.Count;
+
+        if (hasMorePanels)
+        {
+            if (staticUIManager != null)
+            {
+                GameObject nextPanelPrefab = phase.TutorialPanelPrefabs[currentTutorialPanelIndex];
+                staticUIManager.ShowTutorialPanel(nextPanelPrefab);
+            }
+            return;
+        }
+
+        tutorialPanelsCompleted = true;
+        isTutorial = false;
+        currentTutorialPanelIndex = 0;
 
         if (stageAudioManager != null)
         {
@@ -535,8 +568,9 @@ public class StageFlowManager : MonoBehaviour
     private void GoToNextPhase()
     {
         phaseEndTime = -1f;
-        tutorialPanelShown = false;
+        tutorialPanelsCompleted = false;
         currentChartClear = false;
+        currentTutorialPanelIndex = 0;
         currentPhaseIndex++;
         StartPhase();
     }

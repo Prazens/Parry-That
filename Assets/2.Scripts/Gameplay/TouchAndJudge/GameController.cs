@@ -141,6 +141,8 @@ public class GameController : MonoBehaviour
                 if (stageFlowManager != null && stageFlowManager.isTutorial)
                 {
                     stageFlowManager.CloseTutorialPanel();
+                    canCloseTutorialPanel = false;
+                    tutorialTimer = 0f;
                 }
             }
         }
@@ -153,6 +155,8 @@ public class GameController : MonoBehaviour
             if (stageFlowManager != null && stageFlowManager.isTutorial)
             {
                 stageFlowManager.CloseTutorialPanel();
+                canCloseTutorialPanel = false;
+                tutorialTimer = 0f;
             }
         }
     }
