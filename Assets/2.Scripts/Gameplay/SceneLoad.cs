@@ -4,6 +4,9 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
 
+/// <summary>
+/// 안씀
+/// </summary>
 public class SceneLoad : MonoBehaviour
 {
     public Slider progressbar;

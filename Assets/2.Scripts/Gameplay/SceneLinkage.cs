@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 씬 간 데이터 전달 전담. 안씀, StageSelection으로 대체
+/// </summary>
 public class SceneLinkage : MonoBehaviour
 {
     public static int StageLV = 1;
