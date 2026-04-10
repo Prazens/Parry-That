@@ -219,4 +219,18 @@ public class StageDBManager : Singleton<StageDBManager>
     {
         MenuManager.Instance.diskSwipeUI.UpdateDifficulty((int)StageSelection.SelectedDifficulty);
     }
+
+    [ContextMenu("All Unlock & Refresh Disk Swipe UI")]
+    public void DebugAllUnlock()
+    {
+        for (int stage = 0; stage < stageNumbers; stage++)
+        {
+            for (int diff = 0; diff < diffNumbers[stage]; diff++)
+            {
+                stageCompletion[stage][diff] = true;
+            }
+        }
+        
+        MenuManager.Instance.diskSwipeUI.UpdateDifficulty((int)StageSelection.SelectedDifficulty);
+    }
 }
