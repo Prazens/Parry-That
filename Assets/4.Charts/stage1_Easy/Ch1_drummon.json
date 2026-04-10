@@ -1,112 +1,101 @@
 {
   "bpm": 150,
-  "strikers": [
-    {
-      "strikerType": 0,
-      "direction": 1,
-      "appearTime": 0,
-      "disappearTime": 100
-    },
-    {
-      "strikerType": 0,
-      "direction": 2,
-      "appearTime": 0,
-      "disappearTime": 99
-    }
-  ],
+  "strikerType": 0,
+  "startBeat": 0,
+  "endBeat": 100,
   "notes": [
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 10.0,
       "arriveBeat": 18.0,
       "type": 0
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 11.0,
       "arriveBeat": 19.0,
       "type": 0
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 26.0,
       "arriveBeat": 34.0,
       "type": 0
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 27.0,
       "arriveBeat": 35.0,
       "type": 0
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 36.0,
       "arriveBeat": 44.0,
       "type": 0
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 40.5,
       "arriveBeat": 48.5,
       "type": 0
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 42.0,
       "arriveBeat": 50.0,
       "type": 0
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 43.0,
       "arriveBeat": 51.0,
       "type": 0
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 52.0,
       "arriveBeat": 60.0,
       "type": 0
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 56.5,
       "arriveBeat": 64.5,
       "type": 0
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 58.0,
       "arriveBeat": 66.0,
       "type": 0
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 59.0,
       "arriveBeat": 67.0,
       "type": 0
     },
     {
-      "strikerIndex": 1,
+      "direction": 2,
       "noticeBeat": 73.0,
       "arriveBeat": 81.0,
       "type": 1
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 75.0,
       "arriveBeat": 83.0,
       "type": 1
     },
     {
-      "strikerIndex": 1,
+      "direction": 2,
       "noticeBeat": 89.0,
       "arriveBeat": 97.0,
       "type": 1
     },
     {
-      "strikerIndex": 0,
+      "direction": 1,
       "noticeBeat": 91.0,
       "arriveBeat": 99.0,
       "type": 1

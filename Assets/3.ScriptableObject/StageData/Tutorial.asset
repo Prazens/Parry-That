@@ -49,4 +49,5 @@ MonoBehaviour:
   bgmOffset: 0
   cutInUpPrefab: {fileID: 3830714329297533927, guid: bb12253c0c433044e8ff902aa7058426, type: 3}
   cutInDownPrefab: {fileID: 6510084509892605857, guid: 2beb9ed04b3801b45ae8ed4be314bc73, type: 3}
+  backgroundPrefabs: []
   bossStrikerType: 0

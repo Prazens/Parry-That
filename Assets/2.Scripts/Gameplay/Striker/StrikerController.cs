@@ -71,7 +71,7 @@ public class StrikerController : MonoBehaviour, IAttackHandler<StrikerAttackCont
         else
         {
             commonVisual.OnAttackStart(context);
-            Projectile projectile = FireProjectile(context.note.strikerIndex + 1, StageFlowManager.Instance.BeatToSec(context.note.arriveBeat), context.note.type);
+            Projectile projectile = FireProjectile(context.note.direction, StageFlowManager.Instance.BeatToSec(context.note.arriveBeat), context.note.type);
             if (context.judgeables.Count > 0)
                 context.judgeables[0].AddOnDestroy(projectile.OnJudge);
         }
