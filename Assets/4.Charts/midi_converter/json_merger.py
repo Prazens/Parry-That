@@ -4,7 +4,7 @@ while True:
 
     # 채보 입력
 
-    old_chart_files = [input("변환하고자 하는 구 차트를 입력(엔터로 마치기)\n>>> ").split(".")[0]]
+    old_chart_files = [input("합치고자 하는 차트를 입력(엔터로 마치기)\n>>> ").split(".")[0]]
     while True:
         tmp = input(">>> ").split(".")[0]
         if tmp == "":
@@ -40,12 +40,12 @@ while True:
     for old_chart in old_charts:
 
         if auto_calc_sb:
-            start_beat = min(start_beat, old_chart["appearTime"])
+            start_beat = min(start_beat, old_chart["startBeat"])
         if auto_calc_eb:
-            end_beat = max(end_beat, old_chart["disappearTime"])
+            end_beat = max(end_beat, old_chart["endBeat"])
 
-        notes += [{"direction": old_chart["direction"], "noticeBeat": note["time"],
-                   "arriveBeat": note["arriveTime"], "type": note["type"]}
+        notes += [{"direction": note["direction"], "noticeBeat": note["noticeBeat"],
+                   "arriveBeat": note["arriveBeat"], "type": note["type"]}
                   for note in old_chart["notes"]]
 
     # arriveBeat 기준으로 오름차순 정렬

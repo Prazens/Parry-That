@@ -37,29 +37,17 @@ while True:
 
     # 정보 입력
 
-    bpm = int(input("bpm 입력 >>> "))
+    beatmap = {"bpm": float(input("bpm 입력 >>> ")),
+               "strikerType": int(input(f"스트라이커 인덱스 입력 >>> ")),
+               "startBeat": float(input("스트라이커 등장 박자 입력 >>> ")),
+               "endBeat": float(input("스트라이커 퇴장 박자 입력 >>> ")),
+               "notes": []}
 
     # 디버그용
-    if bpm == -1:
+    if beatmap["bpm"] == -1:
         for msg in midi_file.tracks[0]:
             print(msg)
         exit()
-
-    beatmap = {"bpm": bpm, "strikers": [], "notes": []}
-
-    for i in direction_map.keys():
-        striker_index = input(f"direction {i} 에 대한 스트라이커 인덱스 입력 (입력 없을 시 스킵)\n>>> ")
-        if striker_index == "0" or striker_index == "1" or striker_index == "2" or striker_index == "3":
-            appear_time = float(input("스트라이커 등장 박자 입력 >>> "))
-            disappear_time = float(input("스트라이커 퇴장 박자 입력 >>> "))
-            beatmap["strikers"].append(
-                {
-                    "strikerType": int(striker_index),
-                    "direction": direction_map[i],
-                    "appearTime": appear_time,
-                    "disappearTime": disappear_time
-                }
-            )
 
     converter_arg = input("엔터 키로 변환 시작 >>> ")
 
@@ -88,16 +76,9 @@ while True:
             # 신호인 경우
             if note_info["signal"] == 0:
 
-                # 노트 표기 부분에 스트라이커 인덱스 표기
-                # 나중에 스트라이커 인덱스 대신 방향 표기로 바뀔 수 있음
-                tmp_striker_index = None
-                for i in range(len(beatmap["strikers"])):
-                    if note_info["direction"] == beatmap["strikers"][i]["direction"]:
-                        tmp_striker_index = i
-
                 beatmap["notes"].append(
                     {
-                        "strikerIndex": tmp_striker_index,
+                        "direction": note_info["direction"],
                         "noticeBeat": cur_beat,
                         "arriveBeat": -1,
                         "type": note_info["type"]
@@ -110,6 +91,12 @@ while True:
                 beatmap["notes"][cur_hit_index]["arriveBeat"] = cur_beat
                 dev_print(beatmap["notes"][cur_hit_index])
                 cur_hit_index += 1
+
+    if beatmap["notes"][0]["noticeBeat"] < beatmap["startBeat"]:
+        print(f"경고: 등장 박자 {beatmap["startBeat"]}가 첫 노트의 noticeBeat {beatmap["notes"][0]["noticeBeat"]}보다 늦습니다")
+
+    if beatmap["notes"][-1]["arriveBeat"] > beatmap["endBeat"]:
+        print(f"경고: 퇴장 박자 {beatmap["endBeat"]}가 마지막 노트의 arriveBeat {beatmap["notes"][-1]["arriveBeat"]}보다 빠릅니다")
 
     # json 파일로 내보내기
 
