@@ -1712,7 +1712,6 @@ MonoBehaviour:
   dynamicUIManager: {fileID: 1305503427}
   combo: 0
   score: 0
-  lastNonMissJudge: 0
 --- !u!114 &768575892
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1947,6 +1946,9 @@ MonoBehaviour:
   noticePrefabs:
   - {fileID: 8944649101897603530, guid: a1a040d1248466342a2fead969259d6e, type: 3}
   - {fileID: 1927632040026857286, guid: be06d8ff60b227b44b4cc35980d907d1, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 6591056873429928396, guid: 10041b8411d36ad439e4736645e3711b, type: 3}
   noticeScale: 1
   noticeSpacing: 30
 --- !u!114 &966445858

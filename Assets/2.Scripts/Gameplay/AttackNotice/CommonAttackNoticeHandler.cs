@@ -15,6 +15,8 @@ public class CommonAttackNoticeHandler : MonoBehaviour, IAttackHandler<AttackNot
     public void OnNotice(AttackNoticeContext context)
     {
         NoticeAnim newNotice = AddNotice((AttackType)context.note.type, (Direction)(context.note.strikerIndex + 1));
+        var flow = StageFlowManager.Instance;
+        newNotice.SetPreHitTimer(flow.bpm, flow.BeatToSec(context.note.arriveBeat));
         if (context.judgeables.Count > 0)
         {
             context.judgeables[0].AddOnDestroy(context => RemoveNotice(newNotice, context.isMiss));
