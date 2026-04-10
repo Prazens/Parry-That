@@ -131,16 +131,16 @@ public class StrikerController : MonoBehaviour, IAttackHandler<StrikerAttackCont
         }
         Projectile selectedProjectile = projectilePrefabs[attackType];
 
+        if (attackType == (int)AttackType.Ghost)
+        {
+            direction = (int)DirTool.ReverseDir((Direction)direction);
+        }
         Vector3 startPos = spawnPositions[direction];
         Vector3 targetPos = targetPositions[direction];
 
-        int reverseDir = (int)DirTool.ReverseDir((Direction)direction);
-        Vector3 reverseStartPos = spawnPositions[reverseDir];
-        Vector3 reverseTargetPos = targetPositions[reverseDir];
-
         // 투사체 생성
         Projectile projectile = Instantiate(selectedProjectile, startPos, Quaternion.identity, projectileParent);
-        projectile.Setup(new ProjectileSetupContext((AttackType)attackType, arriveSec, (Direction)direction, startPos, targetPos, reverseStartPos, reverseTargetPos));
+        projectile.Setup(new ProjectileSetupContext((AttackType)attackType, arriveSec, (Direction)direction, startPos, targetPos));
 
         return projectile;
     }

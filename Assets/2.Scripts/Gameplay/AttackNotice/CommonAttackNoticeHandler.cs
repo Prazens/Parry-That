@@ -16,7 +16,8 @@ public class CommonAttackNoticeHandler : MonoBehaviour, IAttackHandler<AttackNot
     {
         NoticeAnim newNotice = AddNotice((AttackType)context.note.type, (Direction)context.note.direction);
         var flow = StageFlowManager.Instance;
-        newNotice.SetPreHitTimer(flow.bpm, flow.BeatToSec(context.note.arriveBeat));
+        // Notice 안 사라지는 버그로 인해 임시차단
+        //newNotice.SetPreHitTimer(flow.bpm, flow.BeatToSec(context.note.arriveBeat));
         if (context.judgeables.Count > 0)
         {
             context.judgeables[0].AddOnDestroy(context => RemoveNotice(newNotice, context.isMiss));

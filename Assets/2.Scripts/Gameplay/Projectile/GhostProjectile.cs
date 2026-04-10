@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Legacy: 중간에 방향 바뀌는 버전
+// 일단 코드는 유지
+
+/*
 public class GhostProjectile : Projectile
 {
     private Vector3 startPosition; // 시작 위치
@@ -117,3 +121,4 @@ public class GhostProjectile : Projectile
         }
     }
 }
+*/
