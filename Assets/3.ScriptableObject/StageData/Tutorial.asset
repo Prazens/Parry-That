@@ -18,7 +18,7 @@ MonoBehaviour:
   phases:
   - tutorialPanelPrefab: {fileID: 0}
     chartJson: {fileID: 0}
-    dialogue: {fileID: 11400000, guid: 53607827b45e50c4ca81022734d00bc4, type: 2}
+    dialogue: {fileID: 11400000, guid: e6dce96cc3cb1c840b21b8e8f14e0361, type: 2}
     dialogueAudioPolicy: 2
   - tutorialPanelPrefab: {fileID: 2877070203629870375, guid: 66b7aa5eb10940c4380d260ca0d5b7fe, type: 3}
     chartJson: {fileID: 4900000, guid: 7d147571c107e174b9e8be5d1267cf34, type: 3}
@@ -26,27 +26,27 @@ MonoBehaviour:
     dialogueAudioPolicy: 2
   - tutorialPanelPrefab: {fileID: 0}
     chartJson: {fileID: 4900000, guid: 3b501cbff2be6e84d8ac711ded909ca5, type: 3}
-    dialogue: {fileID: 11400000, guid: 53607827b45e50c4ca81022734d00bc4, type: 2}
+    dialogue: {fileID: 11400000, guid: 120dca027c910894b978ac91b52222c1, type: 2}
     dialogueAudioPolicy: 2
   - tutorialPanelPrefab: {fileID: 0}
     chartJson: {fileID: 4900000, guid: 43afd0590c3b5b64aa4870d8d0d4ff93, type: 3}
-    dialogue: {fileID: 11400000, guid: 53607827b45e50c4ca81022734d00bc4, type: 2}
+    dialogue: {fileID: 11400000, guid: 50eb25d5c5ded0f49b9457030df1038a, type: 2}
     dialogueAudioPolicy: 2
   - tutorialPanelPrefab: {fileID: 0}
     chartJson: {fileID: 4900000, guid: f0868de66cc495d419f7e6dbda765bab, type: 3}
-    dialogue: {fileID: 11400000, guid: 53607827b45e50c4ca81022734d00bc4, type: 2}
+    dialogue: {fileID: 11400000, guid: b9349ea105745924284654db7043c2fd, type: 2}
     dialogueAudioPolicy: 2
   - tutorialPanelPrefab: {fileID: 0}
     chartJson: {fileID: 4900000, guid: 1d1d340e672778a498f7909de9f7bc13, type: 3}
-    dialogue: {fileID: 11400000, guid: 53607827b45e50c4ca81022734d00bc4, type: 2}
+    dialogue: {fileID: 11400000, guid: 9d39a05b81e30864dafe0c9ac11de33d, type: 2}
     dialogueAudioPolicy: 2
   - tutorialPanelPrefab: {fileID: 0}
     chartJson: {fileID: 4900000, guid: 2e93cff40ab2639418e4ab2748a1b473, type: 3}
-    dialogue: {fileID: 11400000, guid: 53607827b45e50c4ca81022734d00bc4, type: 2}
+    dialogue: {fileID: 11400000, guid: e9eb33b05bb261047a3320b404178328, type: 2}
     dialogueAudioPolicy: 2
   bgm: {fileID: 8300000, guid: a096ae6f41b26364e9ef8318bdb25ed2, type: 3}
   overrideBgmOffset: 0
   bgmOffset: 0
   cutInUpPrefab: {fileID: 3830714329297533927, guid: bb12253c0c433044e8ff902aa7058426, type: 3}
   cutInDownPrefab: {fileID: 6510084509892605857, guid: 2beb9ed04b3801b45ae8ed4be314bc73, type: 3}
-  bossSpawnPrefabs: []
+  bossStrikerType: 0

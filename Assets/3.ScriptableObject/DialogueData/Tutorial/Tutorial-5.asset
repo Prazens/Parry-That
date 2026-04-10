@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5b262969ac422d438c02fa030b01cd5, type: 3}
+  m_Name: Tutorial-5
+  m_EditorClassIdentifier: 
+  lines:
+  - speakerTag: 1
+    expressionTag: 0
+    text: "\uADF8\uB7F0\uB370..\uC138\uC0C1\uC5D0 \uC18C\uB9AC\uAC00 \uC5C6\uC5B4\uC9C4
+      \uAC70 \uC544\uB2C8\uC5C8\uC5B4? \uC774 \uBA54\uD2B8\uB85C\uB188 \uC18C\uB9AC\uB791
+      \uBC1B\uC544\uCE60 \uB54C \uB098\uB294 \uC18C\uB9AC \uAC19\uC740 \uAC74 \uB2E4
+      \uBB50\uC57C?"
+    textRevealDuration: 1
+    waitAfterReveal: 1
+    waitBeforeReveal: 0
+    speakerNameOverride: 
+  - speakerTag: 2
+    expressionTag: 0
+    text: "\uADF8\uAC74 \uC774 \uC9C0\uC5ED\uC5D0 \uB0A8\uC740 \uB9C8\uC9C0\uB9C9
+      \uC18C\uB9AC\uC785\uB2C8\uB2E4. \uC6A9\uC0AC\uB2D8\uAED8\uC11C \uC800\uB4E4\uC744
+      \uD574\uBC29\uC2DC\uD0A4\uC9C0 \uBABB\uD558\uBA74 \uADF8\uB9C8\uC800\uB3C4
+      \uB0A0\uC544\uAC08 \uAC81\uB2C8\uB2E4!"
+    textRevealDuration: 1
+    waitAfterReveal: 1
+    waitBeforeReveal: 0
+    speakerNameOverride: 
+  - speakerTag: 1
+    expressionTag: 0
+    text: "\uC18C\uB9AC\uB3C4 \uC5C6\uB294\uB370 \uC6B0\uB9AC \uB300\uD654\uB294
+      \uC5B4\uB5BB\uAC8C \uD558\uACE0 \uC788\uB294 \uAC74\uB370?"
+    textRevealDuration: 1
+    waitAfterReveal: 1
+    waitBeforeReveal: 0
+    speakerNameOverride: 
+  - speakerTag: 2
+    expressionTag: 0
+    text: "\uADF8\uC57C \uC774\uAC74 \uD14D\uC2A4\uD2B8\uC796\uC544\uC694.\uACF5\uBD80
+      \uC548 \uD55C \uD2F0 \uC880 \uB0B4\uC9C0 \uB9C8\uC138\uC694."
+    textRevealDuration: 1
+    waitAfterReveal: 1
+    waitBeforeReveal: 0
+    speakerNameOverride: 
+  - speakerTag: 1
+    expressionTag: 0
+    text: ...
+    textRevealDuration: 1
+    waitAfterReveal: 1
+    waitBeforeReveal: 0
+    speakerNameOverride: 
+  - speakerTag: 2
+    expressionTag: 4
+    text: "\uC5B4, \uC800 \uB140\uC11D\uB4E4 \uC81C\uB300\uB85C \uD654\uB0AC\uB098\uBD10\uC694.
+      \uC544\uC8FC \uAC15\uD55C \uACF5\uACA9\uC774 \uB4E4\uC5B4\uC62C \uAC83 \uAC19\uC544\uC694!!!!"
+    textRevealDuration: 1
+    waitAfterReveal: 1
+    waitBeforeReveal: 0
+    speakerNameOverride: 
+  - speakerTag: 2
+    expressionTag: 0
+    text: "\uC138 \uBC88\uC9F8 \uD30C\uB780 \uB290\uB08C\uD45C\uAC00 \uB098\uD0C0\uB098\uB294
+      \uD0C0\uC774\uBC0D\uC5D0 \uD130\uCE58\uD55C \uD6C4 \uC190\uC744 \uB5BC\uC9C0
+      \uC54A\uACE0 \uD654\uBA74\uC744 \uAFB9 \uB204\uB974\uACE0 \uC788\uC5B4\uC57C
+      \uD574\uC694!!"
+    textRevealDuration: 1
+    waitAfterReveal: 1
+    waitBeforeReveal: 0
+    speakerNameOverride: 
+  - speakerTag: 2
+    expressionTag: 0
+    text: "\uADF8\uB9AC\uACE0 \uC138 \uBC88\uC9F8 \uB290\uB08C\uD45C\uAC00 \uC0AC\uB77C\uC9C0\uB294
+      \uD0C0\uC774\uBC0D\uC5D0 \uC190\uC744 \uB5BC\uBA74 \uB3FC\uC694!!!!"
+    textRevealDuration: 1
+    waitAfterReveal: 1
+    waitBeforeReveal: 0
+    speakerNameOverride: 
