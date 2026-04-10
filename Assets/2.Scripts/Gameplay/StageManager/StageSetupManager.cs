@@ -172,8 +172,16 @@ public class StageSetupManager : MonoBehaviour
                 }
 
                 GameObject spawnedObject;
-                var chartData = JsonUtility.FromJson<ChartData>(stageData.Phases[0].ChartJson.text);
-                float bpm = chartData.bpm;
+                float bpm = 120f;
+                foreach (StagePhase phase in stageData.Phases)
+                {
+                    if (phase.HasChart)
+                    {
+                        ChartData chartData = JsonUtility.FromJson<ChartData>(phase.ChartJson.text);
+                        bpm = chartData.bpm;
+                        break;
+                    }
+                }
 
                 if (parent != null)
                 {
