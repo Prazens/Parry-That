@@ -51,6 +51,7 @@ public class NotePerformer : MonoBehaviour
             { AttackType.Strong, commonAttackNoticeHandler },
             { AttackType.HoldStart, holdAttackNoticeHandler },
             { AttackType.HoldStop, holdAttackNoticeHandler },
+            { AttackType.Ghost, commonAttackNoticeHandler },
         };
 
         attackJudgeHandlerDict = new()
@@ -59,6 +60,7 @@ public class NotePerformer : MonoBehaviour
             { AttackType.Strong, strongAttackJudgeHandler },
             { AttackType.HoldStart, holdAttackJudgeHandler },
             { AttackType.HoldStop, holdAttackJudgeHandler },
+            { AttackType.Ghost, strongAttackJudgeHandler },
         };
 
         judgeSystem.Judged -= OnJudge;

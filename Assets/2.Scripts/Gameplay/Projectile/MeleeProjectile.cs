@@ -19,11 +19,11 @@ public class MeleeProjectile : Projectile
 
     public override void Setup(ProjectileSetupContext context)
     {
+        AttackType attackType = context.attackType;
+        arriveSec = context.arriveSec;
         Direction location = context.location;
         Vector3 startPos = context.startPos;
         Vector3 targetPos = context.targetPos;
-        float arriveSec = context.arriveSec;
-        AttackType attackType = context.attackType;
 
         animator.runtimeAnimatorController = directionOverrides[(int)location - 1];
         bladeAnimator.SetInteger("bladeDirection", (int)location);
@@ -33,7 +33,6 @@ public class MeleeProjectile : Projectile
         startPosition = startPos;
         Vector3 dirVec = (targetPos - startPos).normalized;
         targetPosition = targetPos - dirVec * bladeDistanceOffset;
-        this.arriveSec = arriveSec;
         duration = arriveSec - StageFlowManager.Instance.currentTime;
 
         animator.SetInteger("attackType", (int)attackType);
