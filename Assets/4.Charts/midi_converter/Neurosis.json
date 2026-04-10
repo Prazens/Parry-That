@@ -522,465 +522,405 @@
     },
     {
       "direction": 1,
-      "noticeBeat": 160.1640625,
-      "arriveBeat": 169.1640625,
-      "type": 0
-    },
-    {
-      "direction": 1,
-      "noticeBeat": 160.9140625,
-      "arriveBeat": 171.1640625,
-      "type": 1
-    },
-    {
-      "direction": 1,
-      "noticeBeat": 162.1640625,
-      "arriveBeat": 173.1640625,
-      "type": 0
-    },
-    {
-      "direction": 1,
-      "noticeBeat": 162.9140625,
-      "arriveBeat": 175.1640625,
-      "type": 0
-    },
-    {
-      "direction": 1,
-      "noticeBeat": 163.6640625,
-      "arriveBeat": 177.1640625,
-      "type": 1
-    },
-    {
-      "direction": 1,
-      "noticeBeat": 164.1640625,
-      "arriveBeat": 179.1640625,
-      "type": 0
-    },
-    {
-      "direction": 1,
-      "noticeBeat": 164.9140625,
-      "arriveBeat": 181.1640625,
-      "type": 1
-    },
-    {
-      "direction": 1,
-      "noticeBeat": 166.1640625,
-      "arriveBeat": 183.1640625,
-      "type": 0
-    },
-    {
-      "direction": 1,
-      "noticeBeat": 166.9140625,
-      "arriveBeat": 185.1640625,
-      "type": 0
-    },
-    {
-      "direction": 1,
-      "noticeBeat": 167.4140625,
-      "arriveBeat": 187.1640625,
-      "type": 1
-    },
-    {
-      "direction": 1,
       "noticeBeat": 168.1640625,
-      "arriveBeat": 189.1640625,
+      "arriveBeat": 169.1640625,
       "type": 4
     },
     {
       "direction": 2,
       "noticeBeat": 170.1640625,
-      "arriveBeat": 191.1640625,
+      "arriveBeat": 171.1640625,
       "type": 4
     },
     {
       "direction": 2,
       "noticeBeat": 172.1640625,
-      "arriveBeat": 193.1640625,
+      "arriveBeat": 173.1640625,
       "type": 4
     },
     {
       "direction": 3,
       "noticeBeat": 174.1640625,
-      "arriveBeat": 196.1640625,
+      "arriveBeat": 175.1640625,
       "type": 4
     },
     {
       "direction": 1,
       "noticeBeat": 176.1640625,
-      "arriveBeat": 196.6640625,
+      "arriveBeat": 177.1640625,
       "type": 4
     },
     {
       "direction": 4,
       "noticeBeat": 178.1640625,
-      "arriveBeat": 197.6640625,
+      "arriveBeat": 179.1640625,
       "type": 4
     },
     {
       "direction": 3,
       "noticeBeat": 180.1640625,
-      "arriveBeat": 198.0,
+      "arriveBeat": 181.1640625,
       "type": 4
     },
     {
       "direction": 2,
       "noticeBeat": 182.1640625,
-      "arriveBeat": 198.328125,
+      "arriveBeat": 183.1640625,
       "type": 4
     },
     {
       "direction": 4,
       "noticeBeat": 184.1640625,
-      "arriveBeat": 198.6640625,
+      "arriveBeat": 185.1640625,
       "type": 4
     },
     {
       "direction": 1,
       "noticeBeat": 186.1640625,
-      "arriveBeat": 199.0,
+      "arriveBeat": 187.1640625,
       "type": 4
     },
     {
       "direction": 2,
       "noticeBeat": 188.1640625,
-      "arriveBeat": 201.1640625,
+      "arriveBeat": 189.1640625,
       "type": 4
     },
     {
       "direction": 2,
       "noticeBeat": 190.1640625,
-      "arriveBeat": 204.1640625,
+      "arriveBeat": 191.1640625,
       "type": 4
     },
     {
       "direction": 1,
       "noticeBeat": 192.1640625,
-      "arriveBeat": 204.6640625,
+      "arriveBeat": 196.1640625,
       "type": 0
     },
     {
       "direction": 1,
       "noticeBeat": 192.6640625,
-      "arriveBeat": 205.6640625,
+      "arriveBeat": 196.6640625,
       "type": 0
     },
     {
       "direction": 1,
+      "noticeBeat": 193.1640625,
+      "arriveBeat": 197.1640625,
+      "type": 1
+    },
+    {
+      "direction": 1,
       "noticeBeat": 193.6640625,
-      "arriveBeat": 206.0,
+      "arriveBeat": 197.6640625,
       "type": 0
     },
     {
       "direction": 1,
       "noticeBeat": 194.0,
-      "arriveBeat": 206.328125,
+      "arriveBeat": 198.0,
       "type": 0
     },
     {
       "direction": 1,
       "noticeBeat": 194.328125,
-      "arriveBeat": 206.6640625,
+      "arriveBeat": 198.328125,
       "type": 0
     },
     {
       "direction": 1,
       "noticeBeat": 194.6640625,
-      "arriveBeat": 207.0,
+      "arriveBeat": 198.6640625,
       "type": 0
     },
     {
       "direction": 1,
       "noticeBeat": 195.0,
-      "arriveBeat": 209.1640625,
+      "arriveBeat": 199.0,
       "type": 0
-    },
-    {
-      "direction": 1,
-      "noticeBeat": 197.1640625,
-      "arriveBeat": 212.1640625,
-      "type": 1
     },
     {
       "direction": 2,
       "noticeBeat": 200.1640625,
-      "arriveBeat": 212.6640625,
+      "arriveBeat": 204.1640625,
       "type": 0
     },
     {
       "direction": 2,
       "noticeBeat": 200.6640625,
-      "arriveBeat": 213.6640625,
+      "arriveBeat": 204.6640625,
       "type": 0
     },
     {
       "direction": 2,
+      "noticeBeat": 201.1640625,
+      "arriveBeat": 205.1640625,
+      "type": 1
+    },
+    {
+      "direction": 2,
       "noticeBeat": 201.6640625,
-      "arriveBeat": 214.0,
+      "arriveBeat": 205.6640625,
       "type": 0
     },
     {
       "direction": 2,
       "noticeBeat": 202.0,
-      "arriveBeat": 214.328125,
+      "arriveBeat": 206.0,
       "type": 0
     },
     {
       "direction": 2,
       "noticeBeat": 202.328125,
-      "arriveBeat": 214.6640625,
+      "arriveBeat": 206.328125,
       "type": 0
     },
     {
       "direction": 2,
       "noticeBeat": 202.6640625,
-      "arriveBeat": 215.0,
+      "arriveBeat": 206.6640625,
       "type": 0
     },
     {
       "direction": 2,
       "noticeBeat": 203.0,
-      "arriveBeat": 220.1640625,
+      "arriveBeat": 207.0,
       "type": 0
-    },
-    {
-      "direction": 2,
-      "noticeBeat": 205.1640625,
-      "arriveBeat": 221.0,
-      "type": 1
     },
     {
       "direction": 1,
       "noticeBeat": 208.1640625,
-      "arriveBeat": 221.6640625,
+      "arriveBeat": 212.1640625,
       "type": 0
     },
     {
       "direction": 1,
       "noticeBeat": 208.6640625,
-      "arriveBeat": 222.1640625,
+      "arriveBeat": 212.6640625,
       "type": 0
     },
     {
       "direction": 1,
+      "noticeBeat": 209.1640625,
+      "arriveBeat": 213.1640625,
+      "type": 1
+    },
+    {
+      "direction": 1,
       "noticeBeat": 209.6640625,
-      "arriveBeat": 224.0,
+      "arriveBeat": 213.6640625,
       "type": 0
     },
     {
       "direction": 1,
       "noticeBeat": 210.0,
-      "arriveBeat": 234.1640625,
+      "arriveBeat": 214.0,
       "type": 0
     },
     {
       "direction": 1,
       "noticeBeat": 210.328125,
-      "arriveBeat": 240.0,
+      "arriveBeat": 214.328125,
       "type": 0
     },
     {
       "direction": 1,
       "noticeBeat": 210.6640625,
-      "arriveBeat": 256.0,
+      "arriveBeat": 214.6640625,
       "type": 0
     },
     {
       "direction": 1,
       "noticeBeat": 211.0,
-      "arriveBeat": 256.828125,
+      "arriveBeat": 215.0,
       "type": 0
     },
     {
       "direction": 1,
-      "noticeBeat": 213.1640625,
-      "arriveBeat": 258.328125,
-      "type": 1
-    },
-    {
-      "direction": 1,
       "noticeBeat": 216.1640625,
-      "arriveBeat": 259.6640625,
+      "arriveBeat": 220.1640625,
       "type": 0
     },
     {
       "direction": 1,
       "noticeBeat": 217.0,
-      "arriveBeat": 260.1640625,
+      "arriveBeat": 221.0,
       "type": 0
     },
     {
       "direction": 1,
       "noticeBeat": 217.6640625,
-      "arriveBeat": 261.6640625,
+      "arriveBeat": 221.6640625,
       "type": 0
     },
     {
       "direction": 1,
       "noticeBeat": 218.1640625,
-      "arriveBeat": 263.1640625,
+      "arriveBeat": 222.1640625,
       "type": 4
     },
     {
       "direction": 1,
       "noticeBeat": 222.328125,
-      "arriveBeat": 264.1640625,
+      "arriveBeat": 224.0,
       "type": 2
     },
     {
       "direction": 1,
       "noticeBeat": 232.5,
-      "arriveBeat": 265.6640625,
+      "arriveBeat": 234.1640625,
       "type": 3
     },
     {
       "direction": 1,
       "noticeBeat": 238.1640625,
-      "arriveBeat": 267.1640625,
+      "arriveBeat": 240.0,
       "type": 2
     },
     {
       "direction": 1,
       "noticeBeat": 254.1640625,
-      "arriveBeat": 268.828125,
+      "arriveBeat": 256.0,
       "type": 3
     },
     {
       "direction": 1,
       "noticeBeat": 256.1640625,
-      "arriveBeat": 270.328125,
+      "arriveBeat": 260.1640625,
+      "type": 1
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 256.828125,
+      "arriveBeat": 260.828125,
       "type": 1
     },
     {
       "direction": 1,
       "noticeBeat": 257.6640625,
-      "arriveBeat": 271.6640625,
+      "arriveBeat": 261.6640625,
+      "type": 1
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 258.328125,
+      "arriveBeat": 262.328125,
       "type": 1
     },
     {
       "direction": 1,
       "noticeBeat": 259.1640625,
-      "arriveBeat": 272.828125,
+      "arriveBeat": 263.1640625,
       "type": 1
     },
     {
       "direction": 2,
-      "noticeBeat": 260.828125,
-      "arriveBeat": 274.328125,
+      "noticeBeat": 259.6640625,
+      "arriveBeat": 263.6640625,
       "type": 1
     },
     {
-      "direction": 2,
-      "noticeBeat": 262.328125,
-      "arriveBeat": 275.6640625,
-      "type": 1
-    },
-    {
-      "direction": 2,
-      "noticeBeat": 263.6640625,
-      "arriveBeat": 276.1640625,
-      "type": 1
+      "direction": 1,
+      "noticeBeat": 264.1640625,
+      "arriveBeat": 268.1640625,
+      "type": 4
     },
     {
       "direction": 2,
       "noticeBeat": 264.828125,
-      "arriveBeat": 277.6640625,
+      "arriveBeat": 268.828125,
+      "type": 4
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 265.6640625,
+      "arriveBeat": 269.6640625,
       "type": 4
     },
     {
       "direction": 2,
       "noticeBeat": 266.328125,
-      "arriveBeat": 279.1640625,
+      "arriveBeat": 270.328125,
+      "type": 4
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 267.1640625,
+      "arriveBeat": 271.1640625,
       "type": 4
     },
     {
       "direction": 2,
       "noticeBeat": 267.6640625,
-      "arriveBeat": 280.1640625,
+      "arriveBeat": 271.6640625,
       "type": 4
-    },
-    {
-      "direction": 2,
-      "noticeBeat": 268.1640625,
-      "arriveBeat": 281.6640625,
-      "type": 0
-    },
-    {
-      "direction": 2,
-      "noticeBeat": 269.6640625,
-      "arriveBeat": 283.1640625,
-      "type": 0
-    },
-    {
-      "direction": 2,
-      "noticeBeat": 271.1640625,
-      "arriveBeat": 284.828125,
-      "type": 0
     },
     {
       "direction": 1,
       "noticeBeat": 272.1640625,
-      "arriveBeat": 286.328125,
+      "arriveBeat": 276.1640625,
+      "type": 1
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 272.828125,
+      "arriveBeat": 276.828125,
       "type": 1
     },
     {
       "direction": 1,
       "noticeBeat": 273.6640625,
-      "arriveBeat": -1,
+      "arriveBeat": 277.6640625,
+      "type": 1
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 274.328125,
+      "arriveBeat": 278.328125,
       "type": 1
     },
     {
       "direction": 1,
       "noticeBeat": 275.1640625,
-      "arriveBeat": -1,
+      "arriveBeat": 279.1640625,
       "type": 1
     },
     {
       "direction": 2,
-      "noticeBeat": 276.828125,
-      "arriveBeat": -1,
+      "noticeBeat": 275.6640625,
+      "arriveBeat": 279.6640625,
       "type": 1
     },
     {
       "direction": 2,
-      "noticeBeat": 278.328125,
-      "arriveBeat": -1,
-      "type": 1
-    },
-    {
-      "direction": 2,
-      "noticeBeat": 279.6640625,
-      "arriveBeat": -1,
+      "noticeBeat": 280.1640625,
+      "arriveBeat": 284.1640625,
       "type": 1
     },
     {
       "direction": 2,
       "noticeBeat": 280.828125,
-      "arriveBeat": -1,
+      "arriveBeat": 284.828125,
       "type": 4
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 281.6640625,
+      "arriveBeat": 285.6640625,
+      "type": 1
     },
     {
       "direction": 2,
       "noticeBeat": 282.328125,
-      "arriveBeat": -1,
+      "arriveBeat": 286.328125,
       "type": 4
     },
     {
       "direction": 2,
-      "noticeBeat": 284.1640625,
-      "arriveBeat": -1,
-      "type": 0
-    },
-    {
-      "direction": 2,
-      "noticeBeat": 285.6640625,
-      "arriveBeat": -1,
-      "type": 0
-    },
-    {
-      "direction": 2,
-      "noticeBeat": 287.1640625,
-      "arriveBeat": -1,
-      "type": 0
+      "noticeBeat": 283.1640625,
+      "arriveBeat": 287.1640625,
+      "type": 1
     }
   ]
 }
