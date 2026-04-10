@@ -82,6 +82,7 @@ public class StageData : ScriptableObject
     [SerializeField] private AudioClip bgm;
     [SerializeField] private bool overrideBgmOffset = false;
     [SerializeField] private float bgmOffset = 0f;
+    [SerializeField] private AudioClip holdingSound;
 
     [Header("CutIn UI")]
     [SerializeField] private GameObject cutInUpPrefab;
@@ -104,6 +105,7 @@ public class StageData : ScriptableObject
     public AudioClip Bgm => bgm;
     public bool OverrideBgmOffset => overrideBgmOffset;
     public float BgmOffset => bgmOffset;
+    public AudioClip HoldingSound => holdingSound;
 
     public GameObject CutInUpPrefab => cutInUpPrefab;
     public GameObject CutInDownPrefab => cutInDownPrefab;

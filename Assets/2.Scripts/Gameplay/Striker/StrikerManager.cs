@@ -76,6 +76,12 @@ public class StrikerManager : MonoBehaviour
         }
         
         strikerInstance.Init(spawnPositions, targetPositions, projectileParent, dynamicUIManager);
+        if (StageFlowManager.Instance != null &&
+            StageFlowManager.Instance.currentStageData != null &&
+            strikerInstance.Sound != null)
+        {
+            strikerInstance.Sound.holdingSound = StageFlowManager.Instance.currentStageData.HoldingSound;
+        }
     }
 
     public void ClearImmediately()
