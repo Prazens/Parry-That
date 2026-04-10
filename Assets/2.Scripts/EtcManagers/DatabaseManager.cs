@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 게임 전체에서 공통으로 접근하는 데이터 관리 전담. 안씀. StageDBManager로 대체.
+/// </summary>
 public class DatabaseManager : Singleton<DatabaseManager>
 {
     public int[] score;

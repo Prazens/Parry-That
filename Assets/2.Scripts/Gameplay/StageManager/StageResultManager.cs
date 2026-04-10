@@ -113,29 +113,37 @@ public class StageResultManager : MonoBehaviour
 
     private void SaveBestScoreIfNeeded()
     {
-        DatabaseManager theDatabase = FindObjectOfType<DatabaseManager>();
+        StageDBManager theDatabase = FindObjectOfType<StageDBManager>();
         if (theDatabase == null) return;
 
-        int stageIndex = SceneLinkage.StageLV;
+        int stageIndex = StageSelection.SelectedStageId;
+        int difficultyIndex = (int)StageSelection.SelectedDifficulty;
 
-        if (LatestScore > theDatabase.score[stageIndex])
+        if (LatestScore > theDatabase.highScores[stageIndex][difficultyIndex])
         {
-            theDatabase.score[stageIndex] = LatestScore;
-            theDatabase.SaveScoreData();
+            theDatabase.highScores[stageIndex][difficultyIndex] = LatestScore;
+            theDatabase.SaveStageData();
         }
     }
 
     private void SaveStarsIfNeeded()
     {
-        DatabaseManager theDatabase = FindObjectOfType<DatabaseManager>();
+        StageDBManager theDatabase = FindObjectOfType<StageDBManager>();
         if (theDatabase == null) return;
 
-        int stageIndex = SceneLinkage.StageLV;
+        int stageIndex = StageSelection.SelectedStageId;
+        int difficultyIndex = (int)StageSelection.SelectedDifficulty;
 
-        if (LatestStarCount > theDatabase.star[stageIndex])
+        if (LatestStarCount > theDatabase.starRatings[stageIndex][difficultyIndex])
         {
-            theDatabase.star[stageIndex] = LatestStarCount;
-            theDatabase.SaveStarData();
+            if (theDatabase.stageCompletion[stageIndex][difficultyIndex] == false)
+            {
+                // 최초 클리어, 해금
+                theDatabase.stageCompletion[stageIndex][difficultyIndex] = true;
+            }
+
+            theDatabase.starRatings[stageIndex][difficultyIndex] = LatestStarCount;
+            theDatabase.SaveStageData();
         }
     }
 }
