@@ -5,242 +5,242 @@
       "strikerType": 3,
       "direction": 0,
       "appearTime": 1.0,
-      "disappearTime": 96.5
+      "disappearTime": 95.604666667
     },
     {
       "strikerType": 3,
       "direction": 1,
       "appearTime": 1.0,
-      "disappearTime": 96.5
+      "disappearTime": 95.604666667
     },
     {
       "strikerType": 3,
       "direction": 2,
       "appearTime": 1.0,
-      "disappearTime": 96.5
+      "disappearTime": 95.604666667
     },
     {
       "strikerType": 3,
       "direction": 3,
       "appearTime": 1.0,
-      "disappearTime": 96.5
+      "disappearTime": 95.604666667
     }
   ],
   "notes": [
     {
       "strikerIndex": 0,
-      "noticeBeat": 33.0,
-      "arriveBeat": 37.0,
+      "noticeBeat": 32.104666667,
+      "arriveBeat": 36.104666667,
       "type": 0
     },
     {
       "strikerIndex": 1,
-      "noticeBeat": 34.0,
-      "arriveBeat": 38.0,
-      "type": 0
-    },
-    {
-      "strikerIndex": 2,
-      "noticeBeat": 35.0,
-      "arriveBeat": 39.0,
-      "type": 0
-    },
-    {
-      "strikerIndex": 3,
-      "noticeBeat": 36.0,
-      "arriveBeat": 40.0,
-      "type": 0
-    },
-    {
-      "strikerIndex": 0,
-      "noticeBeat": 41.0,
-      "arriveBeat": 45.0,
-      "type": 0
-    },
-    {
-      "strikerIndex": 1,
-      "noticeBeat": 42.0,
-      "arriveBeat": 46.0,
+      "noticeBeat": 33.104666667,
+      "arriveBeat": 37.104666667,
       "type": 0
     },
     {
       "strikerIndex": 2,
-      "noticeBeat": 43.0,
-      "arriveBeat": 47.0,
+      "noticeBeat": 34.104666667,
+      "arriveBeat": 38.104666667,
       "type": 0
     },
     {
       "strikerIndex": 3,
-      "noticeBeat": 44.0,
-      "arriveBeat": 48.0,
+      "noticeBeat": 35.104666667,
+      "arriveBeat": 39.104666667,
       "type": 0
     },
     {
       "strikerIndex": 0,
-      "noticeBeat": 49.0,
-      "arriveBeat": 53.0,
+      "noticeBeat": 40.104666667,
+      "arriveBeat": 44.104666667,
+      "type": 0
+    },
+    {
+      "strikerIndex": 1,
+      "noticeBeat": 41.104666667,
+      "arriveBeat": 45.104666667,
+      "type": 0
+    },
+    {
+      "strikerIndex": 2,
+      "noticeBeat": 42.104666667,
+      "arriveBeat": 46.104666667,
+      "type": 0
+    },
+    {
+      "strikerIndex": 3,
+      "noticeBeat": 43.104666667,
+      "arriveBeat": 47.104666667,
+      "type": 0
+    },
+    {
+      "strikerIndex": 0,
+      "noticeBeat": 48.104666667,
+      "arriveBeat": 52.104666667,
       "type": 1
     },
     {
       "strikerIndex": 1,
-      "noticeBeat": 50.0,
-      "arriveBeat": 54.0,
+      "noticeBeat": 49.104666667,
+      "arriveBeat": 53.104666667,
       "type": 1
     },
     {
       "strikerIndex": 0,
-      "noticeBeat": 51.0,
-      "arriveBeat": 55.0,
+      "noticeBeat": 50.104666667,
+      "arriveBeat": 54.104666667,
       "type": 1
     },
     {
       "strikerIndex": 1,
-      "noticeBeat": 52.0,
-      "arriveBeat": 56.0,
+      "noticeBeat": 51.104666667,
+      "arriveBeat": 55.104666667,
       "type": 1
     },
     {
       "strikerIndex": 2,
-      "noticeBeat": 57.0,
-      "arriveBeat": 61.0,
+      "noticeBeat": 56.104666667,
+      "arriveBeat": 60.104666667,
       "type": 1
     },
     {
       "strikerIndex": 3,
-      "noticeBeat": 58.0,
-      "arriveBeat": 62.0,
+      "noticeBeat": 57.104666667,
+      "arriveBeat": 61.104666667,
       "type": 1
     },
     {
       "strikerIndex": 2,
-      "noticeBeat": 59.0,
-      "arriveBeat": 63.0,
+      "noticeBeat": 58.104666667,
+      "arriveBeat": 62.104666667,
       "type": 1
     },
     {
       "strikerIndex": 3,
-      "noticeBeat": 60.0,
-      "arriveBeat": 64.0,
+      "noticeBeat": 59.104666667,
+      "arriveBeat": 63.104666667,
       "type": 1
     },
     {
       "strikerIndex": 0,
-      "noticeBeat": 65.0,
-      "arriveBeat": 73.0,
+      "noticeBeat": 64.104666667,
+      "arriveBeat": 72.104666667,
       "type": 0
     },
     {
       "strikerIndex": 0,
-      "noticeBeat": 66.0,
-      "arriveBeat": 74.0,
+      "noticeBeat": 65.104666667,
+      "arriveBeat": 73.104666667,
       "type": 1
     },
     {
       "strikerIndex": 1,
-      "noticeBeat": 66.5,
-      "arriveBeat": 74.5,
+      "noticeBeat": 65.604666667,
+      "arriveBeat": 73.604666667,
       "type": 1
     },
     {
       "strikerIndex": 0,
-      "noticeBeat": 68.0,
-      "arriveBeat": 76.0,
+      "noticeBeat": 67.104666667,
+      "arriveBeat": 75.104666667,
       "type": 1
     },
     {
       "strikerIndex": 1,
-      "noticeBeat": 68.5,
-      "arriveBeat": 76.5,
+      "noticeBeat": 67.604666667,
+      "arriveBeat": 75.604666667,
       "type": 1
     },
     {
       "strikerIndex": 0,
-      "noticeBeat": 70.0,
-      "arriveBeat": 78.0,
+      "noticeBeat": 69.104666667,
+      "arriveBeat": 77.104666667,
       "type": 1
     },
     {
       "strikerIndex": 1,
-      "noticeBeat": 70.5,
-      "arriveBeat": 78.5,
+      "noticeBeat": 69.604666667,
+      "arriveBeat": 77.604666667,
       "type": 1
     },
     {
       "strikerIndex": 0,
-      "noticeBeat": 71.5,
-      "arriveBeat": 79.5,
+      "noticeBeat": 70.604666667,
+      "arriveBeat": 78.604666667,
       "type": 1
     },
     {
       "strikerIndex": 1,
-      "noticeBeat": 72.0,
-      "arriveBeat": 80.0,
+      "noticeBeat": 71.104666667,
+      "arriveBeat": 79.104666667,
       "type": 1
     },
     {
       "strikerIndex": 0,
-      "noticeBeat": 72.5,
-      "arriveBeat": 80.5,
+      "noticeBeat": 71.604666667,
+      "arriveBeat": 79.604666667,
       "type": 1
     },
     {
       "strikerIndex": 0,
-      "noticeBeat": 81.0,
-      "arriveBeat": 89.0,
+      "noticeBeat": 80.104666667,
+      "arriveBeat": 88.104666667,
       "type": 0
     },
     {
       "strikerIndex": 0,
-      "noticeBeat": 82.0,
-      "arriveBeat": 90.0,
+      "noticeBeat": 81.104666667,
+      "arriveBeat": 89.104666667,
       "type": 1
     },
     {
       "strikerIndex": 1,
-      "noticeBeat": 82.5,
-      "arriveBeat": 90.5,
+      "noticeBeat": 81.604666667,
+      "arriveBeat": 89.604666667,
       "type": 1
     },
     {
       "strikerIndex": 0,
-      "noticeBeat": 84.0,
-      "arriveBeat": 92.0,
+      "noticeBeat": 83.104666667,
+      "arriveBeat": 91.104666667,
       "type": 1
     },
     {
       "strikerIndex": 1,
-      "noticeBeat": 84.5,
-      "arriveBeat": 92.5,
+      "noticeBeat": 83.604666667,
+      "arriveBeat": 91.604666667,
       "type": 1
     },
     {
       "strikerIndex": 0,
-      "noticeBeat": 86.0,
-      "arriveBeat": 94.0,
+      "noticeBeat": 85.104666667,
+      "arriveBeat": 93.104666667,
       "type": 1
     },
     {
       "strikerIndex": 1,
-      "noticeBeat": 86.5,
-      "arriveBeat": 94.5,
+      "noticeBeat": 85.604666667,
+      "arriveBeat": 93.604666667,
       "type": 1
     },
     {
       "strikerIndex": 0,
-      "noticeBeat": 87.5,
-      "arriveBeat": 95.5,
+      "noticeBeat": 86.604666667,
+      "arriveBeat": 94.604666667,
       "type": 1
     },
     {
       "strikerIndex": 1,
-      "noticeBeat": 88.0,
-      "arriveBeat": 96.0,
+      "noticeBeat": 87.104666667,
+      "arriveBeat": 95.104666667,
       "type": 1
     },
     {
       "strikerIndex": 0,
-      "noticeBeat": 88.5,
-      "arriveBeat": 96.5,
+      "noticeBeat": 87.604666667,
+      "arriveBeat": 95.604666667,
       "type": 1
     }
   ]
