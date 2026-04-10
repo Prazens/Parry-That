@@ -971,6 +971,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1f0e4df5da6897a48a467eefba139635, type: 2}
   - {fileID: 11400000, guid: a13d304f79a42d3429c8264374132f8b, type: 2}
   - {fileID: 11400000, guid: 1a4966be0f413b245a744a78b52a81ec, type: 2}
+  - {fileID: 11400000, guid: 05ac734945554794197c700bde7579ce, type: 2}
+  - {fileID: 11400000, guid: 5849cf40688e04640847d4010ccddaf8, type: 2}
+  - {fileID: 11400000, guid: e812a340b690c3a42b57f7ae91353271, type: 2}
+  - {fileID: 11400000, guid: 48d3ae8f28d89e548808c91c31283405, type: 2}
+  - {fileID: 11400000, guid: e4673aac82753a14bbfb50571e48f93e, type: 2}
 --- !u!4 &229550950
 Transform:
   m_ObjectHideFlags: 0
@@ -4080,6 +4085,7 @@ MonoBehaviour:
   - {fileID: 7564874379782612299, guid: ca118a5abd416034f8223e0fd31a9210, type: 3}
   - {fileID: 7642428754496660755, guid: 476c6ea8cc9a9ed42b39b647c93a7700, type: 3}
   - {fileID: 7642428754496660755, guid: ee308c25cb1d49e4f972ef62bca12f91, type: 3}
+  - {fileID: 7564874379782612299, guid: a812b0f33fe0cd4498cf06891bcda33f, type: 3}
   _spawnPositions:
   - {fileID: 1797063815}
   - {fileID: 1464855110}
