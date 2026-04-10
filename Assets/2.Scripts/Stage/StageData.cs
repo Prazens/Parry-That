@@ -19,7 +19,7 @@ public enum DialogueAudioPolicy
 
 // Legacy
 [Serializable]
-public class BackgroundPrefabs //배경 프리팹
+public class BackgroundPrefabs // 배경 프리팹
 {
     [Tooltip("Spawn할 프리팹")]
     public GameObject prefab;
@@ -41,8 +41,8 @@ public class BackgroundPrefabs //배경 프리팹
 public class StagePhase
 {
     [Header("Tutorial Panel")]
-    [Tooltip("이 페이즈 전에 띄울 가이드 패널. 없으면 패널 없이 진행 가능")]
-    [SerializeField] private GameObject tutorialPanelPrefab;
+    [Tooltip("이 페이즈 전에 띄울 가이드 패널들. 없으면 패널 없이 진행 가능")]
+    [SerializeField] private List<GameObject> tutorialPanelPrefabs = new List<GameObject>();
 
     [Header("Phase Chart")]
     [Tooltip("이 페이즈에서 재생할 채보. 없으면 채보 없이 진행 가능")]
@@ -56,14 +56,15 @@ public class StagePhase
     [Tooltip("대사 시작 시 음악/시간 처리 방식")]
     [SerializeField] private DialogueAudioPolicy dialogueAudioPolicy = DialogueAudioPolicy.KeepPlaying;
 
-    public GameObject TutorialPanelPrefab => tutorialPanelPrefab;
+    public IReadOnlyList<GameObject> TutorialPanelPrefabs => tutorialPanelPrefabs;
     public TextAsset ChartJson => chartJson;
     public DialogueData Dialogue => dialogue;
     public DialogueAudioPolicy DialogueAudioPolicy => dialogueAudioPolicy;
 
+    public bool HasTutorialPanels => tutorialPanelPrefabs != null && tutorialPanelPrefabs.Count > 0;
     public bool HasChart => chartJson != null;
     public bool HasDialogue => dialogue != null;
-    public bool IsEmpty => chartJson == null && dialogue == null;
+    public bool IsEmpty => !HasTutorialPanels && chartJson == null && dialogue == null;
 }
 
 [CreateAssetMenu(menuName = "Stage/Stage Data")]
@@ -86,8 +87,8 @@ public class StageData : ScriptableObject
     [SerializeField] private GameObject cutInUpPrefab;
     [SerializeField] private GameObject cutInDownPrefab;
 
-    [Header("Background Prefab")] //스테이지 배경 및 장식 프리팹
-    [SerializeField] private List<BackgroundPrefabs> backgroundPrefabs = new List<BackgroundPrefabs>(); 
+    [Header("Background Prefab")] // 스테이지 배경 및 장식 프리팹
+    [SerializeField] private List<BackgroundPrefabs> backgroundPrefabs = new List<BackgroundPrefabs>();
 
     [Header("Boss Striker (Boss stage only)")]
     [SerializeField] private int bossStrikerType = 0;

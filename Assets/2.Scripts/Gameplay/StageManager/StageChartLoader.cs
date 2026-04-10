@@ -46,15 +46,14 @@ public class StageChartLoader : MonoBehaviour
         return phases[index];
     }
 
-    public GameObject GetCurrentPhaseTutorialPanel(StageData stageData)
+    public IReadOnlyList<GameObject> GetCurrentPhaseTutorialPanels(StageData stageData)
     {
         StagePhase phase = GetCurrentPhase(stageData);
         if (phase == null)
             return null;
 
-        return phase.TutorialPanelPrefab;
+        return phase.TutorialPanelPrefabs;
     }
-
     public TextAsset GetCurrentPhaseChart(StageData stageData)
     {
         StagePhase phase = GetCurrentPhase(stageData);
@@ -82,9 +81,19 @@ public class StageChartLoader : MonoBehaviour
         return phase.DialogueAudioPolicy;
     }
 
-    public bool HasCurrentPhaseTutorialPanel(StageData stageData)
+    public bool HasTutorialPanel(StageData stageData, int currentIndex, bool completed)
     {
-        return GetCurrentPhaseTutorialPanel(stageData) != null;
+        StagePhase phase = GetCurrentPhase(stageData);
+        if (phase == null)
+            return false;
+
+        if (completed)
+            return false;
+
+        if (!phase.HasTutorialPanels)
+            return false;
+
+        return currentIndex < phase.TutorialPanelPrefabs.Count;
     }
 
     public bool HasCurrentPhaseChart(StageData stageData)
