@@ -20,7 +20,7 @@ public class ParriedProjectileManager : MonoBehaviour
             randomIndex = Random.Range(0, 2);
             if (fixRandom > 0) randomIndex = fixRandom - 1;
         }
-        else if (attackType == AttackType.Strong)
+        else if (attackType == AttackType.Strong || attackType == AttackType.Ghost)
         {
             randomIndex = Random.Range(2, 4);
             if (fixRandom > 0) randomIndex = fixRandom + 1;

@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CommonProjectile : Projectile
+public class GhostProjectile : Projectile
 {
     private Vector3 startPosition; // 시작 위치
     private Vector3 targetPosition; // 목표 위치
+
+    private Vector3 reverseStartPosition; // 가짜 시작 위치
+    private Vector3 reverseTargetPosition; // 가짜 목표 위치
 
     private bool hasReachedTarget = false; // 목표 위치 도달 여부
     private Vector3 finalVelocity; // 도착 시의 마지막 속도 저장
@@ -13,31 +16,35 @@ public class CommonProjectile : Projectile
     private float arriveSec; // 도착 시각
     private float duration;
 
+    private float stopFakeRatio => 0.5f; // 진짜 방향으로 순간이동할 타이밍
+
     public override void Setup(ProjectileSetupContext context)
     {
         arriveSec = context.arriveSec;
         Direction location = context.location;
         startPosition = context.startPos;
         targetPosition = context.targetPos;
+        reverseStartPosition = context.reverseStartPos;
+        reverseTargetPosition = context.reverseTargetPos;
 
         switch (location)
         {
-            case Direction.Up:
+            case Direction.Down:
                 transform.rotation = Quaternion.Euler(0, 0, 0);
                 break;
-            case Direction.Down:
+            case Direction.Up:
                 transform.rotation = Quaternion.Euler(0, 0, 180);
                 break;
-            case Direction.Left:
+            case Direction.Right:
                 transform.rotation = Quaternion.Euler(0, 0, 90);
                 break;
-            case Direction.Right:
+            case Direction.Left:
                 transform.rotation = Quaternion.Euler(0, 0, 270);
                 break;
             default:
                 break;
         }
-        transform.position = startPosition;
+        transform.position = reverseStartPosition;
 
         duration = arriveSec - StageFlowManager.Instance.currentTime;
     }
@@ -75,7 +82,14 @@ public class CommonProjectile : Projectile
         if (!hasReachedTarget)
         {
             float fractionOfJourney = (arriveSec - currentSec) / duration;
-            transform.position = Vector3.Lerp(targetPosition, startPosition, fractionOfJourney);
+            if (fractionOfJourney > 1 - stopFakeRatio)
+            {
+                transform.position = Vector3.Lerp(reverseTargetPosition, reverseStartPosition, fractionOfJourney);
+            }
+            else
+            {
+                transform.position = Vector3.Lerp(targetPosition, startPosition, fractionOfJourney);
+            }
 
             if (fractionOfJourney < 0f)
             {

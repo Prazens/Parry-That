@@ -129,11 +129,16 @@ public class StrikerController : MonoBehaviour, IAttackHandler<StrikerAttackCont
         }
         Projectile selectedProjectile = projectilePrefabs[attackType];
 
-        Vector3 projectilePos = spawnPositions[direction];
+        Vector3 startPos = spawnPositions[direction];
+        Vector3 targetPos = targetPositions[direction];
+
+        int reverseDir = (int)DirTool.ReverseDir((Direction)direction);
+        Vector3 reverseStartPos = spawnPositions[reverseDir];
+        Vector3 reverseTargetPos = targetPositions[reverseDir];
 
         // 투사체 생성
-        Projectile projectile = Instantiate(selectedProjectile, projectilePos, Quaternion.identity);
-        projectile.Setup(new ProjectileSetupContext((Direction)direction, projectilePos, targetPositions[direction], arriveSec, (AttackType)attackType));
+        Projectile projectile = Instantiate(selectedProjectile, startPos, Quaternion.identity);
+        projectile.Setup(new ProjectileSetupContext((AttackType)attackType, arriveSec, (Direction)direction, startPos, targetPos, reverseStartPos, reverseTargetPos));
 
         return projectile;
     }
@@ -141,12 +146,12 @@ public class StrikerController : MonoBehaviour, IAttackHandler<StrikerAttackCont
     private bool IsHoldAttack(StrikerAttackContext context)
     {
         AttackType attackType = (AttackType)context.note.type;
-        return attackType == AttackType.HoldStart || attackType == AttackType.HoldFinishStrong || attackType == AttackType.HoldStop;
+        return attackType == AttackType.HoldStart || attackType == AttackType.HoldStop;
     }
 
     private bool IsHoldAttack(JudgeContext context)
     {
         AttackType attackType = context.judgeable.attackType;
-        return attackType == AttackType.HoldStart || attackType == AttackType.HoldFinishStrong || attackType == AttackType.HoldStop;
+        return attackType == AttackType.HoldStart || attackType == AttackType.HoldStop;
     }
 }

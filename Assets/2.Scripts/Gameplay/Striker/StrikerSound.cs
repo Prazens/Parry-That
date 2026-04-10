@@ -58,7 +58,7 @@ public class StrikerSound : MonoBehaviour
         {
             PlayHoldStart();
         }
-        else if (type == AttackType.HoldStop || type == AttackType.HoldFinishStrong)
+        else if (type == AttackType.HoldStop)
         {
             PlayHoldFinish();
         }

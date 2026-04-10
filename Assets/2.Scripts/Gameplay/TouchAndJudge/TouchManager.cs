@@ -28,7 +28,7 @@ public class TouchManager : MonoBehaviour
     private Vector3 lastPos;
     private bool isSwiping = false;
     private double sumLength = 0;
-    private double judgeTime;
+    private double swipeStartTime;
 
     private bool isTapAndSwipe = false;
     private Direction previousDirection;
@@ -150,11 +150,11 @@ public class TouchManager : MonoBehaviour
         sumLength = 0;
         isSwiping = true;
         isTapAndSwipe = isTap;
-        judgeTime = StageFlowManager.Instance.currentTime;
+        swipeStartTime = StageFlowManager.Instance.currentTime;
 
         if (isTap)
         {
-            SendJudge(Direction.None, judgeTime, AttackType.Normal);
+            SendJudge(Direction.None, StageFlowManager.Instance.currentTime, AttackType.Normal);
             previousDirection = Direction.None;
         }
     }
@@ -167,7 +167,7 @@ public class TouchManager : MonoBehaviour
         lastPos = currentPos;
 
         // 시간 초과 체크
-        if (StageFlowManager.Instance.currentTime - judgeTime > SWIPE_TIME_THRESHOLD)
+        if (StageFlowManager.Instance.currentTime - swipeStartTime > SWIPE_TIME_THRESHOLD)
         {
             isSwiping = false;
             return;
@@ -181,7 +181,7 @@ public class TouchManager : MonoBehaviour
 
             if (isTapAndSwipe || previousDirection != tempDirection)
             {
-                SendJudge(tempDirection, judgeTime, AttackType.Strong);
+                SendJudge(tempDirection, StageFlowManager.Instance.currentTime, AttackType.Strong);
                 previousDirection = tempDirection;
             }
         }
@@ -190,7 +190,7 @@ public class TouchManager : MonoBehaviour
     private void OnInputEnd()
     {
         isSwiping = false;
-        SendJudge(Direction.None, judgeTime, AttackType.HoldStop);
+        SendJudge(Direction.None, StageFlowManager.Instance.currentTime, AttackType.HoldStop);
     }
 
 

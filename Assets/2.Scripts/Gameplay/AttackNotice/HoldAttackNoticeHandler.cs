@@ -32,7 +32,7 @@ public class HoldAttackNoticeHandler : MonoBehaviour, IAttackHandler<AttackNotic
             if (context.judgeables.Count >= 2)
                 context.judgeables[1].AddOnDestroy(_ => ForceStop());
         }
-        else if (attackType == AttackType.HoldFinishStrong)
+        else if (attackType == AttackType.HoldStop)
         {
             Disappear(durationSec);
         }

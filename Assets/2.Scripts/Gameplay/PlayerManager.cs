@@ -6,9 +6,6 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    // ScoreManager -> JudgeSystem
-    public JudgeSystem judgeSystem;
-
     public int hp;
     private Direction currentDirection = Direction.Up;  // 쉴드 방향
 
@@ -30,15 +27,9 @@ public class PlayerManager : MonoBehaviour
 
     void Start()
     {
-        GameController gameController = FindObjectOfType<GameController>();
-        if (gameController != null)
-        {
-            judgeSystem = gameController.GetComponent<JudgeSystem>();
-        }
-
         if (stageFlowManager == null)
         {
-            stageFlowManager = FindObjectOfType<StageFlowManager>();
+            stageFlowManager = StageFlowManager.Instance;
         }
 
         direcrionDisplayer = transform.GetChild(0);

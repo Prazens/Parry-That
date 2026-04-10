@@ -2,6 +2,7 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
 using System;
+using System.Collections;
 
 public enum SignalType { Tap, Swipe, GhostSwipe }
 
@@ -68,6 +69,21 @@ public class NoticeAnim : MonoBehaviour
             currentAnim.Append(visualRoot.DOLocalMove(Vector3.zero, beatDuration * 0.4f).SetEase(Ease.OutCubic))
                        .Join(visualRoot.DOScale(originalScale, beatDuration * 0.4f).SetEase(Ease.OutBack));
         }
+    }
+
+    public void SetPreHitTimer(float bpm, float hitSec)
+    {
+        StartCoroutine(WaitAndPreHit(bpm, hitSec));
+    }
+
+    private IEnumerator WaitAndPreHit(float bpm, float hitSec)
+    {
+        float beatDuration = 60f / bpm;
+        var flow = StageFlowManager.Instance;
+        float preHitSec = hitSec - beatDuration * 0.2f;
+        // 목표 시간에 도달할 때까지 대기
+        yield return new WaitUntil(() => flow.currentTime >= preHitSec);
+        PreHit(bpm);
     }
 
     // 2. 패링 직전 연출 (Telegraph)
