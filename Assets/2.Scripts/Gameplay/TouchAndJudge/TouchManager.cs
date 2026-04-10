@@ -41,7 +41,11 @@ public class TouchManager : MonoBehaviour
 
     void Update()
     {
-        if (StageFlowManager.Instance != null && !StageFlowManager.Instance.isTutorial && !StageFlowManager.Instance.isPaused && !StageFlowManager.Instance.is_over)
+        bool canControl = !StageFlowManager.Instance.isTutorial 
+                            && !StageFlowManager.Instance.isPaused 
+                            && !StageFlowManager.Instance.is_over 
+                            && !StageFlowManager.Instance.isClear;
+        if (canControl)
         {
             if (isTouchAvailable)
             {
