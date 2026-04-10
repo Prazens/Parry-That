@@ -16,21 +16,22 @@ MonoBehaviour:
   difficulty: 1
   category: 1
   phases:
-  - tutorialPanelPrefab: {fileID: 0}
+  - tutorialPanelPrefabs: []
     chartJson: {fileID: 4900000, guid: 98f943e16b6d96e479e155553fc2ef28, type: 3}
     dialogue: {fileID: 0}
     dialogueAudioPolicy: 0
-  - tutorialPanelPrefab: {fileID: 0}
+  - tutorialPanelPrefabs: []
     chartJson: {fileID: 4900000, guid: 94a3f832cfe1cc3429458f6b7709673e, type: 3}
     dialogue: {fileID: 0}
     dialogueAudioPolicy: 0
-  - tutorialPanelPrefab: {fileID: 0}
+  - tutorialPanelPrefabs: []
     chartJson: {fileID: 4900000, guid: 92bdf6dc8223ffb439b8883ba106b5db, type: 3}
     dialogue: {fileID: 0}
     dialogueAudioPolicy: 0
   bgm: {fileID: 8300000, guid: ce0e3e4ec71ce134c9ec0d5427e88e5d, type: 3}
   overrideBgmOffset: 0
   bgmOffset: 0
+  holdingSound: {fileID: 8300000, guid: 2fb29fea08f032048b27b9b0132da9f5, type: 3}
   cutInUpPrefab: {fileID: 3830714329297533927, guid: bb12253c0c433044e8ff902aa7058426, type: 3}
   cutInDownPrefab: {fileID: 6510084509892605857, guid: 2beb9ed04b3801b45ae8ed4be314bc73, type: 3}
   backgroundPrefabs:

@@ -15,7 +15,7 @@ public class StrikerSound : MonoBehaviour
     [SerializeField] private AudioClip parrySoundGhost;  // 고스트 공격 패링 효과음 (type 4)
 
     [Header("홀드 효과음")]
-    [SerializeField] private AudioClip holdingSound;  // 홀드 중
+    [SerializeField] public AudioClip holdingSound;  // 홀드 중
     [SerializeField] private AudioClip holdingEnd;  // 홀드 끝
 
     void Awake()
