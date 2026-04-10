@@ -1527,11 +1527,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7875192376179363231, guid: 35c1852d9df55194d8814c897d7f1666, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 40.888855
+      value: 40.888916
       objectReference: {fileID: 0}
     - target: {fileID: 7875192376179363231, guid: 35c1852d9df55194d8814c897d7f1666, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.00012207031
+      value: -0.00048828125
       objectReference: {fileID: 0}
     - target: {fileID: 7875192376179363231, guid: 35c1852d9df55194d8814c897d7f1666, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4118,6 +4118,7 @@ MonoBehaviour:
   - {fileID: 7564874379782612299, guid: ca118a5abd416034f8223e0fd31a9210, type: 3}
   - {fileID: 7642428754496660755, guid: 476c6ea8cc9a9ed42b39b647c93a7700, type: 3}
   - {fileID: 7642428754496660755, guid: ee308c25cb1d49e4f972ef62bca12f91, type: 3}
+  - {fileID: 7564874379782612299, guid: a812b0f33fe0cd4498cf06891bcda33f, type: 3}
   projectileParent: {fileID: 1561746455}
   _spawnPositions:
   - {fileID: 1797063815}

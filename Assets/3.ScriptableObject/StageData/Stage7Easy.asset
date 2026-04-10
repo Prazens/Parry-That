@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stageId: 7
   difficulty: 0
-  category: 1
+  category: 2
   phases:
   - tutorialPanelPrefab: {fileID: 0}
     chartJson: {fileID: 4900000, guid: 9d07ecaf51d69824e95275faa9346d00, type: 3}
@@ -26,4 +26,4 @@ MonoBehaviour:
   cutInUpPrefab: {fileID: 0}
   cutInDownPrefab: {fileID: 0}
   backgroundPrefabs: []
-  bossStrikerType: 0
+  bossStrikerType: 5
