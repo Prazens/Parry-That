@@ -41,5 +41,10 @@ MonoBehaviour:
   bgmOffset: 0
   cutInUpPrefab: {fileID: 0}
   cutInDownPrefab: {fileID: 0}
-  backgroundPrefabs: []
+  backgroundPrefabs:
+  - prefab: {fileID: 7398451050779184918, guid: 1e2e7d38b2d6e0d46b406044c67518f7, type: 3}
+    attachPointName: 
+    localPosition: {x: 0, y: 0, z: 0}
+    localEulerAngles: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
   bossStrikerType: 0

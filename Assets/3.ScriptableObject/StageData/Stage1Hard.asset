@@ -15,15 +15,17 @@ MonoBehaviour:
   stageId: 1
   difficulty: 1
   category: 1
-  displayName: Stage1Hard
   phases:
-  - chartJson: {fileID: 4900000, guid: a1e4f66e45f4cf842a91b942ee8227b9, type: 3}
+  - tutorialPanelPrefab: {fileID: 0}
+    chartJson: {fileID: 4900000, guid: a1e4f66e45f4cf842a91b942ee8227b9, type: 3}
     dialogue: {fileID: 0}
     dialogueAudioPolicy: 0
-  - chartJson: {fileID: 4900000, guid: 37258d306e7295a408d9a23a9948fc9b, type: 3}
+  - tutorialPanelPrefab: {fileID: 0}
+    chartJson: {fileID: 4900000, guid: 37258d306e7295a408d9a23a9948fc9b, type: 3}
     dialogue: {fileID: 0}
     dialogueAudioPolicy: 0
-  - chartJson: {fileID: 4900000, guid: 4fe2fafb1b2b197468fc418f24392208, type: 3}
+  - tutorialPanelPrefab: {fileID: 0}
+    chartJson: {fileID: 4900000, guid: 4fe2fafb1b2b197468fc418f24392208, type: 3}
     dialogue: {fileID: 0}
     dialogueAudioPolicy: 0
   bgm: {fileID: 8300000, guid: a4d497a7a45300a4780e769fac2d3fc3, type: 3}
@@ -31,4 +33,10 @@ MonoBehaviour:
   bgmOffset: 0
   cutInUpPrefab: {fileID: 3830714329297533927, guid: bb12253c0c433044e8ff902aa7058426, type: 3}
   cutInDownPrefab: {fileID: 6510084509892605857, guid: 2beb9ed04b3801b45ae8ed4be314bc73, type: 3}
-  bossSpawnPrefabs: []
+  backgroundPrefabs:
+  - prefab: {fileID: 4831925578028497460, guid: 681b8090394a48d4bab59d223766daae, type: 3}
+    attachPointName: 
+    localPosition: {x: 0, y: 0, z: 0}
+    localEulerAngles: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+  bossStrikerType: 0

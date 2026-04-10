@@ -172,6 +172,8 @@ public class StageSetupManager : MonoBehaviour
                 }
 
                 GameObject spawnedObject;
+                var chartData = JsonUtility.FromJson<ChartData>(stageData.Phases[0].ChartJson.text);
+                float bpm = chartData.bpm;
 
                 if (parent != null)
                 {
@@ -179,6 +181,7 @@ public class StageSetupManager : MonoBehaviour
                     spawnedObject.transform.localPosition = entry.localPosition;
                     spawnedObject.transform.localRotation = Quaternion.Euler(entry.localEulerAngles);
                     spawnedObject.transform.localScale = entry.localScale;
+                    spawnedObject.GetComponent<Animator>().speed = bpm / 60f;
                 }
                 else
                 {
@@ -186,6 +189,7 @@ public class StageSetupManager : MonoBehaviour
                     spawnedObject.transform.position = entry.localPosition;
                     spawnedObject.transform.rotation = Quaternion.Euler(entry.localEulerAngles);
                     spawnedObject.transform.localScale = entry.localScale;
+                    spawnedObject.GetComponent<Animator>().speed = bpm / 60f;
                 }
 
                 spawnedBackgroundObjects.Add(spawnedObject);

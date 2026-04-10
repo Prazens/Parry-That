@@ -328,44 +328,84 @@ BlendTree:
     m_DirectBlendParameter: Direction
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 522810311d8006549ad4516263c02feb, type: 2}
+    m_Motion: {fileID: 7400000, guid: c1f6686a7cf78064c8132abaad1b99af, type: 2}
     m_Threshold: 1
-    m_Position: {x: 0, y: 0}
+    m_Position: {x: 0, y: 1}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: Direction
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: 7400000, guid: 522810311d8006549ad4516263c02feb, type: 2}
+    m_Threshold: 2
+    m_Position: {x: 1, y: 0}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: Direction
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: 7400000, guid: c971bd66ce3e0a84aa9d2351f9ca9b35, type: 2}
+    m_Threshold: 3
+    m_Position: {x: 1, y: 1}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: Direction
     m_Mirror: 0
   - serializedVersion: 2
     m_Motion: {fileID: 7400000, guid: 2f562d718bb53ff45bc8cb50e015fa88, type: 2}
-    m_Threshold: 2
-    m_Position: {x: 0, y: 0}
+    m_Threshold: 4
+    m_Position: {x: 2, y: 0}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: Direction
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: 7400000, guid: fd7d326df6db7e84dad989b4d2d4af37, type: 2}
+    m_Threshold: 5
+    m_Position: {x: 2, y: 1}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: Direction
     m_Mirror: 0
   - serializedVersion: 2
     m_Motion: {fileID: 7400000, guid: 449da0178ac8fb748ab8a15cfa8ff9fc, type: 2}
-    m_Threshold: 3
-    m_Position: {x: 0, y: 0}
+    m_Threshold: 6
+    m_Position: {x: 3, y: 0}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: Direction
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: 7400000, guid: 3be9668272717844a86ba2a5566bdc96, type: 2}
+    m_Threshold: 7
+    m_Position: {x: 3, y: 1}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: Direction
     m_Mirror: 0
   - serializedVersion: 2
     m_Motion: {fileID: 7400000, guid: 3597c3d7e39b55242b0f8f8e399b558d, type: 2}
-    m_Threshold: 4
-    m_Position: {x: 0, y: 0}
+    m_Threshold: 8
+    m_Position: {x: 4, y: 0}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: Direction
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: 7400000, guid: 057d33062b13f8d469a0204284d77d52, type: 2}
+    m_Threshold: 9
+    m_Position: {x: 4, y: 1}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: Direction
     m_Mirror: 0
   m_BlendParameter: Direction
-  m_BlendParameterY: Direction
+  m_BlendParameterY: strongVal
   m_MinThreshold: 0
-  m_MaxThreshold: 4
+  m_MaxThreshold: 9
   m_UseAutomaticThresholds: 0
   m_NormalizedBlendValues: 0
-  m_BlendType: 0
+  m_BlendType: 3
 --- !u!1101 &-3175581560638086590
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -600,6 +640,12 @@ AnimatorController:
     m_Controller: {fileID: 9100000}
   - m_Name: HoldStop
     m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 9100000}
+  - m_Name: strongVal
+    m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
@@ -853,7 +899,7 @@ AnimatorStateMachine:
     m_Position: {x: 330, y: 400, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -1170819046577070194}
-    m_Position: {x: 630, y: 250, z: 0}
+    m_Position: {x: 630, y: 260, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -8949923484785912933}
     m_Position: {x: 630, y: 320, z: 0}

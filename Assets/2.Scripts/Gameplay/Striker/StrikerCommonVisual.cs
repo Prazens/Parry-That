@@ -38,6 +38,7 @@ public class StrikerCommonVisual : MonoBehaviour
         if (hasPrepareAnim)
         {
             SetDirection(hasPrepareDirection, context.note.direction);
+            SetStrongVal(context.note.type == (int)AttackType.Strong);
             animator.SetTrigger("Prepare");
         }
     }
@@ -79,6 +80,14 @@ public class StrikerCommonVisual : MonoBehaviour
             animator.SetFloat("Direction", direction);
         else
             animator.SetFloat("Direction", 0f);
+    }
+
+    private void SetStrongVal(bool isStrong)
+    {
+        if (isStrong)
+            animator.SetFloat("StrongVal", 1f);
+        else
+            animator.SetFloat("StrongVal", 0f);
     }
 
     private IEnumerator LerpPosition(Vector3 start, Vector3 end, float endSec)

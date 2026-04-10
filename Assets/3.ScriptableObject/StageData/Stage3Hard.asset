@@ -16,16 +16,20 @@ MonoBehaviour:
   difficulty: 1
   category: 1
   phases:
-  - chartJson: {fileID: 4900000, guid: 07e88110cb4f1e943bc7179973156429, type: 3}
+  - tutorialPanelPrefab: {fileID: 0}
+    chartJson: {fileID: 4900000, guid: 07e88110cb4f1e943bc7179973156429, type: 3}
     dialogue: {fileID: 0}
     dialogueAudioPolicy: 0
-  - chartJson: {fileID: 4900000, guid: 4282c61d5865fdd42aa95c773f0f12be, type: 3}
+  - tutorialPanelPrefab: {fileID: 0}
+    chartJson: {fileID: 4900000, guid: 4282c61d5865fdd42aa95c773f0f12be, type: 3}
     dialogue: {fileID: 0}
     dialogueAudioPolicy: 0
-  - chartJson: {fileID: 4900000, guid: a3b59566be0748240b826da3ef7dd579, type: 3}
+  - tutorialPanelPrefab: {fileID: 0}
+    chartJson: {fileID: 4900000, guid: a3b59566be0748240b826da3ef7dd579, type: 3}
     dialogue: {fileID: 0}
     dialogueAudioPolicy: 0
-  - chartJson: {fileID: 4900000, guid: 6a48b9103760c204cb2503ecf8abe182, type: 3}
+  - tutorialPanelPrefab: {fileID: 0}
+    chartJson: {fileID: 4900000, guid: 6a48b9103760c204cb2503ecf8abe182, type: 3}
     dialogue: {fileID: 0}
     dialogueAudioPolicy: 0
   bgm: {fileID: 8300000, guid: b7aae2f103b6ee94ead3be3e53bcb8a9, type: 3}
@@ -33,4 +37,10 @@ MonoBehaviour:
   bgmOffset: 0
   cutInUpPrefab: {fileID: 3830714329297533927, guid: bb12253c0c433044e8ff902aa7058426, type: 3}
   cutInDownPrefab: {fileID: 6510084509892605857, guid: 2beb9ed04b3801b45ae8ed4be314bc73, type: 3}
-  bossSpawnPrefabs: []
+  backgroundPrefabs:
+  - prefab: {fileID: 4831925578028497460, guid: 681b8090394a48d4bab59d223766daae, type: 3}
+    attachPointName: 
+    localPosition: {x: 0, y: 0, z: 0}
+    localEulerAngles: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+  bossStrikerType: 0
