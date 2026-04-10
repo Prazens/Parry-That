@@ -49,14 +49,14 @@ public class StageAudioManager : MonoBehaviour
         // override가 false면 기존대로 PlayerPrefs에서 읽어온 전역 bgmOffset 유지
     }
 
-    // 튜토리얼에서 노래 n초 전으로 되돌리는 용도의 함수 (기존 StageManager.RestartAudio 그대로)
-    public void RestartAudioFromSavedTime()
+    // 튜토리얼에서 노래를 되돌리는 함수
+    public void RestartAudio(float time)
     {
         if (musicSource == null) return;
 
         if (musicSource.isPlaying)
         {
-            float newTime = Mathf.Max(savedMusicTime, 0f);
+            float newTime = Mathf.Max(time, 0f);
             musicSource.Stop();
             musicSource.time = newTime;
             musicSource.Play();

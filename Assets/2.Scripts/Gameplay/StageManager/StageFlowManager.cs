@@ -20,6 +20,7 @@ public class StageFlowManager : MonoBehaviour
     public bool isClear = false;
     private bool tutorialPanelShown = false;
 
+    private float phaseStartTime = -1f;
     private float phaseEndTime = -1f;
     public int currentPhaseIndex { get; private set; } = 0;
 
@@ -344,6 +345,8 @@ public class StageFlowManager : MonoBehaviour
         if (hasChart)
         {
             phaseEndTime = -1f;
+            
+            phaseStartTime = currentTime;
 
             if (stageChartLoader != null)
             {
@@ -380,11 +383,11 @@ public class StageFlowManager : MonoBehaviour
 
         if (stageAudioManager != null)
         {
-            stageAudioManager.RestartAudioFromSavedTime();
+            stageAudioManager.RestartAudio(phaseStartTime);
         }
 
         currentTime = stageAudioManager.musicSource.time + stageAudioManager.bgmOffset;
-
+        
         StartCurrentPhase();
     }
 
