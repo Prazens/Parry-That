@@ -44,8 +44,6 @@ public class JudgeSystem : MonoBehaviour
     public int combo = 0;
     public int score = 0;
 
-    public double lastNonMissJudge = 0;
-
     private Dictionary<Direction, Queue<Judgeable>> judgeableQueues = new() {
         { Direction.None, new() },
         { Direction.Up, new() },
@@ -182,11 +180,6 @@ public class JudgeSystem : MonoBehaviour
         if (touchBlockCounts.ContainsKey(touch.type) && touchBlockCounts[touch.type] > 0)
             return;
 
-        double timeDiff = touch.touchSec - lastNonMissJudge;
-        // 간접 미스 방지
-        if (touch.type == AttackType.Strong && timeDiff < 0.01d)
-            return;
-
         // 방향별 가장 빠른 공격
         Dictionary<Direction, Judgeable> firstJudgeables = new();
         foreach (var kvp in judgeableQueues)
@@ -220,9 +213,6 @@ public class JudgeSystem : MonoBehaviour
         // 판정 결과 받기
         AttackType attackType = firstJudgeable.attackType;
         JudgeType judgeType = attackJudgeHandlerDict[attackType].Judge(firstJudgeable, touch);
-
-        if (judgeType != JudgeType.LateMiss && judgeType != JudgeType.EarlyMiss)
-            lastNonMissJudge = touch.touchSec;
 
         // 후처리
         DebugJudge(touch, firstJudgeable, judgeType);
@@ -261,8 +251,6 @@ public class JudgeSystem : MonoBehaviour
         // 노트가 처리되지 않은 경우
         if (judgeable == null || judgeType == JudgeType.None)
         {
-            lastNonMissJudge = 0;
-
             if (touch != null && touch.type != AttackType.HoldStop)
             {
                 playerManager.Operate(touch.direction, touch.type);
