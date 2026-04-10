@@ -131,10 +131,6 @@ public class StrikerController : MonoBehaviour, IAttackHandler<StrikerAttackCont
         }
         Projectile selectedProjectile = projectilePrefabs[attackType];
 
-        if (attackType == (int)AttackType.Ghost)
-        {
-            direction = (int)DirTool.ReverseDir((Direction)direction);
-        }
         Vector3 startPos = spawnPositions[direction];
         Vector3 targetPos = targetPositions[direction];
 

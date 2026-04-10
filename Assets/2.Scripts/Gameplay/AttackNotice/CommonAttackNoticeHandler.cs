@@ -52,6 +52,8 @@ public class CommonAttackNoticeHandler : MonoBehaviour, IAttackHandler<AttackNot
 
         // 회전 (Direction에 따라)
         float rotationAngle = 0f;
+        if (attackType == AttackType.Ghost)
+            direction = DirTool.ReverseDir(direction);
         switch (direction)
         {
             case Direction.Up: rotationAngle = 0f; break;
