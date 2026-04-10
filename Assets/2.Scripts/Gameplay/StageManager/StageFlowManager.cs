@@ -74,6 +74,7 @@ public class StageFlowManager : MonoBehaviour
         if (isPaused) return;
         if (isTutorial) return;
         if (isClear) return;
+        if (is_over) return;
 
         DialogueAudioPolicy policy = DialogueAudioPolicy.KeepPlaying;
 
