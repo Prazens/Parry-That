@@ -127,8 +127,8 @@ MonoBehaviour:
   holdVisual: {fileID: 0}
   sound: {fileID: 1523450611889353992}
   projectilePrefabs:
-  - {fileID: 177280460932711409, guid: 4b1fc64b6f20804459cae34d57b7e7a0, type: 3}
-  - {fileID: 6048303595349202864, guid: 873bca72101daef41a84215eae8c8992, type: 3}
+  - {fileID: 177280460932711409, guid: fe73d5ef50aa6e94fb165fba9a627e29, type: 3}
+  - {fileID: 6048303595349202864, guid: eb12227048478c34ea00bca57d256054, type: 3}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: -7255087925104557225, guid: 1e3d882014d703c46baaf836e206887f, type: 3}

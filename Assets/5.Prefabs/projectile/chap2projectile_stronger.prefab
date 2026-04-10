@@ -10,11 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 3817530843451850605}
   - component: {fileID: 793635658234800999}
-  - component: {fileID: -7255087925104557225}
+  - component: {fileID: 6048303595349202864}
   - component: {fileID: 9063046585755960342}
   - component: {fileID: -109837244542765315}
   m_Layer: 0
-  m_Name: ghostProjectile
+  m_Name: chap2projectile_stronger
   m_TagString: note
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,18 +76,18 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 7bcf8e531e38a7641b87a96f41d90fc8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 89203314164044243a96abf2c44e70e9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2.56, y: 2.56}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &-7255087925104557225
+--- !u!114 &6048303595349202864
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -96,7 +96,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7152690855388890206}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2c6bb9be4d51ef4f9f0addf70b3d8f0, type: 3}
+  m_Script: {fileID: 11500000, guid: 7ea8c565d69ec0345a3f1642f0892451, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!61 &9063046585755960342
@@ -136,7 +136,7 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 2.56, y: 2.56}
-    newSize: {x: 1, y: 1}
+    newSize: {x: 2.56, y: 2.56}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -154,7 +154,7 @@ Animator:
   m_GameObject: {fileID: 7152690855388890206}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 56baa7165833c33498f6bbe5d096c625, type: 2}
+  m_Controller: {fileID: 9100000, guid: dc26036fb00ee74468769f332662fc77, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
