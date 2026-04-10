@@ -41,7 +41,7 @@ public class TouchManager : MonoBehaviour
 
     void Update()
     {
-        if (StageFlowManager.isActive)
+        if (StageFlowManager.Instance != null)
         {
             if (isTouchAvailable)
             {

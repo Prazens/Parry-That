@@ -10,18 +10,18 @@ public class StageFlowManager : MonoBehaviour
     public static StageFlowManager Instance;
 
     public float currentTime { get; private set; }
-    public float bpm { get; private set; } = 60f; // 기본값
+    public float bpm { get; private set; } = 60f;
     public float stageDuration = 180f;
 
-    public static bool isActive = false;
     public bool is_over = false;
     public bool isDaehwa = false;
-    public bool isTutorial = false; //튜토리얼 패널이 띄워져 있으면 true, 아니면 false
+    public bool isTutorial = false;
     public bool isClear = false;
     private bool tutorialPanelShown = false;
+    private bool currentChartClear = false;
 
-    private float phaseStartTime = 0f;
-    private float phaseEndTime = 0f;
+    private float phaseStartTime = -1f;
+    private float phaseEndTime = -1f;
     public int currentPhaseIndex { get; private set; } = 0;
 
     [SerializeField] private StrikerManager strikerManager;
@@ -46,7 +46,6 @@ public class StageFlowManager : MonoBehaviour
     private bool victorySequenceTriggered = false;
     private bool victoryStarted = false;
 
-    // currentTime이 (-1 * STAGE_READY_TIME)부터 시작함.
     public const float STAGE_READY_TIME = 2.0f;
 
     private void Awake()
@@ -76,35 +75,44 @@ public class StageFlowManager : MonoBehaviour
         if (isTutorial) return;
         if (isClear) return;
 
-        if (stageAudioManager != null && stageAudioManager.musicSource != null && stageAudioManager.musicSource.isPlaying)
+        DialogueAudioPolicy policy = DialogueAudioPolicy.KeepPlaying;
+
+        if (stageChartLoader != null)
+        {
+            policy = stageChartLoader.GetDialogueAudioPolicy(currentStageData);
+        }
+
+        bool canTimeFlow = !isDaehwa || policy == DialogueAudioPolicy.KeepPlaying;
+
+        if (stageAudioManager != null && stageAudioManager.musicSource.isPlaying)
         {
             currentTime = stageAudioManager.musicSource.time + stageAudioManager.bgmOffset;
         }
-        else
+        else if (canTimeFlow)
         {
-            if (!isDaehwa)
-                currentTime += Time.deltaTime;
-            else if (!stageAudioManager.musicPlayed)
-                currentTime += Time.deltaTime; // 시작 전 대사면 offset까지는 흐르게
+            currentTime += Time.deltaTime;
         }
 
         if (stageAudioManager != null && stageAudioManager.musicSource != null && !stageAudioManager.musicPlayed)
         {
             if (stageAudioManager.musicSource.clip != null)
             {
-                if (currentStageData != null && currentStageData.Category != StageCategory.Tutorial)
+                if (canTimeFlow)
                 {
-                    if (currentTime >= stageAudioManager.bgmOffset)
+                    if (currentStageData != null && currentStageData.Category != StageCategory.Tutorial)
                     {
+                        if (currentTime >= stageAudioManager.bgmOffset)
+                        {
+                            stageAudioManager.musicSource.Play();
+                            stageAudioManager.musicPlayed = true;
+                        }
+                    }
+                    else
+                    {
+                        stageAudioManager.bgmOffset = 0f;
                         stageAudioManager.musicSource.Play();
                         stageAudioManager.musicPlayed = true;
                     }
-                }
-                else
-                {
-                    stageAudioManager.bgmOffset = 0f;
-                    stageAudioManager.musicSource.Play();
-                    stageAudioManager.musicPlayed = true;
                 }
             }
             else
@@ -122,9 +130,9 @@ public class StageFlowManager : MonoBehaviour
                 return;
             }
 
-            isActive = false;
-            isDaehwa = true;
-            StartCoroutine(RunCurrentPhaseDialogue());
+            currentChartClear = true;
+            phaseEndTime = -1f;
+            StartPhase();
             return;
         }
 
@@ -168,11 +176,8 @@ public class StageFlowManager : MonoBehaviour
         bpm = _bpm;
     }
 
-    /// <summary>
-    /// 박자(Beat)를 시간(Seconds)으로 단위 변환
-    /// </summary>
     public float BeatToSec(float beatIndex)
-    => beatIndex * (60f / bpm);
+        => beatIndex * (60f / bpm);
 
     public void FirstStartStage()
     {
@@ -199,6 +204,7 @@ public class StageFlowManager : MonoBehaviour
     public void StartStage()
     {
         currentPhaseIndex = 0;
+        currentChartClear = false;
 
         ResolveStageData();
 
@@ -253,7 +259,7 @@ public class StageFlowManager : MonoBehaviour
             staticUIManager.Setup_UI();
         }
 
-        StartCurrentPhase();
+        StartPhase();
     }
 
     public void RestartStage()
@@ -262,14 +268,13 @@ public class StageFlowManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    private void StartCurrentPhase()
+    private void StartPhase()
     {
         if (currentStageData == null)
         {
             EndStage();
             return;
         }
-        
 
         IReadOnlyList<StagePhase> phases = currentStageData.Phases;
         if (phases == null)
@@ -292,7 +297,6 @@ public class StageFlowManager : MonoBehaviour
             }
             else
             {
-                isActive = true;
                 isDaehwa = false;
                 phaseEndTime = -1f;
             }
@@ -307,7 +311,7 @@ public class StageFlowManager : MonoBehaviour
         }
 
         bool hasTutorialPanel = !tutorialPanelShown && stageChartLoader != null && stageChartLoader.HasCurrentPhaseTutorialPanel(currentStageData);
-        bool hasChart = stageChartLoader != null && stageChartLoader.HasCurrentPhaseChart(currentStageData);
+        bool hasChart = !currentChartClear && stageChartLoader != null && stageChartLoader.HasCurrentPhaseChart(currentStageData);
         bool hasDialogue = stageChartLoader != null && stageChartLoader.HasCurrentPhaseDialogue(currentStageData);
 
         if (!hasTutorialPanel && !hasChart && !hasDialogue)
@@ -320,7 +324,6 @@ public class StageFlowManager : MonoBehaviour
         {
             tutorialPanelShown = true;
             isTutorial = true;
-            isActive = false;
             isDaehwa = false;
             phaseEndTime = -1f;
 
@@ -341,7 +344,6 @@ public class StageFlowManager : MonoBehaviour
         if (hasChart)
         {
             phaseEndTime = -1f;
-            
             phaseStartTime = currentTime;
 
             if (stageChartLoader != null)
@@ -351,7 +353,7 @@ public class StageFlowManager : MonoBehaviour
             }
 
             ApplyDialogueAudioPolicyAfterDialogue();
-            
+
             TutorialManager tutorialManager = FindObjectOfType<TutorialManager>();
             if (tutorialManager != null && currentStageData.Category == StageCategory.Tutorial)
             {
@@ -359,23 +361,20 @@ public class StageFlowManager : MonoBehaviour
             }
 
             isDaehwa = false;
-            isActive = true;
             isTutorial = false;
             return;
         }
 
-        isActive = false;
-        isDaehwa = true;
         StartCoroutine(RunCurrentPhaseDialogue());
     }
 
     public void RestartPhase()
     {
-        isActive = false;
         isDaehwa = false;
         isTutorial = false;
         isClear = false;
         phaseEndTime = -1f;
+        currentChartClear = false;
 
         if (stageAudioManager != null)
         {
@@ -383,13 +382,12 @@ public class StageFlowManager : MonoBehaviour
         }
 
         currentTime = stageAudioManager.musicSource.time + stageAudioManager.bgmOffset;
-        
-        StartCurrentPhase();
+
+        StartPhase();
     }
 
     public void GameOver()
     {
-        isActive = false;
         is_over = true;
         button_active = false;
 
@@ -412,7 +410,6 @@ public class StageFlowManager : MonoBehaviour
 
     private void EndStage()
     {
-        //튜토리얼이면 메인으로
         if (currentStageData.Category == StageCategory.Tutorial)
         {
             FindObjectOfType<TutorialManager>().SkipOn();
@@ -420,7 +417,6 @@ public class StageFlowManager : MonoBehaviour
         else
         {
             currentTime = stageDuration;
-            isActive = false;
             button_active = false;
             isClear = true;
 
@@ -447,16 +443,14 @@ public class StageFlowManager : MonoBehaviour
         if (staticUIManager != null)
         {
             staticUIManager.HideTutorialPanel();
-            print(1);
         }
 
         if (stageAudioManager != null)
         {
             stageAudioManager.AudioUnPause();
-            print(2);
         }
 
-        StartCurrentPhase();
+        StartPhase();
     }
 
     private IEnumerator RunCurrentPhaseDialogue()
@@ -477,9 +471,9 @@ public class StageFlowManager : MonoBehaviour
             yield return new WaitUntil(() => !dialogueManager.isDialogPlaying);
         }
 
-            isDaehwa = false;
-            GoToNextPhase();
-        }
+        isDaehwa = false;
+        GoToNextPhase();
+    }
 
     private void ApplyDialogueAudioPolicyBeforeDialogue()
     {
@@ -541,8 +535,9 @@ public class StageFlowManager : MonoBehaviour
     {
         phaseEndTime = -1f;
         tutorialPanelShown = false;
+        currentChartClear = false;
         currentPhaseIndex++;
-        StartCurrentPhase();
+        StartPhase();
     }
 
     public void TogglePause()
@@ -558,7 +553,6 @@ public class StageFlowManager : MonoBehaviour
         if (is_over) return;
 
         isPaused = true;
-        isActive = false;
         Time.timeScale = 0f;
 
         if (stageAudioManager != null)
@@ -603,7 +597,6 @@ public class StageFlowManager : MonoBehaviour
             yield return StartCoroutine(staticUIManager.ResumeCountDown());
         }
 
-        isActive = true;
         button_active = true;
         Time.timeScale = 1f;
 
