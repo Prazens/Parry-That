@@ -1,0 +1,151 @@
+{
+  "bpm": 170,
+  "strikers": [
+    {
+      "strikerType": 4,
+      "direction": 0,
+      "appearTime": 221.5,
+      "disappearTime": 288.0
+    },
+    {
+      "strikerType": 4,
+      "direction": 1,
+      "appearTime": 221.5,
+      "disappearTime": 288.0
+    },
+    {
+      "strikerType": 4,
+      "direction": 2,
+      "appearTime": 221.5,
+      "disappearTime": 288.0
+    },
+    {
+      "strikerType": 4,
+      "direction": 3,
+      "appearTime": 221.5,
+      "disappearTime": 288.0
+    }
+  ],
+  "notes": [
+    {
+      "strikerIndex": 0,
+      "noticeBeat": 222.0,
+      "arriveBeat": 224.0,
+      "type": 2
+    },
+    {
+      "strikerIndex": 0,
+      "noticeBeat": 238.0,
+      "arriveBeat": 240.0,
+      "type": 3
+    },
+    {
+      "strikerIndex": 0,
+      "noticeBeat": 244.0,
+      "arriveBeat": 248.0,
+      "type": 0
+    },
+    {
+      "strikerIndex": 0,
+      "noticeBeat": 244.5,
+      "arriveBeat": 248.5,
+      "type": 0
+    },
+    {
+      "strikerIndex": 0,
+      "noticeBeat": 245.0,
+      "arriveBeat": 249.0,
+      "type": 1
+    },
+    {
+      "strikerIndex": 0,
+      "noticeBeat": 246.0,
+      "arriveBeat": 250.0,
+      "type": 0
+    },
+    {
+      "strikerIndex": 0,
+      "noticeBeat": 247.0,
+      "arriveBeat": 251.0,
+      "type": 1
+    },
+    {
+      "strikerIndex": 0,
+      "noticeBeat": 254.0,
+      "arriveBeat": 256.0,
+      "type": 2
+    },
+    {
+      "strikerIndex": 0,
+      "noticeBeat": 270.0,
+      "arriveBeat": 272.0,
+      "type": 3
+    },
+    {
+      "strikerIndex": 0,
+      "noticeBeat": 272.0,
+      "arriveBeat": 276.0,
+      "type": 0
+    },
+    {
+      "strikerIndex": 0,
+      "noticeBeat": 273.0,
+      "arriveBeat": 277.0,
+      "type": 1
+    },
+    {
+      "strikerIndex": 0,
+      "noticeBeat": 274.0,
+      "arriveBeat": 278.0,
+      "type": 0
+    },
+    {
+      "strikerIndex": 0,
+      "noticeBeat": 274.5,
+      "arriveBeat": 278.5,
+      "type": 0
+    },
+    {
+      "strikerIndex": 0,
+      "noticeBeat": 275.0,
+      "arriveBeat": 279.0,
+      "type": 1
+    },
+    {
+      "strikerIndex": 1,
+      "noticeBeat": 280.0,
+      "arriveBeat": 284.0,
+      "type": 0
+    },
+    {
+      "strikerIndex": 1,
+      "noticeBeat": 281.0,
+      "arriveBeat": 285.0,
+      "type": 1
+    },
+    {
+      "strikerIndex": 1,
+      "noticeBeat": 282.0,
+      "arriveBeat": 286.0,
+      "type": 0
+    },
+    {
+      "strikerIndex": 1,
+      "noticeBeat": 282.5,
+      "arriveBeat": 286.5,
+      "type": 0
+    },
+    {
+      "strikerIndex": 1,
+      "noticeBeat": 283.0,
+      "arriveBeat": 287.0,
+      "type": 1
+    },
+    {
+      "strikerIndex": 0,
+      "noticeBeat": 287.0,
+      "arriveBeat": 288.0,
+      "type": 1
+    }
+  ]
+}
