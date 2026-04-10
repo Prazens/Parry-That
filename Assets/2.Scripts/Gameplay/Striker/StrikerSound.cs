@@ -7,10 +7,12 @@ public class StrikerSound : MonoBehaviour
     [Header("준비 효과음")]
     [SerializeField] private AudioClip prepareSoundNormal;  // 일반 공격 준비 효과음 (type 0)
     [SerializeField] private AudioClip prepareSoundStrong;  // 강한 공격 준비 효과음 (type 1)
+    [SerializeField] private AudioClip prepareSoundGhost;  // 고스트 공격 준비 효과음 (type 4)
 
     [Header("패링 효과음")]
     [SerializeField] private AudioClip parrySoundNormal;  // 일반 공격 패링 효과음 (type 0)
     [SerializeField] private AudioClip parrySoundStrong;  // 강한 공격 패링 효과음 (type 1)
+    [SerializeField] private AudioClip parrySoundGhost;  // 고스트 공격 패링 효과음 (type 4)
 
     [Header("홀드 효과음")]
     [SerializeField] private AudioClip holdingSound;  // 홀드 중
@@ -38,6 +40,10 @@ public class StrikerSound : MonoBehaviour
         {
             PlayPrepareStrong();
         }
+        else if (type == AttackType.Ghost)
+        {
+            PlayPrepareGhost();
+        }
     }
 
     public void PlayParrySound(AttackType type)
@@ -49,6 +55,10 @@ public class StrikerSound : MonoBehaviour
         else if (type == AttackType.Strong)
         {
             PlayParryStrong();
+        }
+        else if (type == AttackType.Ghost)
+        {
+            PlayParryGhost();
         }
     }
 
@@ -76,6 +86,12 @@ public class StrikerSound : MonoBehaviour
         audioSource.PlayOneShot(prepareSoundStrong, GetEffectiveEnemyVolume());
     }
 
+    private void PlayPrepareGhost()
+    {
+        if (audioSource == null || prepareSoundGhost == null) return;
+        audioSource.PlayOneShot(prepareSoundGhost, GetEffectiveEnemyVolume());
+    }
+
     private void PlayParryNormal()
     {
         if (audioSource == null || parrySoundNormal == null) return;
@@ -86,6 +102,12 @@ public class StrikerSound : MonoBehaviour
     {
         if (audioSource == null || parrySoundStrong == null) return;
         audioSource.PlayOneShot(parrySoundStrong, GetEffectivePlayerVolume());
+    }
+
+    private void PlayParryGhost()
+    {
+        if (audioSource == null || parrySoundGhost == null) return;
+        audioSource.PlayOneShot(parrySoundGhost, GetEffectiveEnemyVolume());
     }
 
     public void PlayHoldStart()

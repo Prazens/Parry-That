@@ -266,8 +266,10 @@ MonoBehaviour:
   audioSource: {fileID: -5035865612886772569}
   prepareSoundNormal: {fileID: 8300000, guid: c7cc222e70846234685f82204d41c152, type: 3}
   prepareSoundStrong: {fileID: 8300000, guid: 68dd4bbbaa8d6654394014e188362989, type: 3}
+  prepareSoundGhost: {fileID: 8300000, guid: 670bdbcc296e8704fb7ff43eac9f0dba, type: 3}
   parrySoundNormal: {fileID: 8300000, guid: 96972401467906a42b50272645414fee, type: 3}
   parrySoundStrong: {fileID: 8300000, guid: 20353a13f678ac34f83635b7b2503a29, type: 3}
+  parrySoundGhost: {fileID: 8300000, guid: 20353a13f678ac34f83635b7b2503a29, type: 3}
   holdingSound: {fileID: 0}
   holdingEnd: {fileID: 0}
 --- !u!1001 &6382469256489126875
