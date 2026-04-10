@@ -17,7 +17,7 @@ MonoBehaviour:
     expressionTag: 1
     text: "\uC88B\uC544\uC694! \uC774\uC81C \uB9C8\uC655\uC744 \uC7A1\uC73C\uB7EC
       \uB5A0\uB098\uC694!!!!"
-    textRevealDuration: 1
-    waitAfterReveal: 1
+    textRevealDuration: 2
+    waitAfterReveal: 3
     waitBeforeReveal: 0
     speakerNameOverride: 

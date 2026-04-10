@@ -13,7 +13,8 @@ public class DialogLineController : MonoBehaviour
 
     [Header("R모드")]
     [SerializeField] private bool isRightSide = false;
-
+    [Header("바 설정")]
+    [SerializeField] private float maxBarWidth = 1000f;
     private DialogueLine currentLine;
     private string currentSpeakerName;
     private Sprite currentSpeakerSprite;
@@ -90,6 +91,7 @@ public class DialogLineController : MonoBehaviour
 
         tmpText.text = currentLine.text;
         float textBarWidth = tmpText.GetPreferredValues().x + originalSpeakerIconSize.x * 1.1f;
+        textBarWidth = Mathf.Min(textBarWidth, maxBarWidth);
         tmpText.text = "";
 
         if (currentSpeakerSprite != null)

@@ -16,40 +16,46 @@ MonoBehaviour:
   - speakerTag: 2
     expressionTag: 3
     text: "\uC800 \uCE5C\uAD6C\uB4E4\uC774 \uACE0\uD1B5\uBC1B\uB294 \uBAA8\uC2B5\uC744
-      \uC9C0\uCF1C\uBD10\uC57C \uD558\uB2E4\uB2C8! \uC5BC\uB9C8\uB098 \uC131\uC2E4\uD55C
-      \uC560\uB4E4\uC774\uC5C8\uB294\uB370!!"
-    textRevealDuration: 1
-    waitAfterReveal: 1
+      \uC9C0\uCF1C\uBD10\uC57C \uD558\uB2E4\uB2C8!"
+    textRevealDuration: 2
+    waitAfterReveal: 2
+    waitBeforeReveal: 0
+    speakerNameOverride: 
+  - speakerTag: 2
+    expressionTag: 3
+    text: "\uC5BC\uB9C8\uB098 \uC131\uC2E4\uD55C \uC560\uB4E4\uC774\uC5C8\uB294\uB370..!!"
+    textRevealDuration: 1.5
+    waitAfterReveal: 2
     waitBeforeReveal: 0
     speakerNameOverride: 
   - speakerTag: 2
     expressionTag: 2
-    text: "\uAC00\uB054 \uD0D5\uBE44\uC2E4\uC744 \uC0DD\uC120\uC73C\uB85C \uAF49
-      \uCC44\uC6CC \uB193\uB294 \uAC74 \uB9C8\uC74C\uC5D0 \uC548 \uB4E4\uAE34 \uD588\uC9C0\uB9CC!"
-    textRevealDuration: 1
-    waitAfterReveal: 1
-    waitBeforeReveal: 0
+    text: "\uAC00\uB054 \uD0D5\uBE44\uC2E4\uC744 \uC0DD\uC120\uC73C\uB85C \uCC44\uC6CC
+      \uB193\uB294 \uAC74 \uB9C8\uC74C\uC5D0 \uC548 \uB4E4\uAE34 \uD588\uC9C0\uB9CC!"
+    textRevealDuration: 2.3
+    waitAfterReveal: 2
+    waitBeforeReveal: 1
     speakerNameOverride: 
   - speakerTag: 1
     expressionTag: 0
     text: "\uC0DD\uC120? \uB2E4\uAC19\uC774 \uBA39\uC73C\uBA74 \uC88B\uC740 \uAC70
       \uC544\uB0D0?"
-    textRevealDuration: 1
-    waitAfterReveal: 1
-    waitBeforeReveal: 0
+    textRevealDuration: 1.5
+    waitAfterReveal: 2
+    waitBeforeReveal: 1
     speakerNameOverride: 
   - speakerTag: 2
     expressionTag: 3
     text: "\uACF5\uAC04\uC774 \uC5C6\uB2E4\uACE0 \uC81C \uC544\uBAAC\uB4DC\uB97C
       \uAC16\uB2E4 \uBC84\uB838\uC2B5\uB2C8\uB2E4!"
-    textRevealDuration: 1
-    waitAfterReveal: 1
-    waitBeforeReveal: 0
+    textRevealDuration: 1.5
+    waitAfterReveal: 2
+    waitBeforeReveal: 1
     speakerNameOverride: 
   - speakerTag: 1
     expressionTag: 0
     text: "...\uC880 \uB354 \uB54C\uB9B4 \uB9DB\uC774 \uB098\uB124."
     textRevealDuration: 1
-    waitAfterReveal: 1
-    waitBeforeReveal: 0
+    waitAfterReveal: 2
+    waitBeforeReveal: 1
     speakerNameOverride: 
