@@ -4,6 +4,7 @@ public class GlobalAudioReactor : MonoBehaviour
 {
     [Header("BGM 소스")]
     public AudioSource bgmSource;
+    public AudioSource bgmSource2;
 
     [Header("전체 효과 조절")]
     public float multiplier = 10f;  
@@ -22,6 +23,15 @@ public class GlobalAudioReactor : MonoBehaviour
             for (int i = 0; i < 10; i++) 
             {
                 bassValue += spectrumData[i];
+            }
+
+            if (bgmSource2 != null && bgmSource2.isPlaying)
+            {
+                bgmSource2.GetSpectrumData(spectrumData, 0, FFTWindow.Rectangular);
+                for (int i = 0; i < 10; i++) 
+                {
+                    bassValue += spectrumData[i];
+                }
             }
 
             // 2. 값 스무딩

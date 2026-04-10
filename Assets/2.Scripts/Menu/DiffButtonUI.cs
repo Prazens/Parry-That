@@ -10,6 +10,8 @@ public class DiffButtonUI : MonoBehaviour
     [SerializeField] private Sprite normalButton;
     [SerializeField] private Sprite hardButton;
     [SerializeField] private GameObject modeButtonObj;
+    [SerializeField] private AudioClip fireOnSound;
+    [SerializeField] private AudioClip fireOffSound;
     private Button modeButton;
     private int difficulty;  // 0: Normal, 1: Hard
 
@@ -56,10 +58,12 @@ public class DiffButtonUI : MonoBehaviour
         if (difficulty == 0)
         {
             modeButtonObj.GetComponent<Image>().sprite = normalButton;
+            MenuAudioManager.Instance.Play(fireOffSound, AudioTag.SFX, false);
         }
         else
         {
             modeButtonObj.GetComponent<Image>().sprite = hardButton;
+            MenuAudioManager.Instance.Play(fireOnSound, AudioTag.SFX, false);
         }
         MenuManager.Instance.UpdateCurStage(MenuManager.Instance.stageIndex[0], MenuManager.Instance.stageIndex[1] == 0 ? 1 : 0);
     }

@@ -39,8 +39,8 @@ public class SettingUI : MonoBehaviour
             MenuManager.Instance.currentState = prevState;
             MenuManager.Instance.diskSwipeUI.gameObject.GetComponent<ScrollRect>().enabled = true;
 
-            // 막스테이지는 에필로그, 노래 재생 안함 << 이거 하드코딩, 에필로그 조건 추가 필요
-            if (MenuManager.Instance.currentState == MenuManager.MenuState.StageSelect || StageSelection.SelectedStageId != StageDBManager.Instance.stageNumbers - 1)
+            // 튜토리얼은 노래 재생 안함
+            if (MenuManager.Instance.currentState == MenuManager.MenuState.StageSelect || StageSelection.SelectedStageId != 0)
             {
                 MenuManager.Instance.diskSwipeUI.StartPreviewSound(StageSelection.SelectedStageId);
             }

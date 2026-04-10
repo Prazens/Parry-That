@@ -82,10 +82,8 @@ public class MenuManager : Singleton<MenuManager>
         stageIndex = new int[] { StageSelection.SelectedStageId, (int)StageSelection.SelectedDifficulty }; 
 
         diskSwipeUI.InitScrollView(stageIndex[0], stageIndex[1]);
-        infoDisplayUI.InitUI(stageIndex);
-
-
         diffButtonUI.InitUI(stageIndex[1]);
+
         if (StageDBManager.Instance.diffNumbers[stageIndex[0]] == 1 || !JudgeStageUnlock(stageIndex[0], 1))
         {
             diffButtonUI.SetVisibility(false);
@@ -112,6 +110,7 @@ public class MenuManager : Singleton<MenuManager>
 
         if (StageDBManager.Instance.isFirstLaunch)
         {
+            infoDisplayUI.InitUI(stageIndex, StageDBManager.Instance.isFirstLaunch);
             titleUI.InitUI();
             sword.InitUI();
             titleUI.transform.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;  
@@ -185,14 +184,14 @@ public class MenuManager : Singleton<MenuManager>
         if (needUpdate)
         {
             StageSelection.SetSelection(stageIndex[0], (Difficulty)stageIndex[1]);
-            infoDisplayUI.DisplayInfo(new int[] { StageSelection.SelectedStageId, (int)StageSelection.SelectedDifficulty });
+            infoDisplayUI.InitUI(new int[] { StageSelection.SelectedStageId, (int)StageSelection.SelectedDifficulty });
             
             // 🔥 스테이지가 변경되었으니 타이틀 애니메이션 교체 실행!
-            // InfoDisplayUI에서 하던 이름 텍스트 변경을 이 멋진 연출이 대신하게 됩니다.
-            if (stageTitleAnim != null)
-            {
-                stageTitleAnim.ChangeTitle(StageDBManager.Instance.StageName[stageIndex[0]]);
-            }
+            // // InfoDisplayUI에서 하던 이름 텍스트 변경을 이 멋진 연출이 대신하게 됩니다.
+            // if (stageTitleAnim != null)
+            // {
+            //     stageTitleAnim.ChangeTitle(StageDBManager.Instance.StageName[stageIndex[0]]);
+            // }
         }
         // 🔥 [추가된 부분] 5~7 스테이지 구간 진입/이탈 감지 및 DOTween 애니메이션
         if (targetMatInstance != null)
@@ -224,10 +223,10 @@ public class MenuManager : Singleton<MenuManager>
             
             infoDisplayUI.InitUI(stageIndex);
             diskSwipeUI.StartPreviewSound(stageIndex[0]);
-            if (stageTitleAnim != null)
-        {
-            stageTitleAnim.ChangeTitle(StageDBManager.Instance.StageName[stageIndex[0]]);
-        }
+            // if (stageTitleAnim != null)
+            // {
+            //     stageTitleAnim.ChangeTitle(StageDBManager.Instance.StageName[stageIndex[0]]);
+            // }
             // if (stageIndex[1] >= 1)
             // {
             //     diffButtonUI.InitUI(stageIndex[1]);
@@ -292,7 +291,8 @@ public class MenuManager : Singleton<MenuManager>
             return;
         }
 
-        diskSwipeUI.scrollRect.horizontal = false; // 스테이지 시작 시 디스크 스와이프 잠금
+        diskSwipeUI.StopScroll(); // 스테이지 시작 시 디스크 스와이프 잠금
+        settingUI.gameObject.SetActive(false); // 스테이지 시작 시 세팅 버튼 숨김
 
         float dur = 2f;
         BlackOverlayObj.SetActive(true);

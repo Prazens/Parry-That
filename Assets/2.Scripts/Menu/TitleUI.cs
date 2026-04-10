@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening; // 🔥 DOTween 필수
 
-[RequireComponent(typeof(AudioSource))] 
 public class TitleUI : MonoBehaviour
 {
     [Header("UI 연결")]
@@ -12,12 +11,11 @@ public class TitleUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI titleText;
     
     [Header("머티리얼(쉐이더) 연결")]
-    public Material flickerMaterial;   
-    public Material dissolveMaterial;  
+    public Material flickerMaterial;
+    public Material dissolveMaterial;
     
     [Header("BGM 플레이어 설정")]
-    public AudioClip[] bgmList;        
-    private AudioSource bgmSource;     
+    public AudioClip[] bgmList;
     
     [Header("발광(Flicker) 민감도 세팅")]
     public float minGlow = 1f;         // 평소의 기본 밝기
@@ -42,15 +40,10 @@ public class TitleUI : MonoBehaviour
     {
         mainCamera.transform.position = new Vector3(0, 0, -10);
 
-        if (bgmSource == null) bgmSource = GetComponent<AudioSource>();
-
         if (bgmList.Length > 0)
         {
             int randomIndex = Random.Range(0, bgmList.Length); 
-            bgmSource.clip = bgmList[randomIndex];             
-            bgmSource.loop = true;                             
-            bgmSource.volume = 1f;                             
-            bgmSource.Play();                                  
+            MenuAudioManager.Instance.Play(bgmList[randomIndex], AudioTag.BGM, true);
         }
 
         titleImg.material = Instantiate(flickerMaterial);
@@ -66,10 +59,10 @@ public class TitleUI : MonoBehaviour
     void Update()
     {
         // 🔥 스와이프 전일 때, '저음(Bass)' 스펙트럼을 분석하여 발광시킴
-        if (StageDBManager.Instance.isFirstLaunch && bgmSource != null && bgmSource.isPlaying)
+        if (StageDBManager.Instance.isFirstLaunch && MenuAudioManager.Instance.BGMSound.isPlaying)
         {
             // 1. 소리 주파수 분석
-            bgmSource.GetSpectrumData(spectrumData, 0, FFTWindow.Rectangular);
+            MenuAudioManager.Instance.BGMSound.GetSpectrumData(spectrumData, 0, FFTWindow.Rectangular);
             float bassValue = 0f;
             
             // 0~9번 인덱스는 주로 묵직한 베이스/드럼 영역입니다.
@@ -101,10 +94,7 @@ public class TitleUI : MonoBehaviour
             if (textPulseTween != null) textPulseTween.Kill();
             titleText.gameObject.SetActive(false);
 
-            if (bgmSource != null)
-            {
-                bgmSource.DOFade(0f, transitionDur).OnComplete(() => bgmSource.Stop());
-            }
+            MenuAudioManager.Instance.Stop(AudioTag.BGM, true, transitionDur);
 
             StartDissolveLogo();
             SlideUpUI();

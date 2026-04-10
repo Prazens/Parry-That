@@ -57,7 +57,6 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
     // 없는 난이도는 자리는 있지만 null로 남겨두어야 함
 
     [SerializeField] private List<AudioClip> previewSounds;  // 디스크 선택시 재생할 미리듣기 사운드 목록
-    [SerializeField] private AudioSource currentPreviewSound;
 
     [Space]
     [SerializeField] private float rotationSpeed = 6f;  // 디스크 회전 속도
@@ -92,16 +91,6 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
 
     public void InitScrollView(int initialIndex, int difficulty)
     {
-        // 🔥 수정: 스크립트에서 동적으로 생성하던 코드 삭제하고 달려있는 컴포넌트 찾기
-        if (currentPreviewSound == null)
-        {
-            currentPreviewSound = GetComponent<AudioSource>();
-            if (currentPreviewSound == null)
-            {
-                Debug.LogError("DiskSwipeUI에 AudioSource 컴포넌트가 없습니다! 연결해주세요.");
-            }
-        }
-
         // 아이템 생성, 위치 및 패딩 설정
 
         int childCount = StageDBManager.Instance.stageNumbers;
@@ -173,6 +162,16 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
         StartPreviewSound(targetIndex);
         MenuManager.Instance.UpdateCurStage(targetIndex, MenuManager.Instance.stageIndex[1]);
         UpdateScaleAndColor();
+    }
+
+    public void StartPreviewSound(int stageIndex)
+    {
+        if (stageIndex <= 0 || stageIndex >= previewSounds.Count)  // 튜토리얼 프리뷰 재생 못하게 하드코딩
+        {
+            MenuAudioManager.Instance.Stop(AudioTag.BGM);  // 사운드 멈춤
+            return;
+        }
+        MenuAudioManager.Instance.Play(previewSounds[stageIndex], AudioTag.BGM, true);
     }
 
     /// <summary>
@@ -250,35 +249,6 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
         }
     }
 
-    /// <summary>
-    /// 미리듣기 사운드 재생 코루틴
-    /// <para>-1이면 사운드 멈춤</para>
-    /// </summary>
-    /// <param name="targetIndex"></param>
-    /// <returns></returns>
-    IEnumerator TempMusicPlay(int targetIndex)  // 임시로 여기에 넣어놓음, 아마 매니저를 새로 파거나 MenuManager에 넣어야 할 듯
-    {
-        Debug.Log("TempMusicPlay called for index: " + targetIndex);
-
-        if (MenuManager.Instance.currentState != MenuManager.MenuState.StageSelect)
-        {
-            yield break;
-        }
-        if (currentPreviewSound == null) yield break;
-        currentPreviewSound.loop = true;
-        currentPreviewSound.Stop();
-
-        currentPreviewSound.clip = previewSounds[targetIndex];
-        currentPreviewSound.volume = PlayerPrefs.GetFloat("bgmVolume", 1f) * PlayerPrefs.GetFloat("masterVolume", 1f);
-        currentPreviewSound.Play();
-        yield break;
-    }
-
-    public void StartPreviewSound(int targetIndex)
-    {
-        StartCoroutine(TempMusicPlay(targetIndex));
-    }
-
     public void OnDrag(PointerEventData eventData)
     {
         if (MenuManager.Instance.currentState != MenuState.StageSelect)
@@ -301,6 +271,13 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
             return;
         }
 
+        isDragging = false;
+        StartCoroutine(SnapToDisk());
+    }
+
+    public void StopScroll()
+    {
+        scrollRect.horizontal = false;
         isDragging = false;
         StartCoroutine(SnapToDisk());
     }
