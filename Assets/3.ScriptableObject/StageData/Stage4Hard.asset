@@ -16,13 +16,15 @@ MonoBehaviour:
   difficulty: 1
   category: 2
   phases:
-  - tutorialPanelPrefab: {fileID: 0}
+  - tutorialPanelPrefabs: []
     chartJson: {fileID: 4900000, guid: 068295789186c8d47b2abf6cf7f5827f, type: 3}
     dialogue: {fileID: 0}
     dialogueAudioPolicy: 0
   bgm: {fileID: 8300000, guid: df079bda5828e1e4eada7217bfe741d0, type: 3}
   overrideBgmOffset: 0
   bgmOffset: 0
+  holdingSound: {fileID: 8300000, guid: a1d707c3f6ea0b44eb62f84dc7e248e4, type: 3}
   cutInUpPrefab: {fileID: 6721788458552884480, guid: 1135389da89fc02438398ee8d2079be8, type: 3}
   cutInDownPrefab: {fileID: 3652655368027209433, guid: 4d4c3079d1c6da44ca3e25baaf094dfa, type: 3}
+  backgroundPrefabs: []
   bossStrikerType: 2
