@@ -20,8 +20,8 @@ MonoBehaviour:
   overrideBgmOffset: 0
   bgmOffset: 0
   holdingSound: {fileID: 8300000, guid: fd72f0402c2bcd345abfe8be89e8edd4, type: 3}
-  cutInUpPrefab: {fileID: 3830714329297533927, guid: bb12253c0c433044e8ff902aa7058426, type: 3}
-  cutInDownPrefab: {fileID: 6510084509892605857, guid: 0edc6e8c1e2c85b4e89f918fecce0c56, type: 3}
+  cutInUpPrefab: {fileID: 6510084509892605857, guid: 0edc6e8c1e2c85b4e89f918fecce0c56, type: 3}
+  cutInDownPrefab: {fileID: 3652655368027209433, guid: 4d4c3079d1c6da44ca3e25baaf094dfa, type: 3}
   backgroundPrefabs:
   - prefab: {fileID: 7398451050779184918, guid: 1e2e7d38b2d6e0d46b406044c67518f7, type: 3}
     attachPointName: 
