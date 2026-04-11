@@ -343,7 +343,7 @@ public class StageFlowManager : MonoBehaviour
             if (staticUIManager != null)
             {
                 GameObject tutorialPanelPrefab = phase.TutorialPanelPrefabs[currentTutorialPanelIndex];
-                staticUIManager.ShowTutorialPanel(tutorialPanelPrefab);
+                StartCoroutine(staticUIManager.ShowTutorialPanel(tutorialPanelPrefab));
             }
 
             return;
@@ -446,17 +446,22 @@ public class StageFlowManager : MonoBehaviour
         if (!isTutorial)
             return;
 
-        if (staticUIManager != null)
-        {
-            staticUIManager.HideTutorialPanel();
-        }
+        StartCoroutine(CloseTutorialPanelRoutine());
+    }
 
+    private IEnumerator CloseTutorialPanelRoutine()
+    {
         IReadOnlyList<StagePhase> phases = currentStageData != null ? currentStageData.Phases : null;
         StagePhase phase = null;
 
         if (phases != null && currentPhaseIndex >= 0 && currentPhaseIndex < phases.Count)
         {
             phase = phases[currentPhaseIndex];
+        }
+
+        if (staticUIManager != null)
+        {
+            yield return StartCoroutine(staticUIManager.HideTutorialPanel());
         }
 
         currentTutorialPanelIndex++;
@@ -470,9 +475,9 @@ public class StageFlowManager : MonoBehaviour
             if (staticUIManager != null)
             {
                 GameObject nextPanelPrefab = phase.TutorialPanelPrefabs[currentTutorialPanelIndex];
-                staticUIManager.ShowTutorialPanel(nextPanelPrefab);
+                yield return StartCoroutine(staticUIManager.ShowTutorialPanel(nextPanelPrefab));
             }
-            return;
+            yield break;
         }
 
         tutorialPanelsCompleted = true;
