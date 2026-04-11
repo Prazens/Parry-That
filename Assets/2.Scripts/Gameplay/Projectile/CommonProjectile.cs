@@ -44,9 +44,6 @@ public class CommonProjectile : Projectile
 
     public override void OnJudge(JudgeContext context)
     {
-        if (context.isMiss)
-            return;
-
         Destroy(gameObject);
         if (!context.isParried)
             return;
