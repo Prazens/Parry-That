@@ -1,0 +1,428 @@
+{
+  "bpm": 180.0,
+  "strikerType": 4,
+  "startBeat": 166.0,
+  "endBeat": 296.0,
+  "notes": [
+    {
+      "direction": 1,
+      "noticeBeat": 164.5,
+      "arriveBeat": 168.5,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 165.0,
+      "arriveBeat": 169.0,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 165.5,
+      "arriveBeat": 169.5,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 166.0,
+      "arriveBeat": 170.0,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 166.5,
+      "arriveBeat": 170.5,
+      "type": 0
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 167.0,
+      "arriveBeat": 171.0,
+      "type": 4
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 172.5,
+      "arriveBeat": 176.5,
+      "type": 0
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 173.0,
+      "arriveBeat": 177.0,
+      "type": 0
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 173.5,
+      "arriveBeat": 177.5,
+      "type": 0
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 174.0,
+      "arriveBeat": 178.0,
+      "type": 0
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 174.5,
+      "arriveBeat": 178.5,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 175.0,
+      "arriveBeat": 179.0,
+      "type": 4
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 180.5,
+      "arriveBeat": 184.5,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 181.0,
+      "arriveBeat": 185.0,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 181.5,
+      "arriveBeat": 185.5,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 182.0,
+      "arriveBeat": 186.0,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 182.5,
+      "arriveBeat": 186.5,
+      "type": 0
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 183.0,
+      "arriveBeat": 187.0,
+      "type": 4
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 188.5,
+      "arriveBeat": 192.5,
+      "type": 0
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 189.0,
+      "arriveBeat": 193.0,
+      "type": 0
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 189.5,
+      "arriveBeat": 193.5,
+      "type": 0
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 190.0,
+      "arriveBeat": 194.0,
+      "type": 0
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 190.5,
+      "arriveBeat": 194.5,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 191.0,
+      "arriveBeat": 195.0,
+      "type": 4
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 196.0,
+      "arriveBeat": 200.0,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 197.0,
+      "arriveBeat": 201.0,
+      "type": 1
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 198.0,
+      "arriveBeat": 202.0,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 198.328125,
+      "arriveBeat": 202.328125,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 199.0,
+      "arriveBeat": 203.0,
+      "type": 1
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 204.0,
+      "arriveBeat": 208.0,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 205.0,
+      "arriveBeat": 209.0,
+      "type": 4
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 206.0,
+      "arriveBeat": 210.0,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 206.328125,
+      "arriveBeat": 210.328125,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 207.0,
+      "arriveBeat": 211.0,
+      "type": 4
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 212.0,
+      "arriveBeat": 216.0,
+      "type": 0
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 213.0,
+      "arriveBeat": 217.0,
+      "type": 4
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 214.0,
+      "arriveBeat": 218.0,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 219.328125,
+      "arriveBeat": 220.0,
+      "type": 2
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 221.328125,
+      "arriveBeat": 222.0,
+      "type": 3
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 223.328125,
+      "arriveBeat": 224.0,
+      "type": 2
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 225.328125,
+      "arriveBeat": 226.0,
+      "type": 3
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 227.328125,
+      "arriveBeat": 228.0,
+      "type": 2
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 229.328125,
+      "arriveBeat": 230.0,
+      "type": 3
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 231.328125,
+      "arriveBeat": 232.0,
+      "type": 2
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 233.328125,
+      "arriveBeat": 234.0,
+      "type": 3
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 235.328125,
+      "arriveBeat": 236.0,
+      "type": 2
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 237.328125,
+      "arriveBeat": 238.0,
+      "type": 3
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 239.328125,
+      "arriveBeat": 240.0,
+      "type": 2
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 241.328125,
+      "arriveBeat": 242.0,
+      "type": 3
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 243.328125,
+      "arriveBeat": 244.0,
+      "type": 2
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 245.328125,
+      "arriveBeat": 246.0,
+      "type": 3
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 247.328125,
+      "arriveBeat": 248.0,
+      "type": 2
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 249.328125,
+      "arriveBeat": 250.0,
+      "type": 3
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 251.328125,
+      "arriveBeat": 252.0,
+      "type": 2
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 253.328125,
+      "arriveBeat": 254.0,
+      "type": 3
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 255.328125,
+      "arriveBeat": 256.0,
+      "type": 2
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 257.328125,
+      "arriveBeat": 258.0,
+      "type": 3
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 259.328125,
+      "arriveBeat": 260.0,
+      "type": 2
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 261.328125,
+      "arriveBeat": 262.0,
+      "type": 3
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 263.328125,
+      "arriveBeat": 264.0,
+      "type": 2
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 265.328125,
+      "arriveBeat": 266.0,
+      "type": 3
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 267.328125,
+      "arriveBeat": 268.0,
+      "type": 2
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 269.328125,
+      "arriveBeat": 270.0,
+      "type": 3
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 271.328125,
+      "arriveBeat": 272.0,
+      "type": 2
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 273.328125,
+      "arriveBeat": 274.0,
+      "type": 3
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 275.328125,
+      "arriveBeat": 276.0,
+      "type": 2
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 277.328125,
+      "arriveBeat": 278.0,
+      "type": 3
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 279.328125,
+      "arriveBeat": 280.0,
+      "type": 2
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 281.328125,
+      "arriveBeat": 282.0,
+      "type": 3
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 283.6640625,
+      "arriveBeat": 286.0,
+      "type": 4
+    }
+  ]
+}

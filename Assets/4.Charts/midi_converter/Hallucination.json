@@ -1,0 +1,1052 @@
+{
+  "bpm": 180.0,
+  "strikerType": 3,
+  "startBeat": 4.0,
+  "endBeat": 296.0,
+  "notes": [
+    {
+      "direction": 1,
+      "noticeBeat": 4.0,
+      "arriveBeat": 8.0,
+      "type": 4
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 12.0,
+      "arriveBeat": 16.0,
+      "type": 4
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 12.6640625,
+      "arriveBeat": 16.6640625,
+      "type": 4
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 13.5,
+      "arriveBeat": 17.5,
+      "type": 4
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 14.1640625,
+      "arriveBeat": 18.1640625,
+      "type": 4
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 15.0,
+      "arriveBeat": 19.0,
+      "type": 4
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 20.0,
+      "arriveBeat": 24.0,
+      "type": 4
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 28.0,
+      "arriveBeat": 32.0,
+      "type": 4
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 28.6640625,
+      "arriveBeat": 32.6640625,
+      "type": 4
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 29.5,
+      "arriveBeat": 33.5,
+      "type": 4
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 30.1640625,
+      "arriveBeat": 34.1640625,
+      "type": 4
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 31.0,
+      "arriveBeat": 35.0,
+      "type": 4
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 35.6640625,
+      "arriveBeat": 39.6640625,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 36.0,
+      "arriveBeat": 40.0,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 37.5,
+      "arriveBeat": 41.5,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 37.828125,
+      "arriveBeat": 41.828125,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 38.1640625,
+      "arriveBeat": 42.1640625,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 38.5,
+      "arriveBeat": 42.5,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 43.6640625,
+      "arriveBeat": 47.6640625,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 44.0,
+      "arriveBeat": 48.0,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 45.5,
+      "arriveBeat": 49.5,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 45.828125,
+      "arriveBeat": 49.828125,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 46.1640625,
+      "arriveBeat": 50.1640625,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 46.5,
+      "arriveBeat": 50.5,
+      "type": 0
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 51.6640625,
+      "arriveBeat": 55.6640625,
+      "type": 0
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 52.0,
+      "arriveBeat": 56.0,
+      "type": 0
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 53.5,
+      "arriveBeat": 57.5,
+      "type": 0
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 53.828125,
+      "arriveBeat": 57.828125,
+      "type": 0
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 54.1640625,
+      "arriveBeat": 58.1640625,
+      "type": 0
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 54.5,
+      "arriveBeat": 58.5,
+      "type": 0
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 59.6640625,
+      "arriveBeat": 63.6640625,
+      "type": 0
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 60.0,
+      "arriveBeat": 64.0,
+      "type": 0
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 61.5,
+      "arriveBeat": 65.5,
+      "type": 0
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 61.828125,
+      "arriveBeat": 65.828125,
+      "type": 0
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 62.1640625,
+      "arriveBeat": 66.1640625,
+      "type": 0
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 62.5,
+      "arriveBeat": 66.5,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 68.0,
+      "arriveBeat": 72.0,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 68.5,
+      "arriveBeat": 72.5,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 69.0,
+      "arriveBeat": 73.0,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 69.5,
+      "arriveBeat": 73.5,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 70.0,
+      "arriveBeat": 74.0,
+      "type": 1
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 70.5,
+      "arriveBeat": 74.5,
+      "type": 1
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 71.0,
+      "arriveBeat": 75.0,
+      "type": 0
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 71.5,
+      "arriveBeat": 75.5,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 76.0,
+      "arriveBeat": 80.0,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 76.5,
+      "arriveBeat": 80.5,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 77.0,
+      "arriveBeat": 81.0,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 77.5,
+      "arriveBeat": 81.5,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 78.0,
+      "arriveBeat": 82.0,
+      "type": 4
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 78.5,
+      "arriveBeat": 82.5,
+      "type": 4
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 79.0,
+      "arriveBeat": 83.0,
+      "type": 0
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 79.5,
+      "arriveBeat": 83.5,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 84.0,
+      "arriveBeat": 88.0,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 84.5,
+      "arriveBeat": 88.5,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 85.0,
+      "arriveBeat": 89.0,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 85.5,
+      "arriveBeat": 89.5,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 86.0,
+      "arriveBeat": 90.0,
+      "type": 1
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 86.5,
+      "arriveBeat": 90.5,
+      "type": 1
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 87.0,
+      "arriveBeat": 91.0,
+      "type": 0
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 87.5,
+      "arriveBeat": 91.5,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 92.0,
+      "arriveBeat": 96.0,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 92.5,
+      "arriveBeat": 96.5,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 93.0,
+      "arriveBeat": 97.0,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 93.5,
+      "arriveBeat": 97.5,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 94.0,
+      "arriveBeat": 98.0,
+      "type": 4
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 94.5,
+      "arriveBeat": 98.5,
+      "type": 4
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 95.0,
+      "arriveBeat": 99.0,
+      "type": 0
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 95.5,
+      "arriveBeat": 99.5,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 100.0,
+      "arriveBeat": 104.0,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 100.828125,
+      "arriveBeat": 104.828125,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 101.5,
+      "arriveBeat": 105.5,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 102.0,
+      "arriveBeat": 106.0,
+      "type": 1
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 103.328125,
+      "arriveBeat": 107.328125,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 103.6640625,
+      "arriveBeat": 107.6640625,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 108.5,
+      "arriveBeat": 112.5,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 109.1640625,
+      "arriveBeat": 113.1640625,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 109.5,
+      "arriveBeat": 113.5,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 110.0,
+      "arriveBeat": 114.0,
+      "type": 1
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 110.828125,
+      "arriveBeat": 114.828125,
+      "type": 1
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 111.5,
+      "arriveBeat": 115.5,
+      "type": 1
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 116.0,
+      "arriveBeat": 120.0,
+      "type": 0
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 116.828125,
+      "arriveBeat": 120.828125,
+      "type": 0
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 117.5,
+      "arriveBeat": 121.5,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 118.0,
+      "arriveBeat": 122.0,
+      "type": 4
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 119.328125,
+      "arriveBeat": 123.328125,
+      "type": 0
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 119.6640625,
+      "arriveBeat": 123.6640625,
+      "type": 0
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 124.5,
+      "arriveBeat": 128.5,
+      "type": 0
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 125.1640625,
+      "arriveBeat": 129.1640625,
+      "type": 0
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 125.5,
+      "arriveBeat": 129.5,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 126.0,
+      "arriveBeat": 130.0,
+      "type": 4
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 126.828125,
+      "arriveBeat": 130.828125,
+      "type": 4
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 127.5,
+      "arriveBeat": 131.5,
+      "type": 4
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 135.1640625,
+      "arriveBeat": 143.1640625,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 135.5,
+      "arriveBeat": 143.5,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 135.828125,
+      "arriveBeat": 143.828125,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 137.5,
+      "arriveBeat": 145.5,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 139.0,
+      "arriveBeat": 147.0,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 140.0,
+      "arriveBeat": 148.0,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 151.1640625,
+      "arriveBeat": 153.1640625,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 151.5,
+      "arriveBeat": 153.5,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 151.828125,
+      "arriveBeat": 153.828125,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 152.1640625,
+      "arriveBeat": 154.1640625,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 152.5,
+      "arriveBeat": 154.5,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 152.828125,
+      "arriveBeat": 154.828125,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 164.5,
+      "arriveBeat": 168.5,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 165.0,
+      "arriveBeat": 169.0,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 165.5,
+      "arriveBeat": 169.5,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 166.0,
+      "arriveBeat": 170.0,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 166.5,
+      "arriveBeat": 170.5,
+      "type": 0
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 167.0,
+      "arriveBeat": 171.0,
+      "type": 4
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 172.5,
+      "arriveBeat": 176.5,
+      "type": 0
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 173.0,
+      "arriveBeat": 177.0,
+      "type": 0
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 173.5,
+      "arriveBeat": 177.5,
+      "type": 0
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 174.0,
+      "arriveBeat": 178.0,
+      "type": 0
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 174.5,
+      "arriveBeat": 178.5,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 175.0,
+      "arriveBeat": 179.0,
+      "type": 4
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 180.5,
+      "arriveBeat": 184.5,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 181.0,
+      "arriveBeat": 185.0,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 181.5,
+      "arriveBeat": 185.5,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 182.0,
+      "arriveBeat": 186.0,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 182.5,
+      "arriveBeat": 186.5,
+      "type": 0
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 183.0,
+      "arriveBeat": 187.0,
+      "type": 4
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 188.5,
+      "arriveBeat": 192.5,
+      "type": 0
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 189.0,
+      "arriveBeat": 193.0,
+      "type": 0
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 189.5,
+      "arriveBeat": 193.5,
+      "type": 0
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 190.0,
+      "arriveBeat": 194.0,
+      "type": 0
+    },
+    {
+      "direction": 4,
+      "noticeBeat": 190.5,
+      "arriveBeat": 194.5,
+      "type": 0
+    },
+    {
+      "direction": 3,
+      "noticeBeat": 191.0,
+      "arriveBeat": 195.0,
+      "type": 4
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 196.0,
+      "arriveBeat": 200.0,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 197.0,
+      "arriveBeat": 201.0,
+      "type": 1
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 198.0,
+      "arriveBeat": 202.0,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 198.328125,
+      "arriveBeat": 202.328125,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 199.0,
+      "arriveBeat": 203.0,
+      "type": 1
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 204.0,
+      "arriveBeat": 208.0,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 205.0,
+      "arriveBeat": 209.0,
+      "type": 4
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 206.0,
+      "arriveBeat": 210.0,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 206.328125,
+      "arriveBeat": 210.328125,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 207.0,
+      "arriveBeat": 211.0,
+      "type": 4
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 212.0,
+      "arriveBeat": 216.0,
+      "type": 0
+    },
+    {
+      "direction": 2,
+      "noticeBeat": 213.0,
+      "arriveBeat": 217.0,
+      "type": 4
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 214.0,
+      "arriveBeat": 218.0,
+      "type": 0
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 219.328125,
+      "arriveBeat": 220.0,
+      "type": 2
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 221.328125,
+      "arriveBeat": 222.0,
+      "type": 3
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 223.328125,
+      "arriveBeat": 224.0,
+      "type": 2
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 225.328125,
+      "arriveBeat": 226.0,
+      "type": 3
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 227.328125,
+      "arriveBeat": 228.0,
+      "type": 2
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 229.328125,
+      "arriveBeat": 230.0,
+      "type": 3
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 231.328125,
+      "arriveBeat": 232.0,
+      "type": 2
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 233.328125,
+      "arriveBeat": 234.0,
+      "type": 3
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 235.328125,
+      "arriveBeat": 236.0,
+      "type": 2
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 237.328125,
+      "arriveBeat": 238.0,
+      "type": 3
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 239.328125,
+      "arriveBeat": 240.0,
+      "type": 2
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 241.328125,
+      "arriveBeat": 242.0,
+      "type": 3
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 243.328125,
+      "arriveBeat": 244.0,
+      "type": 2
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 245.328125,
+      "arriveBeat": 246.0,
+      "type": 3
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 247.328125,
+      "arriveBeat": 248.0,
+      "type": 2
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 249.328125,
+      "arriveBeat": 250.0,
+      "type": 3
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 251.328125,
+      "arriveBeat": 252.0,
+      "type": 2
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 253.328125,
+      "arriveBeat": 254.0,
+      "type": 3
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 255.328125,
+      "arriveBeat": 256.0,
+      "type": 2
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 257.328125,
+      "arriveBeat": 258.0,
+      "type": 3
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 259.328125,
+      "arriveBeat": 260.0,
+      "type": 2
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 261.328125,
+      "arriveBeat": 262.0,
+      "type": 3
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 263.328125,
+      "arriveBeat": 264.0,
+      "type": 2
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 265.328125,
+      "arriveBeat": 266.0,
+      "type": 3
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 267.328125,
+      "arriveBeat": 268.0,
+      "type": 2
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 269.328125,
+      "arriveBeat": 270.0,
+      "type": 3
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 271.328125,
+      "arriveBeat": 272.0,
+      "type": 2
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 273.328125,
+      "arriveBeat": 274.0,
+      "type": 3
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 275.328125,
+      "arriveBeat": 276.0,
+      "type": 2
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 277.328125,
+      "arriveBeat": 278.0,
+      "type": 3
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 279.328125,
+      "arriveBeat": 280.0,
+      "type": 2
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 281.328125,
+      "arriveBeat": 282.0,
+      "type": 3
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 283.6640625,
+      "arriveBeat": 286.0,
+      "type": 4
+    }
+  ]
+}
