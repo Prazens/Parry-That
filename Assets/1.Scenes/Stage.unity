@@ -2120,8 +2120,24 @@ MonoBehaviour:
   - {fileID: 124629311}
   - {fileID: 2000330377}
   prepareSounds:
-  - {fileID: 8300000, guid: f59be02f63ba0b348b50c617dd3fc21a, type: 3}
-  - {fileID: 8300000, guid: a014fc7a30d019440ae4d95c47741b5e, type: 3}
+  - clips:
+    - {fileID: 8300000, guid: 217db2784927af74182e3363c58252a5, type: 3}
+    - {fileID: 8300000, guid: 121170503d0edaa40ae14d48ba26984c, type: 3}
+  - clips:
+    - {fileID: 8300000, guid: f59be02f63ba0b348b50c617dd3fc21a, type: 3}
+    - {fileID: 8300000, guid: a014fc7a30d019440ae4d95c47741b5e, type: 3}
+  - clips:
+    - {fileID: 8300000, guid: dda175893514928409eb125d0286cc40, type: 3}
+    - {fileID: 8300000, guid: 543623a595850aa47829f19d9c76705d, type: 3}
+  - clips:
+    - {fileID: 8300000, guid: 5bcd5d5eb036424459cd30a4050e2bea, type: 3}
+    - {fileID: 8300000, guid: 8d10a83e9e6c6b24988770325742acd7, type: 3}
+  - clips:
+    - {fileID: 8300000, guid: ddb18b78495dc9046894d7a1c128fa11, type: 3}
+    - {fileID: 8300000, guid: b4deb8182b309a040baa52cb59d5b7cc, type: 3}
+  - clips:
+    - {fileID: 8300000, guid: dda175893514928409eb125d0286cc40, type: 3}
+    - {fileID: 8300000, guid: 543623a595850aa47829f19d9c76705d, type: 3}
 --- !u!1 &982620543
 GameObject:
   m_ObjectHideFlags: 0

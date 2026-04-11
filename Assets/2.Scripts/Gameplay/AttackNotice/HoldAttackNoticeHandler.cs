@@ -2,15 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class AudioClipList
+{
+    public List<AudioClip> clips;
+}
+
 public class HoldAttackNoticeHandler : MonoBehaviour, IAttackHandler<AttackNoticeContext>
 {
     [SerializeField] private GameObject[] exclamations;
-    [SerializeField] private AudioClip[] prepareSounds;
+    [SerializeField] private List<AudioClipList> prepareSounds;
+
     private AudioSource audioSource;
+    private StageChartLoader stageChartLoader;
     private Coroutine currentCoroutine = null;
 
-    private void Start()
+    private void Awake()
     {
+        stageChartLoader = FindObjectOfType<StageChartLoader>();
         var audioSourceObject = GameObject.Find("Audio Source");
         if (audioSourceObject != null)
             audioSource = audioSourceObject.GetComponent<AudioSource>();
@@ -20,17 +29,44 @@ public class HoldAttackNoticeHandler : MonoBehaviour, IAttackHandler<AttackNotic
 
     public void OnNotice(AttackNoticeContext context)
     {
-        var flow = StageFlowManager.Instance;
-        float noticeBeat = context.note.noticeBeat;
-        float arriveBeat = context.note.arriveBeat;
-        float durationSec = flow.BeatToSec(arriveBeat) - flow.BeatToSec(noticeBeat);
+        StageFlowManager flow = StageFlowManager.Instance;
+        if (flow == null)
+            return;
+
+        float durationSec =
+            flow.BeatToSec(context.note.arriveBeat) -
+            flow.BeatToSec(context.note.noticeBeat);
+
         AttackType attackType = (AttackType)context.note.type;
 
         if (attackType == AttackType.HoldStart)
         {
-            Appear(durationSec);
+            int strikerType = -1;
+
+            if (stageChartLoader == null)
+            {
+                stageChartLoader = FindObjectOfType<StageChartLoader>();
+            }
+
+            if (stageChartLoader != null && flow.currentStageData != null)
+            {
+                TextAsset chartJson = stageChartLoader.GetCurrentPhaseChart(flow.currentStageData);
+                if (chartJson != null)
+                {
+                    ChartData chartData = JsonReader.ReadJson<ChartData>(chartJson);
+                    if (chartData != null)
+                    {
+                        strikerType = chartData.strikerType;
+                    }
+                }
+            }
+
+            Appear(durationSec, strikerType);
+
             if (context.judgeables.Count >= 2)
+            {
                 context.judgeables[1].AddOnDestroy(_ => ForceStop());
+            }
         }
         else if (attackType == AttackType.HoldStop)
         {
@@ -43,7 +79,6 @@ public class HoldAttackNoticeHandler : MonoBehaviour, IAttackHandler<AttackNotic
 
     public void OnAttackStart(AttackNoticeContext context)
     {
-
     }
 
     void IAttackHandler.OnAttackStart(IAttackContext context)
@@ -51,16 +86,16 @@ public class HoldAttackNoticeHandler : MonoBehaviour, IAttackHandler<AttackNotic
 
     public void OnJudge(JudgeContext context)
     {
-
     }
 
-    public void Appear(float durationSec)
+    public void Appear(float durationSec, int strikerType)
     {
         if (currentCoroutine != null)
         {
             StopCoroutine(currentCoroutine);
         }
-        currentCoroutine = StartCoroutine(Showing(durationSec, true));
+
+        currentCoroutine = StartCoroutine(Showing(durationSec, true, strikerType));
     }
 
     public void Disappear(float durationSec)
@@ -69,30 +104,49 @@ public class HoldAttackNoticeHandler : MonoBehaviour, IAttackHandler<AttackNotic
         {
             StopCoroutine(currentCoroutine);
         }
-        currentCoroutine = StartCoroutine(Showing(durationSec, false));
+
+        currentCoroutine = StartCoroutine(Showing(durationSec, false, -1));
     }
 
-    private IEnumerator Showing(float durationSec, bool isAppear)
+    private IEnumerator Showing(float durationSec, bool isAppear, int strikerType)
     {
-        float intervalSec = durationSec / 2.0f;
-        for (int i = 0; i < 3; i++)
-        {
-            bool isAppeared = exclamations[i].activeSelf;
-            exclamations[i].SetActive(isAppear);
-            if (i < 2)
-            {
-                if (isAppear && !isAppeared)
-                {
-                    audioSource.PlayOneShot(prepareSounds[i], PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("enemyVolume", 1));
-                }
-                else if (!isAppear && isAppeared)
-                {
-                    audioSource.PlayOneShot(prepareSounds[1 - i], PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("enemyVolume", 1));
-                }
+        float intervalSec = durationSec / 2f;
 
+        for (int index = 0; index < 3; index++)
+        {
+            exclamations[index].SetActive(isAppear);
+
+            if (index < 2)
+            {
+                if (isAppear)
+                {
+                    PlayPrepare(strikerType, index);
+                }
+                
                 yield return new WaitForSeconds(intervalSec);
             }
         }
+
+        currentCoroutine = null;
+    }
+
+    private void PlayPrepare(int strikerType, int soundIndex)
+    {
+        if (strikerType < 0 || strikerType >= prepareSounds.Count)
+            return;
+
+        AudioClipList clipList = prepareSounds[strikerType];
+
+        if (soundIndex < 0 || soundIndex >= clipList.clips.Count)
+            return;
+
+        AudioClip clip = clipList.clips[soundIndex];
+        
+        float volume =
+            PlayerPrefs.GetFloat("masterVolume", 1f) *
+            PlayerPrefs.GetFloat("enemyVolume", 1f);
+
+        audioSource.PlayOneShot(clip, volume);
     }
 
     public void ForceStop()
@@ -100,7 +154,9 @@ public class HoldAttackNoticeHandler : MonoBehaviour, IAttackHandler<AttackNotic
         if (currentCoroutine != null)
         {
             StopCoroutine(currentCoroutine);
+            currentCoroutine = null;
         }
+
         exclamations[0].SetActive(false);
         exclamations[1].SetActive(false);
         exclamations[2].SetActive(false);

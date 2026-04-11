@@ -126,7 +126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   commonVisual: {fileID: 4661586022337567276}
-  holdVisual: {fileID: 0}
+  holdVisual: {fileID: 7953169974069795391}
   sound: {fileID: 1523450611889353992}
   projectilePrefabs:
   - {fileID: 177280460932711409, guid: fe73d5ef50aa6e94fb165fba9a627e29, type: 3}
@@ -273,7 +273,7 @@ MonoBehaviour:
   parrySoundStrong: {fileID: 8300000, guid: 20353a13f678ac34f83635b7b2503a29, type: 3}
   parrySoundGhost: {fileID: 8300000, guid: 20353a13f678ac34f83635b7b2503a29, type: 3}
   holdingSound: {fileID: 0}
-  holdingEnd: {fileID: 0}
+  holdingEnd: {fileID: 8300000, guid: 8004143a0058a1c40b4ae89f9b27d841, type: 3}
 --- !u!114 &7953169974069795391
 MonoBehaviour:
   m_ObjectHideFlags: 0
