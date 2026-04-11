@@ -122,6 +122,10 @@ public class HoldAttackNoticeHandler : MonoBehaviour, IAttackHandler<AttackNotic
                 {
                     PlayPrepare(strikerType, index);
                 }
+                else
+                {
+                    PlayPrepare(strikerType, 1 - index);
+                }
                 
                 yield return new WaitForSeconds(intervalSec);
             }

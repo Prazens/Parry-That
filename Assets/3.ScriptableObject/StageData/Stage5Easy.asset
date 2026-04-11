@@ -16,29 +16,30 @@ MonoBehaviour:
   difficulty: 0
   category: 1
   phases:
-  - tutorialPanelPrefab: {fileID: 0}
+  - tutorialPanelPrefabs: []
     chartJson: {fileID: 0}
     dialogue: {fileID: 11400000, guid: c8ba9e71ee5271b42919e26595e7477a, type: 2}
     dialogueAudioPolicy: 0
-  - tutorialPanelPrefab: {fileID: 0}
+  - tutorialPanelPrefabs: []
     chartJson: {fileID: 4900000, guid: f948e982d505d37489949457aaa32f0c, type: 3}
     dialogue: {fileID: 0}
     dialogueAudioPolicy: 0
-  - tutorialPanelPrefab: {fileID: 0}
+  - tutorialPanelPrefabs: []
     chartJson: {fileID: 4900000, guid: ce8073d7002f35d4385d9a4465d72c47, type: 3}
     dialogue: {fileID: 0}
     dialogueAudioPolicy: 0
-  - tutorialPanelPrefab: {fileID: 0}
+  - tutorialPanelPrefabs: []
     chartJson: {fileID: 4900000, guid: f8f1e8a842535c84e9ad160b0f7157c9, type: 3}
     dialogue: {fileID: 0}
     dialogueAudioPolicy: 0
-  - tutorialPanelPrefab: {fileID: 0}
+  - tutorialPanelPrefabs: []
     chartJson: {fileID: 4900000, guid: a5989fa6ce4197149baa14d09210f778, type: 3}
     dialogue: {fileID: 0}
     dialogueAudioPolicy: 0
   bgm: {fileID: 8300000, guid: 5bd96d72ded94414682fd2722a9540d4, type: 3}
   overrideBgmOffset: 0
   bgmOffset: 0
+  holdingSound: {fileID: 8300000, guid: fd72f0402c2bcd345abfe8be89e8edd4, type: 3}
   cutInUpPrefab: {fileID: 3830714329297533927, guid: bb12253c0c433044e8ff902aa7058426, type: 3}
   cutInDownPrefab: {fileID: 6510084509892605857, guid: 0edc6e8c1e2c85b4e89f918fecce0c56, type: 3}
   backgroundPrefabs:
