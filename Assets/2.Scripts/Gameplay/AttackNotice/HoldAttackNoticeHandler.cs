@@ -37,30 +37,30 @@ public class HoldAttackNoticeHandler : MonoBehaviour, IAttackHandler<AttackNotic
             flow.BeatToSec(context.note.arriveBeat) -
             flow.BeatToSec(context.note.noticeBeat);
 
+        int strikerType = -1;
+
+        if (stageChartLoader == null)
+        {
+            stageChartLoader = FindObjectOfType<StageChartLoader>();
+        }
+
+        if (stageChartLoader != null && flow.currentStageData != null)
+        {
+            TextAsset chartJson = stageChartLoader.GetCurrentPhaseChart(flow.currentStageData);
+            if (chartJson != null)
+            {
+                ChartData chartData = JsonReader.ReadJson<ChartData>(chartJson);
+                if (chartData != null)
+                {
+                    strikerType = chartData.strikerType;
+                }
+            }
+        }
+
         AttackType attackType = (AttackType)context.note.type;
 
         if (attackType == AttackType.HoldStart)
         {
-            int strikerType = -1;
-
-            if (stageChartLoader == null)
-            {
-                stageChartLoader = FindObjectOfType<StageChartLoader>();
-            }
-
-            if (stageChartLoader != null && flow.currentStageData != null)
-            {
-                TextAsset chartJson = stageChartLoader.GetCurrentPhaseChart(flow.currentStageData);
-                if (chartJson != null)
-                {
-                    ChartData chartData = JsonReader.ReadJson<ChartData>(chartJson);
-                    if (chartData != null)
-                    {
-                        strikerType = chartData.strikerType;
-                    }
-                }
-            }
-
             Appear(durationSec, strikerType);
 
             if (context.judgeables.Count >= 2)
@@ -70,10 +70,9 @@ public class HoldAttackNoticeHandler : MonoBehaviour, IAttackHandler<AttackNotic
         }
         else if (attackType == AttackType.HoldStop)
         {
-            Disappear(durationSec);
+            Disappear(durationSec, strikerType);
         }
     }
-
     void IAttackHandler.OnNotice(IAttackContext context)
         => OnNotice((AttackNoticeContext)context);
 
@@ -98,14 +97,14 @@ public class HoldAttackNoticeHandler : MonoBehaviour, IAttackHandler<AttackNotic
         currentCoroutine = StartCoroutine(Showing(durationSec, true, strikerType));
     }
 
-    public void Disappear(float durationSec)
+    public void Disappear(float durationSec, int strikerType)
     {
         if (currentCoroutine != null)
         {
             StopCoroutine(currentCoroutine);
         }
 
-        currentCoroutine = StartCoroutine(Showing(durationSec, false, -1));
+        currentCoroutine = StartCoroutine(Showing(durationSec, false, strikerType));
     }
 
     private IEnumerator Showing(float durationSec, bool isAppear, int strikerType)
