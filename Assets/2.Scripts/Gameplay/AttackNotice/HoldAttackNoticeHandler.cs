@@ -113,15 +113,16 @@ public class HoldAttackNoticeHandler : MonoBehaviour, IAttackHandler<AttackNotic
 
         for (int index = 0; index < 3; index++)
         {
+            bool isAppeared = exclamations[index].activeSelf;
             exclamations[index].SetActive(isAppear);
 
             if (index < 2)
             {
-                if (isAppear)
+                if (isAppear && !isAppeared)
                 {
                     PlayPrepare(strikerType, index);
                 }
-                else
+                else if (!isAppear && isAppeared)
                 {
                     PlayPrepare(strikerType, 1 - index);
                 }
