@@ -2779,6 +2779,8 @@ MonoBehaviour:
   unpauseButtonSprite: {fileID: 21300000, guid: 5c11becbcfffc294db866af1a1c65ea4, type: 3}
   continueText: {fileID: 1173173430}
   skipButton: {fileID: 24364144}
+  tutorialFadeInDuration: 0.15
+  tutorialFadeOutDuration: 0.3
   countdownText: {fileID: 477627792}
   victoryAnimatorObject: {fileID: 743363869}
   victoryAudioSource: {fileID: 163746527}

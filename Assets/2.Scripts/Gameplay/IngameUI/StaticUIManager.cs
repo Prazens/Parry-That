@@ -23,6 +23,8 @@ public class StaticUIManager : MonoBehaviour
 
     [Header("Tutorial")]
     [SerializeField] private GameObject skipButton;
+    [SerializeField] private float tutorialFadeInDuration = 0.15f;
+    [SerializeField] private float tutorialFadeOutDuration = 0.3f;
 
     [Header("Countdown")]
     [SerializeField] private TextMeshProUGUI countdownText;
@@ -60,7 +62,6 @@ public class StaticUIManager : MonoBehaviour
         CachePauseButton();
         CacheVictory();
 
-        // Start에서 ToggleXXX를 여러 번 호출하지 말고 직접 끔(토글 내부 로직/텍스트 갱신 방지)
         if (overlayObject != null) overlayObject.SetActive(false);
         if (clearPanel != null) clearPanel.SetActive(false);
         if (gameOverPanel != null) gameOverPanel.SetActive(false);
@@ -140,23 +141,76 @@ public class StaticUIManager : MonoBehaviour
         }
     }
 
-    public void ShowTutorialPanel(GameObject tutorialPanelPrefab)
+    public IEnumerator ShowTutorialPanel(GameObject tutorialPanelPrefab)
     {
-        if (tutorialPanelPrefab == null) return;
-        if (canvasRoot == null) return;
-
-        HideTutorialPanel();
+        if (tutorialPanelPrefab == null) yield break;
+        if (canvasRoot == null) yield break;
 
         tutorialPanel = Instantiate(tutorialPanelPrefab, canvasRoot);
+
+        CanvasGroup canvasGroup = GetOrAddCanvasGroup(tutorialPanel);
         tutorialPanel.SetActive(true);
+
+        yield return StartCoroutine(FadeTutorialPanel(canvasGroup, true));
     }
 
-    public void HideTutorialPanel()
+    public IEnumerator HideTutorialPanel()
     {
-        if (tutorialPanel == null) return;
+        if (tutorialPanel == null) yield break;
 
-        Destroy(tutorialPanel);
-        tutorialPanel = null;
+        CanvasGroup canvasGroup = GetOrAddCanvasGroup(tutorialPanel);
+
+        yield return StartCoroutine(FadeTutorialPanel(canvasGroup, false));
+
+        if (tutorialPanel != null)
+        {
+            Destroy(tutorialPanel);
+            tutorialPanel = null;
+        }
+    }
+
+    private IEnumerator FadeTutorialPanel(CanvasGroup canvasGroup, bool fadeIn)
+    {
+        if (canvasGroup == null)
+            yield break;
+
+        float duration = fadeIn ? tutorialFadeInDuration : tutorialFadeOutDuration;
+        float startAlpha = fadeIn ? 0f : 1f;
+        float endAlpha = fadeIn ? 1f : 0f;
+        float elapsedTime = 0f;
+
+        canvasGroup.gameObject.SetActive(true);
+        canvasGroup.alpha = startAlpha;
+
+        if (duration <= 0f)
+        {
+            canvasGroup.alpha = endAlpha;
+            if (!fadeIn)
+            {
+                canvasGroup.gameObject.SetActive(false);
+            }
+            yield break;
+        }
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.unscaledDeltaTime;
+            canvasGroup.alpha = Mathf.Lerp(startAlpha, endAlpha, elapsedTime / duration);
+            yield return null;
+        }
+
+        canvasGroup.alpha = endAlpha;
+    }
+
+    private CanvasGroup GetOrAddCanvasGroup(GameObject targetObject)
+    {
+        CanvasGroup canvasGroup = targetObject.GetComponent<CanvasGroup>();
+        if (canvasGroup == null)
+        {
+            canvasGroup = targetObject.AddComponent<CanvasGroup>();
+        }
+
+        return canvasGroup;
     }
 
     public void ToggleClearPanel(bool isOn)
@@ -287,11 +341,10 @@ public class StaticUIManager : MonoBehaviour
         if (victoryAnimatorObject != null) victoryAnimatorObject.SetActive(false);
     }
 
-
     public void StartVictoryAnimation()
     {
         if (victoryAnimatorObject == null || victoryAnimator == null) return;
-        if (victoryPlayed) return; // 중복 방지 (선택)
+        if (victoryPlayed) return;
 
         victoryPlayed = true;
         victoryAnimatorObject.SetActive(true);
@@ -300,7 +353,6 @@ public class StaticUIManager : MonoBehaviour
 
         victoryAnimator.SetTrigger("Play");
     }
-
 
     public bool VictoryAnimationFinished()
     {
@@ -340,7 +392,6 @@ public class StaticUIManager : MonoBehaviour
 
         int stars = stageResultManager.LatestStarCount;
 
-        // ClearPanel 인스턴스에서 직접 Star 오브젝트 찾기
         Transform star1 = clearPanel.transform.Find("Star1");
         Transform star2 = clearPanel.transform.Find("Star2");
         Transform star3 = clearPanel.transform.Find("Star3");

@@ -11,6 +11,9 @@ public class DialogLineController : MonoBehaviour
     [SerializeField] private RectTransform speakerIcon;
     [SerializeField] private Ease ease = Ease.OutBack;
 
+    [SerializeField] private AudioSource typingSoundSource;
+    [SerializeField] private int typingSoundInterval = 3;
+
     [Header("R모드")]
     [SerializeField] private bool isRightSide = false;
     [Header("바 설정")]
@@ -119,22 +122,31 @@ public class DialogLineController : MonoBehaviour
 
         tmpText.text = currentLine.text;
         tmpText.ForceMeshUpdate();
-        float charDuration = (currentLine.textRevealDuration - barDelay) / tmpText.textInfo.characterCount;
 
         TMP_TextInfo textInfo = tmpText.textInfo;
+        int visibleCharCount = textInfo.characterCount;
+
+        if (visibleCharCount <= 0)
+            return;
+
+        float charDuration = (currentLine.textRevealDuration - barDelay) / visibleCharCount;
+        if (charDuration < 0f)
+            charDuration = 0f;
 
         Vector3[][] originalVertices = new Vector3[textInfo.meshInfo.Length][];
-        for (int m = 0; m < textInfo.meshInfo.Length; m++)
+        for (int meshIndex = 0; meshIndex < textInfo.meshInfo.Length; meshIndex++)
         {
-            originalVertices[m] = (Vector3[])textInfo.meshInfo[m].vertices.Clone();
+            originalVertices[meshIndex] = (Vector3[])textInfo.meshInfo[meshIndex].vertices.Clone();
         }
 
-        for (int i = 0; i < textInfo.characterCount; i++)
-        {
-            Debug.Log($"DialogLineController: Animating character {i} of {textInfo.characterCount}");
+        int typingSoundDelay = 0;
+        int visibleIndex = 0;
 
-            TMP_CharacterInfo charInfo = textInfo.characterInfo[i];
-            if (!charInfo.isVisible) continue;
+        for (int characterIndex = 0; characterIndex < textInfo.characterCount; characterIndex++)
+        {
+            TMP_CharacterInfo charInfo = textInfo.characterInfo[characterIndex];
+            if (!charInfo.isVisible)
+                continue;
 
             int matIndex = charInfo.materialReferenceIndex;
             int vIndex = charInfo.vertexIndex;
@@ -143,31 +155,61 @@ public class DialogLineController : MonoBehaviour
             Vector3 v1 = originalVertices[matIndex][vIndex + 1];
             Vector3 v2 = originalVertices[matIndex][vIndex + 2];
             Vector3 v3 = originalVertices[matIndex][vIndex + 3];
-
             Vector3 center = (v0 + v1 + v2 + v3) / 4f;
 
-            int capturedMatIndex = matIndex;
-            int capturedVIndex = vIndex;
-            Vector3 capturedCenter = center;
-            Vector3 capturedV0 = v0, capturedV1 = v1, capturedV2 = v2, capturedV3 = v3;
+            float insertTime = visibleIndex * charDuration;
 
-            SetCharScale(textInfo, capturedMatIndex, capturedVIndex,
-                         capturedCenter, capturedV0, capturedV1, capturedV2, capturedV3,
-                         0f);
+            SetCharScale(
+                textInfo,
+                matIndex,
+                vIndex,
+                center,
+                v0,
+                v1,
+                v2,
+                v3,
+                0f
+            );
             tmpText.UpdateVertexData(TMP_VertexDataUpdateFlags.Vertices | TMP_VertexDataUpdateFlags.Colors32);
 
-            Tween t = DOVirtual.Float(0f, 1f, charDuration * 1.1f, (scale) =>
+            bool shouldPlayTypingSound = typingSoundDelay >= typingSoundInterval;
+
+            textSequence.InsertCallback(insertTime, () =>
             {
-                SetCharScale(textInfo, capturedMatIndex, capturedVIndex,
-                             capturedCenter, capturedV0, capturedV1, capturedV2, capturedV3,
-                             scale);
+                if (shouldPlayTypingSound && typingSoundSource != null && typingSoundSource.clip != null)
+                {
+                    typingSoundSource.PlayOneShot(typingSoundSource.clip);
+                }
+            });
+
+            Tween tween = DOVirtual.Float(0f, 1f, charDuration * 1.1f, (scale) =>
+            {
+                SetCharScale(
+                    textInfo,
+                    matIndex,
+                    vIndex,
+                    center,
+                    v0,
+                    v1,
+                    v2,
+                    v3,
+                    scale
+                );
 
                 tmpText.UpdateVertexData(TMP_VertexDataUpdateFlags.Vertices | TMP_VertexDataUpdateFlags.Colors32);
             })
             .SetEase(ease)
             .SetTarget(tmpText);
 
-            textSequence.Insert(i * charDuration, t);
+            textSequence.Insert(insertTime, tween);
+
+            if (typingSoundDelay >= typingSoundInterval)
+            {
+                typingSoundDelay = 0;
+            }
+            typingSoundDelay++;
+
+            visibleIndex++;
         }
     }
 
