@@ -54,6 +54,7 @@ public class StrikerManager : MonoBehaviour
     public void DisappearStriker()
     {
         if (isBossStage) return;
+        if (tutorialManager.ShouldRestartCurrentPhase()) ClearImmediately();
         strikerInstance?.OnClear();
     }
 
