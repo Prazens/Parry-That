@@ -43,7 +43,7 @@ public class StageDBManager : Singleton<StageDBManager>
 
     protected override void OnAwake()
     {
-        Debug.Log("StageDBManager Awake");
+        // Debug.Log("StageDBManager Awake");
 
         DontDestroyOnLoad(gameObject);
 
@@ -101,7 +101,7 @@ public class StageDBManager : Singleton<StageDBManager>
 
     public void LoadStageData()
     {
-        if (PlayerPrefs.HasKey("Score1"))
+        if (PlayerPrefs.HasKey("Stage_0_0_Completion"))
         {
             for (int stage = 0; stage < stageNumbers; stage++)
             {
@@ -144,9 +144,9 @@ public class StageDBManager : Singleton<StageDBManager>
             2,  // Stage 2
             2,  // Stage 3
             2,  // Stage 4
-            2,  // Stage 5
-            2,  // Stage 6
-            2   // Stage 7
+            1,  // Stage 5
+            1,  // Stage 6
+            1   // Stage 7
         };
         highScores = new List<IntArr>();
         starRatings = new List<IntArr>();
@@ -159,8 +159,8 @@ public class StageDBManager : Singleton<StageDBManager>
             stageCompletion.Add(new BoolArr { v = new bool[MAX_DIFFS] });
         }
 
-        stageCompletion[0][0] = true;  // 튜토리얼은 기본적으로 클리어된 상태로 시작
-        highScores[0][0] = 1;
+        // stageCompletion[0][0] = true;  // 튜토리얼은 기본적으로 클리어된 상태로 시작
+        // highScores[0][0] = 1;
 
         LoadStageData();
     }

@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -89,6 +90,8 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
     private float centerPos; // 화면의 정중앙 좌표
     private float interval;
 
+    private int tempDiff;  // gc 방지(효과가 있는지는 몰루)
+
     public void InitScrollView(int initialIndex, int difficulty)
     {
         // 아이템 생성, 위치 및 패딩 설정
@@ -133,16 +136,18 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
 
         for (int i = 0; i < stageDiskSprites.Count; i++)
         {
-            Debug.Log($"Updating stage {i} disk sprite for difficulty {difficulty}");
+            tempDiff = Mathf.Min(difficulty, StageDBManager.Instance.diffNumbers[targetIndex] - 1);  // 해당 스테이지에 난이도가 없는 경우 최대 난이도로 대체
+            Debug.Log($"Updating stage {i} disk sprite for difficulty {tempDiff}");
             stageDisks[i].GetComponent<Image>().sprite = stageDiskSprites[i]
-                [difficulty,  // 그냥 난이도가 1개일 경우, 다른 난이도에도 같은 스프라이트가 들어가도록 함
-                 StageDBManager.Instance.stageCompletion[i][difficulty]];
+                [tempDiff,
+                 StageDBManager.Instance.stageCompletion[i][tempDiff]];
 
             // 스테이지 잠김 여부에 따라 아이템 활성화
-            stageDisks[i].GetChild(0).gameObject.SetActive(!MenuManager.Instance.JudgeStageUnlock(i, difficulty));
+            stageDisks[i].GetChild(0).gameObject.SetActive(!MenuManager.Instance.JudgeStageUnlock(i, tempDiff));
             
         }
-        canRotate = MenuManager.Instance.JudgeStageUnlock(targetIndex, difficulty);
+        tempDiff = Mathf.Min(difficulty, StageDBManager.Instance.diffNumbers[targetIndex] - 1);  // 현재 선택된 스테이지의 유효한 최대 난이도
+        canRotate = MenuManager.Instance.JudgeStageUnlock(targetIndex, tempDiff);
     }
 
     /// <summary>

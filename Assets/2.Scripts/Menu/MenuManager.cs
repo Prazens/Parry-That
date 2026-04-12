@@ -99,12 +99,13 @@ public class MenuManager : Singleton<MenuManager>
             handGuide.StopTutorial();
         }
 
-        BlackOverlay = BlackOverlayObj.GetComponent<Image>();
-        RectTransform BlackOverlayRT = BlackOverlay.GetComponent<RectTransform>();
-        BlackOverlayRT.anchorMin = new Vector2(0, 0);
-        BlackOverlayRT.anchorMax = new Vector2(1, 1);
-        Color originalOverlayColor = BlackOverlay.color;
-        BlackOverlay.color = new Color (originalOverlayColor.r, originalOverlayColor.g, originalOverlayColor.b, 0f);
+        // BlackOverlay = BlackOverlayObj.GetComponent<Image>();
+        // RectTransform BlackOverlayRT = BlackOverlay.GetComponent<RectTransform>();
+        // BlackOverlayRT.anchorMin = new Vector2(0, 0);
+        // BlackOverlayRT.anchorMax = new Vector2(1, 1);
+        // Color originalOverlayColor = BlackOverlay.color;
+        // BlackOverlay.color = new Color (originalOverlayColor.r, originalOverlayColor.g, originalOverlayColor.b, 0f);
+
         currentState = MenuState.Title;
 
         if (StageDBManager.Instance.isFirstLaunch)
@@ -136,8 +137,8 @@ public class MenuManager : Singleton<MenuManager>
 
     public bool JudgeStageUnlock(int index, int difficulty)
     {
-        if (index == 0 || (index == 1 && difficulty == 0))
-        // 튜토리얼과 1스테이지 이지는 항상 잠금 해제된 상태로 시작
+        if (index == 0)
+        // 튜토리얼은 항상 잠금 해제된 상태로 시작
         {
             return true;
         }
@@ -163,6 +164,8 @@ public class MenuManager : Singleton<MenuManager>
             if (StageDBManager.Instance.diffNumbers[stageIndex[0]] == 1 || !JudgeStageUnlock(stageIndex[0], 1))
             {
                 diffButtonUI.SetVisibility(false);
+                difficulty = 0;  // 난이도 인덱스도 0으로 초기화
+                diffButtonUI.UpdateButtonState(0);
             }
             else
             {
@@ -295,6 +298,7 @@ public class MenuManager : Singleton<MenuManager>
 
         float dur = 2f;
         BlackOverlayObj.SetActive(true);
+        BlackOverlay = BlackOverlayObj.GetComponent<Image>();
 
         // 검정색 박스 진해지는 연출 (DOTween)
         BlackOverlay.DOFade(1f, dur).SetEase(Ease.OutQuad);
