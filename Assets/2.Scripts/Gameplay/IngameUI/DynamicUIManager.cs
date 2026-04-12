@@ -368,7 +368,7 @@ public class DynamicUIManager : MonoBehaviour
         Animator animator = targetUIImage.GetComponent<Animator>();
         if (animator != null)
         {
-            animator.SetTrigger("cutIn");
+            animator.SetTrigger("CutIn");
         }
 
         Image uiImage = targetUIImage.GetComponent<Image>();
@@ -423,7 +423,7 @@ public class DynamicUIManager : MonoBehaviour
 
         if (animator != null)
         {
-            animator.SetTrigger("cutOut");
+            animator.SetTrigger("CutOut");
         }
     }
 

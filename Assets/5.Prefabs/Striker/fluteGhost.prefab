@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 7642428754496660755}
   - component: {fileID: -5035865612886772569}
   - component: {fileID: 4661586022337567276}
-  - component: {fileID: 1523450611889353992}
   - component: {fileID: 7953169974069795391}
+  - component: {fileID: 1523450611889353992}
   m_Layer: 0
   m_Name: fluteGhost
   m_TagString: Untagged
@@ -253,6 +253,23 @@ MonoBehaviour:
   hasAttackDirection: 0
   hasDamagedAnim: 1
   hasDamagedDirection: 0
+--- !u!114 &7953169974069795391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2602888780548359756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2332ca4206b3884cb5fcc1ef10a4862, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 6433468795391492344}
+  holdSpriteAnimator: {fileID: 7253775637439868876}
+  bladeAnimator: {fileID: 0}
+  isMoveAttack: 0
+  bladeDistanceOffset: 0.5
 --- !u!114 &1523450611889353992
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -274,22 +291,6 @@ MonoBehaviour:
   parrySoundGhost: {fileID: 8300000, guid: 20353a13f678ac34f83635b7b2503a29, type: 3}
   holdingSound: {fileID: 0}
   holdingEnd: {fileID: 8300000, guid: 8004143a0058a1c40b4ae89f9b27d841, type: 3}
---- !u!114 &7953169974069795391
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2602888780548359756}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2332ca4206b3884cb5fcc1ef10a4862, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 6433468795391492344}
-  holdSpriteAnimator: {fileID: 0}
-  bladeAnimator: {fileID: 0}
-  isMoveAttack: 0
 --- !u!1 &7175312771225110953
 GameObject:
   m_ObjectHideFlags: 0
@@ -317,8 +318,8 @@ Transform:
   m_GameObject: {fileID: 7175312771225110953}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: -5, z: 0}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7603019539843874774}
@@ -364,15 +365,15 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 9, y: 16}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!95 &7253775637439868876
