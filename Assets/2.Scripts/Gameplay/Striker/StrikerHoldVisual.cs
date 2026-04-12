@@ -71,12 +71,20 @@ public class StrikerHoldVisual : MonoBehaviour
         if (attackType == AttackType.HoldStart && !context.isMiss)
         {
             animator.SetTrigger("Holding");
-            if (holdSpriteAnimator != null) holdSpriteAnimator.SetTrigger("Holding");
+            if (holdSpriteAnimator != null)
+            {
+                holdSpriteAnimator.ResetTrigger("HoldStop");
+                holdSpriteAnimator.SetTrigger("Holding");
+            }
         }
         else
         {
             animator.SetTrigger("HoldStop");
-            if (holdSpriteAnimator != null) holdSpriteAnimator.SetTrigger("HoldStop");
+            if (holdSpriteAnimator != null)
+            {
+                holdSpriteAnimator.ResetTrigger("Holding");
+                holdSpriteAnimator.SetTrigger("HoldStop");
+            }
 
             if (isMoveAttack)
             {
