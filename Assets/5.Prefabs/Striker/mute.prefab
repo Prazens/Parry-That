@@ -376,6 +376,7 @@ MonoBehaviour:
   holdSpriteAnimator: {fileID: 3607903540693613985}
   bladeAnimator: {fileID: 0}
   isMoveAttack: 0
+  bladeDistanceOffset: 0.5
 --- !u!114 &6765386139301925470
 MonoBehaviour:
   m_ObjectHideFlags: 0
