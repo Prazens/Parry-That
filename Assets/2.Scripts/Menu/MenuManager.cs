@@ -138,6 +138,8 @@ public class MenuManager : Singleton<MenuManager>
 
     public bool JudgeStageUnlock(int index, int difficulty)
     {
+        return true; // 일단 모든 스테이지 잠금 해제 (빌드 제출용)
+
         if (index == 0)
         // 튜토리얼은 항상 잠금 해제된 상태로 시작
         {
