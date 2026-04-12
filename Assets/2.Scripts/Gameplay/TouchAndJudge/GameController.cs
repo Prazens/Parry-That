@@ -191,11 +191,7 @@ public class GameController : MonoBehaviour
 
     private void OnSwipeDown()
     {
-        if (stageFlowManager.is_over) 
-        {
-            SceneManager.LoadScene("testMain"); //게임 오버 시에는 로비로
-        }
-        else
+        if (stageFlowManager.isClear) 
         {
             if (stageFlowManager.currentStageData.Category == StageCategory.Boss) //보스 클리어 시 에필로그
             {
@@ -203,6 +199,10 @@ public class GameController : MonoBehaviour
                 SceneManager.LoadScene("CutScene");
             }
             else SceneManager.LoadScene("testMain");
+        }
+        else
+        {
+            SceneManager.LoadScene("testMain"); //게임오버나 일시정지후 나가기면 로비로
         }
         Time.timeScale = 1f;
     }
