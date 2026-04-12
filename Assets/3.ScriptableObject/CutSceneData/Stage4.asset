@@ -394,7 +394,7 @@ MonoBehaviour:
       animatorTrigger: 
     - actionType: 5
       index: 13
-      waitseconds: 0.8
+      waitseconds: 0
       animatorTrigger: 
     - actionType: 2
       index: 14

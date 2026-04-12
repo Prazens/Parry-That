@@ -1,0 +1,287 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 030148ca4f1b0e6419176c7fa6452b9d, type: 3}
+  m_Name: Stage6
+  m_EditorClassIdentifier: 
+  stageId: 6
+  category: 0
+  textSet:
+  - "\uC790, \uC774\uC81C\uBD80\uD130 \uC194\uC9C1\uD788 \uB300\uB2F5\uD574\uC57C
+    \uD560 \uAC70\uC57C."
+  - "\uBB3C\uB860\uC785\uB2C8\uB2E4! \uC0B4\uB824\uB9CC \uC8FC\uC2ED\uC1FC!"
+  - "\uBBA4\uD2B8\uB294 \uB9C8\uC655\uC744 \uC65C \uC7A1\uC544\uAC14\uC9C0?"
+  - "\uB9C8\uC655\uC5D0\uAC8C \uD798\uC744 \uC8FC\uC2E0 \uAC8C \uBBA4\uD2B8 \uB2D8\uC785\uB2C8\uB2E4.
+    \uCE68\uBB35\uC740\uCEE4\uB155 \uC74C\uC545\uC73C\uB85C \uBA39\uACE0\uC0B4\uAE30\uC5D0
+    \uBC8C\uC744 \uB0B4\uB9AC\uC2DC\uB824\uB294"
+  - "\uB9C8\uC655\uC774 \uACC4\uC57D \uC704\uBC18\uC744 \uD558\uAE34 \uD588\uB124\uC694.
+    \uC815\uB2F9\uC131\uC740 \uC800\uCABD\uC5D0 \uC788\uB294 \uAC83 \uAC19\uC2B5\uB2C8\uB2E4."
+  - "\uD760....."
+  - "\uADF8\uB807\uC9C0 \uC54A\uB2E4! \uC624\uD788\uB824 \uB9C8\uC655\uC740 \uC18C\uB9AC\uB97C
+    \uC5C6\uC560\uB294 \uB370 \uACF5\uD5CC\uD588\uB2E4\uACE0!"
+  - "\uB9C8\uC655\uC758 \uC778\uAE30\uAC00 \uC555\uB3C4\uC801\uC774\uB77C\uC11C \uC218\uB9CE\uC740
+    \uBBA4\uC9C0\uC158\uB4E4\uC774 \uC740\uD1F4 \uBC0F \uC544\uC0AC\uD588\uB2E4! "
+  - "\uACB0\uACFC\uC801\uC73C\uB85C \uC74C\uC545\uC758 \uC591\uC774 \uC904\uC5B4\uB4E4\uAC8C
+    \uB41C \uAC70\uC9C0!"
+  - "\uADF8...\uADF8\uB7F0\uAC00?"
+  - "\uADF8...\uADF8\uB807\uC9C0!"
+  - "\uC6A9\uC0AC\uB2D8! \uC720\uB839\uC774 \uB354 \uBAB0\uB824\uC635\uB2C8\uB2E4!\r\n\uC800\uD76C
+    \uB54C\uBB38\uC5D0 \uAD76\uC5B4\uC8FD\uC740 \uBBA4\uC9C0\uC158\uB4E4\uC774 \uC720\uB839\uC774
+    \uB410\uB098 \uBD05\uB2C8\uB2E4!"
+  - "\uC800\uB188\uB4E4 \uB54C\uBB38\uC5D0 \uC6B0\uB9AC\uAC00 \uAD76\uC5B4\uC8FD\uC5C8\uAD6C\uB098!
+    \uBCF5\uC218\uD558\uACA0\uB2E4!!!"
+  - "\uC544...\uB610 \uC2DC\uC791\uC774\uB124."
+  panels:
+  - type: 0
+    anchorMin: {x: 0.5, y: 1}
+    anchorMax: {x: 0.5, y: 1}
+    pivot: {x: 0, y: 0}
+    anchoredPosition: {x: -500, y: -580}
+    size: {x: 1800, y: 1004}
+    scale: {x: 0.6, y: 0.6, z: 1}
+    sprite: {fileID: 21300000, guid: 56c52f5478c943d4bb93f61e46b6cf4d, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0.5, y: 1}
+    anchorMax: {x: 0.5, y: 1}
+    pivot: {x: 0, y: 0}
+    anchoredPosition: {x: -500, y: -1230}
+    size: {x: 886, y: 1076}
+    scale: {x: 0.6, y: 0.6, z: 1}
+    sprite: {fileID: 21300000, guid: 895aca3698cfd9f4286c97cc3153f779, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0.5, y: 1}
+    anchorMax: {x: 0.5, y: 1}
+    pivot: {x: 0, y: 0}
+    anchoredPosition: {x: 0, y: -1157}
+    size: {x: 894, y: 945}
+    scale: {x: 0.6, y: 0.6, z: 1}
+    sprite: {fileID: 21300000, guid: a52c326798f30164bbc0adc73748eedc, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0.5, y: 1}
+    anchorMax: {x: 0.5, y: 1}
+    pivot: {x: 0, y: 0}
+    anchoredPosition: {x: -500, y: -450}
+    size: {x: 950, y: 776}
+    scale: {x: 0.58, y: 0.58, z: 1}
+    sprite: {fileID: 21300000, guid: 4afc90da81a8fb140b34e20fe89408d3, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0.5, y: 1}
+    anchorMax: {x: 0.5, y: 1}
+    pivot: {x: 0, y: 0}
+    anchoredPosition: {x: 40, y: -445}
+    size: {x: 840, y: 766}
+    scale: {x: 0.58, y: 0.58, z: 1}
+    sprite: {fileID: 21300000, guid: 2d0d229dc84dec548a92586125200d19, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0.5, y: 1}
+    anchorMax: {x: 0.5, y: 1}
+    pivot: {x: 0, y: 0}
+    anchoredPosition: {x: -510, y: -1260}
+    size: {x: 916, y: 1407}
+    scale: {x: 0.58, y: 0.58, z: 1}
+    sprite: {fileID: 21300000, guid: 97df72dd1cc08504a8ac8b8866298b26, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0.5, y: 1}
+    anchorMax: {x: 0.5, y: 1}
+    pivot: {x: 0, y: 0}
+    anchoredPosition: {x: 10, y: -1135}
+    size: {x: 869, y: 1188}
+    scale: {x: 0.58, y: 0.58, z: 1}
+    sprite: {fileID: 21300000, guid: 3e2169556b8cb5444b8f77884e9c2841, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0.5, y: 1}
+    anchorMax: {x: 0.5, y: 1}
+    pivot: {x: 0, y: 0}
+    anchoredPosition: {x: -490, y: -550}
+    size: {x: 866, y: 879}
+    scale: {x: 0.58, y: 0.58, z: 1}
+    sprite: {fileID: 21300000, guid: 3fa279f8f1173d44aa977a83cf64b0b0, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0.5, y: 1}
+    anchorMax: {x: 0.5, y: 1}
+    pivot: {x: 0, y: 0}
+    anchoredPosition: {x: 10, y: -554}
+    size: {x: 866, y: 879}
+    scale: {x: 0.58, y: 0.58, z: 1}
+    sprite: {fileID: 21300000, guid: cc9fffe8c005a644391aa87d0c2e0aaa, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0.5, y: 1}
+    anchorMax: {x: 0.5, y: 1}
+    pivot: {x: 0, y: 0}
+    anchoredPosition: {x: -487, y: -1230}
+    size: {x: 867, y: 1178}
+    scale: {x: 0.58, y: 0.58, z: 1}
+    sprite: {fileID: 21300000, guid: 663521c27e13a3d4aa97aac381b4926f, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0.5, y: 1}
+    anchorMax: {x: 0.5, y: 1}
+    pivot: {x: 0, y: 0}
+    anchoredPosition: {x: 5, y: -1178}
+    size: {x: 916, y: 1093}
+    scale: {x: 0.58, y: 0.58, z: 1}
+    sprite: {fileID: 21300000, guid: 9e1a7fd8383db024385aaca6a6b51978, type: 3}
+    animatorcontroller: {fileID: 0}
+  clickSteps:
+  - actions:
+    - actionType: 2
+      index: 0
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 5
+      index: 0
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 5
+      index: 1
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 2
+      index: 1
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 5
+      index: 2
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 2
+      index: 2
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 5
+      index: 3
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 3
+      index: 0
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 3
+      index: 1
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 3
+      index: 2
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 2
+      index: 3
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 5
+      index: 4
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 5
+      index: 5
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 2
+      index: 4
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 5
+      index: 6
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 2
+      index: 5
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 5
+      index: 7
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 2
+      index: 6
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 5
+      index: 8
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 3
+      index: 3
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 3
+      index: 4
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 3
+      index: 5
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 3
+      index: 6
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 2
+      index: 7
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 5
+      index: 9
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 5
+      index: 10
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 2
+      index: 8
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 5
+      index: 11
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 2
+      index: 9
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 5
+      index: 12
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 2
+      index: 10
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 5
+      index: 13
+      waitseconds: 0
+      animatorTrigger: 
+  bgm: {fileID: 0}
+  loopBgm: 1
+  bgmVolume: 1
