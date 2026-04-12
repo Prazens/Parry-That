@@ -256,7 +256,7 @@ MonoBehaviour:
       animatorTrigger: 
     - actionType: 3
       index: 2
-      waitseconds: 0.3
+      waitseconds: 0
       animatorTrigger: 
     - actionType: 2
       index: 3
@@ -308,7 +308,7 @@ MonoBehaviour:
       animatorTrigger: 
     - actionType: 3
       index: 4
-      waitseconds: 0.3
+      waitseconds: 0
       animatorTrigger: 
     - actionType: 2
       index: 7
@@ -334,7 +334,7 @@ MonoBehaviour:
       animatorTrigger: 
     - actionType: 3
       index: 8
-      waitseconds: 0.3
+      waitseconds: 0
       animatorTrigger: 
     - actionType: 2
       index: 9
@@ -386,7 +386,7 @@ MonoBehaviour:
       animatorTrigger: 
     - actionType: 3
       index: 12
-      waitseconds: 0.3
+      waitseconds: 0
       animatorTrigger: 
     - actionType: 2
       index: 13
@@ -411,7 +411,7 @@ MonoBehaviour:
       animatorTrigger: 
     - actionType: 3
       index: 14
-      waitseconds: 0.3
+      waitseconds: 0
       animatorTrigger: 
     - actionType: 2
       index: 15
@@ -446,7 +446,7 @@ MonoBehaviour:
       animatorTrigger: 
     - actionType: 5
       index: 18
-      waitseconds: 0.1
+      waitseconds: 0
       animatorTrigger: 
   bgm: {fileID: 0}
   loopBgm: 1
