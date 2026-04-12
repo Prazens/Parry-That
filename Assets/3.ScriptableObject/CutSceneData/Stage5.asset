@@ -275,7 +275,7 @@ MonoBehaviour:
       animatorTrigger: 
     - actionType: 3
       index: 1
-      waitseconds: 0.3
+      waitseconds: 0
       animatorTrigger: 
     - actionType: 2
       index: 2
@@ -327,7 +327,7 @@ MonoBehaviour:
       animatorTrigger: 
     - actionType: 3
       index: 5
-      waitseconds: 0.3
+      waitseconds: 0
       animatorTrigger: 
     - actionType: 2
       index: 6
@@ -379,7 +379,7 @@ MonoBehaviour:
       animatorTrigger: 
     - actionType: 3
       index: 9
-      waitseconds: 0.3
+      waitseconds: 0
       animatorTrigger: 
     - actionType: 2
       index: 11
@@ -418,7 +418,7 @@ MonoBehaviour:
       animatorTrigger: 
     - actionType: 3
       index: 12
-      waitseconds: 0.3
+      waitseconds: 0
       animatorTrigger: 
     - actionType: 2
       index: 13
@@ -457,7 +457,7 @@ MonoBehaviour:
       animatorTrigger: 
     - actionType: 3
       index: 15
-      waitseconds: 0.3
+      waitseconds: 0
       animatorTrigger: 
     - actionType: 2
       index: 16
@@ -514,7 +514,7 @@ MonoBehaviour:
       animatorTrigger: 
     - actionType: 3
       index: 19
-      waitseconds: 0.3
+      waitseconds: 0
       animatorTrigger: 
     - actionType: 2
       index: 20

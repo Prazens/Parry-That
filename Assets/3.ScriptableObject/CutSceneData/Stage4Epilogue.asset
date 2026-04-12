@@ -182,15 +182,6 @@ MonoBehaviour:
     scale: {x: 0.5, y: 0.5, z: 1}
     sprite: {fileID: 21300000, guid: 48c5ac9f2b733ca4eb8f40ec62ce5e1d, type: 3}
     animatorcontroller: {fileID: 0}
-  - type: 0
-    anchorMin: {x: 0, y: 1}
-    anchorMax: {x: 0, y: 1}
-    pivot: {x: 0, y: 1}
-    anchoredPosition: {x: 35, y: 0}
-    size: {x: 1800, y: 2000}
-    scale: {x: 0.52, y: 0.52, z: 1}
-    sprite: {fileID: 21300000, guid: bd52e87495e48bc42b032a04dc7c8d48, type: 3}
-    animatorcontroller: {fileID: 0}
   clickSteps:
   - actions:
     - actionType: 2
@@ -230,7 +221,7 @@ MonoBehaviour:
       animatorTrigger: 
     - actionType: 3
       index: 2
-      waitseconds: 0.3
+      waitseconds: 0
       animatorTrigger: 
     - actionType: 2
       index: 3
@@ -282,7 +273,7 @@ MonoBehaviour:
       animatorTrigger: 
     - actionType: 3
       index: 6
-      waitseconds: 0.3
+      waitseconds: 0
       animatorTrigger: 
     - actionType: 2
       index: 7
@@ -326,7 +317,7 @@ MonoBehaviour:
       animatorTrigger: 
     - actionType: 3
       index: 9
-      waitseconds: 0.3
+      waitseconds: 0
       animatorTrigger: 
     - actionType: 2
       index: 10
@@ -378,7 +369,7 @@ MonoBehaviour:
       animatorTrigger: 
     - actionType: 3
       index: 13
-      waitseconds: 0.3
+      waitseconds: 0
       animatorTrigger: 
     - actionType: 2
       index: 14
@@ -391,19 +382,6 @@ MonoBehaviour:
   - actions:
     - actionType: 5
       index: 16
-      waitseconds: 0
-      animatorTrigger: 
-  - actions:
-    - actionType: 3
-      index: 14
-      waitseconds: 0.3
-      animatorTrigger: 
-    - actionType: 2
-      index: 15
-      waitseconds: 0
-      animatorTrigger: 
-    - actionType: 5
-      index: 17
       waitseconds: 0
       animatorTrigger: 
   bgm: {fileID: 0}

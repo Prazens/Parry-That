@@ -1,0 +1,478 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 030148ca4f1b0e6419176c7fa6452b9d, type: 3}
+  m_Name: Stage7
+  m_EditorClassIdentifier: 
+  stageId: 7
+  category: 0
+  textSet:
+  - "\uC774 \uC815\uB3C4 \uACE0\uBB38\uD588\uC73C\uBA74 \uC18C\uB9AC\uB97C \uD3EC\uAE30\uD558\uACA0\uB2E4\uACE0
+    \uD560 \uB9CC\uB3C4 \uD55C\uB370..."
+  - "\uC544\uB2C8! \uB09C \uC808\uB300 \uD3EC\uAE30\uD558\uC9C0 \uC54A\uC544!!"
+  - "\uC2DC\uB044\uB7FD\uAE30\uB9CC \uD55C \uC18C\uB9AC\uBA70, \uC74C\uC545\uC774\uBA70...
+    \uB3C4\uB300\uCCB4 \uADF8\uAC8C \uC65C \uC911\uC694\uD55C \uAC8C\uB0D0!"
+  - "\uC74C\uC545\uC740 \uB3C8\uC774 \uB418\uB2C8\uAE50!!!!!!!!"
+  - "\uC544...\uADF8\uAC70 \uB54C\uBB38\uC774\uC57C?"
+  - "\uB098 \uB3C8 \uB9CE\uC740\uB370, \uC774 \uC815\uB3C4 \uAE08\uC561 \uC77C\uC2DC\uBD88\uC774\uBA74
+    \uD3EC\uAE30\uD560\uB798?"
+  - "\uADF8...\uADF8 \uC815\uB3C4 \uC131\uC758\uB77C\uBA74 \uAE30\uAEBC\uC774...<br>\uC5B4\uB77C?"
+  - "(\uB450\uB465)"
+  - "\uB098\uD0C0\uB0AC\uAD6C\uB098, \uBC29\uD574\uAFBC \uC790\uC2DD. \uB9C8\uC655\uC740
+    \uC774\uBBF8 \uB0B4 \uC790\uBCF8\uB825\uC5D0 \uB118\uC5B4\uC654\uB290\uB2C8\uB77C."
+  - "\uB9C8\uC655\uC544! \uC800 \uC815\uB3C4 \uB3C8\uC740 3\uB144\uC774\uBA74 \uBC8C\uAC70\uB4E0?!
+    \uC7A5\uAE30\uC801 \uC218\uC775\uC744 \uC0DD\uAC01\uD574!"
+  - "\uC77C\uB9D0\uC758 \uC124\uB4DD\uB825\uB3C4 \uC5C6\uB294 \uADA4\uBCC0\uC774\uB85C\uAD6C\uB098!
+    \uBD88\uB85C\uC18C\uB4DD\uC774 \uD0D0\uB098\uC9C0 \uC54A\uB290\uB0D0?"
+  - "\uBB50\uB798! \uB9C8\uC655 \uB0B4\uB194\uB77C \uC774 \uC7A1\uADC0\uC57C!"
+  - "\uACC4\uC57D\uC740 \uB098\uB791 \uD588\uB2E8 \uB9D0\uC774\uB2E4, \uBC29\uD574\uAFBC\uC544!!"
+  - "\uADF8\uB7EC\uB2E4 \uB04A\uC5B4\uC9C0\uACA0\uC2B5\uB2C8\uB2E4! \uADF8\uB0E5
+    \uD55C \uD310 \uB5A0\uC11C \uC774\uAE34 \uCABD \uB9D8\uB300\uB85C \uD558\uC8E0?"
+  - "\uBBA4\uD2B8\uAC00 \uC774\uAE30\uBA74 \uC804 \uC138\uACC4\uB294 \uCE68\uBB35\uC5D0
+    \uBB3C\uB4E4\uAC8C \uB418\uACA0\uC8E0!"
+  - "\uBC18\uBA74 \uC6A9\uC0AC\uB2D8\uC774 \uC774\uAE30\uBA74 \uB9C8\uC655\uC744
+    \uB370\uB824\uC624\uACE0! \uBBA4\uD2B8\uC758 \uAE08\uACE0\uB3C4 \uC2F9 \uD138\uC5B4\uAC00\uB294
+    \uAC81\uB2C8\uB2E4!"
+  - "\uC544\uB2C8, \uB0B4 \uAE08\uACE0\uB294 \uC65C... "
+  - "\uADF8\uB798 \uC88B\uB2E4! \uAE30\uC2B5\uC2A4\uB9E4\uC26C!"
+  - "\uC544\uB2C8 \uC7A0\uAE50\uB9CC!! "
+  - "\uB364\uBCBC\uB77C!!!!!!!!!!!!!!!"
+  - "\uC138\uACC4\uC758\uC6B4\uBA85\uC774\uB2F9\uC2E0\uC758\uC190\uAC00\uB77D\uC5D0\uB2EC\uB837\uB2E4
+    \uACFC\uC5F0 \uC5B5\uB355\uACC4\uB420\uAC83\uC778\uAC00...."
+  panels:
+  - type: 0
+    anchorMin: {x: 0.5, y: 1}
+    anchorMax: {x: 0.5, y: 1}
+    pivot: {x: 0, y: 0}
+    anchoredPosition: {x: -500, y: -600}
+    size: {x: 872, y: 1012}
+    scale: {x: 0.58, y: 0.58, z: 1}
+    sprite: {fileID: 21300000, guid: 61e8a642608e4064aa5a3013f5e14d0a, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0.5, y: 1}
+    anchorMax: {x: 0.5, y: 1}
+    pivot: {x: 0, y: 0}
+    anchoredPosition: {x: 0, y: -595}
+    size: {x: 899, y: 1004}
+    scale: {x: 0.58, y: 0.58, z: 1}
+    sprite: {fileID: 21300000, guid: a05e27f687acd124d873aca92a7e3f35, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0.5, y: 1}
+    anchorMax: {x: 0.5, y: 1}
+    pivot: {x: 0, y: 0}
+    anchoredPosition: {x: -500, y: -1150}
+    size: {x: 857, y: 926}
+    scale: {x: 0.58, y: 0.58, z: 1}
+    sprite: {fileID: 21300000, guid: f6771c8daff1e9949b575978b430544c, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0.5, y: 1}
+    anchorMax: {x: 0.5, y: 1}
+    pivot: {x: 0, y: 0}
+    anchoredPosition: {x: -120, y: -1172}
+    size: {x: 1122, y: 1145}
+    scale: {x: 0.58, y: 0.58, z: 1}
+    sprite: {fileID: 21300000, guid: c26593d9efcded045b4cae3ded01b4b0, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0.5, y: 1}
+    anchorMax: {x: 0.5, y: 1}
+    pivot: {x: 0, y: 0}
+    anchoredPosition: {x: -500, y: -530}
+    size: {x: 601, y: 909}
+    scale: {x: 0.58, y: 0.58, z: 1}
+    sprite: {fileID: 21300000, guid: 994d38b6c3faf2245843449898e18450, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0.5, y: 1}
+    anchorMax: {x: 0.5, y: 1}
+    pivot: {x: 0, y: 0}
+    anchoredPosition: {x: -170, y: -520}
+    size: {x: 1172, y: 877}
+    scale: {x: 0.58, y: 0.58, z: 1}
+    sprite: {fileID: 21300000, guid: 256536f7bd5a3154889e4111b88b6a95, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0.5, y: 1}
+    anchorMax: {x: 0.5, y: 1}
+    pivot: {x: 0, y: 0}
+    anchoredPosition: {x: -500, y: -1000}
+    size: {x: 658, y: 825}
+    scale: {x: 0.58, y: 0.58, z: 1}
+    sprite: {fileID: 21300000, guid: 3523f21430f6ff34d8a99e23610966cb, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0.5, y: 1}
+    anchorMax: {x: 0.5, y: 1}
+    pivot: {x: 0, y: 0}
+    anchoredPosition: {x: -120, y: -1150}
+    size: {x: 1127, y: 1083}
+    scale: {x: 0.58, y: 0.58, z: 1}
+    sprite: {fileID: 21300000, guid: ae5496068b3e05e4590f628a193846dc, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0.5, y: 1}
+    anchorMax: {x: 0.5, y: 1}
+    pivot: {x: 0, y: 0}
+    anchoredPosition: {x: -500, y: -600}
+    size: {x: 848, y: 987}
+    scale: {x: 0.58, y: 0.58, z: 1}
+    sprite: {fileID: 21300000, guid: 98bca0f67dee6874a8910571b1823782, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0.5, y: 1}
+    anchorMax: {x: 0.5, y: 1}
+    pivot: {x: 0, y: 0}
+    anchoredPosition: {x: 0, y: -325}
+    size: {x: 916, y: 520}
+    scale: {x: 0.58, y: 0.58, z: 1}
+    sprite: {fileID: 21300000, guid: 1bcc0c7f6c55c2f4aa03755be3a0517b, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0.5, y: 1}
+    anchorMax: {x: 0.5, y: 1}
+    pivot: {x: 0, y: 0}
+    anchoredPosition: {x: 0, y: -600}
+    size: {x: 907, y: 484}
+    scale: {x: 0.58, y: 0.58, z: 1}
+    sprite: {fileID: 21300000, guid: e7747035bd3ab5b4f9ccd10e28d3ae00, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0.5, y: 1}
+    anchorMax: {x: 0.5, y: 1}
+    pivot: {x: 0, y: 0}
+    anchoredPosition: {x: -500, y: -1150}
+    size: {x: 1800, y: 948}
+    scale: {x: 0.58, y: 0.58, z: 1}
+    sprite: {fileID: 21300000, guid: a5cb217b2c7153b4bb11e415ecc72204, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0.5, y: 1}
+    anchorMax: {x: 0.5, y: 1}
+    pivot: {x: 0, y: 0}
+    anchoredPosition: {x: -520, y: -550}
+    size: {x: 1800, y: 907}
+    scale: {x: 0.6, y: 0.6, z: 1}
+    sprite: {fileID: 21300000, guid: 8d1d17b4b2cc9334396627ddf5ba8ede, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0.5, y: 1}
+    anchorMax: {x: 0.5, y: 1}
+    pivot: {x: 0, y: 0}
+    anchoredPosition: {x: -500, y: -1150}
+    size: {x: 847, y: 1019}
+    scale: {x: 0.6, y: 0.6, z: 1}
+    sprite: {fileID: 21300000, guid: 88a6939997a6a3b45b16be6dc69d5ac4, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0.5, y: 1}
+    anchorMax: {x: 0.5, y: 1}
+    pivot: {x: 0, y: 0}
+    anchoredPosition: {x: 0, y: -1160}
+    size: {x: 835, y: 1034}
+    scale: {x: 0.6, y: 0.6, z: 1}
+    sprite: {fileID: 21300000, guid: 54c0b5aadc386cf49a4c20dcd555bdec, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0.5, y: 1}
+    anchorMax: {x: 0.5, y: 1}
+    pivot: {x: 0, y: 0}
+    anchoredPosition: {x: -500, y: -609.7}
+    size: {x: 1783, y: 1041}
+    scale: {x: 0.6, y: 0.6, z: 1}
+    sprite: {fileID: 21300000, guid: 55a105a0661ade848b3d68ec6d6653a7, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0.5, y: 1}
+    anchorMax: {x: 0.5, y: 1}
+    pivot: {x: 0, y: 0}
+    anchoredPosition: {x: -497, y: -1156}
+    size: {x: 862, y: 918}
+    scale: {x: 0.6, y: 0.6, z: 1}
+    sprite: {fileID: 21300000, guid: 63448066f1d69a34abd3326cdb253e2d, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0.5, y: 1}
+    anchorMax: {x: 0.5, y: 1}
+    pivot: {x: 0, y: 0}
+    anchoredPosition: {x: 35, y: -1157}
+    size: {x: 889, y: 921}
+    scale: {x: 0.6, y: 0.6, z: 1}
+    sprite: {fileID: 21300000, guid: c46bf8e773b558141a33d3c02f3c82d6, type: 3}
+    animatorcontroller: {fileID: 0}
+  - type: 0
+    anchorMin: {x: 0.5, y: 1}
+    anchorMax: {x: 0.5, y: 1}
+    pivot: {x: 0, y: 0}
+    anchoredPosition: {x: -500, y: -1150}
+    size: {x: 1800, y: 1957}
+    scale: {x: 0.6, y: 0.6, z: 1}
+    sprite: {fileID: 21300000, guid: 157ed9f540b2e6b46983dd66d3fc8624, type: 3}
+    animatorcontroller: {fileID: 0}
+  clickSteps:
+  - actions:
+    - actionType: 2
+      index: 0
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 5
+      index: 0
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 2
+      index: 1
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 5
+      index: 1
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 2
+      index: 2
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 5
+      index: 2
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 2
+      index: 3
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 5
+      index: 3
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 3
+      index: 0
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 3
+      index: 1
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 3
+      index: 2
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 3
+      index: 3
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 2
+      index: 4
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 5
+      index: 4
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 2
+      index: 5
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 5
+      index: 5
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 2
+      index: 6
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 5
+      index: 6
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 2
+      index: 7
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 5
+      index: 7
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 3
+      index: 4
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 3
+      index: 5
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 3
+      index: 6
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 3
+      index: 7
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 2
+      index: 8
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 5
+      index: 8
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 2
+      index: 9
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 5
+      index: 9
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 2
+      index: 10
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 5
+      index: 10
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 2
+      index: 11
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 5
+      index: 11
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 5
+      index: 12
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 3
+      index: 8
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 3
+      index: 9
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 3
+      index: 10
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 3
+      index: 11
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 2
+      index: 12
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 5
+      index: 13
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 2
+      index: 13
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 5
+      index: 14
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 2
+      index: 14
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 5
+      index: 15
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 5
+      index: 16
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 3
+      index: 12
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 3
+      index: 13
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 3
+      index: 14
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 2
+      index: 15
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 5
+      index: 17
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 2
+      index: 16
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 5
+      index: 18
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 2
+      index: 17
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 5
+      index: 19
+      waitseconds: 0
+      animatorTrigger: 
+  - actions:
+    - actionType: 1
+      index: 15
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 1
+      index: 16
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 1
+      index: 17
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 0
+      index: 18
+      waitseconds: 0
+      animatorTrigger: 
+    - actionType: 5
+      index: 20
+      waitseconds: 0
+      animatorTrigger: 
+  bgm: {fileID: 0}
+  loopBgm: 1
+  bgmVolume: 1
