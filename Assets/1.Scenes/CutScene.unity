@@ -938,7 +938,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85d05aa2f31f3d14eb79583a55c17c43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 82264cd2e14f52e45822869b048e95fd, type: 2}
+  data: {fileID: 11400000, guid: 489df8035575f99428bfb27cd84cdaab, type: 2}
   mainCanvas: {fileID: 1862990865}
   cutScenesRoot: {fileID: 1530312601}
   prologueFont: {fileID: 12800000, guid: 7006438c118bb1748b904fe654b08d95, type: 3}
