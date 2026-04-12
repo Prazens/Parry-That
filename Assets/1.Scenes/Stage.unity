@@ -829,7 +829,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   judgeSystem: {fileID: 164575969}
   playerManager: {fileID: 0}
-  isTouchAvailable: 1
+  isTouchAvailable: 0
 --- !u!1 &176193415
 GameObject:
   m_ObjectHideFlags: 0
@@ -2437,7 +2437,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stageFlowManager: {fileID: 25638220}
   swipeThreshold: 50
-  isTouchAvailable: 1
+  isTouchAvailable: 0
 --- !u!1 &1208626407
 GameObject:
   m_ObjectHideFlags: 0

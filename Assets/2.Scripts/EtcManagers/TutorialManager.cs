@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -16,6 +15,7 @@ public class TutorialManager : MonoBehaviour
 
     [SerializeField] private GameObject VictoryAnime;
 
+    private DatabaseManager databaseManager;
     private PlayerManager playerManager;
     private bool restartPhase = false;
 
@@ -25,6 +25,8 @@ public class TutorialManager : MonoBehaviour
 
     private void Awake()
     {
+        databaseManager = FindObjectOfType<DatabaseManager>();
+
         spriteRenderer = VictoryAnime.GetComponent<SpriteRenderer>();
         animeSpriteImg = VictoryAnime.GetComponent<Image>();
         animator = VictoryAnime.GetComponent<Animator>();
@@ -83,8 +85,12 @@ public class TutorialManager : MonoBehaviour
 
     public void SkipOn()
     {
-        StageDBManager.Instance.stageCompletion[0][0] = true;
-        StageDBManager.Instance.SaveStageData();
+        DatabaseManager.isTutorialDone = true;
+
+        if (databaseManager != null)
+        {
+            databaseManager.SaveTutorialDone();
+        }
 
         SceneManager.LoadScene("testMain");
     }

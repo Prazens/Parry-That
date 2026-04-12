@@ -32,6 +32,7 @@ public class CutSceneManager : MonoBehaviour
     private bool isStepRunning;
 
     private AudioSource typingSound;
+    private DatabaseManager databaseManager;
     private CutSceneLevelManager cutSceneLevelManager;
 
     private readonly List<GameObject> spawnedPanels = new List<GameObject>();
@@ -39,6 +40,7 @@ public class CutSceneManager : MonoBehaviour
     private void Start()
     {
         typingSound = GetComponent<AudioSource>();
+        databaseManager = FindObjectOfType<DatabaseManager>();
         cutSceneLevelManager = FindObjectOfType<CutSceneLevelManager>();
 
         ResolveCutSceneData();
