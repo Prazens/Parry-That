@@ -15,15 +15,43 @@ MonoBehaviour:
   lines:
   - speakerTag: 1
     expressionTag: 0
-    text: "\uC5EC\uAE30\uAC00 \uADF8 \uB140\uC11D\uC758 \uC18C\uAD74\uC778\uAC00..!"
+    text: "\uC5EC\uAE30\uAC00 \uB140\uC11D\uB4E4\uC758 \uC18C\uAD74\uC778\uAC00..!"
     textRevealDuration: 1.5
     waitAfterReveal: 2
     waitBeforeReveal: 0
     speakerNameOverride: 
-  - speakerTag: 1
-    expressionTag: 0
-    text: "\uC73C\uC545 \uB108\uBB34 \uC5B4\uB824\uC6CC!!"
+  - speakerTag: 2
+    expressionTag: 3
+    text: "\uBB54\uAC00 \uC73C\uC2A4\uC2A4 \uD55C\uB370\uC694.."
     textRevealDuration: 1
-    waitAfterReveal: 3
+    waitAfterReveal: 2
     waitBeforeReveal: 1
+    speakerNameOverride: 
+  - speakerTag: 1
+    expressionTag: 4
+    text: "\uC5B4 \uB2C8 \uB4A4\uC5D0!!!"
+    textRevealDuration: 1
+    waitAfterReveal: 2
+    waitBeforeReveal: 0.8
+    speakerNameOverride: 
+  - speakerTag: 2
+    expressionTag: 4
+    text: "\uB07C\uC5D0\uC5D1!!!!!!!!!!!"
+    textRevealDuration: 0.7
+    waitAfterReveal: 2
+    waitBeforeReveal: 0.5
+    speakerNameOverride: 
+  - speakerTag: 1
+    expressionTag: 4
+    text: "-\uBEE5\uC774\uC57C"
+    textRevealDuration: 1
+    waitAfterReveal: 2
+    waitBeforeReveal: 0.8
+    speakerNameOverride: 
+  - speakerTag: 2
+    expressionTag: 2
+    text: ...
+    textRevealDuration: 0.5
+    waitAfterReveal: 2
+    waitBeforeReveal: 0.8
     speakerNameOverride: 
