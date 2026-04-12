@@ -154,7 +154,7 @@ public class DynamicUIManager : MonoBehaviour
     {
         if (scoreDisplay == null) return;
 
-        scoreDisplay.GetComponent<TextMeshProUGUI>().text = Convert.ToString(score);
+        scoreDisplay.GetComponent<TextMeshProUGUI>().text = score.ToString("N0");
 
         StopCoroutine("BounceUp");
         scoreDisplay.transform.position = initialPosition[0];
@@ -165,7 +165,7 @@ public class DynamicUIManager : MonoBehaviour
     {
         if (comboDisplay == null) return;
 
-        comboDisplay.GetComponent<TextMeshProUGUI>().text = Convert.ToString(combo) + " Combo";
+        comboDisplay.GetComponent<TextMeshProUGUI>().text = Convert.ToString(combo) + "\n<size=18>combo</size>";
 
         StopCoroutine("BounceUp");
         comboDisplay.transform.position = initialPosition[1];
