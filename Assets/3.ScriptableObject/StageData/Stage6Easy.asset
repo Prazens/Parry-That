@@ -15,10 +15,18 @@ MonoBehaviour:
   stageId: 6
   difficulty: 0
   category: 1
-  phases: []
+  phases:
+  - tutorialPanelPrefabs: []
+    chartJson: {fileID: 4900000, guid: 61c1eaa036c8ea84883cee8c3201a8e7, type: 3}
+    dialogue: {fileID: 0}
+    dialogueAudioPolicy: 0
+  - tutorialPanelPrefabs: []
+    chartJson: {fileID: 4900000, guid: e2b792542fe016f4f8b2c042a101d645, type: 3}
+    dialogue: {fileID: 0}
+    dialogueAudioPolicy: 0
   bgm: {fileID: 8300000, guid: 4c7cc296bce8ef3449e4b250826106a5, type: 3}
-  overrideBgmOffset: 0
-  bgmOffset: 0
+  overrideBgmOffset: 1
+  bgmOffset: 1.291
   holdingSound: {fileID: 0}
   cutInUpPrefab: {fileID: 6510084509892605857, guid: 0edc6e8c1e2c85b4e89f918fecce0c56, type: 3}
   cutInDownPrefab: {fileID: 3652655368027209433, guid: 4d4c3079d1c6da44ca3e25baaf094dfa, type: 3}
