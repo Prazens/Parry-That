@@ -9,7 +9,6 @@ using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
 using System.Data;
 using DG.Tweening;
-using UnityEditor.SceneManagement; // 🔥 DOTween 사용 필수 선언
 
 /// <summary>
 /// 스테이지 메뉴 UI 띄우고, UI에 정보 전달, 클릭시 스테이지 실행

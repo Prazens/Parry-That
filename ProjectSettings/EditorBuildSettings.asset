@@ -8,8 +8,8 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/1.Scenes/Archive/CutScene/Prologue.unity
     guid: 4614aa11965e63c439d6acdb0fa0489a
-  - enabled: 1
-    path: Assets/1.Scenes/Main.unity
+  - enabled: 0
+    path: Assets/1.Scenes/Archive/Main.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
     path: Assets/1.Scenes/testMain.unity
