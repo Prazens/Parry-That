@@ -8,25 +8,37 @@
       "direction": 1,
       "noticeBeat": 4,
       "arriveBeat": 12,
-      "type": 0
+      "type": 1
     },
     {
       "direction": 2,
-      "noticeBeat": 6,
-      "arriveBeat": 14,
-      "type": 0
+      "noticeBeat": 5,
+      "arriveBeat": 13,
+      "type": 1
     },
     {
       "direction": 1,
+      "noticeBeat": 6,
+      "arriveBeat": 14,
+      "type": 1
+    },
+    {
+      "direction": 2,
       "noticeBeat": 8,
       "arriveBeat": 16,
-      "type": 0
+      "type": 1
+    },
+    {
+      "direction": 1,
+      "noticeBeat": 9,
+      "arriveBeat": 17,
+      "type": 1
     },
     {
       "direction": 2,
       "noticeBeat": 10,
       "arriveBeat": 18,
-      "type": 0
+      "type": 1
     }
   ]
 }
