@@ -32,7 +32,7 @@ MonoBehaviour:
   bgm: {fileID: 8300000, guid: 4c7cc296bce8ef3449e4b250826106a5, type: 3}
   overrideBgmOffset: 1
   bgmOffset: 1.291
-  holdingSound: {fileID: 0}
+  holdingSound: {fileID: 8300000, guid: 0ef81ff299d138844ac0177843d29b95, type: 3}
   cutInUpPrefab: {fileID: 6510084509892605857, guid: 0edc6e8c1e2c85b4e89f918fecce0c56, type: 3}
   cutInDownPrefab: {fileID: 3652655368027209433, guid: 4d4c3079d1c6da44ca3e25baaf094dfa, type: 3}
   backgroundPrefabs:

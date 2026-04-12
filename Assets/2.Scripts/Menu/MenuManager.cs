@@ -50,6 +50,12 @@ public class MenuManager : Singleton<MenuManager>
 
     public float height;
 
+    [Header("Fire Material Effect")]
+    public Image fireImage;           // fire 오브젝트의 Image 컴포넌트 연결
+    private Material fireMatInstance; // 인스턴스 보관용
+    public Color fireNormalColor = Color.white; // 일반 상태 색상
+    public Color fireSpecialColor = Color.red;  // 5~7 스테이지용 색상
+
     [Header("Stage 5~7 Material Effect")]
     public Image targetSpriteImage; // 인스펙터에서 매터리얼이 적용된 이미지 할당
     private Material targetMatInstance; 
@@ -133,6 +139,18 @@ public class MenuManager : Singleton<MenuManager>
             float initialTol = isCurrentlySpecialRange ? 0f : 1f;
             targetMatInstance.SetFloat("_ColorChangeTolerance", initialTol);
         }
+        // 🔥 [추가] fire 매터리얼 복제 및 초기 색상 세팅
+        if (fireImage != null)
+        {
+            fireMatInstance = new Material(fireImage.material);
+            fireImage.material = fireMatInstance;
+
+            bool isSpecial = (stageIndex[0] >= 5 && stageIndex[0] <= 7);
+            Color initialColor = isSpecial ? fireSpecialColor : fireNormalColor;
+            
+            // All In 1 Sprite의 Hit Color 프로퍼티명은 보통 "_HitEffectColor"입니다.
+            fireMatInstance.SetColor("_HitEffectColor", initialColor);
+        }
     }
 
     public bool JudgeStageUnlock(int index, int difficulty)
@@ -197,21 +215,28 @@ public class MenuManager : Singleton<MenuManager>
             //     stageTitleAnim.ChangeTitle(StageDBManager.Instance.StageName[stageIndex[0]]);
             // }
         }
-        // 🔥 [추가된 부분] 5~7 스테이지 구간 진입/이탈 감지 및 DOTween 애니메이션
-        if (targetMatInstance != null)
+        // 🔥 [완벽 수정본] 5~7 스테이지 구간 진입/이탈 감지 (타이틀과 불꽃을 동시에 처리!)
+        bool isSpecial = (index >= 5 && index <= 7);
+
+        // 상태가 변했을 때만 (진입할 때 1번, 이탈할 때 1번) 실행
+        if (isSpecial != isCurrentlySpecialRange)
         {
-            bool isSpecial = (index >= 5 && index <= 7);
-            
-            // 상태가 변했을 때만 애니메이션 실행 (1->0 또는 0->1)
-            if (isSpecial != isCurrentlySpecialRange)
+            isCurrentlySpecialRange = isSpecial; // 여기서 상태를 딱 한 번만 최신화
+
+            // 1. 타이틀 매터리얼 (관용도 1 <-> 0 전환)
+            if (targetMatInstance != null)
             {
-                isCurrentlySpecialRange = isSpecial;
-                matTween?.Kill(); // 기존에 진행 중이던 애니메이션 즉시 정지
-                
+                matTween?.Kill(); 
                 float targetTol = isSpecial ? 0f : 1f;
-                
-                // 0.5초 동안 _ColorChangeTol 값을 부드럽게 전환
                 matTween = targetMatInstance.DOFloat(targetTol, "_ColorChangeTolerance", 0.5f).SetEase(Ease.InOutQuad);
+            }
+
+            // 2. 불꽃 매터리얼 (일반 색상 <-> 특수 색상 전환)
+            if (fireMatInstance != null)
+            {
+                // DOTween이 알아서 현재 진행 중인 Color 트윈을 덮어씌우고 부드럽게 돌아갑니다.
+                Color targetColor = isSpecial ? fireSpecialColor : fireNormalColor;
+                fireMatInstance.DOColor(targetColor, "_HitEffectColor", 0.5f).SetEase(Ease.InOutQuad);
             }
         }
     }
