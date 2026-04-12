@@ -176,6 +176,7 @@ public class CutSceneManager : MonoBehaviour
                 }
 
                 yield return new WaitForSeconds(fadeDuration);
+                yield return new WaitForSeconds(action.waitseconds);
                 continue;
             }
 
@@ -200,6 +201,7 @@ public class CutSceneManager : MonoBehaviour
                 }
 
                 yield return new WaitForSeconds(fadeDuration);
+                yield return new WaitForSeconds(action.waitseconds);
                 continue;
             }
 
