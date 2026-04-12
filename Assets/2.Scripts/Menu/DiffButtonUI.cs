@@ -12,8 +12,7 @@ public class DiffButtonUI : MonoBehaviour
     [SerializeField] private GameObject modeButtonObj;
     [SerializeField] private AudioClip fireOnSound;
     [SerializeField] private AudioClip fireOffSound;
-    private Button modeButton;
-    private int difficulty;  // 0: Normal, 1: Hard
+    private int tempDiff;  // gc 방지용(효과가 있는지는 몰루)
 
     public void InitUI(int difficulty)
     {
@@ -21,16 +20,7 @@ public class DiffButtonUI : MonoBehaviour
 
         // modeButton.onClick.AddListener(WhenButtonClicked);
 
-        if (difficulty == 0)
-        {
-            modeButtonObj.GetComponent<Image>().sprite = normalButton;
-            this.difficulty = 0;
-        }
-        else
-        {
-            modeButtonObj.GetComponent<Image>().sprite = hardButton;
-            this.difficulty = 1;
-        }
+        UpdateButtonState(difficulty);
     }
 
     public void SetVisibility(bool isVisible)
@@ -45,6 +35,22 @@ public class DiffButtonUI : MonoBehaviour
         }
     }
 
+    public void UpdateButtonState(int difficulty)
+    {
+        if (difficulty == 0)
+        {
+            modeButtonObj.GetComponent<Image>().sprite = normalButton;
+        }
+        else if (difficulty == 1)
+        {
+            modeButtonObj.GetComponent<Image>().sprite = hardButton;
+        }
+        else
+        {
+            Debug.LogWarning($"Invalid difficulty index: {difficulty}. Expected 0 or 1.");
+        }
+    }
+
     public void WhenButtonClicked()
     {
         Debug.Log("DiffButton clicked");
@@ -53,18 +59,22 @@ public class DiffButtonUI : MonoBehaviour
             return;
         }
 
-        difficulty = 1 - difficulty;  // Toggle between 0 and 1
+        switch (MenuManager.Instance.stageIndex[1])
+        {
+            case 0:
+                tempDiff = 1;  // Easy에서 Hard로 변경
+                MenuAudioManager.Instance.Play(fireOffSound, AudioTag.SFX, false);
+                break;
+            case 1:
+                tempDiff = 0;  // Hard에서 Easy로 변경
+                MenuAudioManager.Instance.Play(fireOnSound, AudioTag.SFX, false);
+                break;
+            default:
+                Debug.LogWarning($"Invalid difficulty index: {tempDiff}. Expected 0 or 1.");
+                break;
+        }
+        UpdateButtonState(tempDiff);
 
-        if (difficulty == 0)
-        {
-            modeButtonObj.GetComponent<Image>().sprite = normalButton;
-            MenuAudioManager.Instance.Play(fireOffSound, AudioTag.SFX, false);
-        }
-        else
-        {
-            modeButtonObj.GetComponent<Image>().sprite = hardButton;
-            MenuAudioManager.Instance.Play(fireOnSound, AudioTag.SFX, false);
-        }
-        MenuManager.Instance.UpdateCurStage(MenuManager.Instance.stageIndex[0], MenuManager.Instance.stageIndex[1] == 0 ? 1 : 0);
+        MenuManager.Instance.UpdateCurStage(MenuManager.Instance.stageIndex[0], tempDiff);
     }
 }

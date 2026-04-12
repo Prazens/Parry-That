@@ -67,6 +67,7 @@ public class StageDialogManager : Singleton<StageDialogManager>
 
     public void InitDialog()
     {
+        dialogSequence?.Kill();
         dialogSequence = null;
         listWidth = dialogList.GetComponent<RectTransform>().rect.width
                     - dialogList.GetComponent<VerticalLayoutGroup>().padding.right
@@ -134,6 +135,7 @@ public class StageDialogManager : Singleton<StageDialogManager>
     public void FinishDialog()
     {
         Debug.Log("StageDialogManager: FinishDialog");
+        dialogSequence?.Kill();
         dialogSequence = null;
     }
 
@@ -184,5 +186,15 @@ public class StageDialogManager : Singleton<StageDialogManager>
             return null;
 
         return iconSet[line.expressionTag];
+    }
+
+    void OnDisable()
+    {
+        dialogSequence?.Kill();
+    }
+
+    void OnDestroy()
+    {
+        dialogSequence?.Kill();
     }
 }
