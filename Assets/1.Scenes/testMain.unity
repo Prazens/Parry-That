@@ -4860,7 +4860,6 @@ Material:
   - FLICKER_ON
   - GHOST_ON
   - MOTIONBLUR_ON
-  - SHADOW_ON
   - WAVEUV_ON
   m_InvalidKeywords: []
   m_LightmapFlags: 4
