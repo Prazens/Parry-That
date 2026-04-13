@@ -14,12 +14,10 @@ public class HoldAttackNoticeHandler : MonoBehaviour, IAttackHandler<AttackNotic
     [SerializeField] private List<AudioClipList> prepareSounds;
 
     private AudioSource audioSource;
-    private StageChartLoader stageChartLoader;
     private Coroutine currentCoroutine = null;
 
     private void Awake()
     {
-        stageChartLoader = FindObjectOfType<StageChartLoader>();
         var audioSourceObject = GameObject.Find("Audio Source");
         if (audioSourceObject != null)
             audioSource = audioSourceObject.GetComponent<AudioSource>();
@@ -37,26 +35,7 @@ public class HoldAttackNoticeHandler : MonoBehaviour, IAttackHandler<AttackNotic
             flow.BeatToSec(context.note.arriveBeat) -
             flow.BeatToSec(context.note.noticeBeat);
 
-        int strikerType = -1;
-
-        if (stageChartLoader == null)
-        {
-            stageChartLoader = FindObjectOfType<StageChartLoader>();
-        }
-
-        if (stageChartLoader != null && flow.currentStageData != null)
-        {
-            TextAsset chartJson = stageChartLoader.GetCurrentPhaseChart(flow.currentStageData);
-            if (chartJson != null)
-            {
-                ChartData chartData = JsonReader.ReadJson<ChartData>(chartJson);
-                if (chartData != null)
-                {
-                    strikerType = chartData.strikerType;
-                }
-            }
-        }
-
+        int strikerType = context.strikerType;
         AttackType attackType = (AttackType)context.note.type;
 
         if (attackType == AttackType.HoldStart)
@@ -73,11 +52,13 @@ public class HoldAttackNoticeHandler : MonoBehaviour, IAttackHandler<AttackNotic
             Disappear(durationSec, strikerType);
         }
     }
+
     void IAttackHandler.OnNotice(IAttackContext context)
         => OnNotice((AttackNoticeContext)context);
 
     public void OnAttackStart(AttackNoticeContext context)
     {
+
     }
 
     void IAttackHandler.OnAttackStart(IAttackContext context)
@@ -85,6 +66,7 @@ public class HoldAttackNoticeHandler : MonoBehaviour, IAttackHandler<AttackNotic
 
     public void OnJudge(JudgeContext context)
     {
+
     }
 
     public void Appear(float durationSec, int strikerType)
