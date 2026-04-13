@@ -61,7 +61,7 @@ public class MenuSwipeDetecter : Singleton<MenuSwipeDetecter>
             {
                 startPos = touch.position;
             }
-            else if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
+            else if (touch.phase == TouchPhase.Moved)
             {
                 float swipeDistance = startPos.y - touch.position.y;
 
