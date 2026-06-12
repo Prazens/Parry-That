@@ -36,7 +36,6 @@ public class JudgeSystem : MonoBehaviour
 
     public PlayerManager playerManager;
     public StrikerManager strikerManager;
-    [SerializeField] public ParriedProjectileManager parriedProjectileManager;
 
     // ScoreUI / UIManager -> DynamicUIManager
     [SerializeField] private DynamicUIManager dynamicUIManager;

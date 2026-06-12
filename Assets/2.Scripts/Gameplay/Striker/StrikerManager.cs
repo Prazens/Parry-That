@@ -13,7 +13,7 @@ public class StrikerManager : MonoBehaviour
     [SerializeField] private Transform[] _spawnPositions; // 0: 리더, 1~4: 방향별 투사체
     private Vector3[] spawnPositions;
     [SerializeField] private float spawnPosOffset = 3f; // 기본 위치보다 offset만큼 위에서 등장하여 기본 위치로 이동
-    [SerializeField] private float targetPosOffset = 1.2f; // 플레이어 판정 위치 보정값
+    [SerializeField] private float targetPosOffset = 1f; // 플레이어 판정 위치 보정값
 
     // Refs
     private PlayerManager playerManager;
@@ -98,7 +98,8 @@ public class StrikerManager : MonoBehaviour
         if (!isBossStage || strikerInstance == null) return;
 
         strikerInstance.OnClear();
-        var chibi = strikerInstance.transform.Find("boss_chibi");
-        chibi?.gameObject.SetActive(true);
+        Transform chibi = strikerInstance.transform.Find("boss_chibi");
+        if (chibi != null)
+            chibi.gameObject.SetActive(true);
     }
 }

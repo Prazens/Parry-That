@@ -15,7 +15,7 @@ public class MeleeProjectile : Projectile
     private float duration;
 
     private float attackMotionStartTimeOffset => 0.3f;
-    private float bladeDistanceOffset => 0.5f;
+    private float bladeDistanceOffset => 0.7f;
 
     public override void Setup(ProjectileSetupContext context)
     {

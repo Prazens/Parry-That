@@ -14,17 +14,15 @@ public class StrikerHoldVisual : MonoBehaviour
 
     private DynamicUIManager dynamicUIManager;
 
-    [Header("For Move Attack")]
+    // For Move Attack
     [SerializeField] private bool isMoveAttack = false; // Striker가 직접 이동하는지
-    [SerializeField] private float bladeDistanceOffset = 0.5f;
-
+    private float bladeDistanceOffset => 0.7f;
     private Vector3 spawnPosition;
     private Vector3 targetPosition;
 
     private int holdLayerIndex;
     private float backToBaseTime => 0.25f; // 공격 끝난 후 Base Layer로 복귀 시간
     
-
     private void Awake()
     {
         holdLayerIndex = animator.GetLayerIndex("Hold Layer");
@@ -66,7 +64,6 @@ public class StrikerHoldVisual : MonoBehaviour
     public void OnJudge(JudgeContext context)
     {
         AttackType attackType = context.judgeable.attackType;
-        JudgeType judgeType = context.judgeType;
 
         if (attackType == AttackType.HoldStart && !context.isMiss)
         {
@@ -121,7 +118,6 @@ public class StrikerHoldVisual : MonoBehaviour
             return;
         }
 
-        JudgeType judgeType = context.judgeType;
         if (context.isMiss)
             return;
 

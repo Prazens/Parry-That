@@ -139,14 +139,13 @@ public class NotePerformer : MonoBehaviour
                 && attackJudgeHandler != null)
             {
                 NoteData nextNote = nextNoteIndex + 1 < notes.Length ? notes[nextNoteIndex + 1] : null;
-                var attackContext = new AttackJudgeContext(note, nextNote, judgeables);
-                attackJudgeHandler.OnNotice(attackContext);
+                attackJudgeHandler.OnNotice(new AttackJudgeContext(note, nextNote, judgeables));
             }
 
             if (attackNoticeHandlerDict.TryGetValue(attackType, out var attackNoticeHandler)
                 && attackNoticeHandler != null)
             {
-                attackNoticeHandler.OnNotice(new AttackNoticeContext(note, judgeables));
+                attackNoticeHandler.OnNotice(new AttackNoticeContext(note, judgeables, strikerType));
             }
 
             StrikerController striker = strikerManager.GetStrikerInstance();
@@ -178,7 +177,7 @@ public class NotePerformer : MonoBehaviour
         }
     }
 
-    public void OnJudge(JudgeContext context)
+    private void OnJudge(JudgeContext context)
     {
         Judgeable judgeable = context.judgeable;
         if (judgeable == null)
