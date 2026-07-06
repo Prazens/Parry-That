@@ -78,37 +78,20 @@ public class CommonAttackNoticeHandler : MonoBehaviour, IAttackHandler<AttackNot
     {
         if (noticeInstance == null) return;
 
+        noticeInstances.Remove(noticeInstance);
+
+        for (int i = 0; i < noticeInstances.Count; i++)
+        {
+            noticeInstances[i].transform.localPosition = new Vector3(i * noticeSpacing, 0, 0);
+        }
+
         if (!isMiss)
         {
-            noticeInstance.HitSignal(StageFlowManager.Instance.bpm, Relocation);
+            noticeInstance.HitSignal(StageFlowManager.Instance.bpm, notice => Destroy(notice.gameObject));
         }
         else
         {
-            noticeInstance.MissSignal(StageFlowManager.Instance.bpm, Relocation);
-        }
-    }
-
-    private void Relocation(NoticeAnim noticeInstance)
-    {
-        noticeInstances.Remove(noticeInstance);
-        Destroy(noticeInstance.gameObject);
-
-        if (noticeInstances.Count > 0)
-        {
-            // 남은 예고 인스턴스 위치 재배치
-            for (int i = 0; i < noticeInstances.Count; i++)
-            {
-                noticeInstances[i].transform.localPosition = new Vector3(i * noticeSpacing, 0, 0);
-            }
-        }
-    }
-
-    private void RemoveAll()
-    {
-        while (noticeInstances.Count > 0)
-        {
-            Destroy(noticeInstances[0]);
-            noticeInstances.RemoveAt(0);
+            noticeInstance.MissSignal(StageFlowManager.Instance.bpm, notice => Destroy(notice.gameObject));
         }
     }
 }
