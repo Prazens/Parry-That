@@ -7,7 +7,7 @@ public class MenuSwipeDetecter : Singleton<MenuSwipeDetecter>
 {
     protected override bool DontDestroy => false;
 
-    [SerializeField] private float swipeThreshold =    10f;
+    [SerializeField] private float swipeThreshold = 10f;
     private float weightedSwipeThreshold;
     private Vector2 startPos = Vector2.zero;  // 기본값
 

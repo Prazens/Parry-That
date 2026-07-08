@@ -100,7 +100,16 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
         stageDisks = new RectTransform[childCount];
         for (int i = 0; i < childCount; i++)
         {
-            stageDisks[i] = Instantiate(stageDiskPrefab, contentPanel).GetComponent<RectTransform>();
+            stageDisks[i] = Instantiate(stageDiskPrefab, contentPanel)
+                .GetComponent<RectTransform>();
+
+            Button button = stageDisks[i].GetComponent<Button>();
+
+            if (button != null)
+            {
+                button.onClick.RemoveAllListeners();
+                button.onClick.AddListener(OnDiskClick);
+            }
         }
 
         if (childCount == 0) return;
@@ -265,6 +274,7 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
         {
             isDragging = true;
         }
+
         CheckTargetIndex();
         UpdateScaleAndColor();
     }
@@ -278,6 +288,20 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
 
         isDragging = false;
         StartCoroutine(SnapToDisk());
+    }
+
+    public void OnDiskClick()
+    {
+        if (MenuManager.Instance.currentState != MenuState.StageSelect)
+            return;
+
+        if (isDragging)
+            return;
+
+        if (!canRotate)
+            return;
+
+        MenuManager.Instance.StartStage();
     }
 
     public void StopScroll()
