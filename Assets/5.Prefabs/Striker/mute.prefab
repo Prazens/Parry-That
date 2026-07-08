@@ -269,7 +269,6 @@ MonoBehaviour:
   holdSpriteAnimator: {fileID: 3607903540693613985}
   bladeAnimator: {fileID: 0}
   isMoveAttack: 0
-  bladeDistanceOffset: 0.5
 --- !u!114 &6765386139301925470
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -285,7 +284,7 @@ MonoBehaviour:
   audioSource: {fileID: 2317185187789778627}
   prepareSoundNormal: {fileID: 8300000, guid: dda175893514928409eb125d0286cc40, type: 3}
   prepareSoundStrong: {fileID: 8300000, guid: 543623a595850aa47829f19d9c76705d, type: 3}
-  prepareSoundGhost: {fileID: 8300000, guid: 25b48916752e18f4382a11bb09a89234, type: 3}
+  prepareSoundGhost: {fileID: 8300000, guid: df62918d7c7d8c84a894236bd74d0330, type: 3}
   parrySoundNormal: {fileID: 8300000, guid: 96972401467906a42b50272645414fee, type: 3}
   parrySoundStrong: {fileID: 8300000, guid: 20353a13f678ac34f83635b7b2503a29, type: 3}
   parrySoundGhost: {fileID: 8300000, guid: 20353a13f678ac34f83635b7b2503a29, type: 3}

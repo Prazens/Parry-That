@@ -266,7 +266,7 @@ MonoBehaviour:
   audioSource: {fileID: -5035865612886772569}
   prepareSoundNormal: {fileID: 8300000, guid: 5bcd5d5eb036424459cd30a4050e2bea, type: 3}
   prepareSoundStrong: {fileID: 8300000, guid: 8d10a83e9e6c6b24988770325742acd7, type: 3}
-  prepareSoundGhost: {fileID: 8300000, guid: 28e3c633d8a562f45b4ed05378176e46, type: 3}
+  prepareSoundGhost: {fileID: 8300000, guid: 5d3f23c5a2cadf34cbae9dc455bfcedd, type: 3}
   parrySoundNormal: {fileID: 8300000, guid: 96972401467906a42b50272645414fee, type: 3}
   parrySoundStrong: {fileID: 8300000, guid: 20353a13f678ac34f83635b7b2503a29, type: 3}
   parrySoundGhost: {fileID: 8300000, guid: 20353a13f678ac34f83635b7b2503a29, type: 3}
