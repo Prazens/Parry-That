@@ -400,10 +400,10 @@ public class StaticUIManager : MonoBehaviour
 
         countdownText.gameObject.SetActive(true);
 
-        for (int count = 3; count >= 1; count--)
+        for (int count = 10; count >= 1; count--)
         {
-            countdownText.text = count.ToString();
-            yield return new WaitForSecondsRealtime(1f);
+            countdownText.text = (count / 10.0f).ToString("F1");
+            yield return new WaitForSecondsRealtime(0.1f);
         }
 
         countdownText.gameObject.SetActive(false);
