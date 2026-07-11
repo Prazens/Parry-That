@@ -34,14 +34,9 @@ public class InfoDisplayUI : MonoBehaviour
         }
         scoreStarParent.SetActive(true);
 
-        if (stageIndex[1] == 1)
-        {
-            fireEffect.SetActive(true);
-        }
-        else
-        {
-            fireEffect.SetActive(false);
-        }
+        bool isHardMode = stageIndex[1] == 1;
+        bool alwaysShowFire = stageIndex[0] >= 5 && stageIndex[0] <= 7;
+        fireEffect.SetActive(isHardMode || alwaysShowFire);
 
         // 상세 정보 표시
         txtStageScore.text = string.Format("{0:#,##0}", StageDBManager.Instance.highScores[stageIndex[0]][stageIndex[1]]);

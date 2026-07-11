@@ -271,6 +271,20 @@ public class StageFlowManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
+    public void ExitStage()
+    {
+        Time.timeScale = 1f;
+
+        if (isClear && currentStageData != null && currentStageData.Category == StageCategory.Boss)
+        {
+            CutSceneSelection.SetSelection(currentStageData.StageId, CutSceneCategory.Epilogue);
+            SceneManager.LoadScene("CutScene");
+            return;
+        }
+
+        SceneManager.LoadScene("testMain");
+    }
+
     private void StartPhase()
     {
         if (currentStageData == null)
@@ -412,7 +426,6 @@ public class StageFlowManager : MonoBehaviour
         if (staticUIManager != null)
         {
             staticUIManager.ToggleGameOverPanel(true);
-            staticUIManager.ToggleOverlay(true);
         }
     }
 
@@ -436,7 +449,6 @@ public class StageFlowManager : MonoBehaviour
             if (staticUIManager != null)
             {
                 staticUIManager.ToggleClearPanel(true);
-                staticUIManager.ToggleOverlay(true);
             }
         }
     }
@@ -608,7 +620,6 @@ public class StageFlowManager : MonoBehaviour
         if (staticUIManager != null)
         {
             staticUIManager.TogglePausePanel(true);
-            staticUIManager.ToggleOverlay(true);
             staticUIManager.UpdatePauseButtonSprite(true);
         }
     }
@@ -623,7 +634,6 @@ public class StageFlowManager : MonoBehaviour
         if (staticUIManager != null)
         {
             staticUIManager.TogglePausePanel(false);
-            staticUIManager.ToggleOverlay(false);
             staticUIManager.UpdatePauseButtonSprite(false);
         }
 

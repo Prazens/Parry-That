@@ -16,6 +16,9 @@ public class StaticUIManager : MonoBehaviour
     [SerializeField] private GameObject gameOverPanelPrefab;
     [SerializeField] private GameObject pausePanelPrefab;
 
+    [Header("Panel Background")]
+    [SerializeField] private GameObject darkPanel;
+
     [Header("Pause")]
     [SerializeField] private GameObject pauseButton;
     [SerializeField] private Sprite unpauseButtonSprite;
@@ -61,8 +64,10 @@ public class StaticUIManager : MonoBehaviour
 
         CachePauseButton();
         CacheVictory();
+        CacheDarkPanel();
 
         if (overlayObject != null) overlayObject.SetActive(false);
+        if (darkPanel != null) darkPanel.SetActive(false);
         if (clearPanel != null) clearPanel.SetActive(false);
         if (gameOverPanel != null) gameOverPanel.SetActive(false);
         if (pausePanel != null) pausePanel.SetActive(false);
@@ -101,20 +106,86 @@ public class StaticUIManager : MonoBehaviour
         if (clearPanel == null && clearPanelPrefab != null)
         {
             clearPanel = Instantiate(clearPanelPrefab, canvasPause);
+            BindPanelButtons(clearPanel, false);
             clearPanel.SetActive(false);
         }
 
         if (gameOverPanel == null && gameOverPanelPrefab != null)
         {
             gameOverPanel = Instantiate(gameOverPanelPrefab, canvasPause);
+            BindPanelButtons(gameOverPanel, false);
             gameOverPanel.SetActive(false);
         }
 
         if (pausePanel == null && pausePanelPrefab != null)
         {
             pausePanel = Instantiate(pausePanelPrefab, canvasPause);
+            BindPanelButtons(pausePanel, true);
             pausePanel.SetActive(false);
         }
+    }
+
+    private void CacheDarkPanel()
+    {
+        if (darkPanel != null || canvasPause == null) return;
+
+        Transform[] children = canvasPause.GetComponentsInChildren<Transform>(true);
+        foreach (Transform child in children)
+        {
+            if (child.gameObject.name == "DarkPanel")
+            {
+                darkPanel = child.gameObject;
+                return;
+            }
+        }
+    }
+
+    private void ToggleDarkPanel(bool isOn)
+    {
+        CacheDarkPanel();
+        if (darkPanel != null)
+        {
+            darkPanel.SetActive(isOn);
+        }
+    }
+
+    private void BindPanelButtons(GameObject panel, bool includeContinue)
+    {
+        if (panel == null) return;
+
+        Button[] buttons = panel.GetComponentsInChildren<Button>(true);
+        foreach (Button button in buttons)
+        {
+            switch (button.gameObject.name)
+            {
+                case "ButtonReplay":
+                    button.onClick.AddListener(RestartStage);
+                    break;
+
+                case "ButtonExit":
+                    button.onClick.AddListener(ExitStage);
+                    break;
+
+                case "ButtonContinue" when includeContinue:
+                    button.onClick.AddListener(ResumeStage);
+                    break;
+            }
+        }
+    }
+
+    private void RestartStage()
+    {
+        StageFlowManager.Instance?.RestartStage();
+    }
+
+    private void ExitStage()
+    {
+        StageFlowManager.Instance?.ExitStage();
+    }
+
+    private void ResumeStage()
+    {
+        StageFlowManager.Instance?.ResumeStage();
     }
 
     public void Setup_UI()
@@ -218,6 +289,7 @@ public class StaticUIManager : MonoBehaviour
         if (clearPanel == null) return;
 
         clearPanel.SetActive(isOn);
+        ToggleDarkPanel(isOn);
 
         if (isOn)
         {
@@ -231,6 +303,7 @@ public class StaticUIManager : MonoBehaviour
         if (gameOverPanel == null) return;
 
         gameOverPanel.SetActive(isOn);
+        ToggleDarkPanel(isOn);
 
         if (isOn)
         {
@@ -243,6 +316,7 @@ public class StaticUIManager : MonoBehaviour
         if (pausePanel == null) return;
 
         pausePanel.SetActive(isOn);
+        ToggleDarkPanel(isOn);
 
         if (isOn)
         {
@@ -306,16 +380,16 @@ public class StaticUIManager : MonoBehaviour
 
         TextMeshProUGUI perfectText = FindText("ParfectText");
         if (perfectText == null) perfectText = FindText("PerfectText");
-        if (perfectText != null) perfectText.text = d[4].ToString("D4");
+        if (perfectText != null) perfectText.text = d[4].ToString();
 
         TextMeshProUGUI bounceText = FindText("BounceText");
-        if (bounceText != null) bounceText.text = (d[3] + d[5]).ToString("D4");
+        if (bounceText != null) bounceText.text = (d[3] + d[5]).ToString();
 
         TextMeshProUGUI guardText = FindText("GuardText");
-        if (guardText != null) guardText.text = (d[2] + d[6]).ToString("D4");
+        if (guardText != null) guardText.text = (d[2] + d[6]).ToString();
 
         TextMeshProUGUI hitText = FindText("HitText");
-        if (hitText != null) hitText.text = (d[1] + d[7]).ToString("D4");
+        if (hitText != null) hitText.text = (d[1] + d[7]).ToString();
     }
 
     public IEnumerator ResumeCountDown()

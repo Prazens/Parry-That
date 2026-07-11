@@ -29,6 +29,7 @@ public class SettingUI : MonoBehaviour
             
             prevState = MenuManager.Instance.currentState;
             MenuManager.Instance.currentState = MenuManager.MenuState.Settings;
+            MenuManager.Instance.RefreshPurchasePanel();
             MenuManager.Instance.diskSwipeUI.gameObject.GetComponent<ScrollRect>().enabled = false;
             MenuManager.Instance.diskSwipeUI.StartPreviewSound(-1);
         }
@@ -36,6 +37,7 @@ public class SettingUI : MonoBehaviour
         {
             SettingPanel.SetActive(false);
             MenuManager.Instance.currentState = prevState;
+            MenuManager.Instance.RefreshPurchasePanel();
             MenuManager.Instance.diskSwipeUI.gameObject.GetComponent<ScrollRect>().enabled = true;
 
             // 튜토리얼은 노래 재생 안함

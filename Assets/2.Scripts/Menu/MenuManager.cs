@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
-using UnityEditor;
 using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
 using System.Data;
@@ -36,6 +35,11 @@ public class MenuManager : Singleton<MenuManager>
     public SettingUI settingUI;
     public DiffButtonUI diffButtonUI;
     public StageTitleAnim stageTitleAnim;
+
+    [Header("Stage 5~7 Purchase")]
+    [SerializeField] private GameObject purchasePanelPrefab;
+    private GameObject purchasePanelInstance;
+    private Button purchaseButton;
     
     public enum MenuState
     {
@@ -61,6 +65,17 @@ public class MenuManager : Singleton<MenuManager>
     private Material targetMatInstance; 
     private Tween matTween;
     private bool isCurrentlySpecialRange = false;
+
+    private void OnEnable()
+    {
+        StagePackPurchaseManager.PurchaseStateChanged += RefreshPurchasePanel;
+    }
+
+    private void OnDisable()
+    {
+        StagePackPurchaseManager.PurchaseStateChanged -= RefreshPurchasePanel;
+    }
+
     private void Start()
     {
         InitUI(); 
@@ -85,6 +100,7 @@ public class MenuManager : Singleton<MenuManager>
         }
 
         stageIndex = new int[] { StageSelection.SelectedStageId, (int)StageSelection.SelectedDifficulty }; 
+        CreatePurchasePanel();
 
         diskSwipeUI.InitScrollView(stageIndex[0], stageIndex[1]);
         diffButtonUI.InitUI(stageIndex[1]);
@@ -151,6 +167,8 @@ public class MenuManager : Singleton<MenuManager>
             // All In 1 Sprite의 Hit Color 프로퍼티명은 보통 "_HitEffectColor"입니다.
             fireMatInstance.SetColor("_HitEffectColor", initialColor);
         }
+
+        RefreshPurchasePanel();
     }
 
     public bool JudgeStageUnlock(int index, int difficulty)
@@ -215,6 +233,8 @@ public class MenuManager : Singleton<MenuManager>
             //     stageTitleAnim.ChangeTitle(StageDBManager.Instance.StageName[stageIndex[0]]);
             // }
         }
+
+        RefreshPurchasePanel();
         // 🔥 [완벽 수정본] 5~7 스테이지 구간 진입/이탈 감지 (타이틀과 불꽃을 동시에 처리!)
         bool isSpecial = (index >= 5 && index <= 7);
 
@@ -246,6 +266,7 @@ public class MenuManager : Singleton<MenuManager>
         if (currentState == MenuState.Title)
         {
             currentState = MenuState.StageSelect;
+            RefreshPurchasePanel();
             
             // 🔥 타이틀에서 칼 뽑고 넘어오면, 이제 칼이 둥둥 떠다니도록 지시!
             sword.StartFloating(); 
@@ -264,6 +285,12 @@ public class MenuManager : Singleton<MenuManager>
         }
         else if (currentState == MenuState.StageSelect)
         {
+            if (IsSelectedStagePurchaseLocked())
+            {
+                RefreshPurchasePanel();
+                return;
+            }
+
             StageSelection.SetSelection(stageIndex[0], (Difficulty)stageIndex[1]);
             CutSceneSelection.SetSelection(stageIndex[0], CutSceneCategory.Prologue);
             SceneManager.LoadScene("CutScene");
@@ -322,6 +349,12 @@ public class MenuManager : Singleton<MenuManager>
     /// </summary>
     public void StartStage()
     {
+        if (IsSelectedStagePurchaseLocked())
+        {
+            RefreshPurchasePanel();
+            return;
+        }
+
         if (!JudgeStageUnlock(stageIndex[0], stageIndex[1]))
         {
             // 잠긴 스테이지
@@ -341,6 +374,49 @@ public class MenuManager : Singleton<MenuManager>
 
         // 칼 올라가는 연출은 이제 SwordMovement가 스스로 DOTween으로 처리함
         sword.StartSwordUp(height / 2f, dur); 
+    }
+
+    public void RefreshPurchasePanel()
+    {
+        if (purchasePanelInstance == null) return;
+
+        bool shouldShow = currentState == MenuState.StageSelect && IsSelectedStagePurchaseLocked();
+        purchasePanelInstance.SetActive(shouldShow);
+
+        if (purchaseButton != null)
+        {
+            StagePackPurchaseManager purchaseManager = StagePackPurchaseManager.Instance;
+            purchaseButton.interactable = shouldShow &&
+                                          purchaseManager.IsStoreReady &&
+                                          !purchaseManager.IsPurchaseInProgress;
+        }
+    }
+
+    private void CreatePurchasePanel()
+    {
+        if (purchasePanelInstance != null || purchasePanelPrefab == null) return;
+
+        purchasePanelInstance = Instantiate(purchasePanelPrefab, transform);
+        purchasePanelInstance.transform.SetAsLastSibling();
+
+        Button[] buttons = purchasePanelInstance.GetComponentsInChildren<Button>(true);
+        foreach (Button button in buttons)
+        {
+            if (button.gameObject.name != "PurchaseButton") continue;
+
+            purchaseButton = button;
+            purchaseButton.onClick.RemoveAllListeners();
+            purchaseButton.onClick.AddListener(StagePackPurchaseManager.Instance.PurchaseStagePack);
+            break;
+        }
+
+        purchasePanelInstance.SetActive(false);
+    }
+
+    private bool IsSelectedStagePurchaseLocked()
+    {
+        return StagePackPurchaseManager.IsPremiumStage(stageIndex[0]) &&
+               !StagePackPurchaseManager.IsStagePackOwned;
     }
 
 }
