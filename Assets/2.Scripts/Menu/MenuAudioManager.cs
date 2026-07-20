@@ -101,7 +101,7 @@ public class MenuAudioManager : Singleton<MenuAudioManager>
         switch (tag)
         {
             case AudioTag.BGM:
-                volumeMultiplier = PlayerPrefs.GetFloat("bgmVolume", 1f);
+                volumeMultiplier = volumeMultiplier * PlayerPrefs.GetFloat("bgmVolume", 1f);
                 currentSound = BGMSound;
                 break;
             case AudioTag.SFX:

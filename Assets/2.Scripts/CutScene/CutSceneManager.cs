@@ -27,7 +27,6 @@ public class CutSceneManager : MonoBehaviour
 
     private Text cutSceneText;
     private int currentIndex;
-
     private bool isTyping;
     private bool isStepRunning;
 
@@ -464,6 +463,7 @@ public class CutSceneManager : MonoBehaviour
         }
 
         int typingSoundDelayCounter = 0;
+        typingSound.volume = PlayerPrefs.GetFloat("masterVolume", 1f);
 
         for (int characterIndex = 0; characterIndex < text.Length; characterIndex++)
         {

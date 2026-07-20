@@ -43,7 +43,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -121,7 +121,91 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: SettingItems_NoNeon_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 207.75
+        width: 288
+        height: 69.25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5cd03c70ff664c549a538642f86e8a0c
+      internalID: -778758772
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SettingItems_NoNeon_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 138.75
+        width: 288
+        height: 69.25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cb0f20a96105ad24b9fb5d5c53741541
+      internalID: -893791232
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SettingItems_NoNeon_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 69.75
+        width: 288
+        height: 69.25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ab70db4c6694bc646b1c3d3aa85d2a7b
+      internalID: -1965160064
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SettingItems_NoNeon_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0.75
+        width: 288
+        height: 69.25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4db31446a4adb4f43ab923ac3e22f590
+      internalID: 72744946
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -132,7 +216,11 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      SettingItems_NoNeon_0: -778758772
+      SettingItems_NoNeon_1: -893791232
+      SettingItems_NoNeon_2: -1965160064
+      SettingItems_NoNeon_3: 72744946
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

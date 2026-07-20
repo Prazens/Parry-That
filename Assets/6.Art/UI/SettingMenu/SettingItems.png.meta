@@ -126,10 +126,10 @@ TextureImporter:
       name: SettingItems_0
       rect:
         serializedVersion: 2
-        x: 15
-        y: 22
-        width: 247
-        height: 244
+        x: 0
+        y: 207.75
+        width: 288
+        height: 69.25
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -139,6 +139,69 @@ TextureImporter:
       bones: []
       spriteID: c5f0918a5aa546741b481b48d13ae4eb
       internalID: -1100676503
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SettingItems_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 138.75
+        width: 288
+        height: 69.25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 94b51dabc1075414d9a57de4cae5fed0
+      internalID: -1121332284
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SettingItems_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 69.75
+        width: 288
+        height: 69.25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7c96e67cfb955234ca66991d99748144
+      internalID: -2041995135
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SettingItems_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0.75
+        width: 288
+        height: 69.25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7e321adbea1572b419c7770365947291
+      internalID: 1000440022
       vertices: []
       indices: 
       edges: []
@@ -155,6 +218,9 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       SettingItems_0: -1100676503
+      SettingItems_1: -1121332284
+      SettingItems_2: -2041995135
+      SettingItems_3: 1000440022
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
