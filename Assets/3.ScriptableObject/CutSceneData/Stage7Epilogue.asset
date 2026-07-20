@@ -44,7 +44,6 @@ MonoBehaviour:
   - "(\uB2E4\uC2DC \uACE0\uC2DC\uC0DD \uC2DC\uC808\uB85C? \uADF8\uAC83\uB9CC\uC740....)"
   - ....!
   - "(\uB450\uB465)"
-  - 
   panels:
   - type: 0
     anchorMin: {x: 0.5, y: 1}
@@ -189,15 +188,6 @@ MonoBehaviour:
     size: {x: 1758, y: 1926}
     scale: {x: 0.6, y: 0.6, z: 1}
     sprite: {fileID: 21300000, guid: a050034a7ef04b34fbf61f30b40bfbca, type: 3}
-    animatorcontroller: {fileID: 0}
-  - type: 0
-    anchorMin: {x: 0.5, y: 1}
-    anchorMax: {x: 0.5, y: 1}
-    pivot: {x: 0, y: 0}
-    anchoredPosition: {x: -450, y: -1650}
-    size: {x: 1800, y: 3200}
-    scale: {x: 0.5, y: 0.5, z: 1}
-    sprite: {fileID: 21300000, guid: bc1e148ec0ffa734ab2f961c7a85f23a, type: 3}
     animatorcontroller: {fileID: 0}
   clickSteps:
   - actions:
@@ -417,19 +407,6 @@ MonoBehaviour:
       animatorTrigger: 
     - actionType: 5
       index: 18
-      waitseconds: 0
-      animatorTrigger: 
-  - actions:
-    - actionType: 3
-      index: 15
-      waitseconds: 0
-      animatorTrigger: 
-    - actionType: 2
-      index: 16
-      waitseconds: 0
-      animatorTrigger: 
-    - actionType: 5
-      index: 19
       waitseconds: 0
       animatorTrigger: 
   bgm: {fileID: 0}

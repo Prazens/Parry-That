@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,7 +18,6 @@ public class MenuManager : Singleton<MenuManager>
     protected override bool DontDestroy => false;
 
     [Header("Tutorial Guide")]
-    // 🔥 텍스트 관련 변수 싹 다 지우고 손가락 가이드 연결
     public HandTutorialIndicator handGuide; 
     private float idleTime = 0f;
     private bool isShowingGuide = false;
@@ -55,13 +55,13 @@ public class MenuManager : Singleton<MenuManager>
     public float height;
 
     [Header("Fire Material Effect")]
-    public Image fireImage;           // fire 오브젝트의 Image 컴포넌트 연결
-    private Material fireMatInstance; // 인스턴스 보관용
-    public Color fireNormalColor = Color.white; // 일반 상태 색상
-    public Color fireSpecialColor = Color.red;  // 5~7 스테이지용 색상
+    public Image fireImage;           
+    private Material fireMatInstance; 
+    public Color fireNormalColor = Color.white; 
+    public Color fireSpecialColor = Color.red;  
 
     [Header("Stage 5~7 Material Effect")]
-    public Image targetSpriteImage; // 인스펙터에서 매터리얼이 적용된 이미지 할당
+    public Image targetSpriteImage; 
     private Material targetMatInstance; 
     private Tween matTween;
     private bool isCurrentlySpecialRange = false;
@@ -121,13 +121,6 @@ public class MenuManager : Singleton<MenuManager>
             handGuide.StopTutorial();
         }
 
-        // BlackOverlay = BlackOverlayObj.GetComponent<Image>();
-        // RectTransform BlackOverlayRT = BlackOverlay.GetComponent<RectTransform>();
-        // BlackOverlayRT.anchorMin = new Vector2(0, 0);
-        // BlackOverlayRT.anchorMax = new Vector2(1, 1);
-        // Color originalOverlayColor = BlackOverlay.color;
-        // BlackOverlay.color = new Color (originalOverlayColor.r, originalOverlayColor.g, originalOverlayColor.b, 0f);
-
         currentState = MenuState.Title;
 
         if (StageDBManager.Instance.isFirstLaunch)
@@ -145,7 +138,7 @@ public class MenuManager : Singleton<MenuManager>
             sword.InitUI(true);
             SwordUpEnd();
         }
-        // 🔥 [추가된 부분] 매터리얼 복제 및 초기 상태 세팅
+
         if (targetSpriteImage != null)
         {
             targetMatInstance = new Material(targetSpriteImage.material);
@@ -155,7 +148,7 @@ public class MenuManager : Singleton<MenuManager>
             float initialTol = isCurrentlySpecialRange ? 0f : 1f;
             targetMatInstance.SetFloat("_ColorChangeTolerance", initialTol);
         }
-        // 🔥 [추가] fire 매터리얼 복제 및 초기 색상 세팅
+
         if (fireImage != null)
         {
             fireMatInstance = new Material(fireImage.material);
@@ -164,7 +157,6 @@ public class MenuManager : Singleton<MenuManager>
             bool isSpecial = (stageIndex[0] >= 5 && stageIndex[0] <= 7);
             Color initialColor = isSpecial ? fireSpecialColor : fireNormalColor;
             
-            // All In 1 Sprite의 Hit Color 프로퍼티명은 보통 "_HitEffectColor"입니다.
             fireMatInstance.SetColor("_HitEffectColor", initialColor);
         }
 
@@ -173,36 +165,20 @@ public class MenuManager : Singleton<MenuManager>
 
     public bool JudgeStageUnlock(int index, int difficulty)
     {
-        return true; // 일단 모든 스테이지 잠금 해제 (빌드 제출용)
-
-        if (index == 0)
-        // 튜토리얼은 항상 잠금 해제된 상태로 시작
-        {
-            return true;
-        }
-
-        if (difficulty == 0)
-        {
-            return StageDBManager.Instance.stageCompletion[index - 1][0];
-        }
-        else if (difficulty == 1)
-        {
-            return StageDBManager.Instance.stageCompletion[index][0];
-        }
-        return false;
+        return true; 
     }
 
     public void UpdateCurStage(int index, int difficulty = 0)
     {
         bool needUpdate = false;
-        if (stageIndex[0] != index)  // 스테이지 인덱스가 바뀌었을 때만 업데이트
+        if (stageIndex[0] != index)  
         {
             stageIndex[0] = index;
             
             if (StageDBManager.Instance.diffNumbers[stageIndex[0]] == 1 || !JudgeStageUnlock(stageIndex[0], 1))
             {
                 diffButtonUI.SetVisibility(false);
-                difficulty = 0;  // 난이도 인덱스도 0으로 초기화
+                difficulty = 0;  
                 diffButtonUI.UpdateButtonState(0);
             }
             else
@@ -213,7 +189,7 @@ public class MenuManager : Singleton<MenuManager>
             needUpdate = true;
         }
 
-        if (stageIndex[1] != difficulty)  // 난이도 인덱스가 바뀌었을 때만 업데이트
+        if (stageIndex[1] != difficulty)  
         {
             stageIndex[1] = difficulty;
             diskSwipeUI.UpdateDifficulty(stageIndex[1]);
@@ -225,25 +201,16 @@ public class MenuManager : Singleton<MenuManager>
         {
             StageSelection.SetSelection(stageIndex[0], (Difficulty)stageIndex[1]);
             infoDisplayUI.InitUI(new int[] { StageSelection.SelectedStageId, (int)StageSelection.SelectedDifficulty });
-            
-            // 🔥 스테이지가 변경되었으니 타이틀 애니메이션 교체 실행!
-            // // InfoDisplayUI에서 하던 이름 텍스트 변경을 이 멋진 연출이 대신하게 됩니다.
-            // if (stageTitleAnim != null)
-            // {
-            //     stageTitleAnim.ChangeTitle(StageDBManager.Instance.StageName[stageIndex[0]]);
-            // }
         }
 
         RefreshPurchasePanel();
-        // 🔥 [완벽 수정본] 5~7 스테이지 구간 진입/이탈 감지 (타이틀과 불꽃을 동시에 처리!)
+
         bool isSpecial = (index >= 5 && index <= 7);
 
-        // 상태가 변했을 때만 (진입할 때 1번, 이탈할 때 1번) 실행
         if (isSpecial != isCurrentlySpecialRange)
         {
-            isCurrentlySpecialRange = isSpecial; // 여기서 상태를 딱 한 번만 최신화
+            isCurrentlySpecialRange = isSpecial; 
 
-            // 1. 타이틀 매터리얼 (관용도 1 <-> 0 전환)
             if (targetMatInstance != null)
             {
                 matTween?.Kill(); 
@@ -251,10 +218,8 @@ public class MenuManager : Singleton<MenuManager>
                 matTween = targetMatInstance.DOFloat(targetTol, "_ColorChangeTolerance", 0.5f).SetEase(Ease.InOutQuad);
             }
 
-            // 2. 불꽃 매터리얼 (일반 색상 <-> 특수 색상 전환)
             if (fireMatInstance != null)
             {
-                // DOTween이 알아서 현재 진행 중인 Color 트윈을 덮어씌우고 부드럽게 돌아갑니다.
                 Color targetColor = isSpecial ? fireSpecialColor : fireNormalColor;
                 fireMatInstance.DOColor(targetColor, "_HitEffectColor", 0.5f).SetEase(Ease.InOutQuad);
             }
@@ -268,19 +233,10 @@ public class MenuManager : Singleton<MenuManager>
             currentState = MenuState.StageSelect;
             RefreshPurchasePanel();
             
-            // 🔥 타이틀에서 칼 뽑고 넘어오면, 이제 칼이 둥둥 떠다니도록 지시!
             sword.StartFloating(); 
             
             infoDisplayUI.InitUI(stageIndex);
             diskSwipeUI.StartPreviewSound(stageIndex[0]);
-            // if (stageTitleAnim != null)
-            // {
-            //     stageTitleAnim.ChangeTitle(StageDBManager.Instance.StageName[stageIndex[0]]);
-            // }
-            // if (stageIndex[1] >= 1)
-            // {
-            //     diffButtonUI.InitUI(stageIndex[1]);
-            // }
             return;
         }
         else if (currentState == MenuState.StageSelect)
@@ -301,7 +257,6 @@ public class MenuManager : Singleton<MenuManager>
     {
         if (handGuide != null)
         {
-            // 입력 감지 시 타이머 초기화 및 가이드 숨김
             if (Input.anyKey || Input.GetMouseButton(0))
             {
                 idleTime = 0f;
@@ -316,19 +271,16 @@ public class MenuManager : Singleton<MenuManager>
                 idleTime += Time.deltaTime;
             }
 
-            // 5초 이상 아무 입력이 없을 때 가이드 등장!
             if (idleTime >= 5f && !isShowingGuide)
             {
                 isShowingGuide = true;
 
                 if (currentState == MenuState.Title)
                 {
-                    // 🔥 타이틀 창: 위로 스와이프 (칼 뽑기 안내)
                     handGuide.PlaySwipe(new Vector2(0f, 1f));
                 }
                 else if (currentState == MenuState.StageSelect)
                 {
-                    // 🔥 스테이지 창: 좌측으로 스와이프 (디스크 넘기기 안내)
                     handGuide.PlaySwipe(new Vector2(0f, 1f));
                 }
             }
@@ -344,9 +296,6 @@ public class MenuManager : Singleton<MenuManager>
         }
     }
 
-    /// <summary>
-    /// 스테이지 시작 시 호출 (검정 배경 연출)
-    /// </summary>
     public void StartStage()
     {
         if (IsSelectedStagePurchaseLocked())
@@ -357,22 +306,18 @@ public class MenuManager : Singleton<MenuManager>
 
         if (!JudgeStageUnlock(stageIndex[0], stageIndex[1]))
         {
-            // 잠긴 스테이지
             Debug.Log("잠긴 스테이지입니다.");
             return;
         }
 
-        diskSwipeUI.StopScroll(); // 스테이지 시작 시 디스크 스와이프 잠금
-        settingUI.gameObject.SetActive(false); // 스테이지 시작 시 세팅 버튼 숨김
+        diskSwipeUI.StopScroll(); 
+        settingUI.gameObject.SetActive(false); 
 
         float dur = 2f;
         BlackOverlayObj.SetActive(true);
         BlackOverlay = BlackOverlayObj.GetComponent<Image>();
 
-        // 검정색 박스 진해지는 연출 (DOTween)
         BlackOverlay.DOFade(1f, dur).SetEase(Ease.OutQuad);
-
-        // 칼 올라가는 연출은 이제 SwordMovement가 스스로 DOTween으로 처리함
         sword.StartSwordUp(height / 2f, dur); 
     }
 
@@ -385,10 +330,21 @@ public class MenuManager : Singleton<MenuManager>
 
         if (purchaseButton != null)
         {
+            // 상업/비상업 모드 동적 변화에 대응하기 위해 버튼 세팅을 리프레시 때마다 갱신해줍니다.
+            SetupPurchaseButtonListeners();
+
             StagePackPurchaseManager purchaseManager = StagePackPurchaseManager.Instance;
-            purchaseButton.interactable = shouldShow &&
-                                          purchaseManager.IsStoreReady &&
-                                          !purchaseManager.IsPurchaseInProgress;
+            
+            if (StagePackPurchaseManager.IsNonCommercialMode)
+            {
+                purchaseButton.interactable = shouldShow;
+            }
+            else
+            {
+                purchaseButton.interactable = shouldShow &&
+                                              purchaseManager.IsStoreReady &&
+                                              !purchaseManager.IsPurchaseInProgress;
+            }
         }
     }
 
@@ -403,20 +359,73 @@ public class MenuManager : Singleton<MenuManager>
         foreach (Button button in buttons)
         {
             if (button.gameObject.name != "PurchaseButton") continue;
-
             purchaseButton = button;
-            purchaseButton.onClick.RemoveAllListeners();
-            purchaseButton.onClick.AddListener(StagePackPurchaseManager.Instance.PurchaseStagePack);
             break;
         }
 
         purchasePanelInstance.SetActive(false);
     }
 
+    /// <summary>
+    /// 모드 상태에 맞는 버튼 텍스트와 이벤트 함수를 실시간으로 다시 달아주는 함수
+    /// </summary>
+    private void SetupPurchaseButtonListeners()
+{
+    if (purchaseButton == null) return;
+
+    purchaseButton.onClick.RemoveAllListeners();
+
+    if (StagePackPurchaseManager.IsNonCommercialMode)
+    {
+        // 1. 비상업용 텍스트 변경
+        TMP_Text buttonText = purchaseButton.GetComponentInChildren<TMP_Text>();
+        if (buttonText != null) buttonText.text = "확인"; 
+        else
+        {
+            Text legacyText = purchaseButton.GetComponentInChildren<Text>();
+            if (legacyText != null) legacyText.text = "확인";
+        }
+
+        // 2. 🔥 클릭 시 데이터 저장 후, 다른 상태 조건(currentState)과 관계없이 패널을 즉시 직접 끕니다!
+        purchaseButton.onClick.AddListener(() => {
+            Debug.Log("[Non-Commercial] 무료 해금 처리 완료 및 패널 강제 폐쇄.");
+            PlayerPrefs.SetInt("iap_stage_pack_567_owned", 1);
+            PlayerPrefs.Save();
+            
+            // 💡 씬 상태나 타 조건문 검사를 패스하고 오브젝트를 다이렉트로 비활성화합니다.
+            if (purchasePanelInstance != null)
+            {
+                purchasePanelInstance.SetActive(false); 
+            }
+            
+            // UI 상태 전체 동기화를 위해 마지막 리프레시 1회 실행
+            RefreshPurchasePanel(); 
+        });
+    }
+    else
+    {
+        // 상업용 텍스트 및 결제 함수 연동
+        TMP_Text buttonText = purchaseButton.GetComponentInChildren<TMP_Text>();
+        if (buttonText != null) buttonText.text = "구매하기"; 
+        else
+        {
+            Text legacyText = purchaseButton.GetComponentInChildren<Text>();
+            if (legacyText != null) legacyText.text = "구매하기";
+        }
+
+        purchaseButton.onClick.AddListener(StagePackPurchaseManager.Instance.PurchaseStagePack);
+    }
+}
+
     private bool IsSelectedStagePurchaseLocked()
     {
+        if (StagePackPurchaseManager.IsNonCommercialMode)
+        {
+            return StagePackPurchaseManager.IsPremiumStage(stageIndex[0]) && 
+                   PlayerPrefs.GetInt("iap_stage_pack_567_owned", 0) == 0;
+        }
+
         return StagePackPurchaseManager.IsPremiumStage(stageIndex[0]) &&
                !StagePackPurchaseManager.IsStagePackOwned;
     }
-
 }
