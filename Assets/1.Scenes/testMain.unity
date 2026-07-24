@@ -130,6 +130,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 537182730}
     m_Modifications:
+    - target: {fileID: 2302195782135804357, guid: 173bf6af9c1be134cbf285f3961f8e8e, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2302195782135804357, guid: 173bf6af9c1be134cbf285f3961f8e8e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2302195782135804357, guid: 173bf6af9c1be134cbf285f3961f8e8e, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2302195782135804357, guid: 173bf6af9c1be134cbf285f3961f8e8e, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2302195782135804357, guid: 173bf6af9c1be134cbf285f3961f8e8e, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 779
+      objectReference: {fileID: 0}
+    - target: {fileID: 2302195782135804357, guid: 173bf6af9c1be134cbf285f3961f8e8e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 3955450510951561916, guid: 173bf6af9c1be134cbf285f3961f8e8e, type: 3}
       propertyPath: slideDuration
       value: 0.4
@@ -156,7 +180,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8547453809775417169, guid: 173bf6af9c1be134cbf285f3961f8e8e, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8547453809775417169, guid: 173bf6af9c1be134cbf285f3961f8e8e, type: 3}
       propertyPath: m_AnchorMax.y
@@ -164,7 +188,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8547453809775417169, guid: 173bf6af9c1be134cbf285f3961f8e8e, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8547453809775417169, guid: 173bf6af9c1be134cbf285f3961f8e8e, type: 3}
       propertyPath: m_AnchorMin.y
@@ -172,7 +196,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8547453809775417169, guid: 173bf6af9c1be134cbf285f3961f8e8e, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 100
+      value: 270
       objectReference: {fileID: 0}
     - target: {fileID: 8547453809775417169, guid: 173bf6af9c1be134cbf285f3961f8e8e, type: 3}
       propertyPath: m_SizeDelta.y
@@ -232,7 +256,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9218015784782511077, guid: 173bf6af9c1be134cbf285f3961f8e8e, type: 3}
       propertyPath: m_margin.z
-      value: -84.585754
+      value: -69.8996
       objectReference: {fileID: 0}
     - target: {fileID: 9218015784782511077, guid: 173bf6af9c1be134cbf285f3961f8e8e, type: 3}
       propertyPath: m_fontColor.b
@@ -1390,7 +1414,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 400}
+  m_AnchoredPosition: {x: 0, y: 400.00003}
   m_SizeDelta: {x: 0, y: 800}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &724187244
@@ -1673,7 +1697,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4197069a5dd8e7049b237886617b8c94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swipeThreshold: 120
+  swipeThreshold: 60
 --- !u!4 &1019677494
 Transform:
   m_ObjectHideFlags: 0
@@ -2093,7 +2117,7 @@ MonoBehaviour:
   settingUI: {fileID: 1902015976635881004}
   diffButtonUI: {fileID: 2053746813}
   stageTitleAnim: {fileID: 988500529}
-  purchasePanelPrefab: {fileID: 1026649108904790637, guid: 2e5f2a29d2c63804db166c9e622ea6cb, type: 3}
+  purchasePanelPrefab: {fileID: 0}
   currentState: 3
   stageIndex: 0000000000000000
   height: 0
@@ -2647,7 +2671,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -81}
+  m_AnchoredPosition: {x: 0, y: -80.99997}
   m_SizeDelta: {x: 4.000244, y: -1360}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1258616122
