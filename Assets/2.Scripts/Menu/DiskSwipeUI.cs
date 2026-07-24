@@ -62,9 +62,14 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
     [Space]
     [SerializeField] private float rotationSpeed = 6f;  // 디스크 회전 속도
 
+    [Space]
+    [SerializeField] private float swipeThreshold = 10f;
+    private float weightedSwipeThreshold;
+    private bool isDragging = false;
+
     private RectTransform[] stageDisks;  // 튜토리얼과 에필로그 포함
     private float[] itemPositions;
-    private bool isDragging = false;
+    
     private bool canRotate = true;  // 디스크 회전 허용 여부
 
     // targetIndex에 접근할 때마다 해당 스테이지가 잠금 해제되어 있는지 확인하도록 하기 위해 프로퍼티로 감싸서 사용
@@ -91,6 +96,11 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
     private float interval;
 
     private int tempDiff;  // gc 방지(효과가 있는지는 몰루)
+
+    private void Start()
+    {
+        weightedSwipeThreshold = swipeThreshold * Screen.height / 1920f;
+    }
 
     public void InitScrollView(int initialIndex, int difficulty)
     {
@@ -266,11 +276,12 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
     public void OnDrag(PointerEventData eventData)
     {
         if (MenuManager.Instance.currentState != MenuState.StageSelect)
-        {
             return;
-        }
 
-        if (!isDragging)
+        float swipeDistance =
+            Vector2.Distance(eventData.pressPosition, eventData.position);
+
+        if (swipeDistance > weightedSwipeThreshold)
         {
             isDragging = true;
         }
@@ -282,10 +293,14 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
     public void OnEndDrag(PointerEventData eventData)
     {
         if (MenuManager.Instance.currentState != MenuState.StageSelect)
-        {
             return;
-        }
 
+        StartCoroutine(ResetDragging());
+    }
+
+    private IEnumerator ResetDragging()
+    {
+        yield return null;
         isDragging = false;
         StartCoroutine(SnapToDisk());
     }
