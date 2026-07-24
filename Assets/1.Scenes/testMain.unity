@@ -1673,7 +1673,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4197069a5dd8e7049b237886617b8c94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swipeThreshold: 60
+  swipeThreshold: 120
 --- !u!4 &1019677494
 Transform:
   m_ObjectHideFlags: 0
@@ -2714,6 +2714,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: cef8cd11bb08db5409893a23e524ca1b, type: 3}
   - {fileID: 8300000, guid: 6e2896ef82fd82f4dbab44bd9a64847b, type: 3}
   rotationSpeed: 6
+  swipeThreshold: 10
 --- !u!114 &1258616123
 MonoBehaviour:
   m_ObjectHideFlags: 0
