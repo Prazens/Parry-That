@@ -594,7 +594,7 @@ public class StageFlowManager : MonoBehaviour
 
     public void TogglePause()
     {
-        if (!button_active) return;
+        if (!button_active || victoryStarted) return;
 
         if (isPaused) ResumeStage();
         else PauseStage();
