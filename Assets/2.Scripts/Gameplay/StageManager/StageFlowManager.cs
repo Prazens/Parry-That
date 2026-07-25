@@ -675,4 +675,15 @@ public class StageFlowManager : MonoBehaviour
             StageSelection.SelectedDifficulty
         );
     }
+
+    public bool CanSkipDialogue()
+    {
+        if (stageChartLoader == null)
+            return true;
+
+        DialogueAudioPolicy policy =
+            stageChartLoader.GetDialogueAudioPolicy(currentStageData);
+
+        return policy != DialogueAudioPolicy.KeepPlaying;
+    }
 }

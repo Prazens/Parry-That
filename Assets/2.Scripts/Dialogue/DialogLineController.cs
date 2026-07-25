@@ -3,6 +3,7 @@ using TMPro;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Rendering;
 
 public class DialogLineController : MonoBehaviour
 {
@@ -32,6 +33,14 @@ public class DialogLineController : MonoBehaviour
     private LayoutElement le;
 
     private Vector2 originalSpeakerIconSize;
+
+    private float appearStartTime;
+    private float textStartTime;
+    private float textEndTime;
+    private float disappearStartTime;
+    private float lineEndTime;
+
+    private Tween waitAfterTween;
 
     private void Awake()
     {
@@ -64,7 +73,7 @@ public class DialogLineController : MonoBehaviour
     {
         Debug.Log("DialogLineController: FinishDialogLine");
 
-        sdm.FinishDialogLine();
+        sdm.FinishDialogLine(this);
         Destroy(gameObject);
     }
 
@@ -72,20 +81,94 @@ public class DialogLineController : MonoBehaviour
     {
         Debug.Log("DialogLineController: MakeSequence");
 
+        appearStartTime = currentLine.waitBeforeReveal;
+        textStartTime = appearStartTime + barDelay;
+        textEndTime = appearStartTime + currentLine.textRevealDuration;
+
+        disappearStartTime = textEndTime + currentLine.waitAfterReveal - barDelay;
+
+        lineEndTime = textEndTime + currentLine.waitAfterReveal;
+
         dlSequence = DOTween.Sequence();
-        dlSequence.OnComplete(() => FinishDialogLine());
         appearSequence = DOTween.Sequence();
         textSequence = DOTween.Sequence();
         disappearSequence = DOTween.Sequence();
 
         LineAppear();
-        dlSequence.Insert(currentLine.waitBeforeReveal, appearSequence);
         TextAppear();
-        dlSequence.Insert(currentLine.waitBeforeReveal + barDelay, textSequence);
         LineDisappear();
-        dlSequence.Insert(currentLine.waitBeforeReveal + currentLine.textRevealDuration + currentLine.waitAfterReveal - barDelay,
-                          disappearSequence);
+
+        dlSequence.Insert(appearStartTime, appearSequence);
+        dlSequence.Insert(textStartTime, textSequence);
+        dlSequence.Insert(disappearStartTime, disappearSequence);
+
+        dlSequence.OnComplete(FinishDialogLine);
+
+        dlSequence.Pause();
+
         return dlSequence;
+    }
+
+    public void SkipCurrentStep()
+    {
+        if (dlSequence == null || !dlSequence.IsActive())
+            return;
+
+        float currentTime = dlSequence.Elapsed();
+
+        // 글자 출력 전
+        if (currentTime < textStartTime)
+        {
+            dlSequence.Goto(textStartTime, true);
+            return;
+        }
+
+        // 글자 출력 중
+        if (currentTime < textEndTime)
+        {
+            CompleteTextImmediately();
+            return;
+        }
+
+        // 글자 출력 후 대기 중
+        if (currentTime < disappearStartTime ||
+            waitAfterTween?.IsActive() == true)
+        {
+            StartDisappearImmediately();
+        }
+    }
+
+
+    private void CompleteTextImmediately()
+    {
+        dlSequence.Goto(textEndTime, true);
+        dlSequence.Pause();
+
+        if (typingSoundSource != null)
+        {
+            typingSoundSource.Stop();
+        }
+
+        waitAfterTween?.Kill();
+
+        waitAfterTween = DOVirtual.DelayedCall(
+            Mathf.Max(currentLine.waitAfterReveal - barDelay, 0f),
+            StartDisappearImmediately
+        );
+    }
+    
+    private void StartDisappearImmediately()
+    {
+        waitAfterTween?.Kill();
+        waitAfterTween = null;
+
+        dlSequence.Goto(disappearStartTime, true);
+        dlSequence.Play();
+    }
+
+    public void Play()
+    {
+        dlSequence?.Play();
     }
 
     private void LineAppear()
