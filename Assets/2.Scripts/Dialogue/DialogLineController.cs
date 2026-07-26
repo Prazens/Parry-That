@@ -120,45 +120,40 @@ public class DialogLineController : MonoBehaviour
         if (currentTime < appearStartTime)
         {
             StartAppearImmediately();
+            return;
         }
-        // 아이콘 및 바 등장 중
-        else if (currentTime < textStartTime)
-        {
-            CompleteAppearImmediately();
-        }
+
         // 텍스트 출력 중
-        else if (currentTime < textEndTime)
+        if (currentTime < textEndTime)
         {
             CompleteTextImmediately();
+            return;
         }
+        
         // 텍스트 출력 완료 후 대기 중
-        else if (currentTime < disappearStartTime)
+        if (currentTime < disappearStartTime)
         {
             StartDisappearImmediately();
-        }
-        // 아이콘 및 바 제거 중
-        else if (currentTime < lineEndTime)
-        {
-            CompleteDisappearImmediately();
         }
     }
 
     private void StartAppearImmediately()
     {
-        // waitBeforeReveal만 건너뛴다.
+        // waitBeforeReveal 건너뜀
         dlSequence.Goto(appearStartTime, true);
         dlSequence.Play();
     }
 
     private void CompleteAppearImmediately()
     {
-        // 아이콘과 바 등장 애니메이션을 완료한다.
+        // 아이콘과 바 등장 애니메이션 건너뜀
         dlSequence.Goto(textStartTime, true);
         dlSequence.Play();
     }
 
     private void CompleteTextImmediately()
     {
+        // 대사 출력 애니메이션 건너뜀
         dlSequence.Goto(textEndTime, true);
         dlSequence.Pause();
 
@@ -177,6 +172,7 @@ public class DialogLineController : MonoBehaviour
     
     private void StartDisappearImmediately()
     {
+        // 바 및 아이콘 제거 애니메이션 시작
         waitAfterTween?.Kill();
         waitAfterTween = null;
 
@@ -186,10 +182,10 @@ public class DialogLineController : MonoBehaviour
 
     private void CompleteDisappearImmediately()
     {
+        // 바 및 아이콘 제거 애니메이션 건너뜀.
         waitAfterTween?.Kill();
         waitAfterTween = null;
 
-        // 아이콘과 바 제거 애니메이션을 완료한다.
         dlSequence.Goto(lineEndTime, true);
         dlSequence.Play();
     }
