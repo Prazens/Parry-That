@@ -17,6 +17,10 @@ MonoBehaviour:
   category: 1
   phases:
   - tutorialPanelPrefabs: []
+    chartJson: {fileID: 0}
+    dialogue: {fileID: 11400000, guid: 7415f8eebbc13724c80a466ef6862d26, type: 2}
+    dialogueAudioPolicy: 0
+  - tutorialPanelPrefabs: []
     chartJson: {fileID: 4900000, guid: 2839124ca85776f4ebb5548f672fa05f, type: 3}
     dialogue: {fileID: 0}
     dialogueAudioPolicy: 0
