@@ -594,7 +594,7 @@ public class StageFlowManager : MonoBehaviour
 
     public void TogglePause()
     {
-        if (!button_active) return;
+        if (!button_active || victoryStarted) return;
 
         if (isPaused) ResumeStage();
         else PauseStage();
@@ -674,5 +674,16 @@ public class StageFlowManager : MonoBehaviour
             StageSelection.SelectedStageId,
             StageSelection.SelectedDifficulty
         );
+    }
+
+    public bool CanSkipDialogue()
+    {
+        if (stageChartLoader == null)
+            return true;
+
+        DialogueAudioPolicy policy =
+            stageChartLoader.GetDialogueAudioPolicy(currentStageData);
+
+        return policy != DialogueAudioPolicy.KeepPlaying;
     }
 }
