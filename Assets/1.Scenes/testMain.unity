@@ -1697,7 +1697,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4197069a5dd8e7049b237886617b8c94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swipeThreshold: 120
+  swipeThreshold: 200
 --- !u!4 &1019677494
 Transform:
   m_ObjectHideFlags: 0
@@ -2117,9 +2117,9 @@ MonoBehaviour:
   settingUI: {fileID: 1902015976635881004}
   diffButtonUI: {fileID: 2053746813}
   stageTitleAnim: {fileID: 988500529}
-  purchasePanelPrefab: {fileID: 0}
+  purchasePanelPrefab: {fileID: 1026649108904790637, guid: 2e5f2a29d2c63804db166c9e622ea6cb, type: 3}
   currentState: 3
-  stageIndex: 0000000000000000
+  stageIndex: 040000000500000006000000
   height: 0
   fireImage: {fileID: 1823578362}
   fireNormalColor: {r: 0.9481132, g: 0.8426279, b: 0.33094516, a: 1}
