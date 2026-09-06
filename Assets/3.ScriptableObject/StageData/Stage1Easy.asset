@@ -32,7 +32,7 @@ MonoBehaviour:
     chartJson: {fileID: 4900000, guid: ade349cdff3ba1a4f82f5f52f1f944ba, type: 3}
     dialogue: {fileID: 0}
     dialogueAudioPolicy: 0
-  bgm: {fileID: 8300000, guid: 2a58be39a94f8f1499dbced119ddbbeb, type: 3}
+  bgm: {fileID: 8300000, guid: 9e0a256b70c18b04ba080590f44cd589, type: 3}
   overrideBgmOffset: 0
   bgmOffset: 0
   holdingSound: {fileID: 8300000, guid: c7a8e0bf3f24efd4b8143a12facac75b, type: 3}
