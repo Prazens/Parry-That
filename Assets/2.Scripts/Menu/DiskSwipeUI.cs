@@ -97,9 +97,23 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
 
     private int tempDiff;  // gc 방지(효과가 있는지는 몰루)
 
+    private bool canClickDisk = false;
+
     private void Start()
     {
         weightedSwipeThreshold = swipeThreshold * Screen.height / 1920f;
+    }
+
+    private void OnEnable()
+    {
+        canClickDisk = false;
+        StartCoroutine(EnableDiskClick());
+    }
+
+    private IEnumerator EnableDiskClick()
+    {
+        yield return new WaitForSeconds(0.5f);
+        canClickDisk = true;
     }
 
     public void InitScrollView(int initialIndex, int difficulty)
@@ -307,6 +321,9 @@ public class DiskSwipeUI : MonoBehaviour, IDragHandler, IEndDragHandler
 
     public void OnDiskClick()
     {
+        if (!canClickDisk)
+            return;
+            
         if (MenuManager.Instance.currentState != MenuState.StageSelect)
             return;
 
