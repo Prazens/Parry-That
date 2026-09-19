@@ -31,10 +31,6 @@ MonoBehaviour:
     dialogue: {fileID: 11400000, guid: 120dca027c910894b978ac91b52222c1, type: 2}
     dialogueAudioPolicy: 2
   - tutorialPanelPrefabs: []
-    chartJson: {fileID: 4900000, guid: 43afd0590c3b5b64aa4870d8d0d4ff93, type: 3}
-    dialogue: {fileID: 11400000, guid: 50eb25d5c5ded0f49b9457030df1038a, type: 2}
-    dialogueAudioPolicy: 2
-  - tutorialPanelPrefabs: []
     chartJson: {fileID: 4900000, guid: f0868de66cc495d419f7e6dbda765bab, type: 3}
     dialogue: {fileID: 11400000, guid: b9349ea105745924284654db7043c2fd, type: 2}
     dialogueAudioPolicy: 2

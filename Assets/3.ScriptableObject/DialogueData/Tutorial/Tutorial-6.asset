@@ -15,8 +15,8 @@ MonoBehaviour:
   lines:
   - speakerTag: 2
     expressionTag: 1
-    text: "\uC88B\uC544\uC694! \uC774\uC81C \uB9C8\uC655\uC744 \uC7A1\uC73C\uB7EC
-      \uB5A0\uB098\uC694!!!!"
+    text: "\uC88B\uC544\uC694! \uBAA8\uB4E0 \uC900\uBE44\uAC00 \uB05D\uB0AC\uC73C\uB2C8,
+      \uC774\uC81C \uB9C8\uC655\uC744 \uC7A1\uC73C\uB7EC \uB5A0\uB098\uC694!!!!"
     textRevealDuration: 2
     waitAfterReveal: 3
     waitBeforeReveal: 0
